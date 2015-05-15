@@ -48,12 +48,15 @@ setup(name = "opsiPackageBuilder",
     author_email = "holger.pandel@googlemail.com",
     url = "https://forum.opsi.org/viewforum.php?f=22",
     packages=find_packages(exclude=['tests*', 'ez_setup.py']),
-    scripts = ["opsiPackageBuilder.py"],
+    scripts = ["opsipackagebuilder.py"],
     long_description = """opsiPackageBuilder""",
     license = "MIT",
-    platforms = [ "Any" ],
+    platforms = [ "Windows", "Linux" ],
     package_data = {
         # Include any *.ui files found in the 'oPB.ui' package, too:
         'oPB.ui': ['*.ui'],
-    }
+    },
+    data_files=[('oPB/core/x86', ['oPB/core/x86/MapDrive.dll']),
+                ('oPB/core/x64', ['oPB/core/x64/MapDrive.dll']),
+                ('', ['opsipackagebuilder_rc.py'])]
 ) 
