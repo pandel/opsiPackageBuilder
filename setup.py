@@ -58,5 +58,10 @@ setup(name = "opsiPackageBuilder",
     },
     data_files=[('oPB/core/x86', ['oPB/core/x86/MapDrive.dll']),
                 ('oPB/core/x64', ['oPB/core/x64/MapDrive.dll']),
-                ('', ['opsipackagebuilder_rc.py'])]
+                ('', ['opsipackagebuilder_rc.py'])],
+    entry_points={
+          'gui_scripts': [
+              'opsipackagebuilder = oPB.runner:Main'
+          ]
+    },
 ) 
