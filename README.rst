@@ -1,3 +1,22 @@
+General hint regarding opsi Package Builder
+===========================================
+
+This repository is work in progress. There are many things that won't work at the moment and will change over time. so don't use this in production.
+
+I take no responsibility for your decision to use anything from here!!!
+
+opsi PackageBuilder is only tested with Python 3.4 and PyQT5.
+
+
+Requirements
+============
+PyQt5
+spur
+sphinx_rtd_theme
+Crypto.Cipher
+simple-crypt>=4.0.0
+
+
 Included Scripts
 ================
 
