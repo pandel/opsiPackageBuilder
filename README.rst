@@ -21,11 +21,11 @@ You need to install VC++ 2010 Express and if you want to compile for a 64Bit Pla
 Using PyInstaller
 =================
 
-``Please customize the path to your preoject in opsipackagebuiler.spec!``
+``Please customize the path to your project in opsipackagebuiler.spec!``
 
 You need to download a Python 3 compatible version of PyInstaller from www.pyinstaller.org and install it from the source package. Before you do that, modify the file:
 
-*pyinstaller-python3\PyInstaller\utils\hooks\hookutils.py*
+*pyinstaller-python3/PyInstaller/utils/hooks/hookutils.py*
 
 according to this:
 
