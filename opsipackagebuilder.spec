@@ -8,7 +8,7 @@ pyz = PYZ(a.pure)
 exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
-          name='opsiPackageBuilder.exe',
+          name='opsipackagebuilder.exe',
           debug=False,
           strip=None,
           upx=True,
@@ -27,4 +27,4 @@ coll = COLLECT(exe,
                icon_tree,
                strip=None,
                upx=True,
-               name='opsiPackageBuilder')
+               name='opsipackagebuilder')
