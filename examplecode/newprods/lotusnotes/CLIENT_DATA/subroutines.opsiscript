@@ -1,0 +1,388 @@
+[opsiServiceCall_setAction_FP]
+ "method": "setProductActionRequest"
+ "params": [
+            "$propFIXPACK$",
+            "%hostId%",
+            "setup"
+           ]
+
+[opsiServiceCall_setState_FP]
+ "method": "setProductInstallationStatus"
+ "params": [
+            "$propFIXPACK$",
+            "%hostId%",
+            "not_installed"
+           ]
+
+[opsiServiceCall_setProperty_FP]
+ "method": "setProductProperty"
+ "params": [
+            "$propFIXPACK$",
+						"install_art",
+						"$propINSTALLART$",
+            "%hostId%"
+           ]
+
+[Registry_SaveRebootFlag]
+openKey [$WinstRegKey$]
+set "RebootFlag" = "$Flag$"
+
+[Winbatch_install_msi]
+msiexec /i "%ScriptPath%\img\Client\Lotus Notes 8.5.3.msi" PROGDIR="$InstallDir$" DATADIR="$DatenVz$" TRANSFORMS="%ScriptPath%\img\Client\1031_853.mst" /Lv* "$AnwendTemp$\NotesInstall.log" /qn
+
+[Winbatch_uninstall_msi_32]
+msiexec /x$MsiId32$ /qn /Lv* "$AnwendTemp$\notesdeinst.log"
+
+[Winbatch_uninstall_msi_64]
+msiexec /x$MsiId64$ /qn /Lv* "$AnwendTemp$\notesdeinst.log"
+
+[Files_saveinis]
+CheckTargetPath = "$AnwendTemp$\inisavdat"
+CheckTargetPath = "$AnwendTemp$\inisavpgm"
+COPY "$InstallDir$\notes.ini" "$AnwendTemp$\inisavpgm"
+COPY "$DatenVz$\notes.ini" "$AnwendTemp$\inisavdat"
+
+[Files_copyinisback]
+COPY "$AnwendTemp$\inisavpgm\notes.ini" "$InstallDir$"
+COPY "$AnwendTemp$\inisavdat\notes.ini" "$DatenVz$"
+
+[Files_removealllinks]
+Del /f "$LinkVzStart$"
+Del /f "$LinkVzDesktop$\Lotus Notes 8.5.3.lnk"
+
+[Files_createlinkvz]
+CheckTargetPath = "$LinkVzStart$"
+
+[Files_removepgmvz]
+Del -sf "$InstallDir$"
+
+[Files_RemoveAdminDesigner]
+Del /F "$InstallDir$\Admin.exe"
+Del /F "$InstallDir$\Designer.exe"
+
+[Files_RemoveDesigner]
+Del /F "$InstallDir$\Designer.exe"
+
+[LinkFolder_uninstall]
+set_basefolder common_desktopdirectory
+set_subfolder ""
+delete_element "Lotus Notes 8.5.3"
+set_basefolder common_programs
+set_subfolder ""
+delete_subfolder "Lotus Anwendungen"
+
+[LinkFolder_BasicLokalNotes]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters: -basic
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+ end_link
+;
+; Creating a shortcut to the installed exe on AllUsers desktop:
+;
+set_basefolder common_desktopdirectory
+set_subfolder ""
+;
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters: -basic
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+end_link
+
+[LinkFolder_BasicNetzNotes]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters: '-basic "=J:\Notesdata\notes.ini"'
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+ end_link
+;
+; Creating a shortcut to the installed exe on AllUsers desktop:
+;
+set_basefolder common_desktopdirectory
+set_subfolder ""
+;
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters: '-basic "=J:\Notesdata\notes.ini"'
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+end_link
+
+[LinkFolder_StandardLokalNotes]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters:
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+ end_link
+;
+; Creating a shortcut to the installed exe on AllUsers desktop:
+;
+set_basefolder common_desktopdirectory
+set_subfolder ""
+;
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters:
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+end_link
+
+[LinkFolder_StandardNetzNotes]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters: '"=J:\Notesdata\notes.ini"'
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+ end_link
+;
+; Creating a shortcut to the installed exe on AllUsers desktop:
+;
+set_basefolder common_desktopdirectory
+set_subfolder ""
+;
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\notes.exe"
+    parameters: '"=J:\Notesdata\notes.ini"'
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\notes.exe"
+    icon_index:
+end_link
+
+[LinkFolder_BasicLokalAdmin]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Lotus Notes 8.5.3"
+    target: "$InstallDir$\admin.exe"
+    parameters: -basic
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\admin.exe"
+    icon_index:
+ end_link
+
+[LinkFolder_BasicNetzAdmin]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Domino Admin 8.5.3"
+    target: "$InstallDir$\admin.exe"
+    parameters: '-basic "=J:\Notesdata\notes.ini"'
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\admin.exe"
+    icon_index:
+ end_link
+
+[LinkFolder_StandardLokalAdmin]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Domino Admin 8.5.3"
+    target: "$InstallDir$\admin.exe"
+    parameters:
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\admin.exe"
+    icon_index:
+ end_link
+
+[LinkFolder_StandardNetzAdmin]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Domino Admin 8.5.3"
+    target: "$InstallDir$\admin.exe"
+    parameters: '"=J:\Notesdata\notes.ini"'
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\admin.exe"
+    icon_index:
+ end_link
+
+[LinkFolder_StandardLokalDesigner]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Domino Designer 8.5.3"
+    target: "$InstallDir$\designer.exe"
+    parameters:
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\designer.exe"
+    icon_index:
+ end_link
+
+[LinkFolder_StandardNetzDesigner]
+; Creating a shortcut to the installed exe in AllUsers startmenu:
+;
+set_basefolder common_programs
+set_subfolder "Lotus Anwendungen"
+
+set_link
+    name: "Domino Designer 8.5.3"
+    target: "$InstallDir$\designer.exe"
+    parameters: '"=J:\Notesdata\notes.ini"'
+    working_dir: $InstallDir$
+    icon_file: "$InstallDir$\designer.exe"
+    icon_index:
+ end_link
+
+; unzip addons to pgm vz
+[DosInAnIcon_UnzipEXEAddOns]
+"%ScriptPath%\scripts\unzip.exe" "%ScriptPath%\img\usr_exe.zip" -d "$InstallDir$"
+"%ScriptPath%\scripts\unzip.exe" "%ScriptPath%\img\lsa_v35exe.zip" -d "$InstallDir$"
+COPY "%ScriptPath%\img\Messagebox.exe" "$InstallDir$"
+COPY "%ScriptPath%\img\dbtempl.exe" "$InstallDir$"
+COPY "%ScriptPath%\scripts\ntrs2b.reg" "$InstallDir$"
+COPY "%ScriptPath%\scripts\ntrs2s.reg" "$InstallDir$"
+
+; unzip addons to local data vz
+[DosInAnIcon_UnzipDTAAddOns]
+"%ScriptPath%\scripts\unzip.exe" "%ScriptPath%\img\usr_dta.zip" -d "$DatenVz$"
+copy "%ScriptPath%\scripts\setup.txt" "$DatenVz$"
+
+; deactivate McAfee Endpoint Encryption for 1 time
+[DosInAnIcon_epe_deactivate]
+"%SystemRoot%\rztools\eepc\epeTemporaryAutoboot.exe" --number-of-reboots 1
+
+; check status if LN component is running
+[DosInAnIcon_checkStatus]
+DEL /F "$AnwendTemp$/ClientStatus.dat"
+TaskList /FI "IMAGENAME eq notes.exe" 2>NUL | Find "notes.exe" >NUL
+IF ERRORLEVEL == 1 (
+  GOTO NLNOTES
+  ) ELSE (
+    echo "Task NOTES.EXE aktiv. Keine Ausführung" >"$AnwendTemp$/ClientStatus.dat"
+    )
+:NLNOTES   
+TaskList /FI "IMAGENAME eq nlnotes.exe" 2>NUL | Find "nlnotes.exe" >NUL
+IF ERRORLEVEL == 1 (
+  GOTO NTASKLDR
+  ) ELSE (
+    echo "Task NLNOTES.EXE aktiv. Keine Ausführung" >>"$AnwendTemp$/ClientStatus.dat"
+    )
+:NTASKLDR   
+TaskList /FI "IMAGENAME eq ntaskldr" 2>NUL | Find "ntaskldr.exe" >NUL
+IF ERRORLEVEL == 1 (
+  GOTO ENDE
+  ) ELSE (
+    echo "Task NTASKLDR aktiv. Keine Ausführung" >>"$AnwendTemp$/ClientStatus.dat"
+    )
+:ENDE
+
+[DosInAnIcon_startSimuJ]
+net use j: /delete /YES 
+"%ScriptPath%\scripts\sleep.exe" 20
+md "C:\SimuJ\LW"
+net share SimuJ="C:\SimuJ\LW" /USERS:1 /GRANT:Jeder,FULL /REMARK:"Dummy-LW" /CACHE:None
+net use J: \\127.0.0.1\SimuJ /PERSISTENT:NO
+MD "J:\NotesData"
+
+[DosInAnIcon_stopSimuJ]
+net use j: /delete /YES 
+"%ScriptPath%\scripts\sleep.exe" 10
+NET share SimuJ /DELETE /y
+"%ScriptPath%\scripts\sleep.exe" 10
+rd "C:\SimuJ" /s /q
+
+[DosInAnIcon_PatchRegistryBasic]
+C:
+cd\winnt
+regedit /s "%ScriptPath%\scripts\ntrs2b.reg"
+
+[DosInAnIcon_PatchRegistryStandard]
+C:
+cd\winnt
+regedit /s "%ScriptPath%\scripts\ntrs2s.reg"
+
+[DosInAnIcon_SetRightsPgmVz]
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /grant SYSTEM:(OI)(CI)F /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /grant Administratoren:(OI)(CI)F /T /C /Q
+;"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /grant Benutzer:(OI)(CI)F /T /C /Q
+;"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /grant Hauptbenutzer:(OI)(CI)F /T /C /Q
+;"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /remove Benutzer /T /C /Q
+;"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /remove Hauptbenutzer /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /grant Benutzer:(OI)(CI)M /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$" /grant Hauptbenutzer:(OI)(CI)M /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$\notes.ini" /grant Benutzer:(OI)(CI)M /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$\keyview.ini" /grant Benutzer:(OI)(CI)M /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$\notes.ini" /grant Hauptbenutzer:(OI)(CI)M /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$InstallDir$\keyview.ini" /grant Hauptbenutzer:(OI)(CI)M /T /C /Q
+
+[DosInAnIcon_SetRightsDatenVz]
+"%SystemRoot%\system32\icacls.exe" "$DatenVz$" /grant Administratoren:(OI)(CI)F /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$DatenVz$" /grant SYSTEM:(OI)(CI)F /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$DatenVz$" /grant Benutzer:(OI)(CI)F /T /C /Q
+"%SystemRoot%\system32\icacls.exe" "$DatenVz$" /grant Hauptbenutzer:(OI)(CI)F /T /C /Q
+
+[DosInAnIcon_PathAdd]
+"%ScriptPath%\scripts\modpath.exe" /add "$InstallDir$"
+
+[DosInAnIcon_PathDel]
+"%ScriptPath%\scripts\modpath.exe" /del "$InstallDir$"
+
+[DosInAnIcon_svc]
+;sc config HipMgmt start= disabled
+;sc config enterceptAgent start= disabled
+sc stop LNSUSVc
+sc stop "Lotus Notes Diagnostics"
+
+[Registry_PathAdd]
+OpenKey [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment]
+supp "Path"; "$InstallDir$"
+
+[Registry_SetDataPath]
+OpenKey [HKEY_LOCAL_MACHINE\SOFTWARE\Lotus\Notes]
+set "DataPath" = "$DatenVz$"
+OpenKey [HKEY_LOCAL_MACHINE\SOFTWARE\Lotus\Notes\8.0]
+set "DataPath" = "$DatenVz$"

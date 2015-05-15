@@ -1,0 +1,35 @@
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+
+[Actions]
+requiredWinstVersion >= "4.11.3.2"
+
+DefVar $ProductId$
+; Clientart(1=basic, 2=standard)
+DefVar $propCLIENTART$
+
+include_append "%ScriptPath%\subroutines.opsiscript"
+
+
+; ----------------------------------------------------------------
+; - Please edit the following values                             -
+; ----------------------------------------------------------------
+;$ProductId$ should be the name of the product in opsi
+; therefore please: only lower letters, no umlauts, 
+; no white space use '-' as a seperator
+Set $ProductId$       = "lotus-notes"
+Set $propCLIENTART$  = GetProductProperty("client_art","Basic")
+; ----------------------------------------------------------------
+
+Message "Importiere Lotus Notes Registy Settings..."
+
+	Sub "%opsiScriptHelperPath%\lib\external.opsiinc"
+
+If $propCLIENTART$ = "Basic"
+	DosInAnIcon_PatchRegistryBasic
+endif
+If $propCLIENTART$ = "Standard"
+	DosInAnIcon_PatchRegistryStandard
+endif

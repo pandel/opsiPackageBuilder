@@ -1,0 +1,166 @@
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib gmbh
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+[Initial]
+SetLogLevel=5
+;  Log Errors in Logfile but don't abort:
+ExitOnError=false
+; Show syntax errors in the script:
+ScriptErrorMessages=on
+; Dont trace step by step through the script:
+TraceMode=off
+; let started programs run in front of the winst window
+StayOnTop=false
+
+[Actions]
+requiredWinstVersion >= "4.10.8.6"
+
+DefVar $MsiId32$
+DefVar $UninstallProgram32$
+DefVar $MsiId64$
+DefVar $UninstallProgram64$
+DefVar $LogDir$
+DefVar $ProductId$ 
+DefVar $ProductName$ 
+DefVar $MinimumSpace$
+DefVar $InstallDir$
+DefVar $InstallDir32$
+DefVar $InstallDir64$
+DefVar $ExitCode$
+DefVar $ErrorMsg$
+DefVar $LicenseRequired$
+DefVar $LicenseKey$
+DefVar $LicensePool$
+DefVar $INST_SystemType$
+DefVar $INST_architecture$
+; Installationsart (1=Lokal, 2=Netz)
+DefVar $propINSTALLART$
+; Clientart(1=basic, 2=standard)
+DefVar $propCLIENTART$
+; Installationsumfang (1=Normal, 2=Full)
+DefVar $propINSTALLUMFANG$
+DefVar $propFIXPACK$
+DefVar $AnwendTemp$
+DefVar $DatenVz$
+DefVar $LinkVzStart$
+DefVar $LinkVzDesktop$
+DefStringList $Local_users_unfiltered$
+DefVar $Local_users_filter$
+
+Set $INST_SystemType$ = GetSystemType
+set $INST_architecture$ = GetProductProperty("install_architecture","system specific")
+Set $LogDir$ = "%SystemDrive%\temp"
+Set $AnwendTemp$ = "C:\temp\notesinst"
+
+; ------------------------------------------------
+; - Reboot Controler                             -
+DefVar $Flag$
+DefVar $WinstRegKey$
+DefVar $RebootRegVar$
+Set $WinstRegKey$ = "HKLM\SOFTWARE\opsi.org\winst"
+Set $Flag$ = GetRegistryStringValue32("["+$WinstRegKey$+"] "+"RebootFlag")
+; ----------------------------------------------------------------
+
+include_append "%ScriptPath%\subroutines.opsiscript"
+include_append "%ScriptPath%\check_msi_exitcode.opsiscript"
+
+; ----------------------------------------------------------------
+; - Please edit the following values                             -
+; ----------------------------------------------------------------
+Set $ProductId$       = "lotus-notes"
+Set $ProductName$     = "Lotus Notes 8.5.3"
+Set $MinimumSpace$    = "5 GB"
+; the path were we find the product after the installation
+Set $InstallDir32$      = "%ProgramFiles32Dir%\Notes"
+; MUSS derzeit entsprechend gleich sein !!!!
+Set $InstallDir64$      = "%ProgramFiles32Dir%\Notes"
+Set $LicenseRequired$ = "true"
+Set $LicensePool$     = "p_" + $ProductId$
+Set $propINSTALLART$  = GetProductProperty("install_art","Netz")
+Set $propCLIENTART$  = GetProductProperty("client_art","Basic")
+Set $propINSTALLUMFANG$  = GetProductProperty("install_umfang","Normal")
+Set $propFIXPACK$		= GetProductProperty("fixpack-product","")
+Set $LinkVzStart$		= "%CommonStartmenuDir%\Programs\Lotus Anwendungen"
+Set $LinkVzDesktop$ = "%CommonDesktopDir%"
+; ----------------------------------------------------------------
+
+comment "Check if LN component is running"
+DosInAnIcon_checkStatus
+if FileExists(""+$AnwendTemp$+"/ClientStatus.dat")
+	LogError "Notes-Client gestartet, Tasks NOTES.EXE, NLNOTES.EXE bzw. NTASKLDR.EXE aktiv, Abbruch!"
+	isFatalError
+	; Stop process and set installation status to failed	
+endif
+
+; set correct installation directory
+if (($INST_SystemType$ = "x86 System") and ($INST_architecture$ = "system specific")) or ($INST_architecture$ = "both") or ($INST_architecture$ = "32 only")
+	set $InstallDir$ = $InstallDir32$
+endif
+if ($INST_SystemType$ = "64 Bit System") and (($INST_architecture$ = "system specific") or ($INST_architecture$ = "both") or ($INST_architecture$ = "64 only"))
+	set $InstallDir$ = $InstallDir64$
+endif
+
+comment "Initial reboot"
+;if FileExists("$InstallDir$\notes.exe")
+	if not ($Flag$ = "1")
+		;=========================
+		; Anweisungen vor Reboot
+		; Reboot initialisieren ...
+		Set $Flag$ = "1"
+		Registry_SaveRebootFlag
+		If FileExists("%Systemroot%\rztools\eepc\epeTemporaryAutoboot.exe")
+			DosInAnIcon_epe_deactivate
+		EndIf
+		ExitWindows /ImmediateReboot
+	else
+		;=========================
+		; Anweisungen nach Reboot
+		; Rebootflag zurücksetzen
+		Set $Flag$ = "0"
+		Registry_SaveRebootFlag
+		; die eigentlichen Anweisungen
+	endif
+;endif
+	
+comment "Show product picture"
+ShowBitmap "%ScriptPath%\" + $ProductId$ + ".png" $ProductId$
+
+Message "Deinstalliere " + $ProductName$ + " ..."
+
+; set variables
+if $propINSTALLART$ = "Netz"
+	Set $DatenVz$ = "J:\notesdata"
+else
+	Set $DatenVz$ = "C:\daten\notes\data"
+endif
+
+comment "Simulate J:\"
+DosInAnIcon_startSimuJ
+		
+if FileExists("%ScriptPath%\delsub.opsiscript")
+    comment "Start uninstall sub section"
+    Sub "%ScriptPath%\delsub.opsiscript"
+endif
+
+comment "Remove J:\ simulation"
+DosInAnIcon_stopSimuJ
+		
+if $LicenseRequired$ = "true"
+    comment "Licensing required, free license used"
+    Sub_free_license
+endif
+
+[Sub_free_license]
+comment "License management is enabled and will be used"
+
+comment "Trying to free license used for the product"
+DefVar $result$
+Set $result$ = FreeLicense($LicensePool$)
+; If there is an assignment of a license pool to the product, it is possible to use
+; Set $result$ = FreeLicense("", $ProductId$)
+;
+; If there is an assignment of a license pool to a windows software id, it is possible to use
+; DefVar $WindowsSoftwareId$
+; $WindowsSoftwareId$ = "..."
+; set $result$ = FreeLicense("", "", $WindowsSoftwareId$)
