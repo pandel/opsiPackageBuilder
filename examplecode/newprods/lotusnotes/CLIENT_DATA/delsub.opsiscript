@@ -1,0 +1,48 @@
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib gmbh
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+
+
+include_append "%ScriptPath%\subroutines.opsiscript"
+include_append "%ScriptPath%\check_msi_exitcode.opsiscript"
+
+Set $MsiId32$ = '{D17BC5AF-E3C4-4217-83EF-D228A8A154D9}'
+Set $MsiId64$ = '{D17BC5AF-E3C4-4217-83EF-D228A8A154D9}'
+
+if (($INST_SystemType$ = "x86 System") and ($INST_architecture$ = "system specific")) or ($INST_architecture$ = "both") or ($INST_architecture$ = "32 only")
+		Message "Deinstalliere " + $ProductName$ + " auf 32 Bit..."
+
+    if not (GetRegistryStringValue32("[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\" + $MsiId32$ + "] DisplayName") = "")
+				comment "MSI id " + $MsiId32$ + " found in registry, starting msiexec to uninstall"
+				DosInAnIcon_svc
+        Winbatch_uninstall_msi_32
+        sub_check_exitcode
+		endif
+endif
+
+if ($INST_SystemType$ = "64 Bit System") and (($INST_architecture$ = "system specific") or ($INST_architecture$ = "both") or ($INST_architecture$ = "64 only"))
+		Message "Deinstalliere " + $ProductName$ + " auf 64 Bit..."
+
+    if not (GetRegistryStringValue64("[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\" + $MsiId64$ + "] DisplayName") = "")
+				comment "MSI id " + $MsiId64$ + " found in registry, starting msiexec to uninstall"
+				DosInAnIcon_svc
+        Winbatch_uninstall_msi_64
+        sub_check_exitcode
+    endif
+endif
+
+comment "Remove PATH addition"
+DosInAnIcon_PathDel
+
+comment "Delete program shortcuts"
+;Files_removealllinks
+LinkFolder_uninstall
+
+comment "Remove installation folder"
+Files_removepgmvz
+
+comment "Unset installation state of FP"
+if not ($propFIXPACK$ = "")
+	opsiServiceCall_setState_FP
+endif

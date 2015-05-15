@@ -1,0 +1,210 @@
+[Package]
+version: 1.corr185412corr
+depends:
+incremental: False
+
+[Product]
+type: localboot
+id: newprod
+name: newprod
+description: Testprojekt für den PackageBuilder
+advice: 
+version: 2.5
+priority: -75
+licenseRequired: False
+productClasses:
+setupScript: setup3264.ins
+uninstallScript: uninstall3264.ins
+updateScript: 
+alwaysScript: 
+onceScript: 
+customScript: 
+userLoginScript: 
+
+[ProductDependency]
+action: setup
+requiredProduct: gnupg
+requiredStatus: installed
+requirementType: before
+
+[ProductProperty]
+type: unicode
+name: testvar_2
+multivalue: False
+editable: False
+description: Testvariable
+values: ["val1", "val2", "val3"]
+default: ["val2"]
+
+[ProductProperty]
+type: bool
+name: testvar_1
+description: Testvar bool
+default: 
+
+[ProductProperty]
+type: unicode
+name: testvar_3
+multivalue: True
+editable: True
+description: testvar3
+values: ["/param1", "/param2", "/param3", "/param4", "/param5"]
+default: ["/param1", "/param3"]
+
+[ProductProperty]
+type: unicode
+name: testpar_4
+multivalue: True
+editable: True
+description: asdfasdfsdf
+values: ["[\"\\servera\\sharea\"]", "[\"serverb\\shareb\"]", "[\"serverc\\sharec\"]"]
+default: ["[\"serverb\\shareb\"]"]
+
+[ProductProperty]
+type: unicode
+name: use_depot_funcs
+multivalue: False
+editable: False
+description: Activate depot functions (0=no, 1=yes)
+values: ["0", "1"]
+default: ["1"]
+
+[ProductProperty]
+type: unicode
+name: developer_directory
+multivalue: False
+editable: True
+description: Drive letter and subfolder on opsi_workbench to use as development base directory
+values: ["Y:\\"]
+default: ["Y:\\"]
+
+[ProductProperty]
+type: unicode
+name: multi_val
+multivalue: False
+editable: False
+description: multi_val
+values: ["\"OU=Member Computers,dc=subdomain,dc=domain,dc=de\"", "\"OU=Member Computers2,dc=subdomain,dc=domain,dc=de\""]
+default: [""]
+
+[ProductProperty]
+type: unicode
+name: test1
+multivalue: False
+editable: True
+description: asdasd
+values: ["Test blabla \"\" in bla \"blaalbl\"", "asdklfkjhasdf \"ablbla\" kjhasd\"\" asdjh"]
+default: ["Test blabla \"\" in bla \"blaalbl\""]
+
+[ProductProperty]
+type: unicode
+name: path
+multivalue: False
+editable: False
+description: path
+values: ["C:\\path1\\bla", "d:\\sdf\\ewert", "g:\\test"]
+default: ["C:\\path1\\bla"]
+
+[Changelog]
+
+newprod (2.5-1.corr185412corr) testing; urgency=low
+ * SAVE COMMENT: Test
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:32:49 + 0100
+
+newprod (2.5-2.corr185412corr) testing; urgency=low
+
+ * SAVE COMMENT: Test
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:32:48 + 0100
+
+newprod (2.5-3.corr185412corr) testing; urgency=low
+
+ * SAVE COMMENT: Test
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:32:47 + 0100
+
+newprod (2.5-4.corr185412corr) testing; urgency=low
+
+ * BUILD COMMENT: automatic entry: command line building initiated
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:31:12 + 0100
+
+newprod (2.5-5.corr185412corr) testing; urgency=low
+
+ * BUILD COMMENT: automatic entry: command line building initiated
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:30:02 + 0100
+
+newprod (2.5-6.corr185412corr) testing; urgency=low
+
+ * BUILD COMMENT: automatic entry: command line building initiated
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:29:56 + 0100
+
+newprod (2.5-7.corr185412corr) testing; urgency=low
+
+ * BUILD COMMENT: automatic entry: command line building initiated
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:29:50 + 0100
+
+newprod (2.5-8.corr185412corr) testing; urgency=low
+
+ * SAVE COMMENT: Test
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:28:19 + 0100
+
+newprod (2.5-9.corr185412corr) testing; urgency=low
+
+ * BUILD COMMENT: automatic entry: command line building initiated
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:18:31 + 0100
+
+newprod (2.5-10.corr185412corr) testing; urgency=low
+
+ * BUILD COMMENT: automatic entry: command line building initiated
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:17:12 + 0100
+
+newprod (2.5-11.corr185412corr) testing; urgency=low
+
+ * BUILD COMMENT: automatic entry: command line building initiated
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:16:38 + 0100
+
+newprod (2.5-12.corr185412corr) testing; urgency=low
+
+ * SAVE COMMENT: Test
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:14:40 + 0100
+
+newprod (2.5-13.corr185412corr) testing; urgency=low
+
+ * SAVE COMMENT: Test
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:14:15 + 0100
+
+newprod (2.5-14.corr185412corr) testing; urgency=low
+
+ * SAVE COMMENT: Test2
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:09:12 + 0100
+
+newprod (2.5-15.corr185412corr) testing; urgency=low
+
+ * SAVE COMMENT:test
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:08:13 + 0100
+
+
+
+asdfjkhasdghasdfhgkjasghdf
+
+
+asdfasldkjfhalkjsdfh
+
+newprod (2.5-16.corr185412corr) testing; urgency=low
+
+  * Initial version
+
+ -- Holger Pandel <holger.pandel@googlemail.com> Fri, 24 May 2013 20:07:35 + 0100

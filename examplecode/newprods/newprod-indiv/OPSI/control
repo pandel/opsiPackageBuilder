@@ -1,0 +1,129 @@
+[Package]
+version: 1.corr185412corr
+depends: 
+incremental: False
+
+[Product]
+type: localboot
+id: newprod
+name: newprod
+description: Testprojekt für den PackageBuilder
+advice: 
+version: 2.5
+priority: -75
+licenseRequired: False
+productClasses: 
+setupScript: setup3264.ins
+uninstallScript: uninstall3264.ins
+updateScript: 
+alwaysScript: 
+onceScript: 
+customScript: 
+userLoginScript: 
+
+[ProductDependency]
+action: setup
+requiredProduct: gnupg
+requiredStatus: installed
+requirementType: before
+
+[ProductProperty]
+type: unicode
+name: testvar_2
+multivalue: False
+editable: False
+description: Testvariable
+values: ["val1", "val2", "val3"]
+default: ["val2"]
+
+[ProductProperty]
+type: bool
+name: testvar_1
+description: Testvar bool
+default: 
+
+[ProductProperty]
+type: unicode
+name: testvar_3
+multivalue: True
+editable: True
+description: testvar3
+values: ["/param1", "/param2", "/param3", "/param4", "/param5"]
+default: ["/param1", "/param3"]
+
+[ProductProperty]
+type: unicode
+name: testpar_4
+multivalue: True
+editable: True
+description: asdfasdfsdf
+values: ["[\"\\servera\\sharea\"]", "[\"serverb\\shareb\"]", "[\"serverc\\sharec\"]"]
+default: ["[\"serverb\\shareb\"]"]
+
+[ProductProperty]
+type: unicode
+name: use_depot_funcs
+multivalue: False
+editable: False
+description: Activate depot functions (0=no, 1=yes)
+values: ["0", "1"]
+default: ["1"]
+
+[ProductProperty]
+type: unicode
+name: developer_directory
+multivalue: False
+editable: True
+description: Drive letter and subfolder on opsi_workbench to use as development base directory
+values: ["Y:\\"]
+default: ["Y:\\"]
+
+[ProductProperty]
+type: unicode
+name: multi_val
+multivalue: False
+editable: False
+description: multi_val
+values: ["\"OU=Member Computers,dc=subdomain,dc=domain,dc=de\"", "\"OU=Member Computers2,dc=subdomain,dc=domain,dc=de\""]
+default: [""]
+
+[ProductProperty]
+type: unicode
+name: test1
+multivalue: False
+editable: True
+description: asdasd
+values: ["Test blabla \"\" in bla \"blaalbl\"", "asdklfkjhasdf \"ablbla\" kjhasd\"\" asdjh"]
+default: ["Test blabla \"\" in bla \"blaalbl\""]
+
+[ProductProperty]
+type: unicode
+name: path
+multivalue: False
+editable: False
+description: path
+values: ["C:\\path1\\bla", "d:\\sdf\\ewert", "g:\\test"]
+default: ["C:\\path1\\bla"]
+
+[Changelog]
+
+Lfd. Nr. der Änderung: 2 am  31 Jan 2013 11:43:01
+
+Paketversion: 11.0.01-2
+Status: stable
+urgency=low
+
+ * Test abgeschlossen
+ * Paket in stable
+
+-- Holger Pandel <holger.pandel@googlemail.com>
+
+Lfd. Nr. der Änderung: 1 am 15 Jan 2013 13:28:15
+
+Paketversion: 11.0.01-1
+Status: testing
+urgency=low
+
+ * Initial package
+
+ -- Holger Pandel <holger.pandel@googlemail.com>

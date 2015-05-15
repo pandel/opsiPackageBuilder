@@ -1,0 +1,8 @@
+The main DLL code comes from here:
+
+http://www.gulon.co.uk/2014/08/10/mapping-a-network-drive-with-python/
+
+Mods by me:
+
+I added the unMapDrive function, basically an export of WNetCancelConnection2,
+so it is easy to map and unmap drives via python.
