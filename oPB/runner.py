@@ -111,7 +111,7 @@ class Main(QObject):
         self.logger.info("Command line arguments given:")
         for key, val in vars(self.args).items():
             self.logger.info("  " + key + ": " + str(val))
-        if self.args.log_level.upper() not in ['DEBUG', 'WARNING', 'INFO', 'ERROR']:
+        if self.args.log_level.upper() not in ["DEBUG", "INFO", "SSHINFO", "WARNING", "ERROR", "CRITICAL", "SSH"]:
             self.logger.error("  Undefined log level: " + self.args.log_file.upper())
             self.logger.error("  Log level has been set to ERROR")
 

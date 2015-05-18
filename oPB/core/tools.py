@@ -333,7 +333,7 @@ class CommandLine(object):
                                   dest="log_file", help="Write logfile (optional: specify logfile name)")
 
         self._parser.add_argument("--log-level", action="store", default='ERROR',
-                                  choices=["SSH", "ERROR", "WARNING", "SSHINFO", "INFO", "DEBUG"],
+                                  choices=["SSH", "CRITICAL", "ERROR", "WARNING", "SSHINFO", "INFO", "DEBUG"],
                                   dest="log_level", help="Specify log level (Standard: ERROR)")
 
         # self._parser.add_argument("--debug", "-d", action="store_true", default = argparse.SUPPRESS,

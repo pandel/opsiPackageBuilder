@@ -65,7 +65,7 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         self.btnStartDepotMgmt.clicked.connect(self._parent.actionDepotManager.triggered)
         self.btnStartJobSched.clicked.connect(self._parent.actionScheduler.triggered)
         self.btnStartRecent.clicked.connect(self._parent.actionRecent.triggered)
-        self.btnStartInstall.clicked.connect(self._parent.actionDeploy.triggered)
+        self.btnStartInstall.clicked.connect(self._parent.actionInstall.triggered)
         self.btnStartUpload.clicked.connect(self._parent.actionUpload.triggered)
         self.btnStartUninstall.clicked.connect(self._parent.actionUninstall.triggered)
         self.btnStartDeploy.clicked.connect(self._parent.actionDeploy.triggered)

@@ -2301,20 +2301,32 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Upload package</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionInstall">
    <property name="text">
     <string>Install package</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionUninstall">
    <property name="text">
     <string>Uninstall package</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionDeploy">
    <property name="text">
     <string>Deploy client agent</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

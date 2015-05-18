@@ -49,6 +49,7 @@ class BaseController(LogMixin):
     msgSend = pyqtSignal(str) # emit message text, params: header and text
     processingStarted = pyqtSignal()
     processingEnded = pyqtSignal()
+    dataRequested = pyqtSignal()
 
     """
     Base class for handling application requests. It contains necessary methods and attributes
@@ -64,6 +65,9 @@ class BaseController(LogMixin):
 
         self.args = args
         self.controlData = ControlFileData()
+
+        self.clientlist_dict = None
+        self.productlist_dict = None
 
         self.controlData.dataLoaded.connect(self.check_backend_data_loaded)
         self.controlData.dataSaved.connect(self.check_backend_data_saved)
@@ -175,6 +179,9 @@ class BaseController(LogMixin):
         else:
             self.msgbox(result[2], result[1])
 
+        return result[3]
+
+    @pyqtSlot()
     def do_build(self):
         if os.path.isfile(self.controlData.local_package_path):
             if self.args.build_mode is None:
@@ -247,23 +254,43 @@ class BaseController(LogMixin):
 
         self._do(oPB.OpEnum.DO_BUILD, translate("baseController", "Build running..."))
 
+    @pyqtSlot()
     def do_install(self):
         self._do(oPB.OpEnum.DO_INSTALL, translate("baseController", "Installation running..."))
 
+    @pyqtSlot()
     def do_quickinstall(self, param):
         self._do(oPB.OpEnum.DO_QUICKINST, translate("baseController", "Installation running..."), packagefile=param)
 
+    @pyqtSlot()
+    def do_quickuninstall(self, param):
+        self._do(oPB.OpEnum.DO_QUICKUNINST, translate("baseController", "Deinstallation running..."), productlist=param)
+
+    @pyqtSlot()
     def do_upload(self, param):
         self._do(oPB.OpEnum.DO_UPLOAD, translate("baseController", "Installation running..."), packagefile=param)
 
+    @pyqtSlot()
     def do_installsetup(self):
         self._do(oPB.OpEnum.DO_INSTSETUP, translate("baseController", "Installation + setup running..."))
 
+    @pyqtSlot()
     def do_uninstall(self):
         self._do(oPB.OpEnum.DO_UNINSTALL, translate("baseController", "Deinstallation running..."))
 
+    @pyqtSlot()
     def do_setrights(self):
         self._do(oPB.OpEnum.DO_SETRIGHTS, translate("baseController", "Setting package rights on:") + " " + self.controlData.path_on_server)
+
+    @pyqtSlot()
+    def do_getclients(self):
+        self.clientlist_dict = self._do(oPB.OpEnum.DO_GETCLIENTS, translate("baseController", "Getting opsi client list..."))
+        self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_getproducts(self):
+        self.productlist_dict = self._do(oPB.OpEnum.DO_GETPRODUCTS, translate("baseController", "Getting opsi product list..."))
+        self.dataRequested.emit()
 
     def msgbox(self, msgtext = "", typ = oPB.MsgEnum.MS_STAT, parent = None):
         """ Messagebox function (virtual)
