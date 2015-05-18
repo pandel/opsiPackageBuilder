@@ -131,10 +131,11 @@ RET_BUNDEF = 23       # Err 23: Undefined error in build routine
 RET_SSHCONNERR = 25   # Err 25: Can't establish SSH connection
 RET_SSHCMDERR = 26    # Err 26: Error during command execution via SSH
 RET_PEXISTS = 30      # Err 30: SSH - Package exists already
-RET_PBUILD = 31       # Err 31: SSH - Error while building package on server, check plink output
-RET_PINSTALL = 32     # Err 32: SSH - Error while installing package on server, check plink output
-RET_PINSTSETUP = 33   # Err 33: SSH - Error while installing package on server or activating for setup, check plink output
-RET_PUNINSTALL = 34   # Err 34: SSH - Error while uninstalling package on server, check plink output
+RET_PBUILD = 31       # Err 31: SSH - Error while building package on server
+RET_PINSTALL = 32     # Err 32: SSH - Error while installing package on server
+RET_PINSTSETUP = 33   # Err 33: SSH - Error while installing package on server or activating for setup
+RET_PUNINSTALL = 34   # Err 34: SSH - Error while uninstalling package on server
+RET_PUPLOAD = 35   # Err 34: SSH - Error while uploading package on server
 
 RET_SINGLETON = 51    # Err 51: Program already running
 RET_NOINI = 52        # Err 52: No INI file available

@@ -36,6 +36,7 @@ import socket
 import spur
 import shutil
 from io import StringIO
+from pathlib import Path, PurePath, PurePosixPath
 
 from PyQt5 import QtCore
 from PyQt5.QtCore import QObject, pyqtSignal
@@ -54,7 +55,7 @@ class OpsiProcessing(QObject, LogMixin):
     opsi server job handler
     """
     # def __init__(self, project, project_folder, server="127.0.0.1", port=22, username = None, password = None, keyfile = None, cfg = None):
-    def __init__(self, control: oPB.core.datadefinition.ControlFileData):
+    def __init__(self, control = None):
         """
         Initialises job processing.
 
@@ -102,9 +103,11 @@ class OpsiProcessing(QObject, LogMixin):
         env = {"PYTHONIOENCODING" : "'utf-8'", "POSIXLY_CORRECT" : "1"}
 
         self.logger.debug("Executing action: " + str(oPB.OpEnum(action)))
-        self.logger.info("Local path: " + self.control.local_package_path)
-        self.logger.info("Path on server: " + self.control.path_on_server + "/" + self.control.packagename)
+        if not self.control is None:
+            self.logger.info("Local path: " + self.control.local_package_path)
+            self.logger.info("Path on server: " + self.control.path_on_server + "/" + self.control.packagename)
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_BUILD:
             ret = oPB.RET_PEXISTS
             self.logger.ssh(20 * "-" + "ACTION: BUILD" + 20 * "-")
@@ -117,11 +120,12 @@ class OpsiProcessing(QObject, LogMixin):
             else:
                 cmd = ConfigHandler.cfg.buildcommand
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_INSTALL:
             ret = oPB.RET_PINSTALL
             self.logger.ssh(20 * "-" + "ACTION: INSTALL" + 20 * "-")
             if not os.path.isfile(self.control.local_package_path):
-                self.logger.ssh("Package not available.")
+                self.logger.ssh("Package not available: " + self.control.packagename)
                 self.logger.warning("Set return code to RET_PINSTALL")
                 self.ret = ret
                 self.retmsg = oPB.MsgEnum.MS_ERR
@@ -132,6 +136,7 @@ class OpsiProcessing(QObject, LogMixin):
                 else:
                     cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + self.control.packagename
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_INSTSETUP:
             ret = oPB.RET_PINSTSETUP
             self.logger.ssh(20 * "-" + "ACTION: INSTALLSETUP" + 20 * "-")
@@ -147,6 +152,7 @@ class OpsiProcessing(QObject, LogMixin):
                 else:
                     cmd = oPB.OPB_INSTSETUP + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + self.control.packagename
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_UNINSTALL:
             ret = oPB.RET_PUNINSTALL
             self.logger.ssh(20 * "-" + "ACTION: UNINSTALL" + 20 * "-")
@@ -155,6 +161,7 @@ class OpsiProcessing(QObject, LogMixin):
             else:
                 cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + self.control.id
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_SETRIGHTS:
             ret = oPB.RET_SSHCMDERR
             self.logger.ssh(20 * "-" + "ACTION: SET RIGHTS" + 20 * "-")
@@ -169,66 +176,135 @@ class OpsiProcessing(QObject, LogMixin):
                 self._sshpass = ConfigHandler.cfg.root_pass
                 cmd = "opsi-setup --set-rights '" + self.control.path_on_server + "'"
 
-        if action == oPB.OpEnum.DO_GETCLIENTS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_GETPRODUCTS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_CREATEJOBS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_DELETEJOBS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_GETJOBS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_DELETEALLATJOBS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_GETREPOCONTENT:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_GETDEPOTS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
-        if action == oPB.OpEnum.DO_GETPRODUCTSONDEPOTS:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
-
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_QUICKINST:
-            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_PINSTALL
 
+            package = kwargs.get("packagefile", "")
+
+            # check if temporary install folder exists and create if not
+            tmppath = "/tmp"
+            destfile = str(PurePosixPath(tmppath, PurePath(package).name))
+
+            self.logger.ssh(20 * "-" + "ACTION: QUICKINSTALL" + 20 * "-")
+            # copy file to temporary location
+            try:
+                self.logger.ssh("Copy file: " + package + " --> " + destfile)
+                self.copyToRemote(package, destfile)
+            except Exception as error:
+                self.logger.ssh("Could not copy file to remote destination.")
+                self.logger.error(repr(error).replace("\\n"," --> "))
+                self.logger.error("Set return code to RET_SSHCONNERR")
+                self.ret = oPB.RET_SSHCONNERR
+                self.rettype = oPB.MsgEnum.MS_ERR
+                self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
+
+            if ConfigHandler.cfg.use_depot_funcs == "False":
+                cmd = ConfigHandler.cfg.installcommand + " " + destfile
+            else:
+                cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + destfile
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_UPLOAD:
+            ret = oPB.RET_PUPLOAD
+
+            package = kwargs.get("packagefile", "")
+
+            # check if temporary install folder exists and create if not
+            tmppath = "/tmp"
+            destfile = str(PurePosixPath(tmppath, PurePath(package).name))
+
+            self.logger.ssh(20 * "-" + "ACTION: UPLOAD" + 20 * "-")
+            # copy file to temporary location
+            try:
+                self.logger.ssh("Copy file: " + package + " --> " + destfile)
+                self.copyToRemote(package, destfile)
+            except Exception as error:
+                self.logger.ssh("Could not copy file to remote destination.")
+                self.logger.error(repr(error).replace("\\n"," --> "))
+                self.logger.error("Set return code to RET_SSHCONNERR")
+                self.ret = oPB.RET_SSHCONNERR
+                self.rettype = oPB.MsgEnum.MS_ERR
+                self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
+
+            if ConfigHandler.cfg.use_depot_funcs == "False":
+                cmd = ConfigHandler.cfg.uploadcommand + " " + destfile
+            else:
+                cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + destfile
+
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_QUICKREMOVE:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
-        if action == oPB.OpEnum.DO_UPLOAD:
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETCLIENTS:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETPRODUCTS:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_CREATEJOBS:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_DELETEJOBS:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETJOBS:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_DELETEALLATJOBS:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETREPOCONTENT:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETDEPOTS:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETPRODUCTSONDEPOTS:
+            self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
+
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DELETE:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_REMOVEDEPOT:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DEPLOY:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_SETRIGHTS_REPO:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_PRODUPDATER:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_REBOOT:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_POWEROFF:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_MD5:
             self.logger.info("Executing action: " + str(oPB.OpEnum(action)))
 
+        # ------------------------------------------------------------------------------------------------------------------------
         if self.ret == oPB.RET_OK:
 
             # hook into stderr for progress analysing
@@ -241,7 +317,8 @@ class OpsiProcessing(QObject, LogMixin):
                     try:
                         self.logger.info("Trying to execute command: " + self._obscurepass(cmd))
 
-                        if action in [oPB.OpEnum.DO_INSTALL, oPB.OpEnum.DO_INSTSETUP, oPB.OpEnum.DO_UNINSTALL]:
+                        if action in [oPB.OpEnum.DO_INSTALL, oPB.OpEnum.DO_QUICKINST, oPB.OpEnum.DO_INSTSETUP,
+                                      oPB.OpEnum.DO_UPLOAD, oPB.OpEnum.DO_UNINSTALL]:
                             result = self.shell.run(cmd.split(),
                                 cwd = self.control.path_on_server,
                                 update_env = env,

@@ -2053,8 +2053,12 @@ p, li { white-space: pre-wrap; }
     <addaction name="actionBundleCreation"/>
     <addaction name="actionDepotManager"/>
     <addaction name="separator"/>
-    <addaction name="actionReadScriptStructure"/>
+    <addaction name="actionInstall"/>
+    <addaction name="actionUninstall"/>
+    <addaction name="actionUpload"/>
+    <addaction name="separator"/>
     <addaction name="actionSetRights"/>
+    <addaction name="actionDeploy"/>
     <addaction name="actionStartWinst"/>
     <addaction name="actionScriptEditor"/>
    </widget>
@@ -2291,6 +2295,26 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>About opsiPackageBuilder</string>
+   </property>
+  </action>
+  <action name="actionUpload">
+   <property name="text">
+    <string>Upload package</string>
+   </property>
+  </action>
+  <action name="actionInstall">
+   <property name="text">
+    <string>Install package</string>
+   </property>
+  </action>
+  <action name="actionUninstall">
+   <property name="text">
+    <string>Uninstall package</string>
+   </property>
+  </action>
+  <action name="actionDeploy">
+   <property name="text">
+    <string>Deploy client agent</string>
    </property>
   </action>
  </widget>
