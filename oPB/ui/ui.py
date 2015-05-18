@@ -43,6 +43,7 @@ SettingsDialogUI, SettingsDialogBase = uic.loadUiType(os.path.join(path, 'settin
 ScriptTreeDialogUI, ScriptTreeDialogBase = uic.loadUiType(os.path.join(path, 'scripttree.ui'))
 StartupDialogUI, StartupDialogBase = uic.loadUiType(os.path.join(path, 'startup.ui'))
 LogDialogUI, LogDialogBase = uic.loadUiType(os.path.join(path, 'log.ui'))
+UninstallDialogUI, UninstallDialogBase = uic.loadUiType(os.path.join(path, 'quickuninstall.ui'))
 
 """
 Example:

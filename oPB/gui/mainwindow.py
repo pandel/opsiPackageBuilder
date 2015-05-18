@@ -142,7 +142,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.actionRecent.triggered.connect(self.not_working)
         self.actionScheduler.triggered.connect(self.not_working)
 
-        self.actionUninstall.triggered.connect(self.not_working)
+        self.actionUninstall.triggered.connect(self._parent.show_quickuninstall)
+
         self.actionDeploy.triggered.connect(self.not_working)
 
         self.actionBundleCreation.triggered.connect(self.not_working)
@@ -173,6 +174,13 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.btnScrOnceDel.clicked.connect(lambda: self.select_script_dialog("once", False))
         self.btnScrCustomDel.clicked.connect(lambda: self.select_script_dialog("custom", False))
         self.btnScrUserLoginDel.clicked.connect(lambda: self.select_script_dialog("userlogin", False))
+        self.btnScrSetupEdit.clicked.connect(self.not_working)
+        self.btnScrUninstallEdit.clicked.connect(self.not_working)
+        self.btnScrUpdateEdit.clicked.connect(self.not_working)
+        self.btnScrAlwaysEdit.clicked.connect(self.not_working)
+        self.btnScrOnceEdit.clicked.connect(self.not_working)
+        self.btnScrCustomEdit.clicked.connect(self.not_working)
+        self.btnScrUserLoginEdit.clicked.connect(self.not_working)
 
         self.btnBuild.clicked.connect(self._parent.build_project)
         self.btnInstall.clicked.connect(self._parent.do_install)
