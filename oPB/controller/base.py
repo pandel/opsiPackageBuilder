@@ -159,14 +159,14 @@ class BaseController(LogMixin):
         else:
             self.logger.info("Backend data loaded")
 
-    def _do(self, jobtype, msg):
+    def _do(self, jobtype, msg, **kwargs):
         proc = OpsiProcessing(self.controlData)
         proc.progressChanged.connect(self.msgSend)
 
         # run build job
         self.processingStarted.emit()
         self.msgSend.emit(msg)
-        result = proc.run(jobtype)
+        result = proc.run(jobtype, **kwargs)
         self.processingEnded.emit()
 
         oPB.EXITCODE = result[0]
@@ -249,6 +249,12 @@ class BaseController(LogMixin):
 
     def do_install(self):
         self._do(oPB.OpEnum.DO_INSTALL, translate("baseController", "Installation running..."))
+
+    def do_quickinstall(self, param):
+        self._do(oPB.OpEnum.DO_QUICKINST, translate("baseController", "Installation running..."), packagefile=param)
+
+    def do_upload(self, param):
+        self._do(oPB.OpEnum.DO_UPLOAD, translate("baseController", "Installation running..."), packagefile=param)
 
     def do_installsetup(self):
         self._do(oPB.OpEnum.DO_INSTSETUP, translate("baseController", "Installation + setup running..."))

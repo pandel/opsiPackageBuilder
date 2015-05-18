@@ -1,6 +1,6 @@
 # -*- mode: python -*-
-a = Analysis(['D:\\Pythonprojects\\opsipackgebuilder-github\\opsiPackageBuilder.py'],
-             pathex=['d:\\Pythonprojects\\Python oPB'],
+a = Analysis(['D:\\Pythonprojects\\opsipackagebuilder-dropbox\\opsiPackageBuilder.py'],
+             pathex=['d:\\Pythonprojects\\opsipackagebuilder-dropbox'],
              hiddenimports=['sip'],
              hookspath=None,
              runtime_hooks=None)
@@ -12,7 +12,7 @@ exe = EXE(pyz,
           debug=False,
           strip=None,
           upx=True,
-          console=True , icon='D:\\Pythonprojects\\opsipackgebuilder-github\\images\\prog.ico')
+          console=True , icon='D:\\Pythonprojects\\opsipackagebuilder-dropbox\\images\\prog.ico')
 platforms_tree = Tree('c:\\Python34\\Lib\\site-packages\\PyQt5\plugins\\platforms', prefix='qt5_plugins\\platforms')
 ui_tree = Tree('d:\\Pythonprojects\\opsipackgebuilder-github\\oPB\\ui', prefix='oPB\\ui')
 img_tree = Tree('c:\\Python34\\Lib\\site-packages\\PyQt5\plugins\\imageformats', prefix='qt5_plugins\\imageformats')

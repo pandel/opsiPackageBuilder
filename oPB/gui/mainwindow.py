@@ -135,11 +135,30 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
         self.actionSetRights.triggered.connect(self._parent.do_setrights)
+        self.actionInstall.triggered.connect(self.quickinstall)
+        self.actionUpload.triggered.connect(self.upload)
+
+        self.actionSaveAs.triggered.connect(self.not_working)
+        self.actionRecent.triggered.connect(self.not_working)
+        self.actionScheduler.triggered.connect(self.not_working)
+
+        self.actionUninstall.triggered.connect(self.not_working)
+        self.actionDeploy.triggered.connect(self.not_working)
+
+        self.actionBundleCreation.triggered.connect(self.not_working)
+        self.actionDepotManager.triggered.connect(self.not_working)
+        self.actionStartWinst.triggered.connect(self.not_working)
+        self.actionScriptEditor.triggered.connect(self.not_working)
+        self.actionHelp.triggered.connect(self.not_working)
+        self.actionSearchForUpdates.triggered.connect(self.not_working)
+        self.actionShowChangeLog.triggered.connect(self.not_working)
+        self.actionAbout.triggered.connect(self.not_working)
+
+        # buttons
         self.btnSave.clicked.connect(self._parent.save_project)
         self.btnChangelogEdit.clicked.connect(self._parent.open_changelog_editor)
         self.btnShowScrStruct.clicked.connect(self._parent.show_script_structure)
 
-        # buttons
         self.btnScrSetup.clicked.connect(lambda: self.select_script_dialog("setup"))
         self.btnScrUninstall.clicked.connect(lambda: self.select_script_dialog("uninstall"))
         self.btnScrUpdate.clicked.connect(lambda: self.select_script_dialog("update"))
@@ -243,6 +262,44 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.cmbDepReqAction.currentIndexChanged.connect(self.check_combobox_selection)
         self.cmbDepInstState.currentIndexChanged.connect(self.check_combobox_selection)
         self.cmbPropType.currentIndexChanged.connect(self.check_combobox_selection)
+
+    @pyqtSlot()
+    def not_working(self):
+        self._parent.msgbox("Sorry, this function doesn't work at the moment!", oPB.MsgEnum.MS_ALWAYS, self)
+
+    @pyqtSlot()
+    def quickinstall(self):
+        self.logger.debug("Quick install package")
+
+        ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
+
+        script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
+                                            "", ext)
+
+        if not script == ("", ""):
+            self.logger.debug("Selected package: " + script[0])
+            self._parent.startup.hide_me()
+            self._parent.do_quickinstall(script[0])
+            self._parent.startup.show_me()
+        else:
+            self.logger.debug("Dialog aborted.")
+
+    @pyqtSlot()
+    def upload(self):
+        self.logger.debug("Upload package")
+
+        ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
+
+        script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
+                                            "", ext)
+
+        if not script == ("", ""):
+            self.logger.debug("Selected package: " + script[0])
+            self._parent.startup.hide_me()
+            self._parent.do_upload(script[0])
+            self._parent.startup.show_me()
+        else:
+            self.logger.debug("Dialog aborted.")
 
     @pyqtSlot()
     def set_button_state(self):
