@@ -15,7 +15,7 @@ Requirements
 - PyQt5
 - spur
 - sphinx_rtd_theme
-- Crypto.Cipher
+- PyCrypto
 - simple-crypt>=4.0.0
 
 

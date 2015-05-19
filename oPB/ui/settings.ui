@@ -190,7 +190,7 @@
                  <widget class="QWidget" name="widget_3" native="true">
                   <layout class="QVBoxLayout" name="verticalLayout_3">
                    <item>
-                    <widget class="QLabel" name="label_7">
+                    <widget class="QLabel" name="lblRoot">
                      <property name="styleSheet">
                       <string notr="true">color: rgb(255, 0, 0);</string>
                      </property>
@@ -207,7 +207,7 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="label_8">
+                    <widget class="QLabel" name="lblRootHint">
                      <property name="styleSheet">
                       <string notr="true">color: rgb(255, 0, 0)</string>
                      </property>

@@ -119,6 +119,7 @@ class Main(QObject):
             self.logger.debug("QT5 library path: " + elem)
 
         self.install_translations()
+        self.install_stylesheet()
 
         self.check_online_status()
 
@@ -158,6 +159,19 @@ class Main(QObject):
 
         sys.exit(oPB.EXITCODE)
 
+    def install_stylesheet(self):
+        css = get_script_dir()+"/ui/stylesheet.qss"
+
+        try:
+            file = open(css, "r", encoding="utf-8", newline="\n")
+            self.logger.debug("Stylesheet: " + css)
+            style = file.readlines()
+            file.close()
+        except:
+            self.logger.error("Error reading stylesheet")
+            return
+
+        self.app.setStyleSheet(("\n").join(style))
 
     def install_translations(self):
         # get current system language and load translation

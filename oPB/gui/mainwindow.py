@@ -528,7 +528,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     @pyqtSlot()
     def check_state(self, *args, **kwargs):
         """Sets background color of QLineEdit depending on validator state"""
-
         sender = self.sender()
         validator = sender.validator()
 
@@ -539,23 +538,22 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             state = validator.validate(sender.currentText(), 0)[0]
 
         # associate state with color
-        if state == QtGui.QValidator.Acceptable:
-            color = oPB.OPB_GREEN
-        elif state == QtGui.QValidator.Intermediate:
-            color = oPB.OPB_YELLOW
+        if state == QtGui.QValidator.Acceptable: # ACC
+            colStat = "ACC"
+        elif state == QtGui.QValidator.Intermediate: # INT
+            colStat = "INT"
         else:
-            color = oPB.OPB_RED
+            colStat = "ERR"
             if type(validator) == ScriptFileValidator:
                 self._parent.msgbox(sender.text() + "@@" +
                             translate("MainWindow", "The script has to be inside the CLIENT_DATA folder of the package!"),
                             oPB.MsgEnum.MS_ERR)
 
-        # set background color accoring to state
-        if type(sender) == QLineEdit:
-            sender.setStyleSheet('QLineEdit { background-color: %s }' % color)
-        elif type(sender) == QComboBox:
-            sender.setStyleSheet('QComboBox { background-color: %s }' % color)
-
+        # set background color according to state into dynamic field property
+        sender.setProperty("checkState", colStat)
+        sender.style().unpolish(sender)
+        sender.style().polish(sender)
+        sender.update()
 
     @pyqtSlot(str, str)
     def set_statbar_text(self, msg):
@@ -649,7 +647,6 @@ class Splash(LogMixin):
 
         self._splash = QSplashScreen(pixmap)
         self._splash.setParent(self._parent)
-        self._splash.setStyleSheet('QSplashScreen {font: bold 14px;}')
         self._splash.showMessage(msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
 
         self._progressBar = None
