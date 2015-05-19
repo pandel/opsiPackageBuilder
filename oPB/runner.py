@@ -181,10 +181,11 @@ class Main(QObject):
         self.app.installTranslator(translator_qt)
 
     def check_online_status(self):
+        self.logger.debug("Check online status")
         # check if server is generally available
         # use SSH port for connection test
         ret = Helper.test_port(confighandler.ConfigHandler.cfg.opsi_server, confighandler.ConfigHandler.cfg.sshport, 0.5)
-        if type(ret) != tuple:
+        if ret == True:
             # check network access and mount network drive if on linux
             if sys.platform == 'win32':
                 self.logger.info("System platform: "+ sys.platform)
@@ -212,6 +213,7 @@ class Main(QObject):
             self.logger.warning("opsi server not available. Offline mode activated.")
             self.logger.warning("Return value from connection test: " + str(ret))
             oPB.NETMODE = "offline"
+
 
     def get_args(self):
         # get cmdline args

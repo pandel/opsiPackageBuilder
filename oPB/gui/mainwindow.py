@@ -54,6 +54,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         MainWindowBase.__init__(self)
         self.setupUi(self)
 
+        if oPB.NETMODE == "offline":
+            self.setWindowTitle("opsiPackageBuilder ( OFFLINE MODE )")
+
         self._parent = parent
         print("gui/MainWindow parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
@@ -126,7 +129,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     def connect_signals(self):
         """Connect signals and slots"""
         self.logger.debug("Connect signals")
-       # connect special menu action signals
         self.actionNew.triggered.connect(self.new_project)
         self.actionOpen.triggered.connect(self.open_project)
         self.actionClose.triggered.connect(self._parent.close_project)
@@ -134,26 +136,43 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.actionSave.triggered.connect(self._parent.save_project)
         self.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
-        self.actionSetRights.triggered.connect(self._parent.do_setrights)
-        self.actionInstall.triggered.connect(self.quickinstall)
-        self.actionUpload.triggered.connect(self.upload)
-
         self.actionSaveAs.triggered.connect(self.not_working)
         self.actionRecent.triggered.connect(self.not_working)
-        self.actionScheduler.triggered.connect(self.not_working)
-
-        self.actionUninstall.triggered.connect(self._parent.show_quickuninstall)
-
-        self.actionDeploy.triggered.connect(self.not_working)
-
-        self.actionBundleCreation.triggered.connect(self.not_working)
-        self.actionDepotManager.triggered.connect(self.not_working)
         self.actionStartWinst.triggered.connect(self.not_working)
         self.actionScriptEditor.triggered.connect(self.not_working)
         self.actionHelp.triggered.connect(self.not_working)
         self.actionSearchForUpdates.triggered.connect(self.not_working)
         self.actionShowChangeLog.triggered.connect(self.not_working)
         self.actionAbout.triggered.connect(self.not_working)
+
+        if oPB.NETMODE != "offline":
+            # connect online menu action signals
+            self.actionSetRights.triggered.connect(self._parent.do_setrights)
+            self.actionInstall.triggered.connect(self.quickinstall)
+            self.actionUpload.triggered.connect(self.upload)
+
+            self.actionScheduler.triggered.connect(self.not_working)
+
+            self.actionUninstall.triggered.connect(self._parent.show_quickuninstall)
+
+            self.actionDeploy.triggered.connect(self.not_working)
+
+            self.actionBundleCreation.triggered.connect(self.not_working)
+            self.actionDepotManager.triggered.connect(self.not_working)
+        else:
+            # connect online menu action signals
+            self.actionSetRights.triggered.connect(self.offline)
+            self.actionInstall.triggered.connect(self.offline)
+            self.actionUpload.triggered.connect(self.offline)
+
+            self.actionScheduler.triggered.connect(self.offline)
+
+            self.actionUninstall.triggered.connect(self.offline)
+
+            self.actionDeploy.triggered.connect(self.offline)
+
+            self.actionBundleCreation.triggered.connect(self.offline)
+            self.actionDepotManager.triggered.connect(self.offline)
 
         # buttons
         self.btnSave.clicked.connect(self._parent.save_project)
@@ -182,10 +201,17 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.btnScrCustomEdit.clicked.connect(self.not_working)
         self.btnScrUserLoginEdit.clicked.connect(self.not_working)
 
-        self.btnBuild.clicked.connect(self._parent.build_project)
-        self.btnInstall.clicked.connect(self._parent.do_install)
-        self.btnInstSetup.clicked.connect(self._parent.do_installsetup)
-        self.btnUninstall.clicked.connect(self._parent.do_uninstall)
+        if oPB.NETMODE != "offline":
+            self.btnBuild.clicked.connect(self._parent.build_project)
+            self.btnInstall.clicked.connect(self._parent.do_install)
+            self.btnInstSetup.clicked.connect(self._parent.do_installsetup)
+            self.btnUninstall.clicked.connect(self._parent.do_uninstall)
+        else:
+            self.btnBuild.clicked.connect(self.offline)
+            self.btnInstall.clicked.connect(self.offline)
+            self.btnInstSetup.clicked.connect(self.offline)
+            self.btnUninstall.clicked.connect(self.offline)
+
         self.btnDevFolder.clicked.connect(self.open_project_folder)
 
         self.btnDepAdd.clicked.connect(self._parent.add_dependency)
@@ -274,6 +300,10 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     @pyqtSlot()
     def not_working(self):
         self._parent.msgbox("Sorry, this function doesn't work at the moment!", oPB.MsgEnum.MS_ALWAYS, self)
+
+    @pyqtSlot()
+    def offline(self):
+        self._parent.msgbox("You are working in offline mode. Functionality not available!", oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def quickinstall(self):

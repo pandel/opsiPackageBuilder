@@ -1,5 +1,4 @@
 spur
-PyQt5
 sphinx_rtd_theme
-Crypto.Cipher
 simple-crypt>=4.0.0
+pycrypto
