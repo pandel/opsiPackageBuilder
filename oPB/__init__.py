@@ -77,6 +77,14 @@ OPB_INSTSETUP = "opsi-package-manager -i -S"
 OPB_UNINSTALL = "opsi-package-manager -r"
 OPB_UPLOAD = "opsi-package-manager -u"
 OPB_DEPOT_SWITCH = "-d"
+OPB_METHOD_ONDEMAND = "opsi-admin -d method hostControl_fireEvent 'on_demand'"
+OPB_METHOD_PRODUCT = "opsi-admin -d method setProductActionRequestWithDependencies"
+OPB_METHOD_WOL = "opsi-admin -d method powerOnHost"
+OPB_AT_QUEUE = "atq -q D"
+OPB_AT_JOB_DETAIL = "atq -q D | cut -f1 | xargs at -q D -c | grep opsi-admin"
+OPB_AT_CREATE = "at -q D -t"
+OPB_AT_REMOVE = "atrm"
+OPB_AT_REMOVE_ALL = "atrm $(atq -q D | cut -f 1)"
 
 # file extensions for selection dialogs
 SCRIPT_EXT = ["opsiscript", "opsiinc", "ins", "py", "*"]
@@ -117,7 +125,7 @@ ValidEnum = Enum("ValidEnum", "FD_ASCII FD_RESTRICTED_32 FD_RESTRICTED_128 FD_AL
 
 # Constants for opsi operations
 OpEnum = Enum("OpEnum", "DO_BUILD DO_INSTALL DO_UNINSTALL DO_SETRIGHTS DO_GETCLIENTS DO_GETPRODUCTS DO_CREATEJOBS DO_DELETEJOBS DO_GETJOBS "
-                        "DO_DELETEALLATJOBS DO_GETREPOCONTENT DO_GETDEPOTS DO_GETPRODUCTSONDEPOTS DO_QUICKINST DO_QUICKUNINST DO_INSTSETUP DO_UPLOAD "
+                        "DO_DELETEALLJOBS DO_GETREPOCONTENT DO_GETDEPOTS DO_GETPRODUCTSONDEPOTS DO_QUICKINST DO_QUICKUNINST DO_INSTSETUP DO_UPLOAD "
                         "DO_DELETE DO_REMOVEDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_MD5")
 
 # return codes

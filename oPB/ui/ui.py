@@ -44,6 +44,8 @@ ScriptTreeDialogUI, ScriptTreeDialogBase = uic.loadUiType(os.path.join(path, 'sc
 StartupDialogUI, StartupDialogBase = uic.loadUiType(os.path.join(path, 'startup.ui'))
 LogDialogUI, LogDialogBase = uic.loadUiType(os.path.join(path, 'log.ui'))
 UninstallDialogUI, UninstallDialogBase = uic.loadUiType(os.path.join(path, 'quickuninstall.ui'))
+JobListDialogUI, JobListDialogBase = uic.loadUiType(os.path.join(path, 'joblist.ui'))
+JobCreatorDialogUI, JobCreatorDialogBase = uic.loadUiType(os.path.join(path, 'jobcreator.ui'))
 
 """
 Example:

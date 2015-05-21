@@ -35,8 +35,10 @@ import os
 import socket
 import spur
 import shutil
+import tempfile
 from io import StringIO
-from pathlib import Path, PurePath, PurePosixPath
+import datetime
+from pathlib import PurePath, PurePosixPath
 
 from PyQt5 import QtCore
 from PyQt5.QtCore import QObject, pyqtSignal
@@ -70,6 +72,7 @@ class OpsiProcessing(QObject, LogMixin):
         self._sshpass = None
         self._sshkey = None
 
+        self.hook = None
         self.control = control
 
         self.ret = oPB.RET_OK
@@ -107,6 +110,7 @@ class OpsiProcessing(QObject, LogMixin):
             self.logger.sshinfo("Local path: " + self.control.local_package_path)
             self.logger.sshinfo("Path on server: " + self.control.path_on_server + "/" + self.control.packagename)
 
+        result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_BUILD:
@@ -253,7 +257,7 @@ class OpsiProcessing(QObject, LogMixin):
             self.logger.ssh(20 * "-" + "ACTION: GET CLIENTS" + 20 * "-")
             cmd = "opsi-admin -r -d method host_getHashes"
 
-            result = self._processAction(cmd, action, ret)
+            result = self._processAction(cmd, action, ret, cwd = False)
 
             result = json.loads(result)
 
@@ -263,7 +267,7 @@ class OpsiProcessing(QObject, LogMixin):
             self.logger.ssh(20 * "-" + "ACTION: GET PRODUCTS" + 20 * "-")
             cmd = "opsi-admin -r -d method product_getHashes"
 
-            result = self._processAction(cmd, action, ret)
+            result = self._processAction(cmd, action, ret, cwd = False)
 
             result = json.loads(result)
 
@@ -283,153 +287,278 @@ class OpsiProcessing(QObject, LogMixin):
                 result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_CREATEJOBS:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+        if action == oPB.OpEnum.DO_GETJOBS:
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: GET AT JOBS" + 20 * "-")
 
-            result = self._processAction(cmd, action, ret)
+            jobids = []
+            jobdetails = []
+
+            cmd_queue = oPB.OPB_AT_QUEUE # get complete AT queue only
+            cmd_detail_single = "at -q D -c "
+
+            cmd_detail_all = ["sh", "-c", oPB.OPB_AT_JOB_DETAIL] # get the details for every AT job in queue
+
+            try:
+                # fetch job ids
+                result = self._processAction(cmd_queue, action, ret, cwd = False)
+                # returns lines like this: ['9975', '22 May 2015', '20:11:00', 'opsiadm']
+                jobids = ([[str(e[3]) + " " + e[2] + " " + str(e[5]), e[4], e[0], e[7]] for e in (line.split() for line in result.splitlines())])
+
+                if jobids:
+                    # the following block result in a jobaction list like so:
+                    # ['***REMOVED***102.sd8106.***REMOVED***', '', 'on_demand']
+                    # ['***REMOVED***101.sd8106.***REMOVED***', '7zip', 'setup']
+                    # ....
+                    jobactions = []
+                    result = self._processAction(cmd_detail_all, action, ret, split = False, cwd = False)
+                    result = result.splitlines()
+
+                    for i, row in enumerate(result):
+                        if oPB.OPB_METHOD_ONDEMAND in result[i]:
+                            result[i] = row.replace(oPB.OPB_METHOD_ONDEMAND, 'on_demand')
+                        if oPB.OPB_METHOD_PRODUCT in result[i]:
+                            result[i] = row.replace(oPB.OPB_METHOD_PRODUCT, '')
+                        if oPB.OPB_METHOD_WOL in result[i]:
+                            result[i] = row.replace(oPB.OPB_METHOD_WOL, 'wol')
+
+                    for row in result:
+                        row = row.split()
+                        if len(row) == 2:   # on demand / wol
+                            jobactions.append([row[1], "", row[0]])
+                        elif len(row) == 3:   # product action
+                            jobactions.append([row[1], row[0], row[2]])
+                        else:
+                            jobactions.append("N/A", "N/A", (" ").join(row))
+
+                    result = []
+                    for i, id in enumerate(jobids):
+                        result.append(jobactions[i] + jobids[i])
+
+            except:
+                pass
+
+            """ get details job per job - FAR TOO SLOW
+            # get job details
+            for id in jobids:
+                result = self._processAction(cmd_detail_single + id, action, ret)
+                jobdetails.append([id, result.split("opsi-admin")[1]])
+            """
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_CREATEJOBS:
+            ret = oPB.RET_SSHCMDERR
+            #clients = clIdx, products = prodIdx, action = action, date = date, time = time, on_demand = od, wol = wol
+            clients = kwargs.get("clients", [])
+            products = kwargs.get("products", [])
+            ataction = kwargs.get("ataction", "")
+            dateVal = kwargs.get("dateVal", "29991230")
+            timeVal = kwargs.get("timeVal", "2359")
+            on_demand = kwargs.get("on_demand", False)
+            wol = kwargs.get("wol", False)
+
+            self.logger.ssh(20 * "-" + "ACTION: CREATE AT JOBS" + 20 * "-")
+            cmd = oPB.OPB_AT_CREATE # create a new AT job
+
+            tmppath = "/tmp"
+            destfile = str(PurePosixPath(tmppath, "atjob.lst"))
+
+            # File content:
+            # echo "opsi-admin -d method powerOnHost ***REMOVED***100.sd8106.***REMOVED***" | at -q D -t 201505231710
+            # echo opsi-admin -d method setProductActionRequestWithDependencies 7zip ***REMOVED***100.sd8106.***REMOVED*** setup | at -q D -t 201505231725
+            # echo "opsi-admin -d method hostControl_fireEvent 'on_demand' ***REMOVED***100.sd8106.***REMOVED***" | at -q D -t 201505231725
+
+            if wol is True:
+                woltime_full = datetime.datetime(100,1,1,int(timeVal[:2]),int(timeVal[2:])) - datetime.timedelta(minutes=ConfigHandler.cfg.wol_lead_time)
+                woltime = str(woltime_full.hour) + str(woltime_full.minute)
+
+            f = None
+            if clients:
+                with tempfile.TemporaryFile(mode = "w+", encoding='UTF-8') as f:
+                    for client in clients:
+                        for product in products:
+                            if wol is True:
+                                f.write('echo "' + oPB.OPB_METHOD_WOL + " " + client + '" | ' + oPB.OPB_AT_CREATE + " " + dateVal + woltime + "\n")
+
+                            f.write('echo "' + oPB.OPB_METHOD_PRODUCT + " " + product + " " + client + " " + ataction + '" | ' + oPB.OPB_AT_CREATE +
+                                    " " + dateVal + timeVal + "\n")
+
+                            if on_demand is True:
+                                f.write('echo "' + oPB.OPB_METHOD_ONDEMAND + " " + client + '" | ' + oPB.OPB_AT_CREATE + " " + dateVal + timeVal + "\n")
+
+                    f.flush()
+                    f.seek(0)
+                    self.copyToRemote(f, destfile, True)
+
+                cmd = ["sh", destfile]
+                result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DELETEJOBS:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            joblist = kwargs.get("joblist", [])
+            self.logger.ssh(20 * "-" + "ACTION: DELETE AT JOBS" + 20 * "-")
 
-            result = self._processAction(cmd, action, ret)
+            tmppath = "/tmp"
+            destfile = str(PurePosixPath(tmppath, "atjob.lst"))
+
+            f = None
+            if joblist:
+                with tempfile.TemporaryFile(mode = "w+", encoding='UTF-8') as f:
+                    for elem in joblist:
+                        f.write(oPB.OPB_AT_REMOVE + " " + elem + "\n")
+                    f.flush()
+                    f.seek(0)
+                    self.copyToRemote(f, destfile, True)
+
+                cmd = ["sh", destfile]
+                result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_GETJOBS:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+        if action == oPB.OpEnum.DO_DELETEALLJOBS:
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: DELETE ALL AT JOBS" + 20 * "-")
+            cmd = ["sh", "-c", oPB.OPB_AT_REMOVE_ALL] # delete ANY AT Job in queue D
 
-            result = self._processAction(cmd, action, ret)
-
-        # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_DELETEALLATJOBS:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
-
-            result = self._processAction(cmd, action, ret)
+            result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETREPOCONTENT:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETDEPOTS:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETPRODUCTSONDEPOTS:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DELETE:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_REMOVEDEPOT:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DEPLOY:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_SETRIGHTS_REPO:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_PRODUPDATER:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_REBOOT:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_POWEROFF:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_MD5:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
-            result = self._processAction(cmd, action, ret)
+            #result = self._processAction(cmd, action, ret)
 
         # return
         return self.ret, self.rettype, self.retmsg, result
 
-    def _processAction(self, cmd, action, retval):
+    def _processAction(self, cmd, action, retval, split = True, cwd = True):
         self.logger.sshinfo("Processing action...")
-        # ------------------------------------------------------------------------------------------------------------------------
+
+        self.reset_shell()
+
         if self.ret == oPB.RET_OK:
 
-            # hook into stderr for progress analysing
-            old_stderr = sys.stderr
-            s = AnalyseProgressHook(self, old_stderr)
-            # sys.stdout = s
+            if self.hook is None:
+                # hook into stderr for progress analysing
+                old_stderr = sys.stderr
+                self.hook = AnalyseProgressHook(self, old_stderr)
+                # sys.stdout = s
 
             try:
                 with self.shell:
                     try:
-                        self.logger.sshinfo("Trying to execute command: " + self._obscurepass(cmd))
+                        if split is True:
+                            cmd = cmd.split()
+                        if cwd is True:
+                            cwdstr = self.control.path_on_server
+                        else:
+                            cwdstr = None
+
+                        self.logger.sshinfo("Trying to execute command: " + self._obscurepass((" ").join(cmd)))
 
                         if action in [oPB.OpEnum.DO_INSTALL, oPB.OpEnum.DO_QUICKINST, oPB.OpEnum.DO_INSTSETUP,
                                       oPB.OpEnum.DO_UPLOAD, oPB.OpEnum.DO_UNINSTALL, oPB.OpEnum.DO_QUICKUNINST]:
-                            result = self.shell.run(cmd.split(),
-                                cwd = self.control.path_on_server,
+                            result = self.shell.run(cmd,
+                                cwd = cwdstr,
                                 update_env = self._env,
                                 allow_error = True,
-                                stderr = s,
+                                stderr = self.hook,
                                 use_pty = True
                             )
                         else:
-                            result = self.shell.run(cmd.split(),
-                                cwd = self.control.path_on_server,
+                            result = self.shell.run(cmd,
+                                cwd = cwdstr,
                                 update_env = self._env,
                                 allow_error = True,
-                                stderr = s
+                                stderr = self.hook
                             )
 
-                        # Log standard out
-                        out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
-                        for line in out:
-                            line = self._obscurepass(line)
-                            self.logger.ssh(line)
-
+                        # Log standard out / but not for clients and products, too much!!!
+                        if action not in [oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS]:
+                            out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
+                            for line in out:
+                                line = self._obscurepass(line)
+                                self.logger.ssh(line)
 
                         # Log standard error
                         out = Helper.strip_ansi_codes(result.stderr_output.decode(encoding='UTF-8')).splitlines()
                         for line in out:
                             line = self._obscurepass(line)
-                            self.logger.sshinfo(line)
                             isErr = self.hasErrors(line)
                             if isErr[0]:
+                                self.logger.error(line)
                                 self.ret = retval
                                 self.rettype = oPB.MsgEnum.MS_ERR
                                 self.retmsg = isErr[1]
+                            else:
+                                self.logger.sshinfo(line)
 
                     except spur.NoSuchCommandError:
                         self.logger.error("Set return code to RET_SSHCMDERR")
                         self.ret = oPB.RET_SSHCMDERR
                         self.rettype = oPB.MsgEnum.MS_ERR
                         self.retmsg = translate("OpsiProcessing", "Command not found. See Log for details.")
+                        return {}
 
             except ConnectionError as error:
                     self.logger.error(repr(error).replace("\\n"," --> "))
@@ -437,6 +566,7 @@ class OpsiProcessing(QObject, LogMixin):
                     self.ret = oPB.RET_SSHCONNERR
                     self.rettype = oPB.MsgEnum.MS_ERR
                     self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
+                    return {}
 
             # reset hook state
             #sys.stdout = old_stderr
@@ -488,7 +618,7 @@ class OpsiProcessing(QObject, LogMixin):
 
         return (found, msg)
 
-    def copyToRemote(self, localfile, remotefile):
+    def copyToRemote(self, localfile, remotefile, localopen = False):
         """
         Copy local file to remote destination viy SSH connection
 
@@ -497,12 +627,21 @@ class OpsiProcessing(QObject, LogMixin):
         """
         self.logger.debug("Copying file: %s (local) to %s (remote)", localfile, remotefile)
         try:
-            with open(localfile, "rb") as local_file:
+            if localopen == False:
+                with open(localfile, "rb") as local_file:
+                    with self.shell.open(remotefile, "wb") as remote_file:
+                        shutil.copyfileobj(local_file, remote_file)
+            else:
                 with self.shell.open(remotefile, "wb") as remote_file:
-                    shutil.copyfileobj(local_file, remote_file)
+                    shutil.copyfileobj(localfile, remote_file)
+
         except Exception as error:
             self.logger.error("Error while copying file: " + repr(error))
 
+
+    def reset_shell(self):
+        if self._shell is not None:
+            self._shell = None
 
     @property
     def shell(self):
@@ -510,7 +649,7 @@ class OpsiProcessing(QObject, LogMixin):
         Dispatch ssh shell creation depending on online status and configuration value
         :return: spue shell object
         """
-        if self._shell == None:
+        if self._shell is None:
             if self.ip.startswith("127."):
                 self._shell = self._shell_local()
             elif ConfigHandler.cfg.usekeyfile == "True":

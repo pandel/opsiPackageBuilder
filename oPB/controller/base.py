@@ -51,6 +51,10 @@ class BaseController(LogMixin):
     processingEnded = pyqtSignal()
     dataRequested = pyqtSignal()
 
+    clientlist_dict = None
+    productlist_dict = None
+    joblist = []
+
     """
     Base class for handling application requests. It contains necessary methods and attributes
     used for GUI and non-GUI (console) operations.
@@ -65,9 +69,6 @@ class BaseController(LogMixin):
 
         self.args = args
         self.controlData = ControlFileData()
-
-        self.clientlist_dict = None
-        self.productlist_dict = None
 
         self.controlData.dataLoaded.connect(self.check_backend_data_loaded)
         self.controlData.dataSaved.connect(self.check_backend_data_saved)
@@ -284,13 +285,52 @@ class BaseController(LogMixin):
 
     @pyqtSlot()
     def do_getclients(self):
-        self.clientlist_dict = self._do(oPB.OpEnum.DO_GETCLIENTS, translate("baseController", "Getting opsi client list..."))
+        BaseController.clientlist_dict = self._do(oPB.OpEnum.DO_GETCLIENTS, translate("baseController", "Getting opsi client list..."))
         self.dataRequested.emit()
 
     @pyqtSlot()
     def do_getproducts(self):
-        self.productlist_dict = self._do(oPB.OpEnum.DO_GETPRODUCTS, translate("baseController", "Getting opsi product list..."))
+        BaseController.productlist_dict = self._do(oPB.OpEnum.DO_GETPRODUCTS, translate("baseController", "Getting opsi product list..."))
         self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_getjobs(self):
+        BaseController.joblist = self._do(oPB.OpEnum.DO_GETJOBS, translate("baseController", "Getting AT job list..."))
+        self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_deletejobs(self, param):
+        self._do(oPB.OpEnum.DO_DELETEJOBS, translate("baseController", "Delete AT jobs..."), joblist = param)
+        self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_deletealljobs(self):
+        self._do(oPB.OpEnum.DO_DELETEALLJOBS, translate("baseController", "Delete every AT job..."))
+        self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_createjobs(self, **param):
+        self._do(oPB.OpEnum.DO_CREATEJOBS, translate("baseController", "Create AT jobs..."), **param)
+        self.dataRequested.emit()
+
+    def run_command_line(self):
+        """Process project action via command line"""
+        self.logger.debug("Project via command line: " + self.args.path)
+        self.load_backend(self.args.path)
+
+        if self.args.build_mode is not None:
+            self.logger.debug("Command line: build")
+            self.do_build()
+        try:
+            self.logger.debug("Command line: " + self.args.packetaction[0])
+            if self.args.packetaction[0] == "install":
+                self.do_install()
+            if self.args.packetaction[0] == "instsetup":
+                self.do_installsetup()
+            if self.args.packetaction[0] == "uninstall":
+                self.do_uninstall()
+        except:
+            pass
 
     def msgbox(self, msgtext = "", typ = oPB.MsgEnum.MS_STAT, parent = None):
         """ Messagebox function (virtual)
@@ -318,22 +358,4 @@ class BaseController(LogMixin):
 
         # first parse text
         msgtext = Helper.parse_text(msgtext)
-
-    def run_command_line(self):
-        self.logger.debug("Project via command line: " + self.args.path)
-        self.load_backend(self.args.path)
-
-        if self.args.build_mode is not None:
-            self.logger.debug("Command line: build")
-            self.do_build()
-        try:
-            self.logger.debug("Command line: " + self.args.packetaction[0])
-            if self.args.packetaction[0] == "install":
-                self.do_install()
-            if self.args.packetaction[0] == "instsetup":
-                self.do_installsetup()
-            if self.args.packetaction[0] == "uninstall":
-                self.do_uninstall()
-        except:
-            pass
-
+        pass

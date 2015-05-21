@@ -43,7 +43,7 @@ DEBUG 	10
 NOTSET 	0
 """
 
-SSH = 60
+SSH = 35
 SSHINFO = 25
 
 class LogStreamHandler(logging.Handler):

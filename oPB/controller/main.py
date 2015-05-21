@@ -28,24 +28,21 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import re
-import linecache
-
-from PyQt5 import QtGui, QtCore
+from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import *
 
-import oPB
 from oPB.gui.mainwindow import MainWindow
 from oPB.gui.startup import StartupDialog
 from oPB.gui.scripttree import ScriptTreeDialog
-from oPB.gui.quickuninstall import UninstallDialog
 from oPB.core.datadefinition import *
 from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper
 from oPB.core.scriptscanner import ScriptTree
 from oPB.controller.base import BaseController
-from oPB.controller.changelog import ChangelogController
+from oPB.controller.components.changelog import ChangelogController
+from oPB.controller.components.scheduler import SchedulerController
+from oPB.controller.components.quickuninstall import QuickUninstallController
 
 translate = QtCore.QCoreApplication.translate
 
@@ -65,7 +62,6 @@ class MainWindowController(BaseController, QObject):
         self.model_fields = None
         self.model_properties = None
         self.model_dependencies = None
-        self.model_products = None
 
         self._modelDataChanged = False  # see self.model_data_changed()
 
@@ -74,11 +70,12 @@ class MainWindowController(BaseController, QObject):
         # data mapping in the ui class
         self.generate_model()
 
-        # create windows and additional controllers
+        # create windows and append additional controllers
         self.ui = MainWindow(self)
         self.startup = StartupDialog(self.ui)
         self.treedlg = ScriptTreeDialog(self.ui)
-        self.quickuninstall = UninstallDialog(self.ui)
+        self.quickuninstall = QuickUninstallController(self)
+        self.scheduler = SchedulerController(self)
 
         self.connect_signals()
 
@@ -384,7 +381,7 @@ class MainWindowController(BaseController, QObject):
         self._dataSaved = None
 
     @pyqtSlot()
-    def close_project(self):
+    def project_close(self):
         """Initiate project closing and reset backend, model and window states ."""
         self.logger.debug("Close project")
         ignoreChanges = True
@@ -410,7 +407,7 @@ class MainWindowController(BaseController, QObject):
         """
         Main window exit handler
         """
-        ret = self.close_project()
+        ret = self.project_close()
         if ret:
             reply = self.msgbox(translate("mainController", "Are you sure?"), oPB.MsgEnum.MS_QUEST_YESNO, self.startup)
             if reply is True:
@@ -448,13 +445,13 @@ class MainWindowController(BaseController, QObject):
             self._modelDataChanged = False
 
     @pyqtSlot()
-    def build_project(self):
+    def project_build(self):
         if self._modelDataChanged is True:
             self.save_project()
         self.do_build()
 
     @pyqtSlot(str)
-    def load_project(self, project_name):
+    def project_load(self, project_name):
         """Load project data."""
         self.load_backend(project_name)
 
@@ -466,8 +463,8 @@ class MainWindowController(BaseController, QObject):
             self.startup.hide_me()
 
     @pyqtSlot(str)
-    def create_project(self, project_name):
-        self.close_project()
+    def project_create(self, project_name):
+        self.project_close()
         self.logger.info("Create new project: " + project_name)
         self.reset_state()
         try:
@@ -489,7 +486,7 @@ class MainWindowController(BaseController, QObject):
             self.startup.hide_me()
 
     @pyqtSlot()
-    def open_changelog_editor(self):
+    def show_changelogeditor(self):
         # changelog editor
         self.chLogEditor = ChangelogController(self)
         self.chLogEditor.model.itemChanged.connect(self.model_data_changed)
@@ -615,7 +612,7 @@ class MainWindowController(BaseController, QObject):
                 self.add_property(p)
 
     def show_script_structure(self):
-
+        """Open script structure treeview"""
         scripts = []
 
         for script in range(10, 16):
@@ -633,60 +630,10 @@ class MainWindowController(BaseController, QObject):
         # sometimes the window isn't activated, so...
         self.treedlg.activateWindow()
 
-    def show_quickuninstall(self):
+    def quickuninstall_dialog(self):
+        """Open quickuninstall dialog"""
+        self.quickuninstall.show_()
 
-        self.logger.debug("Open quick uninstall")
-
-        self.startup.hide_me()
-        self.quickuninstall.finished.connect(self.startup.show_me)
-        self.quickuninstall.btnRefresh.clicked.connect(self.upd_quickuninstall)
-        self.quickuninstall.btnUninstall.clicked.connect(self.uninstall_products)
-
-        # create model from data and assign, if not done before
-        if self.model_products == None:
-            self.logger.debug("Generate product table model")
-            self.model_products = QtGui.QStandardItemModel(0, 3, self)
-            self.model_products.setObjectName("model_products")
-            self.model_products.setHorizontalHeaderLabels([translate("mainController", "product id"),
-                                            translate("mainController", "version"),
-                                            translate("mainController", "description")]
-                                            )
-
-            self.quickuninstall.assign_model(self.model_products)
-
-            # first time opened after program start?
-            if self.productlist_dict == None:
-                self.upd_quickuninstall()
-
-        self.quickuninstall.show()
-        self.quickuninstall.activateWindow()
-
-    def upd_quickuninstall(self):
-
-        self.ui.splash.show()
-        self.do_getproducts()
-        self.ui.splash.close()
-
-        if self.productlist_dict:
-            tmplist = []
-            for elem in self.productlist_dict:
-                tmplist.append([elem["id"], elem["productVersion"] + "-" + elem["productVersion"], elem["description"]])
-
-            self.update_table_model(self.model_products, sorted(tmplist))
-
-    def uninstall_products(self):
-        prods = []
-        for row in self.quickuninstall.tableView.selectionModel().selectedRows():
-            prods.append(self.quickuninstall.model.item(row.row(), 0).text())
-
-        if prods:
-            reply = self.msgbox(translate("mainController", "Do you really want to remove the selected product(s)? This can't be undone!" ), oPB.MsgEnum.MS_QUEST_YESNO)
-            if reply is True:
-                self.logger.debug("Selected product(s): " + str(prods))
-                self.quickuninstall.hide()
-                self.ui.splash.show()
-                self.do_quickuninstall(prods)
-                self.ui.splash.close()
-                self.quickuninstall.show()
-        else:
-            self.logger.debug("Nothing selected.")
+    def scheduler_dialog(self):
+        """Open quickuninstall dialog"""
+        self.scheduler.show_joblist()

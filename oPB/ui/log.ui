@@ -200,22 +200,7 @@ background-color: black;</string>
            </property>
            <item>
             <property name="text">
-             <string>Debug</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Info</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>SSHInfo</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Warning</string>
+             <string>Critical</string>
             </property>
            </item>
            <item>
@@ -225,12 +210,27 @@ background-color: black;</string>
            </item>
            <item>
             <property name="text">
-             <string>Critical</string>
+             <string>SSH</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>SSH</string>
+             <string>Warning</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>SSHInfo</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Info</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Debug</string>
             </property>
            </item>
           </widget>

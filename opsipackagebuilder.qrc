@@ -16,6 +16,7 @@
     <file>images/resource_10.ico</file>
     <file>images/resource_11.ico</file>
     <file>images/resource_12.ico</file>
+    <file>images/resource_13.ico</file>
     <file>images/smallIcons_299.ico</file>
     <file>images/smallIcons_480.ico</file>
     <file>images/smallIcons_504.ico</file>
@@ -53,5 +54,6 @@
     <file>images/shell32_151.ico</file>
     <file>images/shell32_240.ico</file>
     <file>images/shell32_241.ico</file>
+    <file>images/splash.png</file>
   </qresource>
 </RCC>

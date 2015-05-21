@@ -131,7 +131,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.logger.debug("Connect signals")
         self.actionNew.triggered.connect(self.new_project)
         self.actionOpen.triggered.connect(self.open_project)
-        self.actionClose.triggered.connect(self._parent.close_project)
+        self.actionClose.triggered.connect(self._parent.project_close)
         self.actionQuit.triggered.connect(self.close)
         self.actionSave.triggered.connect(self._parent.save_project)
         self.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
@@ -151,9 +151,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self.actionInstall.triggered.connect(self.quickinstall)
             self.actionUpload.triggered.connect(self.upload)
 
-            self.actionScheduler.triggered.connect(self.not_working)
+            self.actionScheduler.triggered.connect(self._parent.scheduler_dialog)
 
-            self.actionUninstall.triggered.connect(self._parent.show_quickuninstall)
+            self.actionUninstall.triggered.connect(self._parent.quickuninstall_dialog)
 
             self.actionDeploy.triggered.connect(self.not_working)
 
@@ -176,7 +176,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
         # buttons
         self.btnSave.clicked.connect(self._parent.save_project)
-        self.btnChangelogEdit.clicked.connect(self._parent.open_changelog_editor)
+        self.btnChangelogEdit.clicked.connect(self._parent.show_changelogeditor)
         self.btnShowScrStruct.clicked.connect(self._parent.show_script_structure)
 
         self.btnScrSetup.clicked.connect(lambda: self.select_script_dialog("setup"))
@@ -202,7 +202,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.btnScrUserLoginEdit.clicked.connect(self.not_working)
 
         if oPB.NETMODE != "offline":
-            self.btnBuild.clicked.connect(self._parent.build_project)
+            self.btnBuild.clicked.connect(self._parent.project_build)
             self.btnInstall.clicked.connect(self._parent.do_install)
             self.btnInstSetup.clicked.connect(self._parent.do_installsetup)
             self.btnUninstall.clicked.connect(self._parent.do_uninstall)
@@ -449,7 +449,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
         if not directory == "":
             self.logger.info("Chosen existing project directory: " + directory)
-            self._parent.load_project(directory)
+            self._parent.project_load(directory)
         else:
             self.logger.debug("Dialog aborted.")
 
@@ -467,7 +467,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
         if not directory == "":
             self.logger.info("Chosen directory for new project: " + directory)
-            self._parent.create_project(directory)
+            self._parent.project_create(directory)
         else:
             self.logger.debug("Dialog aborted.")
 
@@ -639,10 +639,10 @@ class ScriptFileValidator(QtGui.QValidator):
             return ScriptFileValidator.Invalid, p_str, p_int
 
 class Splash(LogMixin):
-    def __init__(self, parent, msg):
+    def __init__(self, parent, msg, withProgressbar = False):
         self._parent = parent
 
-        pixmap = QtGui.QPixmap(380, 80)
+        pixmap = QtGui.QPixmap(380, 100)
         pixmap.fill(QtGui.QColor("darkgreen"))
 
         self._splash = QSplashScreen(pixmap)
@@ -650,6 +650,9 @@ class Splash(LogMixin):
         self._splash.showMessage(msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
 
         self._progressBar = None
+
+        if withProgressbar == True:
+            self.add_progressbar()
 
     def add_progressbar(self):
         self._progressBar = QProgressBar(self._splash)
@@ -659,6 +662,10 @@ class Splash(LogMixin):
     def setProgress(self, val: int):
         self._progressBar.setValue(val)
 
+    def setParent(self, parent):
+        self._parent = parent
+        self._splash.setParent(parent)
+
     @pyqtSlot()
     def close(self):
         self.logger.debug("Hide splash")
@@ -667,10 +674,17 @@ class Splash(LogMixin):
     @pyqtSlot()
     def show(self):
         self.logger.debug("Show splash")
-        parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux
+        try:
+            parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux
+        except:
+            parentUi = self._parent.childrenRect()  # need to use centralwidget for linux
+
         mysize = self._splash.geometry()
+
         hpos = parentUi.x() + ((parentUi.width() - mysize.width()) / 2)
         vpos = parentUi.y() + ((parentUi.height() - mysize.height()) / 2)
+
         self._splash.move(hpos, vpos)
         self._splash.show()
+
         qApp.processEvents()

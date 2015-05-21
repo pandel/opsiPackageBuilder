@@ -40,7 +40,8 @@ from io import StringIO
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QSplashScreen
 
 import oPB
 from oPB.core import confighandler
@@ -81,8 +82,17 @@ class Main(QObject):
         # redirect system exception hook
         sys.excepthook = self.excepthook
 
-        # create new application
+        # create new application and install stylesheet
         self.app = QApplication(sys.argv)
+        self.install_stylesheet()
+
+        # Create and display the splash screen
+        splash_pix = QPixmap(':/images/splash.png')
+        self.splash = QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
+        self.splash.setMask(splash_pix.mask())
+        #splash.showMessage("opsi Package Builder " + oPB.PROGRAM_VERSION + " " + translate("Main", "is loading..."), QtCore.Qt.AlignCenter, QtCore.Qt.white)
+        self.splash.show()
+        self.app.processEvents()
 
         # Application name
         self.app.setOrganizationName("opsi Package Builder")
@@ -119,7 +129,6 @@ class Main(QObject):
             self.logger.debug("QT5 library path: " + elem)
 
         self.install_translations()
-        self.install_stylesheet()
 
         self.check_online_status()
 
@@ -133,6 +142,8 @@ class Main(QObject):
             self.mainWindow = main.MainWindowController(self.args)
             self.mainWindow.ui.showLogRequested.connect(self.logWindow.show)
             self.mainWindow.closeAppRequested.connect(self.logWindow.close)
+
+            self.splash.finish(self.mainWindow.ui)
 
             # run main app loop
             self.app.exec_()
@@ -164,11 +175,9 @@ class Main(QObject):
 
         try:
             file = open(css, "r", encoding="utf-8", newline="\n")
-            self.logger.debug("Stylesheet: " + css)
             style = file.readlines()
             file.close()
         except:
-            self.logger.error("Error reading stylesheet")
             return
 
         self.app.setStyleSheet(("\n").join(style))
@@ -264,8 +273,8 @@ class Main(QObject):
         # and set this new one to be the default logger class
         setLoggerClass(oPB.core.logging.SSHLogger)
 
-        # log level from command line or standard
-        self.set_log_level(self.args.log_level.upper(), logger)
+        # log level for logger(!) - we filter on handler-based log level later
+        self.set_log_level("DEBUG", logger)
 
         if long:
             format = logging.Formatter(oPB.LOG_LONG, oPB.LOG_DATETIME)
@@ -307,6 +316,7 @@ class Main(QObject):
         try:
             if self.args.log_file is not None:
                 self.fileHandler = logging.FileHandler(self.args.log_file)
+                self.set_log_level(self.args.log_level.upper(), self.fileHandler)
                 self.fileHandler.setFormatter(format)
 
                 logger.addHandler(self.fileHandler)
@@ -328,6 +338,12 @@ class Main(QObject):
         :param excValue exception value
         :param tracebackobj traceback object
         """
+
+        try:
+            self.splash.close()
+        except:
+            pass
+
         self.logger.debug("Entering excepthook")
 
         separator = '-' * 80

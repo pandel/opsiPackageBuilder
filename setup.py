@@ -54,7 +54,7 @@ setup(name = "opsiPackageBuilder",
     platforms = [ "Windows", "Linux" ],
     package_data = {
         # Include any *.ui files found in the 'oPB.ui' package, too:
-        'oPB.ui': ['*.ui'],
+        'oPB.ui': ['*.ui', '*.qss'],
     },
     data_files=[('oPB/core/x86', ['oPB/core/x86/MapDrive.dll']),
                 ('oPB/core/x64', ['oPB/core/x64/MapDrive.dll']),

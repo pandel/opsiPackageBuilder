@@ -28,20 +28,20 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import os
+from datetime import datetime
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.Qt import QKeyEvent
 import oPB
 from oPB.core.tools import Helper, LogMixin
-from oPB.ui.ui import UninstallDialogBase, UninstallDialogUI
+from oPB.ui.ui import JobListDialogUI, JobCreatorDialogUI, JobListDialogBase, JobCreatorDialogBase
 
 
 translate = QtCore.QCoreApplication.translate
 
 
-class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
+class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
 
     def __init__(self, parent):
         """
@@ -50,11 +50,11 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
         :param parent: parent controller instance
         :return:
         """
-        UninstallDialogBase.__init__(self, parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
+        JobListDialogBase.__init__(self, parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
         self._parent = parent
-        print("gui/UninstallDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("gui/JobListDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.model = None
 
@@ -75,9 +75,60 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
 
     def assign_model(self, model):
         self.model = model
-        self.tblProducts.setModel(self.model)
+        self.tblJobs.setModel(self.model)
         self.resizeTable()
 
     def resizeTable(self):
+        self.tblJobs.resizeRowsToContents()
+        self.tblJobs.resizeColumnsToContents()
+        self.tblJobs.sortByColumn(5, QtCore.Qt.AscendingOrder)
+
+class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin):
+
+    def __init__(self, parent):
+        """
+        Constructor for settings dialog
+
+        :param parent: parent controller instance
+        :return:
+        """
+        JobCreatorDialogBase.__init__(self, parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
+        self.setupUi(self)
+
+        self._parent = parent
+        print("gui/JobCreatorDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
+        self.model_clients = None
+        self.model_products = None
+
+        self.dateSelector.setSelectedDate(datetime.now().date())
+        self.timeSelector.setTime(datetime.now().time())
+
+    def keyPressEvent(self, evt: QKeyEvent):
+        """
+        Ignore escape key event, because it would close startup window.
+        Any other key will be passed to the super class key event handler for further
+        processing.
+
+        :param evt: key event
+        :return:
+        """
+        if evt.key() == QtCore.Qt.Key_Escape:
+            self.close()
+        else:
+            super().keyPressEvent(evt)
+        pass
+
+    def assign_model(self, model_clients, model_products):
+        self.model_clients = model_clients
+        self.model_products = model_products
+        self.tblClients.setModel(self.model_clients)
+        self.tblProducts.setModel(self.model_products)
+
+    def resizeTableClients(self):
+        self.tblClients.resizeRowsToContents()
+        self.tblClients.resizeColumnsToContents()
+
+    def resizeTableProducts(self):
         self.tblProducts.resizeRowsToContents()
         self.tblProducts.resizeColumnsToContents()

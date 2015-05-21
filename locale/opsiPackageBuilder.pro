@@ -1,5 +1,7 @@
 FORMS += ..\oPB\ui\changelogeditorextended.ui
 FORMS += ..\oPB\ui\changelogeditorsimple.ui
+FORMS += ..\oPB\ui\jobcreator.ui
+FORMS += ..\oPB\ui\joblist.ui
 FORMS += ..\oPB\ui\log.ui
 FORMS += ..\oPB\ui\mainwindow.ui
 FORMS += ..\oPB\ui\quickuninstall.ui
@@ -14,9 +16,14 @@ SOURCES += ..\oPB\runner.py
 
 SOURCES += ..\oPB\controller\__init__.py
 SOURCES += ..\oPB\controller\base.py
-SOURCES += ..\oPB\controller\changelog.py
+SOURCES += ..\oPB\controller\console.py
 SOURCES += ..\oPB\controller\main.py
 SOURCES += ..\oPB\controller\settings.py
+
+SOURCES += ..\oPB\controller\components\__init.py
+SOURCES += ..\oPB\controller\components\changelog.py
+SOURCES += ..\oPB\controller\components\quickuninstall.py
+SOURCES += ..\oPB\controller\components\scheduler.py
 
 SOURCES += ..\oPB\core\__init__.py
 SOURCES += ..\oPB\core\confighandler.py
@@ -32,6 +39,7 @@ SOURCES += ..\oPB\gui\changelog.py
 SOURCES += ..\oPB\gui\logging.py
 SOURCES += ..\oPB\gui\mainwindow.py
 SOURCES += ..\oPB\gui\quickuninstall.py
+SOURCES += ..\oPB\gui\scheduler.py
 SOURCES += ..\oPB\gui\scripttree.py
 SOURCES += ..\oPB\gui\settings.py
 SOURCES += ..\oPB\gui\startup.py

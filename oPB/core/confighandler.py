@@ -441,7 +441,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def wol_lead_time(self):
-        return self.get("package","wolleadtime")
+        return int(self.get("package","wolleadtime"))
 
     @wol_lead_time.setter
     def wol_lead_time(self, value):

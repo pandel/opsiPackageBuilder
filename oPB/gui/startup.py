@@ -69,6 +69,7 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         self.btnStartUpload.clicked.connect(self._parent.actionUpload.triggered)
         self.btnStartUninstall.clicked.connect(self._parent.actionUninstall.triggered)
         self.btnStartDeploy.clicked.connect(self._parent.actionDeploy.triggered)
+        self.btnStartShowLog.clicked.connect(self._parent.actionShowLog.triggered)
         self.btnStartExit.clicked.connect(self._parent.close)
 
     def keyPressEvent(self, evt: QKeyEvent):
