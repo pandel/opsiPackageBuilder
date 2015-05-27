@@ -36,7 +36,7 @@ from oPB.gui.quickuninstall import UninstallDialog
 
 translate = QtCore.QCoreApplication.translate
 
-class QuickUninstallController(BaseController, QObject):
+class QuickUninstallComponent(BaseController, QObject):
     def __init__(self, parent):
         super().__init__(self)
 
@@ -77,7 +77,7 @@ class QuickUninstallController(BaseController, QObject):
     def update_model_data(self):
         self.logger.debug("Update model data")
 
-        self._parent.ui.splash.show()
+        self._parent.ui.splash.show_()
         self._parent.do_getproducts()
         self._parent.ui.splash.close()
 
@@ -104,7 +104,7 @@ class QuickUninstallController(BaseController, QObject):
             if reply is True:
                 self.logger.debug("Selected product(s): " + str(prods))
                 self.ui.hide()
-                self._parent.ui.splash.show()
+                self._parent.ui.splash.show_()
                 self._parent.do_quickuninstall(prods)
                 self.update_model_data()
                 self._parent.ui.splash.close()

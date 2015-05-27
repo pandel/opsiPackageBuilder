@@ -49,10 +49,14 @@ class BaseController(LogMixin):
     msgSend = pyqtSignal(str) # emit message text, params: header and text
     processingStarted = pyqtSignal()
     processingEnded = pyqtSignal()
+    dataAboutToBeRequested = pyqtSignal()
     dataRequested = pyqtSignal()
 
     clientlist_dict = None
+    clientsondepotslist_dict = None
+    depotlist_dict = None
     productlist_dict = None
+    productsondepotslist = None
     joblist = []
 
     """
@@ -294,8 +298,27 @@ class BaseController(LogMixin):
         self.dataRequested.emit()
 
     @pyqtSlot()
+    def do_getproductsondepots(self):
+        BaseController.productsondepotslist= self._do(oPB.OpEnum.DO_GETPRODUCTSONDEPOTS, translate("baseController", "Getting opsi products on depots list..."))
+        self.dataRequested.emit()
+
+    @pyqtSlot()
     def do_getjobs(self):
         BaseController.joblist = self._do(oPB.OpEnum.DO_GETJOBS, translate("baseController", "Getting AT job list..."))
+        self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_getdepots(self):
+        tmpdict = {}
+        BaseController.depotlist_dict = self._do(oPB.OpEnum.DO_GETDEPOTS, translate("baseController", "Getting opsi depots..."))
+        for elem in BaseController.depotlist_dict:
+            tmpdict[elem["id"]] = elem["description"]
+        ConfigHandler.cfg.depotcache = tmpdict
+        self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_getclientsondepots(self):
+        BaseController.clientsondepotslist_dict = self._do(oPB.OpEnum.DO_GETCLIENTSONDEPOTS, translate("baseController", "Getting client to depot association..."))
         self.dataRequested.emit()
 
     @pyqtSlot()
@@ -312,6 +335,24 @@ class BaseController(LogMixin):
     def do_createjobs(self, **param):
         self._do(oPB.OpEnum.DO_CREATEJOBS, translate("baseController", "Create AT jobs..."), **param)
         self.dataRequested.emit()
+
+    @pyqtSlot()
+    def do_getrepocontent(self, param):
+        tmp = self._do(oPB.OpEnum.DO_GETREPOCONTENT, translate("baseController", "Get repository contents..."), alt_destination = param)
+        self.dataRequested.emit()
+        return tmp
+
+    @pyqtSlot()
+    def do_reboot(self, dest, user, password):
+        self._do(oPB.OpEnum.DO_REBOOT, translate("baseController", "Reboot depot..."), alt_destination = dest, alt_user = user, alt_pass = password)
+
+    @pyqtSlot()
+    def do_poweroff(self, dest, user, password):
+        self._do(oPB.OpEnum.DO_POWEROFF, translate("baseController", "Poweroff depot..."), alt_destination = dest, alt_user = user, alt_pass = password)
+
+    @pyqtSlot()
+    def do_runproductupdater(self, param):
+        self._do(oPB.OpEnum.DO_PRODUPDATER, translate("baseController", "Run opsi-product-updater..."), alt_destination = param)
 
     def run_command_line(self):
         """Process project action via command line"""

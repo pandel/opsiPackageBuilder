@@ -35,7 +35,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -833,7 +833,7 @@
           <item row="1" column="2">
            <widget class="QPushButton" name="btnLogFile">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -854,14 +854,14 @@
           <item row="1" column="1">
            <widget class="QLineEdit" name="inpLogFile">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
            </widget>
           </item>
           <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="chkWriteLog">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="text">
              <string>Always write log file</string>
@@ -885,7 +885,7 @@
           <item row="2" column="1">
            <widget class="QComboBox" name="cmbLogLevel">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -930,17 +930,12 @@
             </item>
             <item>
              <property name="text">
-              <string>ERROR</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>CRITICAL</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
               <string>SSH</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ERROR</string>
              </property>
             </item>
            </widget>

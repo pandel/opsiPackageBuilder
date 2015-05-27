@@ -302,49 +302,65 @@ QPushButton:pressed {
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="btnStartNew">
+      <item row="4" column="0">
+       <widget class="QToolButton" name="btnStartRecent">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
           <height>35</height>
          </size>
         </property>
-        <property name="focusPolicy">
-         <enum>Qt::WheelFocus</enum>
-        </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background:rgb(240, 240, 240);
+         <string notr="true">QToolButton { background:rgb(240, 240, 240);
 	color:rgb(89, 89, 89);
 	border-radius: 10px;
 	border: 2px solid rgb(200, 200, 200);
 }
-QPushButton:pressed {
+QToolButton:pressed {
 	border: 2px solid rgb(85, 85, 85);
 }
 </string>
         </property>
         <property name="text">
-         <string>New Package (F1)</string>
+         <string>Recent files (F3)</string>
         </property>
         <property name="icon">
          <iconset>
-          <disabledon>:/images/resource_1.ico</disabledon>
+          <disabledon>:/images/resource_3.ico</disabledon>
          </iconset>
         </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
+        <property name="popupMode">
+         <enum>QToolButton::InstantPopup</enum>
         </property>
-        <property name="shortcut">
-         <string>F1</string>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
-        <property name="flat">
-         <bool>false</bool>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::RightArrow</enum>
         </property>
        </widget>
+      </item>
+      <item row="3" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>147</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item row="1" column="0">
        <widget class="QPushButton" name="btnStartOpen">
@@ -399,26 +415,16 @@ QPushButton:pressed {
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>147</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="6" column="0">
-       <widget class="QPushButton" name="btnStartRecent">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btnStartNew">
         <property name="minimumSize">
          <size>
           <width>0</width>
           <height>35</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::WheelFocus</enum>
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton { background:rgb(240, 240, 240);
@@ -432,11 +438,11 @@ QPushButton:pressed {
 </string>
         </property>
         <property name="text">
-         <string>Recent files (F3)</string>
+         <string>New Package (F1)</string>
         </property>
         <property name="icon">
          <iconset>
-          <disabledon>:/images/resource_3.ico</disabledon>
+          <disabledon>:/images/resource_1.ico</disabledon>
          </iconset>
         </property>
         <property name="iconSize">
@@ -446,7 +452,7 @@ QPushButton:pressed {
          </size>
         </property>
         <property name="shortcut">
-         <string>F3</string>
+         <string>F1</string>
         </property>
         <property name="flat">
          <bool>false</bool>
@@ -687,7 +693,7 @@ QPushButton:pressed {
         </property>
         <property name="icon">
          <iconset>
-          <disabledon>:/images/resource_13.ico</disabledon>
+          <disabledon>:/images/resource_3.ico</disabledon>
          </iconset>
         </property>
         <property name="iconSize">
@@ -752,7 +758,6 @@ QPushButton:pressed {
  </widget>
  <tabstops>
   <tabstop>btnStartNew</tabstop>
-  <tabstop>btnStartRecent</tabstop>
   <tabstop>btnStartInstall</tabstop>
   <tabstop>btnStartUninstall</tabstop>
   <tabstop>btnStartDepotMgmt</tabstop>

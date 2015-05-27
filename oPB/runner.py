@@ -35,6 +35,7 @@ import inspect
 import logging
 import tempfile
 import traceback
+import pathlib
 from logging import setLoggerClass
 from io import StringIO
 
@@ -78,6 +79,11 @@ class Main(QObject):
 
         self.logger = None
         self.args = self.get_args()
+        self._log_level = None
+        self._log_file = None
+
+        # instantiate configuration class
+        confighandler.ConfigHandler(oPB.CONFIG_INI)
 
         # redirect system exception hook
         sys.excepthook = self.excepthook
@@ -104,14 +110,30 @@ class Main(QObject):
         # main = qApp.property("main")
         self.app.setProperty("main", self)
 
+        if confighandler.ConfigHandler.cfg.log_always == "True":
+            if self.args.log_file is not None:
+                self._log_file = self.args.log_file
+            else:
+                self._log_file = confighandler.ConfigHandler.cfg.log_file
+
+            if self.args.log_level.upper() != "CRITICAL":
+                self._log_level = self.args.log_level.upper()
+            else:
+                self._log_level = confighandler.ConfigHandler.cfg.log_level
+        else:
+            self._log_file = self.args.log_file
+            self._log_level = self.args.log_level.upper()
+
+        if self._log_file is not None:
+            if not pathlib.Path(self._log_file).is_absolute():
+                self._log_file = str(pathlib.PurePath(oPB.TMP_PATH, self._log_file))
+
         # Initialize the logger
-        self.logWindow =  oPB.gui.logging.LogDialog(None, self, self.args.log_level.upper())
+        self.logWindow =  oPB.gui.logging.LogDialog(None, self, self._log_level)
         self.instantiate_logger(False)
 
-        #self.instantiate_logger_old()
-
-        # instantiate configuration class
-        confighandler.ConfigHandler(oPB.CONFIG_INI)
+        # write config to log, if necessary
+        confighandler.ConfigHandler.cfg.log_config()
 
         # log program version and user
         self.logger.info("opsi PackageBuilder (MIT licensed) " + oPB.PROGRAM_VERSION)
@@ -121,8 +143,8 @@ class Main(QObject):
         self.logger.info("Command line arguments given:")
         for key, val in vars(self.args).items():
             self.logger.info("  " + key + ": " + str(val))
-        if self.args.log_level.upper() not in ["DEBUG", "INFO", "SSHINFO", "WARNING", "ERROR", "CRITICAL", "SSH"]:
-            self.logger.error("  Undefined log level: " + self.args.log_file.upper())
+        if self._log_level not in ["DEBUG", "INFO", "SSHINFO", "WARNING", "ERROR", "CRITICAL", "SSH"]:
+            self.logger.error("  Undefined log level: " + self._log_level)
             self.logger.error("  Log level has been set to ERROR")
 
         for elem in self.app.libraryPaths():
@@ -208,7 +230,7 @@ class Main(QObject):
         # check if server is generally available
         # use SSH port for connection test
         ret = Helper.test_port(confighandler.ConfigHandler.cfg.opsi_server, confighandler.ConfigHandler.cfg.sshport, 0.5)
-        if ret == True:
+        if ret is True:
             # check network access and mount network drive if on linux
             if sys.platform == 'win32':
                 self.logger.info("System platform: "+ sys.platform)
@@ -236,7 +258,6 @@ class Main(QObject):
             self.logger.warning("opsi server not available. Offline mode activated.")
             self.logger.warning("Return value from connection test: " + str(ret))
             oPB.NETMODE = "offline"
-
 
     def get_args(self):
         # get cmdline args
@@ -289,7 +310,7 @@ class Main(QObject):
 
         # Create standart output handler
         self.stdout = logging.StreamHandler(sys.__stderr__)
-        self.set_log_level(self.args.log_level.upper(), self.stdout)
+        self.set_log_level(self._log_level, self.stdout)
         self.stdout.setFormatter(format)
 
         # Add handlers to logger
@@ -299,14 +320,14 @@ class Main(QObject):
         if not self.args.nogui:
             # output standard msg into dialog tab "Logging"
             self.dialogHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editLog, self)
-            self.set_log_level(self.args.log_level.upper(), self.dialogHandler)
+            self.set_log_level(self._log_level, self.dialogHandler)
             self.dialogHandler.setFormatter(format)
 
             logger.addHandler(self.dialogHandler)
 
             # Create special SSH output log facility, put this into tab "SSH Output"
             self.sshHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editSSH, self)
-            self.set_log_level(oPB.core.logging.SSH, self.sshHandler)
+            self.set_log_level("SSH", self.sshHandler)
             sshformat = logging.Formatter(oPB.LOG_SSH, oPB.LOG_DATETIME)
             self.sshHandler.setFormatter(sshformat)
 
@@ -314,14 +335,14 @@ class Main(QObject):
 
         # Create log file handler, possible
         try:
-            if self.args.log_file is not None:
-                self.fileHandler = logging.FileHandler(self.args.log_file)
-                self.set_log_level(self.args.log_level.upper(), self.fileHandler)
+            if self._log_file is not None:
+                self.fileHandler = logging.FileHandler(self._log_file)
+                self.set_log_level(self._log_level, self.fileHandler)
                 self.fileHandler.setFormatter(format)
 
                 logger.addHandler(self.fileHandler)
         except IOError as error:
-            logger.error("Log file could not be opened: " + self.args.log_file)
+            logger.error("Log file could not be opened: " + self._log_file)
             logger.error(error)
 
         self.logger = logger

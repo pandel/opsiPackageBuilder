@@ -30,6 +30,7 @@ __status__ = "Production"
 
 import os
 import logging
+import json
 from distutils.version import LooseVersion
 from configparser import ConfigParser
 from PyQt5 import QtCore
@@ -39,7 +40,6 @@ from oPB.core.tools import Helper, LogMixin
 translate = QtCore.QCoreApplication.translate
 
 logger = logging.getLogger(__name__)
-
 
 class ConfigHandler(ConfigParser, LogMixin):
     """
@@ -77,7 +77,7 @@ class ConfigHandler(ConfigParser, LogMixin):
             "reloadforat": "False",
             "wolleadtime": "15",
             "usedepotfuncs": "False",
-            "depotCache": "2D*empty",
+            "depotCache": "",
         },
         "tools": {
             "extchlog": "True",
@@ -111,18 +111,12 @@ class ConfigHandler(ConfigParser, LogMixin):
             "user": "",
             "pass": "",
         },
-        "recent": {
-            "rec0": "",
-            "rec1": "",
-            "rec2": "",
-            "rec3": "",
-            "rec4": ""
-        },
         "window": {
             "posX": "0",
             "posY": "0",
             "width": "745",
-            "height": "650"
+            "height": "650",
+            "recentfiles": ""
         }
     }
 
@@ -163,9 +157,6 @@ class ConfigHandler(ConfigParser, LogMixin):
                         if not self.has_option(section, option):
                             self.set(section, option, str(value))
 
-            # write config to log, if necessary
-            self.log_config()
-
             # check if INI pre-python
             if LooseVersion(self.prg_version) < "8.0.0":
                 self.convert_old_format()
@@ -181,6 +172,16 @@ class ConfigHandler(ConfigParser, LogMixin):
 
             # after all, save parser in class variabel
             ConfigHandler.cfg = self
+
+    def log_config(self):
+        self.logger.debug("Current configuration values:")
+        self.passwords('encrypt')
+        for sect in self.sections():
+            self.logger.debug("[" + sect + "]")
+            for opt in self.options(sect):
+                self.logger.debug("\t" + opt + " = " + self.get(sect, opt))
+        self.passwords('decrypt')
+
 
     def passwords(self, mode):
         """
@@ -258,18 +259,6 @@ class ConfigHandler(ConfigParser, LogMixin):
         self.proxy_pass = ""
 
         self.save()
-
-        # write config to log, if necessary
-        self.log_config()
-
-    def log_config(self):
-        self.logger.debug("Current configuration values:")
-        self.passwords('encrypt')
-        for sect in self.sections():
-            self.logger.debug("[" + sect + "]")
-            for opt in self.options(sect):
-                self.logger.debug("\t" + opt + " = " + self.get(sect, opt))
-        self.passwords('decrypt')
 
     @property
     def prg_version(self):
@@ -441,7 +430,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def wol_lead_time(self):
-        return int(self.get("package","wolleadtime"))
+        return self.get("package","wolleadtime")
 
     @wol_lead_time.setter
     def wol_lead_time(self, value):
@@ -454,14 +443,6 @@ class ConfigHandler(ConfigParser, LogMixin):
     @use_depot_funcs.setter
     def use_depot_funcs(self, value):
         self.set("package", "usedepotfuncs", value)
-
-    @property
-    def depotcache(self):
-        return self.get("package", "depotcache")
-
-    @depotcache.setter
-    def depotcache(self, value):
-        self.set("package", "depotCache", value)
 
     @property
     def use_extended_changelog(self):
@@ -671,6 +652,27 @@ class ConfigHandler(ConfigParser, LogMixin):
     def height(self, value):
         self.set("window", "height", str(value))
 
+    @property
+    def recent(self):
+        val = str(self.get("window", "recentfiles"))
+        if val.strip() == "":
+            return []
+        else:
+            return [x for x in val.split(";") if x]
 
+    @recent.setter
+    def recent(self, value):
+        self.set("window", "recentfiles", (";").join(value))
 
+    @property
+    def depotcache(self):
+        val = self.get("package", "depotcache")
+        if val.strip() == "":
+            return {}
+        else:
+            return json.loads(val)
+
+    @depotcache.setter
+    def depotcache(self, value):
+        self.set("package", "depotCache", json.dumps(value))
 

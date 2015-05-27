@@ -32,7 +32,7 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5 import QtCore
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
 from oPB.core.confighandler import ConfigHandler
@@ -75,6 +75,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         self.btnSetDevFolder.clicked.connect(self.select_dev_dir)
         self.btnSetKeyFile.clicked.connect(self.select_keyfile)
         self.btnExternalEditor.clicked.connect(self.select_externaleditor)
+        self.btnLogFile.clicked.connect(self.select_logfile)
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
@@ -90,11 +91,13 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         else:
             super().keyPressEvent(evt)
 
+    @pyqtSlot()
     def request_close_dialog(self):
         """Request closing of settings dialog"""
         self.logger.debug("Emit signal settingsAboutToBeClosed")
         self.settingsAboutToBeClosed.emit()
 
+    @pyqtSlot()
     def select_dev_dir(self):
         self.logger.debug("Select development directory")
         directory = QFileDialog.getExistingDirectory(self, translate("SettingsDialog", "Select development folder"),
@@ -107,6 +110,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         else:
             self.logger.debug("Dialog aborted.")
 
+    @pyqtSlot()
     def select_keyfile(self):
         self.logger.debug("Select SSH keyfile dialog")
 
@@ -122,6 +126,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         else:
             self.logger.debug("Dialog aborted.")
 
+    @pyqtSlot()
     def select_externaleditor(self):
         self.logger.debug("Select scripteditor dialog")
 
@@ -133,6 +138,30 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         if not script == ("", ""):
             self.logger.debug("Selected Scripeditor: " + script[0])
             self.inpExternalEditor.setText(Helper.concat_path_and_file(script[0], ""))
+            self.dataChanged.emit()
+        else:
+            self.logger.debug("Dialog aborted.")
+
+    @pyqtSlot()
+    def select_logfile(self):
+        self.logger.debug("Select log file dialog")
+
+        """
+        ext = "Log (*.log)"  # generate file extension selection string for dialog
+
+        script = QFileDialog.getOpenFileName(self, translate("SettingsDialog", "Choose folder for logfile"),
+                                             ConfigHandler.cfg.log_file, ext)
+
+        if not script == ("", ""):
+            self.logger.debug("Selected Logile: " + script[0])
+        """
+
+        directory = QFileDialog.getExistingDirectory(self, translate("SettingsDialog", "Select logfile folder"),
+                                                     ConfigHandler.cfg.dev_dir, QFileDialog.ShowDirsOnly)
+
+        if not directory == "":
+            self.logger.info("Chosen directory: " + directory)
+            self.inpLogFile.setText(Helper.concat_path_and_file(directory, "opb-session.log"))
             self.dataChanged.emit()
         else:
             self.logger.debug("Dialog aborted.")

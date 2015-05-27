@@ -35,7 +35,6 @@ import oPB
 from oPB.gui.settings import SettingsDialog
 from oPB.core.tools import LogMixin
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper
 
 translate = QtCore.QCoreApplication.translate
 

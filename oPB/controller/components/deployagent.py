@@ -27,3 +27,29 @@ __license__ = "MIT"
 __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
+
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import QObject
+import oPB
+from oPB.controller.base import BaseController
+from oPB.gui.deployagent import DeployAgentDialog
+
+translate = QtCore.QCoreApplication.translate
+
+class DeployAgentComponent(BaseController, QObject):
+    def __init__(self, parent):
+        super().__init__(self)
+
+        self._parent = parent
+        self.ui = None
+
+        self.ui = DeployAgentDialog(self._parent.ui)
+
+    def show_(self):
+        self.logger.debug("Open deploy agent dialog")
+
+        self._parent.startup.hide_me()
+        self.ui.finished.connect(self._parent.startup.show_me)
+
+        self.ui.show()
+        self.ui.activateWindow()

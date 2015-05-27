@@ -40,9 +40,11 @@ from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper
 from oPB.core.scriptscanner import ScriptTree
 from oPB.controller.base import BaseController
-from oPB.controller.components.changelog import ChangelogController
-from oPB.controller.components.scheduler import SchedulerController
-from oPB.controller.components.quickuninstall import QuickUninstallController
+from oPB.controller.components.changelog import ChangelogEditorComponent
+from oPB.controller.components.scheduler import SchedulerComponent
+from oPB.controller.components.quickuninstall import QuickUninstallComponent
+from oPB.controller.components.deployagent import DeployAgentComponent
+from oPB.controller.components.depotmanager import DepotManagerComponent
 
 translate = QtCore.QCoreApplication.translate
 
@@ -74,8 +76,12 @@ class MainWindowController(BaseController, QObject):
         self.ui = MainWindow(self)
         self.startup = StartupDialog(self.ui)
         self.treedlg = ScriptTreeDialog(self.ui)
-        self.quickuninstall = QuickUninstallController(self)
-        self.scheduler = SchedulerController(self)
+        self.quickuninstall = QuickUninstallComponent(self)
+        self.scheduler = SchedulerComponent(self)
+        self.deployagent = DeployAgentComponent(self)
+        self.depotmanager = DepotManagerComponent(self)
+
+        self.ui.init_recent()
 
         self.connect_signals()
 
@@ -397,6 +403,7 @@ class MainWindowController(BaseController, QObject):
                 [self.chLogEditor.ui.close(), None][self.chLogEditor.ui.isVisible()] # instance only conditional available (when user has ever openend the dialog
             except AttributeError:
                 pass
+            self.ui.setCurrentProject(self.controlData.projectfolder)
             self.reset_state()
             self.startup.show_me()
 
@@ -462,6 +469,8 @@ class MainWindowController(BaseController, QObject):
             self.msgbox(translate("mainController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
             self.startup.hide_me()
 
+        self.ui.setCurrentProject(self.controlData.projectfolder)
+
     @pyqtSlot(str)
     def project_create(self, project_name):
         self.project_close()
@@ -488,7 +497,7 @@ class MainWindowController(BaseController, QObject):
     @pyqtSlot()
     def show_changelogeditor(self):
         # changelog editor
-        self.chLogEditor = ChangelogController(self)
+        self.chLogEditor = ChangelogEditorComponent(self)
         self.chLogEditor.model.itemChanged.connect(self.model_data_changed)
         self.chLogEditor.model.rowsRemoved.connect(self.model_data_changed)
         self.chLogEditor.model.rowsInserted.connect(self.model_data_changed)
@@ -579,7 +588,12 @@ class MainWindowController(BaseController, QObject):
 
         elif typ == oPB.MsgEnum.MS_QUEST_PHRASE:
             text = QInputDialog.getText(parent, translate("mainController", "Additional information"),
-                                          msgtext, QLineEdit.Normal,"")
+                                          msgtext, QLineEdit.Normal,"root")
+            return text
+
+        elif typ == oPB.MsgEnum.MS_QUEST_PASS:
+            text = QInputDialog.getText(parent, translate("mainController", "Additional information"),
+                                          msgtext, QLineEdit.Password,"")
             return text
 
     def get_properties_from_scripts(self):
@@ -635,5 +649,13 @@ class MainWindowController(BaseController, QObject):
         self.quickuninstall.show_()
 
     def scheduler_dialog(self):
-        """Open quickuninstall dialog"""
+        """Open job scheduler dialog"""
         self.scheduler.show_joblist()
+
+    def deployagent_dialog(self):
+        """Open opsi client agent deploy dialog"""
+        self.deployagent.show_()
+
+    def depotmanager_dialog(self):
+        """Open depot manager dialog"""
+        self.depotmanager.ui.show_()

@@ -72,3 +72,19 @@ QTreeView::item:selected:!active {
 QSplashScreen {
     font: bold 14px;
 }
+
+QPushButton#btnUnregister {
+    color: rgb(255, 0, 0);
+}
+
+QPushButton[dispState="red"] {
+    color: rgb(255, 0, 0);
+}
+
+QPushButton[dispState="green"] {
+    color: rgb(0, 255, 0);
+}
+
+QPushButton[dispState="blue"] {
+    color: rgb(0, 0, 255);
+}

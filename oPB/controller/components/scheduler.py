@@ -32,13 +32,14 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import QObject
 
 import oPB
+from oPB.core.confighandler import ConfigHandler
 from oPB.controller.base import BaseController
 from oPB.gui.scheduler import JobListDialog, JobCreatorDialog
 from oPB.gui.mainwindow import Splash
 
 translate = QtCore.QCoreApplication.translate
 
-class SchedulerController(BaseController, QObject):
+class SchedulerComponent(BaseController, QObject):
 
     def __init__(self, parent):
         super().__init__(self)
@@ -63,6 +64,9 @@ class SchedulerController(BaseController, QObject):
 
     def show_joblist(self):
         self.logger.debug("Show job list")
+
+        if ConfigHandler.cfg.no_at_warning_msg == "False":
+            self.usage_hint()
 
         self._parent.startup.hide_me()
         self.ui_joblist.show()
@@ -194,7 +198,7 @@ class SchedulerController(BaseController, QObject):
 
     def splash_show(self, parent):
         self.splash.setParent(parent)
-        self.splash.show()
+        self.splash.show_()
 
     def joblist_delete_jobs(self):
         self.logger.debug("Remove selected AT jobs")
@@ -290,3 +294,7 @@ class SchedulerController(BaseController, QObject):
             self._parent.do_createjobs(clients = clIdx, products = prodIdx, ataction = action, dateVal = dateVal, timeVal = timeVal, on_demand = od, wol = wol)
 
             self.ui_jobcreator.close()
+
+    def usage_hint(self):
+        msg = translate("infoMessages", "infoAT")
+        self._parent.msgbox(msg, oPB.MsgEnum.MS_ALWAYS)

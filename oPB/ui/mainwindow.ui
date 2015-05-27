@@ -2028,13 +2028,19 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <widget class="QMenu" name="menuRecent">
+     <property name="title">
+      <string>Recent</string>
+     </property>
+     <addaction name="separator"/>
+    </widget>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="actionClose"/>
     <addaction name="separator"/>
-    <addaction name="actionRecent"/>
+    <addaction name="menuRecent"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -2140,11 +2146,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Close</string>
-   </property>
-  </action>
-  <action name="actionRecent">
-   <property name="text">
-    <string>Recent</string>
    </property>
   </action>
   <action name="actionQuit">

@@ -71,43 +71,67 @@ class LogDialog(LogDialogBase, LogDialogUI, LogMixin):
         if index == 6:
             self.logger.debug("Set dialog log level to: DEBUG")
             self.main.dialogHandler.setLevel(logging.DEBUG)
-            self.main.fileHandler.setLevel(logging.DEBUG)
             self.main.stdout.setLevel(logging.DEBUG)
+            try:
+                self.main.fileHandler.setLevel(logging.DEBUG)
+            except:
+                pass
         elif index == 5:
             self.logger.debug("Set dialog log level to: INFO")
             self.main.dialogHandler.setLevel(logging.INFO)
-            self.main.fileHandler.setLevel(logging.INFO)
             self.main.stdout.setLevel(logging.INFO)
+            try:
+                self.main.fileHandler.setLevel(logging.INFO)
+            except:
+                pass
         elif index == 4:
             self.logger.debug("Set dialog log level to: SSHINFO")
             self.main.dialogHandler.setLevel(oPB.core.logging.SSHINFO)
-            self.main.fileHandler.setLevel(oPB.core.logging.SSHINFO)
             self.main.stdout.setLevel(oPB.core.logging.SSHINFO)
+            try:
+                self.main.fileHandler.setLevel(oPB.core.logging.SSHINFO)
+            except:
+                pass
         elif index == 3:
             self.logger.debug("Set dialog log level to: WARNING")
             self.main.dialogHandler.setLevel(logging.WARNING)
-            self.main.fileHandler.setLevel(logging.WARNING)
             self.main.stdout.setLevel(logging.WARNING)
+            try:
+                self.main.fileHandler.setLevel(logging.WARNING)
+            except:
+                pass
         elif index == 2:
             self.logger.debug("Set dialog log level to: SSH")
             self.main.dialogHandler.setLevel(oPB.core.logging.SSH)
-            self.main.fileHandler.setLevel(oPB.core.logging.SSH)
             self.main.stdout.setLevel(oPB.core.logging.SSH)
+            try:
+                self.main.fileHandler.setLevel(oPB.core.logging.SSH)
+            except:
+                pass
         elif index == 1:
             self.logger.debug("Set dialog log level to: ERROR")
             self.main.dialogHandler.setLevel(logging.ERROR)
-            self.main.fileHandler.setLevel(logging.ERROR)
             self.main.stdout.setLevel(logging.ERROR)
+            try:
+                self.main.fileHandler.setLevel(logging.ERROR)
+            except:
+                pass
         elif index == 0:
             self.logger.debug("Set dialog log level to: CRITICAL")
             self.main.dialogHandler.setLevel(logging.CRITICAL)
-            self.main.fileHandler.setLevel(logging.CRITICAL)
             self.main.stdout.setLevel(logging.CRITICAL)
+            try:
+                self.main.fileHandler.setLevel(logging.CRITICAL)
+            except:
+                pass
         else:
             self.logger.debug("Set dialog log level to: ERROR")
             self.main.dialogHandler.setLevel(logging.ERROR)
-            self.main.fileHandler.setLevel(logging.ERROR)
             self.main.stdout.setLevel(logging.ERROR)
+            try:
+                self.main.fileHandler.setLevel(logging.ERROR)
+            except:
+                pass
 
     def changeFormat(self,  state):
         if state == Qt.Checked:

@@ -50,9 +50,13 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     showLogRequested = pyqtSignal()
     windowMoved = pyqtSignal()
 
+    MaxRecentFiles = 5
+
     def __init__(self, parent):
         MainWindowBase.__init__(self)
         self.setupUi(self)
+
+        self.recentFileActions = []
 
         if oPB.NETMODE == "offline":
             self.setWindowTitle("opsiPackageBuilder ( OFFLINE MODE )")
@@ -76,6 +80,51 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.connect_validators()
 
         self.reset_datamapper_and_display()
+
+    def init_recent(self):
+        for i in range(MainWindow.MaxRecentFiles):
+                    self.recentFileActions.append(
+                            QAction(self, visible=False,
+                                    triggered=self.open_recent_project))
+        for i in range(MainWindow.MaxRecentFiles):
+                    self.menuRecent.addAction(self.recentFileActions[i])
+                    self._parent.startup.menuRecent.addAction(self.recentFileActions[i])
+
+        self.update_recent_file_actions()
+
+    def update_recent_file_actions(self):
+        files = ConfigHandler.cfg.recent
+
+        numRecentFiles = min(len(files), MainWindow.MaxRecentFiles)
+
+        for i in range(numRecentFiles):
+            text = "&%d %s" % (i + 1, self.strippedName(files[i]))
+            self.recentFileActions[i].setText(text)
+            self.recentFileActions[i].setData(files[i])
+            self.recentFileActions[i].setVisible(True)
+
+        for j in range(numRecentFiles, MainWindow.MaxRecentFiles):
+            self.recentFileActions[j].setVisible(False)
+
+    def strippedName(self, fullFileName):
+        return QtCore.QFileInfo(fullFileName).fileName()
+
+    def setCurrentProject(self, project):
+        files = ConfigHandler.cfg.recent
+
+        try:
+            files.remove(project)
+        except ValueError:
+            pass
+
+        files.insert(0, project)
+        del files[MainWindow.MaxRecentFiles:]
+
+        ConfigHandler.cfg.recent = files
+
+        for widget in QApplication.topLevelWidgets():
+            if isinstance(widget, MainWindow):
+                widget.update_recent_file_actions()
 
     def create_datamapper(self):
         """Create datamapper for fields and tables"""
@@ -137,7 +186,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
         self.actionSaveAs.triggered.connect(self.not_working)
-        self.actionRecent.triggered.connect(self.not_working)
         self.actionStartWinst.triggered.connect(self.not_working)
         self.actionScriptEditor.triggered.connect(self.not_working)
         self.actionHelp.triggered.connect(self.not_working)
@@ -150,27 +198,19 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self.actionSetRights.triggered.connect(self._parent.do_setrights)
             self.actionInstall.triggered.connect(self.quickinstall)
             self.actionUpload.triggered.connect(self.upload)
-
             self.actionScheduler.triggered.connect(self._parent.scheduler_dialog)
-
-            self.actionUninstall.triggered.connect(self._parent.quickuninstall_dialog)
-
-            self.actionDeploy.triggered.connect(self.not_working)
-
+            self.actionUninstall.triggered.connect(self.quickuninstall)
+            self.actionDeploy.triggered.connect(self._parent.deployagent_dialog)
             self.actionBundleCreation.triggered.connect(self.not_working)
-            self.actionDepotManager.triggered.connect(self.not_working)
+            self.actionDepotManager.triggered.connect(self._parent.depotmanager_dialog)
         else:
             # connect online menu action signals
             self.actionSetRights.triggered.connect(self.offline)
             self.actionInstall.triggered.connect(self.offline)
             self.actionUpload.triggered.connect(self.offline)
-
             self.actionScheduler.triggered.connect(self.offline)
-
             self.actionUninstall.triggered.connect(self.offline)
-
             self.actionDeploy.triggered.connect(self.offline)
-
             self.actionBundleCreation.triggered.connect(self.offline)
             self.actionDepotManager.triggered.connect(self.offline)
 
@@ -230,7 +270,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
         self._parent.modelDataUpdated.connect(self.reset_datamapper_and_display)
         self._parent.msgSend.connect(self.set_statbar_text)
-        self._parent.processingStarted.connect(self.splash.show)
+        self._parent.processingStarted.connect(self.splash.show_)
         self._parent.processingEnded.connect(self.splash.close)
         self._parent.processingEnded.connect(self.set_button_state)
 
@@ -299,11 +339,11 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def not_working(self):
-        self._parent.msgbox("Sorry, this function doesn't work at the moment!", oPB.MsgEnum.MS_ALWAYS, self)
+        self._parent.msgbox(translate("MainWindow", "Sorry, this function doesn't work at the moment!"), oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def offline(self):
-        self._parent.msgbox("You are working in offline mode. Functionality not available!", oPB.MsgEnum.MS_ALWAYS, self)
+        self._parent.msgbox(translate("MainWindow", "You are working in offline mode. Functionality not available!"), oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def quickinstall(self):
@@ -321,6 +361,11 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self._parent.startup.show_me()
         else:
             self.logger.debug("Dialog aborted.")
+
+    @pyqtSlot()
+    def quickuninstall(self):
+        """Open quickuninstall dialog"""
+        self._parent.quickuninstall.show_()
 
     @pyqtSlot()
     def upload(self):
@@ -452,6 +497,14 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self._parent.project_load(directory)
         else:
             self.logger.debug("Dialog aborted.")
+
+    @pyqtSlot()
+    def open_recent_project(self):
+        action = self.sender()
+        if action:
+            self.logger.debug("Chosen recent project: " + action.data())
+            self._parent.project_close()
+            self._parent.project_load(action.data())
 
     @pyqtSlot()
     def new_project(self):
@@ -641,6 +694,8 @@ class ScriptFileValidator(QtGui.QValidator):
 class Splash(LogMixin):
     def __init__(self, parent, msg, withProgressbar = False):
         self._parent = parent
+        self.isHidden = True
+        self._progress = 0
 
         pixmap = QtGui.QPixmap(380, 100)
         pixmap.fill(QtGui.QColor("darkgreen"))
@@ -660,7 +715,25 @@ class Splash(LogMixin):
                                8 * self._splash.width() / 10, self._splash.height() / 10)
 
     def setProgress(self, val: int):
-        self._progressBar.setValue(val)
+        if self.isHidden is True:
+            self.isHidden = False
+            self.show_()
+        self.progress = val
+        try:
+            self._progressBar.setValue(self.progress)
+        except:
+            pass
+
+    def incProgress(self, val: int):
+        if self.isHidden is True:
+            self.isHidden = False
+            self.show_()
+        self.progress = self.progress + val
+        try:
+            self.logger.debug("Set progress: " + str(self.progress))
+            self._progressBar.setValue(self.progress)
+        except:
+            pass
 
     def setParent(self, parent):
         self._parent = parent
@@ -668,12 +741,13 @@ class Splash(LogMixin):
 
     @pyqtSlot()
     def close(self):
-        self.logger.debug("Hide splash")
+        self.logger.debug("Hide splash, parent: " + str(self._parent))
+        self.isHidden = True
         self._splash.close()
 
     @pyqtSlot()
-    def show(self):
-        self.logger.debug("Show splash")
+    def show_(self):
+        self.logger.debug("Show splash, parent: " + str(self._parent))
         try:
             parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux
         except:
@@ -688,3 +762,19 @@ class Splash(LogMixin):
         self._splash.show()
 
         qApp.processEvents()
+
+    @property
+    def progress(self):
+        return self._progress
+
+    @progress.setter
+    def progress(self, value):
+        # create new exception handling vor properties
+        # if (value != "True") and (value != "False"):
+        #    raise ValueError("describe exception")
+        if value > 100:
+            value = 0
+        if value < 0:
+            value = 0
+        self._progress = value
+

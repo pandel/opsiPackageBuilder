@@ -66,6 +66,7 @@ class OpsiProcessing(QObject, LogMixin):
         """
         super().__init__()
         self._shell = None
+        self._server = None
         self._ip = None
         self._hide_secret_in_output = False
         self._sshuser = None
@@ -86,6 +87,11 @@ class OpsiProcessing(QObject, LogMixin):
         :param action: job to run (see oPB.OpEnum for job types)
         :param kwargs: optional arguments depending on job type, see below
         :return: tuple(3): (return code(see oPB.RET_*), msg type (see oPB.MsgEnum), msg text)
+
+        Following additional options are recognized, depending on job action:
+        General: alt_server - overrides opsi server from INI file
+        QUICKINST / UPLOAD: packagefile
+        QUICKUNINST: productlist
         """
 
         #options = {
@@ -97,18 +103,35 @@ class OpsiProcessing(QObject, LogMixin):
         # individual user / pass for shell
         # if not set, ConfigHandler.cfg.opsi_user + ConfigHandler.cfg.opsi_pass are used
 
-        # reset ssh user / pass
         self._hide_secret_in_output = []
         self._sshuser = ConfigHandler.cfg.opsi_user
         self._sshpass = ConfigHandler.cfg.opsi_pass
         self._sshkey = ConfigHandler.cfg.keyfilename
+        self._server = ConfigHandler.cfg.opsi_server
 
+        # override server name/ user or pass to use
+        alt_destination = kwargs.get("alt_destination", "")
+        if alt_destination != "":
+            self._server = alt_destination
+
+        alt_user = kwargs.get("alt_user", "")
+        if alt_user != "":
+            self._sshuser = alt_user
+
+        alt_pass = kwargs.get("alt_pass", "")
+        if alt_pass != "":
+            self._sshpass = alt_pass
+
+        # set following environment variables on every ssh command
         self._env = {"PYTHONIOENCODING" : "'utf-8'", "POSIXLY_CORRECT" : "1"}
 
         self.logger.debug("Executing action: " + str(oPB.OpEnum(action)))
         if not self.control is None:
             self.logger.sshinfo("Local path: " + self.control.local_package_path)
             self.logger.sshinfo("Path on server: " + self.control.path_on_server + "/" + self.control.packagename)
+
+        # temporary file path for copy operations
+        tmppath = oPB.TMP_PATH
 
         result = []
 
@@ -141,7 +164,7 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.installcommand + " " + self.control.packagename
                 else:
-                    cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + self.control.packagename
+                    cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + self._server + " " + self.control.packagename
 
             result = self._processAction(cmd, action, ret)
 
@@ -159,7 +182,7 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.instsetupcommand + " " + self.control.packagename
                 else:
-                    cmd = oPB.OPB_INSTSETUP + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + self.control.packagename
+                    cmd = oPB.OPB_INSTSETUP + " " + oPB.OPB_DEPOT_SWITCH + " " + self._server + " " + self.control.packagename
 
             result = self._processAction(cmd, action, ret)
 
@@ -170,7 +193,7 @@ class OpsiProcessing(QObject, LogMixin):
             if ConfigHandler.cfg.use_depot_funcs == "False":
                 cmd = ConfigHandler.cfg.uninstallcommand + " " + self.control.id
             else:
-                cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + self.control.id
+                cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + self._server + " " + self.control.id
 
             result = self._processAction(cmd, action, ret)
 
@@ -179,7 +202,7 @@ class OpsiProcessing(QObject, LogMixin):
             ret = oPB.RET_SSHCMDERR
             self.logger.ssh(20 * "-" + "ACTION: SET RIGHTS" + 20 * "-")
             if ConfigHandler.cfg.age == "True":
-                cmd = "opsi-set-rights '" + self.control.path_on_server + "'"
+                cmd = oPB.OPB_SETRIGHTS_SUDO + " '" + self.control.path_on_server + "'"
                 if ConfigHandler.cfg.sudo == "True":
                     cmd = "echo '" + ConfigHandler.cfg.opsi_pass + "' | sudo -s " + cmd
                 else:
@@ -187,18 +210,16 @@ class OpsiProcessing(QObject, LogMixin):
             else:
                 self._sshuser = "root"
                 self._sshpass = ConfigHandler.cfg.root_pass
-                cmd = "opsi-setup --set-rights '" + self.control.path_on_server + "'"
+                cmd = oPB.OPB_SETRIGHTS_NOSUDO + " '" + self.control.path_on_server + "'"
 
             result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_QUICKINST:
             ret = oPB.RET_PINSTALL
-
             package = kwargs.get("packagefile", "")
 
             # check if temporary install folder exists and create if not
-            tmppath = "/tmp"
             destfile = str(PurePosixPath(tmppath, PurePath(package).name))
 
             self.logger.ssh(20 * "-" + "ACTION: QUICKINSTALL" + 20 * "-")
@@ -217,18 +238,16 @@ class OpsiProcessing(QObject, LogMixin):
             if ConfigHandler.cfg.use_depot_funcs == "False":
                 cmd = ConfigHandler.cfg.installcommand + " " + destfile
             else:
-                cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + destfile
+                cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + self._server + " " + destfile
 
             result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_UPLOAD:
             ret = oPB.RET_PUPLOAD
-
             package = kwargs.get("packagefile", "")
 
             # check if temporary install folder exists and create if not
-            tmppath = "/tmp"
             destfile = str(PurePosixPath(tmppath, PurePath(package).name))
 
             self.logger.ssh(20 * "-" + "ACTION: UPLOAD" + 20 * "-")
@@ -247,7 +266,7 @@ class OpsiProcessing(QObject, LogMixin):
             if ConfigHandler.cfg.use_depot_funcs == "False":
                 cmd = ConfigHandler.cfg.uploadcommand + " " + destfile
             else:
-                cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + destfile
+                cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + self._server + " " + destfile
 
             result = self._processAction(cmd, action, ret)
 
@@ -255,9 +274,8 @@ class OpsiProcessing(QObject, LogMixin):
         if action == oPB.OpEnum.DO_GETCLIENTS:
             ret = oPB.RET_SSHCMDERR
             self.logger.ssh(20 * "-" + "ACTION: GET CLIENTS" + 20 * "-")
-            cmd = "opsi-admin -r -d method host_getHashes"
 
-            result = self._processAction(cmd, action, ret, cwd = False)
+            result = self._processAction(oPB.OPB_METHOD_GETCLIENTS, action, ret, cwd = False)
 
             result = json.loads(result)
 
@@ -265,12 +283,23 @@ class OpsiProcessing(QObject, LogMixin):
         if action == oPB.OpEnum.DO_GETPRODUCTS:
             ret = oPB.RET_SSHCMDERR
             self.logger.ssh(20 * "-" + "ACTION: GET PRODUCTS" + 20 * "-")
-            cmd = "opsi-admin -r -d method product_getHashes"
 
-            result = self._processAction(cmd, action, ret, cwd = False)
+            result = self._processAction(oPB.OPB_METHOD_GETPRODUCTS, action, ret, cwd = False)
 
             result = json.loads(result)
 
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETCLIENTSONDEPOTS:
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: GET CLIENTS ON DEPOTS" + 20 * "-")
+
+            result = self._processAction(oPB.OPB_METHOD_GETCLIENTSONDEPOTS, action, ret, cwd = False)
+
+            result = json.loads(result)
+
+            # filter example:
+            # for row in result:
+            #     print(row["clientId"]) if row["depotId"] == "***REMOVED***19z.sd8106.***REMOVED***" else None
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_QUICKUNINST:
             ret = oPB.RET_PUNINSTALL
@@ -282,7 +311,7 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.uninstallcommand + " " + p
                 else:
-                    cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + ConfigHandler.cfg.opsi_server + " " + p
+                    cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + self._server + " " + p
 
                 result = self._processAction(cmd, action, ret)
 
@@ -291,14 +320,10 @@ class OpsiProcessing(QObject, LogMixin):
             ret = oPB.RET_SSHCMDERR
             self.logger.ssh(20 * "-" + "ACTION: GET AT JOBS" + 20 * "-")
 
-            jobids = []
-            jobdetails = []
-
             cmd_queue = oPB.OPB_AT_QUEUE # get complete AT queue only
-            cmd_detail_single = "at -q D -c "
-
             cmd_detail_all = ["sh", "-c", oPB.OPB_AT_JOB_DETAIL] # get the details for every AT job in queue
 
+            jobids = []
             try:
                 # fetch job ids
                 result = self._processAction(cmd_queue, action, ret, cwd = False)
@@ -317,8 +342,8 @@ class OpsiProcessing(QObject, LogMixin):
                     for i, row in enumerate(result):
                         if oPB.OPB_METHOD_ONDEMAND in result[i]:
                             result[i] = row.replace(oPB.OPB_METHOD_ONDEMAND, 'on_demand')
-                        if oPB.OPB_METHOD_PRODUCT in result[i]:
-                            result[i] = row.replace(oPB.OPB_METHOD_PRODUCT, '')
+                        if oPB.OPB_METHOD_PRODUCTACTION in result[i]:
+                            result[i] = row.replace(oPB.OPB_METHOD_PRODUCTACTION, '')
                         if oPB.OPB_METHOD_WOL in result[i]:
                             result[i] = row.replace(oPB.OPB_METHOD_WOL, 'wol')
 
@@ -336,14 +361,7 @@ class OpsiProcessing(QObject, LogMixin):
                         result.append(jobactions[i] + jobids[i])
 
             except:
-                pass
-
-            """ get details job per job - FAR TOO SLOW
-            # get job details
-            for id in jobids:
-                result = self._processAction(cmd_detail_single + id, action, ret)
-                jobdetails.append([id, result.split("opsi-admin")[1]])
-            """
+                result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_CREATEJOBS:
@@ -360,7 +378,6 @@ class OpsiProcessing(QObject, LogMixin):
             self.logger.ssh(20 * "-" + "ACTION: CREATE AT JOBS" + 20 * "-")
             cmd = oPB.OPB_AT_CREATE # create a new AT job
 
-            tmppath = "/tmp"
             destfile = str(PurePosixPath(tmppath, "atjob.lst"))
 
             # File content:
@@ -369,7 +386,11 @@ class OpsiProcessing(QObject, LogMixin):
             # echo "opsi-admin -d method hostControl_fireEvent 'on_demand' ***REMOVED***100.sd8106.***REMOVED***" | at -q D -t 201505231725
 
             if wol is True:
-                woltime_full = datetime.datetime(100,1,1,int(timeVal[:2]),int(timeVal[2:])) - datetime.timedelta(minutes=ConfigHandler.cfg.wol_lead_time)
+                try:
+                    wcfg = int(ConfigHandler.cfg.wol_lead_time)
+                except:
+                    wcfg = 0
+                woltime_full = datetime.datetime(100,1,1,int(timeVal[:2]),int(timeVal[2:])) - datetime.timedelta(minutes=wcfg)
                 woltime = str(woltime_full.hour) + str(woltime_full.minute)
 
             f = None
@@ -380,7 +401,7 @@ class OpsiProcessing(QObject, LogMixin):
                             if wol is True:
                                 f.write('echo "' + oPB.OPB_METHOD_WOL + " " + client + '" | ' + oPB.OPB_AT_CREATE + " " + dateVal + woltime + "\n")
 
-                            f.write('echo "' + oPB.OPB_METHOD_PRODUCT + " " + product + " " + client + " " + ataction + '" | ' + oPB.OPB_AT_CREATE +
+                            f.write('echo "' + oPB.OPB_METHOD_PRODUCTACTION + " " + product + " " + client + " " + ataction + '" | ' + oPB.OPB_AT_CREATE +
                                     " " + dateVal + timeVal + "\n")
 
                             if on_demand is True:
@@ -399,7 +420,6 @@ class OpsiProcessing(QObject, LogMixin):
             joblist = kwargs.get("joblist", [])
             self.logger.ssh(20 * "-" + "ACTION: DELETE AT JOBS" + 20 * "-")
 
-            tmppath = "/tmp"
             destfile = str(PurePosixPath(tmppath, "atjob.lst"))
 
             f = None
@@ -424,24 +444,81 @@ class OpsiProcessing(QObject, LogMixin):
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETREPOCONTENT:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: GET REPOSITORY CONTENT" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            cmd = ["sh", "-c", oPB.OPB_GETREPOCONTENT]
 
+            warnings = False
+
+            # returns list
+            # line like: 6eaedc322b4de839338f8855351c6024-@MD5@-7zip_9.22-1.opsi
+            result = self._processAction(cmd, action, ret, split = False, cwd = False)
+
+            tmplist = []
+
+            try:
+                # 0)Split into MD5 and file name
+                # 1) Product name
+                # create product string from answer, i.e.: win2003_server_4.0.3-1.opsi
+                # first separate product name: win2003_server
+                # it's complex, we have to find first occurence of "_" in front
+                # of a number (=major product version begin)
+                for line in result.splitlines():
+                    file = line.split("-@MD5@-")[1]
+
+                    md5 = line.split("-@MD5@-")[0]
+                    if md5.strip() == "":
+                        md5 = "(error accessing MD5 file)"
+                        self.logger.error("Error while accessing MD5 file for file: " + file)
+                        warnings = True
+
+                    product = file[:file.rfind("_")]
+                    version = (file[file.rfind("_")+1:file.rfind(".")]).split("-")
+
+                    if len(version) != 2:
+                        self.logger.error("Error in package filename: " + file)
+                        warnings = True
+
+                    try:
+                        prod_ver = version[0]
+                        pack_ver = version[1]
+                    except:
+                        prod_ver = "(unavail)"
+                        pack_ver = "(unavail)"
+
+                    tmplist.append(product + ";" + md5 + ";" + prod_ver + ";" + pack_ver + ";" + self._server)
+
+                if warnings:
+                    self.ret = ret
+                    self.rettype = oPB.MsgEnum.MS_WARN
+                    self.retmsg = translate("OpsiProcessing", "Error during command execution. Check Log for details.")
+
+                result = tmplist
+
+            except:
+                result = []
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETDEPOTS:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: GET DEPOTS" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            result = self._processAction(oPB.OPB_METHOD_GETDEPOTS, action, ret, cwd = False)
+
+            result = json.loads(result)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETPRODUCTSONDEPOTS:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: GET PRODUCTS ON DEPOTS" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            #result list: "productid;type;prod_ver;pack_ver;server"
+            result = self._processAction(oPB.OPB_METHOD_GETPRODUCTSONDEPOTS, action, ret, cwd = False)
+
+            result = json.loads(result)
 
         # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_DELETE:
+        if action == oPB.OpEnum.DO_DELETEFROMREPO:
             self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
 
             #result = self._processAction(cmd, action, ret)
@@ -460,27 +537,51 @@ class OpsiProcessing(QObject, LogMixin):
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_SETRIGHTS_REPO:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: SET RIGHTS ON REPO" + 20 * "-")
+            if ConfigHandler.cfg.age == "True":
+                cmd = oPB.OPB_SETRIGHTS_SUDO + " '" + oPB.REPO_PATH + "'"
+                if ConfigHandler.cfg.sudo == "True":
+                    cmd = "echo '" + ConfigHandler.cfg.opsi_pass + "' | sudo -s " + cmd
+                else:
+                    cmd = "sudo " + cmd
+            else:
+                self._sshuser = "root"
+                self._sshpass = ConfigHandler.cfg.root_pass
+                cmd = oPB.OPB_SETRIGHTS_NOSUDO + " '" + oPB.REPO_PATH + "'"
 
-            #result = self._processAction(cmd, action, ret)
+            result = self._processAction(cmd, action, ret, cwd = False)
+
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_PRODUPDATER:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_PRODUPDRUN
+            self.logger.ssh(20 * "-" + "ACTION: START OPSI PRODUCT UPDATER" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            cmd = ["sh", "-c", oPB.OPB_GETPRODUPD_PID]
+            result = self._processAction(cmd, action, ret, split = False, cwd = False)
+
+            if result.strip() == "":
+                cmd = ["nohup", oPB.OPB_PROD_UPDATER]
+                result = self._processAction(cmd, action, ret, split = False, cwd = False)
+            else:
+                self.ret = ret
+                self.rettype = oPB.MsgEnum.MS_ERR
+                self.retmsg = translate("OpsiProcessing", "opsi-product-updater is already running.")
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_REBOOT:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: REBOOT DEPOT" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            result = self._processAction(oPB.OPB_REBOOT, action, ret, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_POWEROFF:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: POWEROFF DEPOT" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            result = self._processAction(oPB.OPB_POWEROFF, action, ret, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_MD5:
@@ -534,7 +635,8 @@ class OpsiProcessing(QObject, LogMixin):
                             )
 
                         # Log standard out / but not for clients and products, too much!!!
-                        if action not in [oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS]:
+                        if action not in [oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS, oPB.OpEnum.DO_GETDEPOTS,
+                                          oPB.OpEnum.DO_GETCLIENTSONDEPOTS, oPB.OpEnum.DO_GETPRODUCTSONDEPOTS]:
                             out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
                             for line in out:
                                 line = self._obscurepass(line)
@@ -555,10 +657,19 @@ class OpsiProcessing(QObject, LogMixin):
 
                     except spur.NoSuchCommandError:
                         self.logger.error("Set return code to RET_SSHCMDERR")
+                        self.logger.error("Command not found. See Log for details: " + self._obscurepass((" ").join(cmd)))
                         self.ret = oPB.RET_SSHCMDERR
                         self.rettype = oPB.MsgEnum.MS_ERR
                         self.retmsg = translate("OpsiProcessing", "Command not found. See Log for details.")
                         return {}
+
+                    except spur.ssh.ConnectionError as error:
+                            self.logger.error(repr(error).replace("\\n"," --> "))
+                            self.logger.error("Set return code to RET_SSHCONNERR")
+                            self.ret = oPB.RET_SSHCONNERR
+                            self.rettype = oPB.MsgEnum.MS_ERR
+                            self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
+                            return {}
 
             except ConnectionError as error:
                     self.logger.error(repr(error).replace("\\n"," --> "))
@@ -669,7 +780,7 @@ class OpsiProcessing(QObject, LogMixin):
         if self._ip == None:
             local = self._get_local_ip()
             try:
-                remote = socket.gethostbyname(ConfigHandler.cfg.opsi_server)
+                remote = socket.gethostbyname(self._server)
                 if local == remote:
                     self._ip = '127.0.0.1'
                 else:

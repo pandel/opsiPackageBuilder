@@ -46,6 +46,9 @@ LogDialogUI, LogDialogBase = uic.loadUiType(os.path.join(path, 'log.ui'))
 UninstallDialogUI, UninstallDialogBase = uic.loadUiType(os.path.join(path, 'quickuninstall.ui'))
 JobListDialogUI, JobListDialogBase = uic.loadUiType(os.path.join(path, 'joblist.ui'))
 JobCreatorDialogUI, JobCreatorDialogBase = uic.loadUiType(os.path.join(path, 'jobcreator.ui'))
+BundleDialogUI, BundleDialogBase = uic.loadUiType(os.path.join(path, 'bundle.ui'))
+DeployAgentDialogUI, DeployAgentDialogBase = uic.loadUiType(os.path.join(path, 'deployagent.ui'))
+DepotManagerDialogUI, DepotManagerDialogBase = uic.loadUiType(os.path.join(path, 'depotmanager.ui'))
 
 """
 Example:

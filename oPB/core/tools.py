@@ -104,7 +104,7 @@ class Helper(LogMixin):
         :param text: text with templates
         :return: display text
         """
-        text = text.replace("@TAB", "&emsp;")
+        text = text.replace("@TAB", "&nbsp;&nbsp;&nbsp;&nbsp;")
         text = text.replace("@", "<br>")
         return text
 
@@ -332,9 +332,9 @@ class CommandLine(object):
         self._parser.add_argument("--log", "-l", action="store", nargs="?", const = str(logpath),
                                   dest="log_file", help="Write logfile (optional: specify logfile name)")
 
-        self._parser.add_argument("--log-level", action="store", default='ERROR',
-                                  choices=["SSH", "CRITICAL", "ERROR", "WARNING", "SSHINFO", "INFO", "DEBUG"],
-                                  dest="log_level", help="Specify log level (Standard: ERROR)")
+        self._parser.add_argument("--log-level", action="store", default='CRITICAL',
+                                  choices=["CRITICAL", "ERROR", "SSH", "WARNING", "SSHINFO", "INFO", "DEBUG"],
+                                  dest="log_level", help="Specify log level (Standard: CRITICAL)")
 
         # self._parser.add_argument("--debug", "-d", action="store_true", default = argparse.SUPPRESS,
         #                          dest="nonetdrive", help="Write additional debug output (can create very much text!!)")

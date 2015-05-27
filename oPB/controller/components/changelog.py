@@ -41,7 +41,7 @@ from oPB.core.confighandler import ConfigHandler
 translate = QtCore.QCoreApplication.translate
 
 
-class ChangelogController(QObject, LogMixin):
+class ChangelogEditorComponent(QObject, LogMixin):
 
     modelDataUpdated = pyqtSignal()    # send after model or backend data has been updated
     changelogClosed = pyqtSignal()    # send after model or backend data has been updated

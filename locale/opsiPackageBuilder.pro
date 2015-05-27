@@ -1,5 +1,8 @@
+FORMS += ..\oPB\ui\bundle.ui
 FORMS += ..\oPB\ui\changelogeditorextended.ui
 FORMS += ..\oPB\ui\changelogeditorsimple.ui
+FORMS += ..\oPB\ui\deployagent.ui
+FORMS += ..\oPB\ui\depotmanager.ui
 FORMS += ..\oPB\ui\jobcreator.ui
 FORMS += ..\oPB\ui\joblist.ui
 FORMS += ..\oPB\ui\log.ui
@@ -20,8 +23,10 @@ SOURCES += ..\oPB\controller\console.py
 SOURCES += ..\oPB\controller\main.py
 SOURCES += ..\oPB\controller\settings.py
 
-SOURCES += ..\oPB\controller\components\__init.py
+SOURCES += ..\oPB\controller\components\__init__.py
 SOURCES += ..\oPB\controller\components\changelog.py
+SOURCES += ..\oPB\controller\components\deployagent.py
+SOURCES += ..\oPB\controller\components\depotmanager.py
 SOURCES += ..\oPB\controller\components\quickuninstall.py
 SOURCES += ..\oPB\controller\components\scheduler.py
 
@@ -36,6 +41,8 @@ SOURCES += ..\oPB\core\tools.py
 
 SOURCES += ..\oPB\gui\__init__.py
 SOURCES += ..\oPB\gui\changelog.py
+SOURCES += ..\oPB\gui\deployagent.py
+SOURCES += ..\oPB\gui\depotmanager.py
 SOURCES += ..\oPB\gui\logging.py
 SOURCES += ..\oPB\gui\mainwindow.py
 SOURCES += ..\oPB\gui\quickuninstall.py
@@ -47,4 +54,4 @@ SOURCES += ..\oPB\gui\startup.py
 SOURCES += ..\oPB\ui\__init__.py
 SOURCES += ..\oPB\ui\ui.py
 
-TRANSLATIONS = opsiPackageBuilder_de.ts
+TRANSLATIONS = opsiPackageBuilder_de.ts opsiPackageBuilder_en.ts
