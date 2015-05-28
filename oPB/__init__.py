@@ -68,6 +68,15 @@ OPB_GREEN = '#c4df9b' # green
 OPB_YELLOW = '#fff79a' # yellow
 OPB_RED = '#f6989d' # red
 OPB_COLOR_ERROR = Qt.red
+OPB_LOG_COLORS =  {
+            "DEBUG": Qt.darkGreen,
+            "INFO": Qt.black,
+            "WARNING": Qt.darkYellow,
+            "ERROR": Qt.darkRed,
+            "CRITICAL": Qt.red,
+            "SSH": Qt.darkBlue,
+            "SSHINFO": Qt.blue
+        }
 
 # validator regex
 OPB_PROPERTY_REGEX_NEW = "^[a-zA-Z0-9-_]{1,128}"

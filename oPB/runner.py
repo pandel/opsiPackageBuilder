@@ -156,6 +156,9 @@ class Main(QObject):
 
         self.install_translations()
 
+        # retranslate logWindow, as it is loaded bfore the translations
+        self.logWindow.retranslateUi(self.logWindow)
+
         self.check_online_status()
 
         # -----------------------------------------------------------------------------------------
@@ -324,6 +327,8 @@ class Main(QObject):
         if not self.args.nogui:
             # output standard msg into dialog tab "Logging"
             self.dialogHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editLog, self)
+            self.dialogHandler.colors = oPB.OPB_LOG_COLORS
+            self.dialogHandler.colorize = True
             self.set_log_level(self._log_level, self.dialogHandler)
             self.dialogHandler.setFormatter(format)
 

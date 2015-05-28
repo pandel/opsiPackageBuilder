@@ -17,21 +17,24 @@
    <iconset>
     <normaloff>:/text-plain</normaloff>:/text-plain</iconset>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="spacing">
-    <number>15</number>
+    <number>10</number>
    </property>
    <property name="leftMargin">
-    <number>10</number>
+    <number>5</number>
    </property>
    <property name="topMargin">
-    <number>10</number>
+    <number>5</number>
    </property>
    <property name="rightMargin">
-    <number>10</number>
+    <number>5</number>
    </property>
    <property name="bottomMargin">
-    <number>10</number>
+    <number>5</number>
    </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
@@ -59,11 +62,20 @@
         <number>7</number>
        </property>
        <item>
-        <widget class="QPlainTextEdit" name="editSSH">
+        <widget class="QTextEdit" name="editSSH">
          <property name="styleSheet">
           <string notr="true">font: 8pt &quot;Courier New&quot;;
 color: white;
 background-color: black;</string>
+         </property>
+         <property name="lineWrapMode">
+          <enum>QTextEdit::NoWrap</enum>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
          </property>
         </widget>
        </item>
@@ -111,15 +123,20 @@ background-color: black;</string>
         <number>7</number>
        </property>
        <item>
-        <widget class="QPlainTextEdit" name="editLog">
+        <widget class="QTextEdit" name="editLog">
          <property name="styleSheet">
-          <string notr="true">font: 8pt &quot;Courier New&quot;;</string>
+          <string notr="true">font: 8pt &quot;Courier New&quot;;
+color: black;
+background-color: white;</string>
          </property>
          <property name="lineWrapMode">
-          <enum>QPlainTextEdit::NoWrap</enum>
+          <enum>QTextEdit::NoWrap</enum>
          </property>
          <property name="readOnly">
           <bool>true</bool>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
          </property>
         </widget>
        </item>
@@ -348,22 +365,6 @@ background-color: black;</string>
    </hints>
   </connection>
   <connection>
-   <sender>btnClearLog</sender>
-   <signal>clicked()</signal>
-   <receiver>editLog</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>51</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>86</x>
-     <y>374</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btnClearConsole</sender>
    <signal>clicked()</signal>
    <receiver>editOutput</receiver>
@@ -376,22 +377,6 @@ background-color: black;</string>
     <hint type="destinationlabel">
      <x>84</x>
      <y>357</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnClearSSH</sender>
-   <signal>clicked()</signal>
-   <receiver>editSSH</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>57</x>
-     <y>476</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>523</x>
-     <y>248</y>
     </hint>
    </hints>
   </connection>

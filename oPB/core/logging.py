@@ -55,6 +55,17 @@ class LogStreamHandler(logging.Handler):
         self.textWidget = parent
         self.formatter = logging.Formatter("%(message)s")
 
+        self.colorize = False
+        self.colors = {
+            "DEBUG": Qt.darkGreen,
+            "INFO": Qt.black,
+            "WARNING": Qt.darkYellow,
+            "ERROR": Qt.darkRed,
+            "CRITICAL": Qt.red
+        }
+
+        self.standardtc = self.textWidget.textColor()
+
     def setFormatter(self,  format):
         self.formatter = format
 
@@ -67,8 +78,14 @@ class LogStreamHandler(logging.Handler):
     def release(self):
         self.mutex.unlock()
 
-    def emit(self,record):
-        self.textWidget.appendPlainText(self.formatter.format(record))
+    def emit(self, record):
+
+        if self.colorize:
+            for level in self.colors:
+                if record.levelname == level:
+                    self.textWidget.setTextColor(self.colors[level])
+
+        self.textWidget.insertPlainText(self.formatter.format(record) + "\n")
         self.textWidget.moveCursor(QTextCursor.End)
         self.textWidget.moveCursor(QTextCursor.StartOfLine)
         self.textWidget.ensureCursorVisible()
