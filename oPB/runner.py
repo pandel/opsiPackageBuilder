@@ -36,6 +36,7 @@ import logging
 import tempfile
 import traceback
 import pathlib
+import platform
 from logging import setLoggerClass
 from io import StringIO
 
@@ -126,7 +127,10 @@ class Main(QObject):
 
         if self._log_file is not None:
             if not pathlib.Path(self._log_file).is_absolute():
-                self._log_file = str(pathlib.PurePath(oPB.TMP_PATH, self._log_file))
+                if platform.system() == "Windows":
+                    self._log_file = str(pathlib.PurePath(oPB.WIN_TMP_PATH, self._log_file))
+                if platform.system() in ["Darwin", "Linux"]:
+                    self._log_file = str(pathlib.PurePath(oPB.UNIX_TMP_PATH, self._log_file))
 
         # Initialize the logger
         self.logWindow =  oPB.gui.logging.LogDialog(None, self, self._log_level)
@@ -327,7 +331,7 @@ class Main(QObject):
 
             # Create special SSH output log facility, put this into tab "SSH Output"
             self.sshHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editSSH, self)
-            self.set_log_level("SSH", self.sshHandler)
+            self.set_log_level("SSHINFO", self.sshHandler)
             sshformat = logging.Formatter(oPB.LOG_SSH, oPB.LOG_DATETIME)
             self.sshHandler.setFormatter(sshformat)
 

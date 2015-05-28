@@ -88,3 +88,7 @@ QPushButton[dispState="green"] {
 QPushButton[dispState="blue"] {
     color: rgb(0, 0, 255);
 }
+
+.warning {
+	color: rgb(255, 0, 0);
+}

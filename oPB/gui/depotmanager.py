@@ -11,7 +11,7 @@ restriction, including without limitation the rights to use,
 copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software
 is furnished to do so, subject to the following conditions:
-
+pyqt qstandarditem setdata
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -28,14 +28,14 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.Qt import QKeyEvent
+
 import oPB
 from oPB.core.tools import LogMixin
 from oPB.core.confighandler import ConfigHandler
 from oPB.ui.ui import DepotManagerDialogBase, DepotManagerDialogUI
-from oPB.gui.mainwindow import Splash
-
+from oPB.gui.splash import Splash
 
 translate = QtCore.QCoreApplication.translate
 
@@ -56,7 +56,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
 
         print("gui/UninstallDialog parent: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
-        self.splash = Splash(self, translate("MainWindow", "Please wait..."), True)
+        self.splash = Splash(self, translate("MainWindow", "Please wait..."))
 
         self.model_left = None
         self.model_right = None
@@ -85,13 +85,13 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self.btnCompare.clicked.connect(self.compare_sides)
         self.btnShowLog.clicked.connect(self._parentUi.showLogRequested)
         self.btnReport.clicked.connect(self._parent.report)
-        self.btnInstall.clicked.connect(self._parentUi.quickinstall)
+        self.btnInstall.clicked.connect(self._parent.install)
         self.btnUninstall.clicked.connect(self.remove_delegate)
         self.btnUpload.clicked.connect(self._parentUi.upload)
         self.btnUnregister.clicked.connect(self._parent.unregister_depot)
         self.btnSetRights.clicked.connect(self._parent.set_rights)
         self.btnRunProdUpdater.clicked.connect(self._parent.run_product_updater)
-        self.btnGenMD5.clicked.connect(self._parent.generate_md5)
+        self.btnGenMD5.clicked.connect(self.generate_md5)
         self.btnOnlineCheck.clicked.connect(self._parent.onlinecheck)
         self.btnReboot.clicked.connect(self._parent.reboot_depot)
         self.btnPoweroff.clicked.connect(self._parent.poweroff_depot)
@@ -309,13 +309,71 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
 
     def remove_delegate(self):
         if self._parent._active_side == "left":
+            depot = self.cmbDepotLeft.currentText().split()[0]
+            selection = self.tblDepotLeft.selectionModel().selectedRows()
+            prodIdx = []
+
             if self._parent._type_left == "depot":
-                self._parent.remove_from_depot()
+                for row in selection:
+                    prodIdx.append(self.model_left.item(row.row(), 0).text())
+                self._parent.remove_from_depot(depot, prodIdx)
+
             else:
-                self._parent.delete_from_repo()
+                for row in selection:
+                    prodIdx.append(self.model_left.item(row.row(), 0).text() + "_" + self.model_left.item(row.row(), 1).text() + "-" +
+                                   self.model_left.item(row.row(),2).text())
+                self._parent.delete_from_repo(depot, prodIdx)
 
         if self._parent._active_side == "right":
+            depot = self.cmbDepotLeft.currentText().split()[0]
+            selection = self.tblDepotRight.selectionModel().selectedRows()
+            prodIdx = []
+
             if self._parent._type_right == "depot":
-                self._parentUi.remove_from_depot()
+                for row in selection:
+                    prodIdx.append(self.model_right.item(row.row(), 0).text())
+                self._parentUi.remove_from_depot(depot, prodIdx)
+
             else:
-                self._parent.delete_from_repo()
+                for row in selection:
+                    prodIdx.append(self.model_right.item(row.row(), 0).text() + "_" + self.model_right.item(row.row(), 1).text() + "-" +
+                                   self.model_right.item(row.row(),2).text())
+                self._parent.delete_from_repo(depot, prodIdx)
+
+    def generate_md5(self):
+        if self._parent._active_side == "left":
+            depot = self.cmbDepotLeft.currentText().split()[0]
+            selection = self.tblDepotLeft.selectionModel().selectedRows()
+            prodIdx = []
+
+            if self._parent._type_left == "repo":
+                for row in selection:
+                    prodIdx.append(self.model_left.item(row.row(), 0).text() + "_" + self.model_left.item(row.row(), 1).text() + "-" +
+                                   self.model_left.item(row.row(),2).text())
+                self._parent.generate_md5(depot, prodIdx)
+
+        if self._parent._active_side == "right":
+            depot = self.cmbDepotLeft.currentText().split()[0]
+            selection = self.tblDepotRight.selectionModel().selectedRows()
+            prodIdx = []
+
+            if self._parent._type_right == "repo":
+                for row in selection:
+                    prodIdx.append(self.model_right.item(row.row(), 0).text() + "_" + self.model_right.item(row.row(), 1).text() + "-" +
+                                   self.model_right.item(row.row(),2).text())
+                self._parent.generate_md5(depot, prodIdx)
+
+"""
+class TableRowItem(QtGui.QStandardItem):
+    def __init__(self, *args):
+        super(QtGui.QStandardItem, self).__init__(*args)
+
+    def data(self, role=QtCore.Qt.DisplayRole):
+        if role == QtCore.Qt.ForegroundRole:
+            text = QtGui.QStandardItem.data(self, QtCore.Qt.DisplayRole)
+            if "LOCALBOOT" in text.upper():
+                print(text)
+                return QtGui.QBrush(QtGui.QColor(oPB.OPB_RED))
+
+        return QtGui.QStandardItem.data(self, role)
+"""

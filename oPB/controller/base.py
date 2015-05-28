@@ -264,12 +264,12 @@ class BaseController(LogMixin):
         self._do(oPB.OpEnum.DO_INSTALL, translate("baseController", "Installation running..."))
 
     @pyqtSlot()
-    def do_quickinstall(self, param):
-        self._do(oPB.OpEnum.DO_QUICKINST, translate("baseController", "Installation running..."), packagefile=param)
+    def do_quickinstall(self, dest = "", pack = ""):
+        self._do(oPB.OpEnum.DO_QUICKINST, translate("baseController", "Installation running..."), alt_destination = dest, packagefile=pack)
 
     @pyqtSlot()
-    def do_quickuninstall(self, param):
-        self._do(oPB.OpEnum.DO_QUICKUNINST, translate("baseController", "Deinstallation running..."), productlist=param)
+    def do_quickuninstall(self, dest = "", packs = []):
+        self._do(oPB.OpEnum.DO_QUICKUNINST, translate("baseController", "Deinstallation running..."), alt_destination = dest, productlist=packs)
 
     @pyqtSlot()
     def do_upload(self, param):
@@ -288,6 +288,10 @@ class BaseController(LogMixin):
         self._do(oPB.OpEnum.DO_SETRIGHTS, translate("baseController", "Setting package rights on:") + " " + self.controlData.path_on_server)
 
     @pyqtSlot()
+    def do_setrights_on_repo(self, param):
+        self._do(oPB.OpEnum.DO_SETRIGHTS_REPO, translate("baseController", "Setting package rights on:") + " " + oPB.REPO_PATH, alt_destination = param)
+
+    @pyqtSlot()
     def do_getclients(self):
         BaseController.clientlist_dict = self._do(oPB.OpEnum.DO_GETCLIENTS, translate("baseController", "Getting opsi client list..."))
         self.dataRequested.emit()
@@ -304,7 +308,7 @@ class BaseController(LogMixin):
 
     @pyqtSlot()
     def do_getjobs(self):
-        BaseController.joblist = self._do(oPB.OpEnum.DO_GETJOBS, translate("baseController", "Getting AT job list..."))
+        BaseController.joblist = self._do(oPB.OpEnum.DO_GETATJOBS, translate("baseController", "Getting AT job list..."))
         self.dataRequested.emit()
 
     @pyqtSlot()
@@ -332,8 +336,9 @@ class BaseController(LogMixin):
         self.dataRequested.emit()
 
     @pyqtSlot()
-    def do_createjobs(self, **param):
-        self._do(oPB.OpEnum.DO_CREATEJOBS, translate("baseController", "Create AT jobs..."), **param)
+    def do_createjobs(self, clIdx, prodIdx, action, dateVal, timeVal, od, wol):
+        self._do(oPB.OpEnum.DO_CREATEJOBS, translate("baseController", "Create AT jobs..."), clients = clIdx, products = prodIdx, ataction = action,
+                 dateVal = dateVal, timeVal = timeVal, on_demand = od, wol = wol)
         self.dataRequested.emit()
 
     @pyqtSlot()
@@ -353,6 +358,18 @@ class BaseController(LogMixin):
     @pyqtSlot()
     def do_runproductupdater(self, param):
         self._do(oPB.OpEnum.DO_PRODUPDATER, translate("baseController", "Run opsi-product-updater..."), alt_destination = param)
+
+    @pyqtSlot()
+    def do_deletefilefromrepo(self, dest, packs):
+        self._do(oPB.OpEnum.DO_DELETEFILEFROMREPO, translate("baseController", "Remove package from repository: "), alt_destination = dest, packages = packs)
+
+    @pyqtSlot()
+    def do_generate_md5(self, dest, packs):
+        self._do(oPB.OpEnum.DO_GENMD5, translate("baseController", "Generate MD5 checksums: "), alt_destination = dest, packages = packs)
+
+    @pyqtSlot()
+    def do_unregisterdepot(self, param):
+        self._do(oPB.OpEnum.DO_UNREGISTERDEPOT, translate("baseController", "Remove depot registration from config server..."), depot = param)
 
     def run_command_line(self):
         """Process project action via command line"""

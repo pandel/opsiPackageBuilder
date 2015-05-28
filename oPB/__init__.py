@@ -32,6 +32,7 @@ import os
 import tempfile
 from enum import Enum
 from pathlib import PurePath
+from PyQt5.QtCore import Qt
 
 # simple print object relationship besides normal logging
 # for object hierarchy debugging
@@ -59,12 +60,14 @@ CONFIG_INI = str(PurePath(CONFIG_PATH,"config-new.ini"))
 # base folders
 DEV_BASE = "/home/opsiproducts"
 REPO_PATH = "/var/lib/opsi/repository"
-TMP_PATH = tempfile.gettempdir()
+WIN_TMP_PATH = tempfile.gettempdir()
+UNIX_TMP_PATH = "/tmp"
 
 # some constants
 OPB_GREEN = '#c4df9b' # green
 OPB_YELLOW = '#fff79a' # yellow
 OPB_RED = '#f6989d' # red
+OPB_COLOR_ERROR = Qt.red
 
 # validator regex
 OPB_PROPERTY_REGEX_NEW = "^[a-zA-Z0-9-_]{1,128}"
@@ -91,6 +94,7 @@ OPB_METHOD_GETPRODUCTS = "opsi-admin -r -d method product_getHashes"
 OPB_METHOD_GETCLIENTS = "opsi-admin -d method host_getHashes '[]' '{" + '"type":"OpsiClient"}' + "'"
 OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with behind: '["***REMOVED***1hp.sd8106.***REMOVED***"]'
 OPB_METHOD_GETPRODUCTSONDEPOTS = "opsi-admin -d method productOnDepot_getIdents"
+OPB_METHOD_UNREGISTERDEPOT = "opsi-admin -d method host_delete"
 
 OPB_AT_QUEUE = "atq -q D"
 OPB_AT_JOB_DETAIL = "atq -q D | cut -f1 | xargs at -q D -c | grep opsi-admin"
@@ -100,11 +104,16 @@ OPB_AT_REMOVE_ALL = "atrm $(atq -q D | cut -f 1)"
 OPB_SETRIGHTS_NOSUDO = "opsi-setup --set-rights"
 OPB_SETRIGHTS_SUDO = "opsi-set-rights"
 OPB_GETPRODUPD_PID = "VAR=$(pidof -x opsi-product-updater); echo $VAR"
+OPB_PRECHECK_MD5 = "md5deep -h"
 # create MD5 file for packet; set in front: 'PACKETS=\"xca_0.9.3-1.opsi\";'
-OPB_CALC_MD5 = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do MD5=\"`md5deep $PACKETPATH/$p 2>/dev/null | cut -d \" \" -f 1`\"; echo -n "$MD5 >/$PACKETPATH/$p.md5"; done'
+OPB_CALC_MD5 = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do MD5=\"`md5deep $PACKETPATH/$p.opsi 2>/dev/null | cut -d \" \" -f 1`\"; echo -n $MD5 >$PACKETPATH/$p.opsi.md5; done'
 # get all products from repository directory incl. MD5
 OPB_GETREPOCONTENT = 'PACKETPATH="' + REPO_PATH + '"; PACKETS=\"`ls $PACKETPATH/*.opsi 2>/dev/null | cut -d "/" -f 6`\"; ' \
                        'for p in $PACKETS; do MD5=\"`cat $PACKETPATH/$p.md5 2>/dev/null`\"; echo $MD5-@MD5@-$p; done'
+# remove files from repository; set in front: 'PACKETS=\"xca_0.9.3-1\";'
+OPB_DEPOT_FILE_REMOVE = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do ' \
+                            'rm -v -f $PACKETPATH/$p.opsi; rm -v -f $PACKETPATH/$p.opsi.md5; rm -v -f $PACKETPATH/$p.opsi.zsync; done'
+
 OPB_REBOOT = "shutdown -r now"
 OPB_POWEROFF = "shutdown -h now"
 
@@ -133,22 +142,16 @@ BASE_FOLDERS = ["OPSI", "CLIENT_DATA"]
 # Constants for _msg() - message type
 MsgEnum = Enum("MsgEnum", "MS_ERR MS_WARN MS_INFO MS_STAT MS_ALWAYS MS_PARSE MS_QUEST_YESNO MS_QUEST_CTC MS_QUEST_OKCANCEL MS_QUEST_PHRASE MS_QUEST_PASS")
 
-# output type: MsgBox, Console, Nothing
-OutEnum = Enum("OutEnum", "MS_IO_BOX MS_IO_CONSOLE MS_IO_NONE")
-
 # Constants for _updater()
 UpdEnum = Enum("UpdEnum", "UP_MANU UP_AUTO")
 
 # command line build modes
 BModEnum = Enum("BModEnum", "BD_CANCEL BD_REBUILD BD_NEW BD_INTERACTIVE")
 
-# Constants for _validateContent()
-ValidEnum = Enum("ValidEnum", "FD_ASCII FD_RESTRICTED_32 FD_RESTRICTED_128 FD_ALPHA FD_ALPHAPLUS FD_FQDN FD_EMPTY")
-
 # Constants for opsi operations
-OpEnum = Enum("OpEnum", "DO_BUILD DO_INSTALL DO_UNINSTALL DO_SETRIGHTS DO_GETCLIENTS DO_GETPRODUCTS DO_CREATEJOBS DO_DELETEJOBS DO_GETJOBS "
+OpEnum = Enum("OpEnum", "DO_BUILD DO_INSTALL DO_UNINSTALL DO_SETRIGHTS DO_GETCLIENTS DO_GETPRODUCTS DO_CREATEJOBS DO_DELETEJOBS DO_GETATJOBS "
                         "DO_DELETEALLJOBS DO_GETREPOCONTENT DO_GETDEPOTS DO_GETPRODUCTSONDEPOTS DO_QUICKINST DO_QUICKUNINST DO_INSTSETUP DO_UPLOAD "
-                        "DO_DELETEFROMREPO DO_REMOVEDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_MD5 DO_GETCLIENTSONDEPOTS")
+                        "DO_DELETEFILEFROMREPO DO_UNREGISTERDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_GENMD5 DO_GETCLIENTSONDEPOTS")
 
 # return codes
 RET_OK = 0            # Err  0: OK

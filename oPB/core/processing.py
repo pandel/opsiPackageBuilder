@@ -131,7 +131,7 @@ class OpsiProcessing(QObject, LogMixin):
             self.logger.sshinfo("Path on server: " + self.control.path_on_server + "/" + self.control.packagename)
 
         # temporary file path for copy operations
-        tmppath = oPB.TMP_PATH
+        tmppath = oPB.UNIX_TMP_PATH
 
         result = []
 
@@ -204,7 +204,7 @@ class OpsiProcessing(QObject, LogMixin):
             if ConfigHandler.cfg.age == "True":
                 cmd = oPB.OPB_SETRIGHTS_SUDO + " '" + self.control.path_on_server + "'"
                 if ConfigHandler.cfg.sudo == "True":
-                    cmd = "echo '" + ConfigHandler.cfg.opsi_pass + "' | sudo -s " + cmd
+                    cmd = "echo '" + ConfigHandler.cfg.opsi_pass + "' | sudo -S " + cmd
                 else:
                     cmd = "sudo " + cmd
             else:
@@ -212,6 +212,7 @@ class OpsiProcessing(QObject, LogMixin):
                 self._sshpass = ConfigHandler.cfg.root_pass
                 cmd = oPB.OPB_SETRIGHTS_NOSUDO + " '" + self.control.path_on_server + "'"
 
+            cmd = ["sh", "-c", cmd]
             result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
@@ -316,7 +317,7 @@ class OpsiProcessing(QObject, LogMixin):
                 result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_GETJOBS:
+        if action == oPB.OpEnum.DO_GETATJOBS:
             ret = oPB.RET_SSHCMDERR
             self.logger.ssh(20 * "-" + "ACTION: GET AT JOBS" + 20 * "-")
 
@@ -328,7 +329,7 @@ class OpsiProcessing(QObject, LogMixin):
                 # fetch job ids
                 result = self._processAction(cmd_queue, action, ret, cwd = False)
                 # returns lines like this: ['9975', '22 May 2015', '20:11:00', 'opsiadm']
-                jobids = ([[str(e[3]) + " " + e[2] + " " + str(e[5]), e[4], e[0], e[7]] for e in (line.split() for line in result.splitlines())])
+                jobids = ([[str(e[3]) + " " + e[2] + " " + str(e[5]), e[4], int(e[0]), e[7]] for e in (line.split() for line in result.splitlines())])
 
                 if jobids:
                     # the following block result in a jobaction list like so:
@@ -366,7 +367,7 @@ class OpsiProcessing(QObject, LogMixin):
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_CREATEJOBS:
             ret = oPB.RET_SSHCMDERR
-            #clients = clIdx, products = prodIdx, action = action, date = date, time = time, on_demand = od, wol = wol
+            #clients = clIdx, products = prodIdx, ataction = action, dateVal = date, timeVal = time, on_demand = od, wol = wol
             clients = kwargs.get("clients", [])
             products = kwargs.get("products", [])
             ataction = kwargs.get("ataction", "")
@@ -391,7 +392,8 @@ class OpsiProcessing(QObject, LogMixin):
                 except:
                     wcfg = 0
                 woltime_full = datetime.datetime(100,1,1,int(timeVal[:2]),int(timeVal[2:])) - datetime.timedelta(minutes=wcfg)
-                woltime = str(woltime_full.hour) + str(woltime_full.minute)
+                woltime = (str(woltime_full.hour) if len(str(woltime_full.hour)) == 2 else '0' + str(woltime_full.hour)) + \
+                          (str(woltime_full.minute) if len(str(woltime_full.minute)) == 2 else '0' + str(woltime_full.minute))
 
             f = None
             if clients:
@@ -449,8 +451,6 @@ class OpsiProcessing(QObject, LogMixin):
 
             cmd = ["sh", "-c", oPB.OPB_GETREPOCONTENT]
 
-            warnings = False
-
             # returns list
             # line like: 6eaedc322b4de839338f8855351c6024-@MD5@-7zip_9.22-1.opsi
             result = self._processAction(cmd, action, ret, split = False, cwd = False)
@@ -465,20 +465,28 @@ class OpsiProcessing(QObject, LogMixin):
                 # it's complex, we have to find first occurence of "_" in front
                 # of a number (=major product version begin)
                 for line in result.splitlines():
+                    errstring = "Error "
                     file = line.split("-@MD5@-")[1]
-
                     md5 = line.split("-@MD5@-")[0]
-                    if md5.strip() == "":
-                        md5 = "(error accessing MD5 file)"
-                        self.logger.error("Error while accessing MD5 file for file: " + file)
-                        warnings = True
 
                     product = file[:file.rfind("_")]
                     version = (file[file.rfind("_")+1:file.rfind(".")]).split("-")
 
+                    if md5.strip() == "":
+                        errstring += " / MD5 file unaccessible"
+                        self.logger.error("Error while accessing MD5 file for file: " + file)
+                        self.logger.error("You have to generate MD5 file or set rights on repository folder." + file)
+                        warn_md5 = True
+                    else:
+                        warn_md5 = False
+
                     if len(version) != 2:
+                        errstring += "incorrect version data"
                         self.logger.error("Error in package filename: " + file)
-                        warnings = True
+                        self.logger.error("Version numbering scheme is wrong." + file)
+                        warn_ver = True
+                    else:
+                        warn_ver = False
 
                     try:
                         prod_ver = version[0]
@@ -487,12 +495,15 @@ class OpsiProcessing(QObject, LogMixin):
                         prod_ver = "(unavail)"
                         pack_ver = "(unavail)"
 
-                    tmplist.append(product + ";" + md5 + ";" + prod_ver + ";" + pack_ver + ";" + self._server)
+                    if warn_ver or warn_md5:
+                        tmplist.append(product + ";" + errstring + ";" + prod_ver + ";" + pack_ver + ";" + self._server)
+                    else:
+                        tmplist.append(product + ";" + md5 + ";" + prod_ver + ";" + pack_ver + ";" + self._server)
 
-                if warnings:
-                    self.ret = ret
-                    self.rettype = oPB.MsgEnum.MS_WARN
-                    self.retmsg = translate("OpsiProcessing", "Error during command execution. Check Log for details.")
+                    if warn_ver or warn_md5:
+                        self.ret = ret
+                        self.rettype = oPB.MsgEnum.MS_INFO
+                        self.retmsg = translate("OpsiProcessing", "Error during command execution. Check Log for details.")
 
                 result = tmplist
 
@@ -518,16 +529,29 @@ class OpsiProcessing(QObject, LogMixin):
             result = json.loads(result)
 
         # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_DELETEFROMREPO:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+        if action == oPB.OpEnum.DO_DELETEFILEFROMREPO:
+            ret = oPB.RET_SSHCMDERR
+            packages = kwargs.get("packages", [])
+            self.logger.ssh(20 * "-" + "ACTION: DELETE FILE(S) FROM REPOSITORY" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            if packages:
+                packstring = (" ").join(packages)
+                cmd = ["sh", "-c", "PACKETS=\"" + packstring + "\"; " + oPB.OPB_DEPOT_FILE_REMOVE]
+                result = self._processAction(cmd, action, ret, split = False, cwd = False)
+            else:
+                result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_REMOVEDEPOT:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+        if action == oPB.OpEnum.DO_UNREGISTERDEPOT:
+            ret = oPB.RET_SSHCMDERR
+            depot = kwargs.get("depot", "")
+            self.logger.ssh(20 * "-" + "ACTION: UNREGISTER DEPOT AT CONFIG SERVER" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            if depot:
+                cmd = oPB.OPB_METHOD_UNREGISTERDEPOT + " " + depot
+                result = self._processAction(cmd, action, ret, cwd = False)
+            else:
+                result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DEPLOY:
@@ -542,7 +566,7 @@ class OpsiProcessing(QObject, LogMixin):
             if ConfigHandler.cfg.age == "True":
                 cmd = oPB.OPB_SETRIGHTS_SUDO + " '" + oPB.REPO_PATH + "'"
                 if ConfigHandler.cfg.sudo == "True":
-                    cmd = "echo '" + ConfigHandler.cfg.opsi_pass + "' | sudo -s " + cmd
+                    cmd = "echo '" + ConfigHandler.cfg.opsi_pass + "' | sudo -S " + cmd
                 else:
                     cmd = "sudo " + cmd
             else:
@@ -550,8 +574,8 @@ class OpsiProcessing(QObject, LogMixin):
                 self._sshpass = ConfigHandler.cfg.root_pass
                 cmd = oPB.OPB_SETRIGHTS_NOSUDO + " '" + oPB.REPO_PATH + "'"
 
-            result = self._processAction(cmd, action, ret, cwd = False)
-
+            cmd = ["sh", "-c", cmd]
+            result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_PRODUPDATER:
@@ -584,10 +608,17 @@ class OpsiProcessing(QObject, LogMixin):
             result = self._processAction(oPB.OPB_POWEROFF, action, ret, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
-        if action == oPB.OpEnum.DO_MD5:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+        if action == oPB.OpEnum.DO_GENMD5:
+            ret = oPB.RET_SSHCMDERR
+            packages = kwargs.get("packages", [])
+            self.logger.ssh(20 * "-" + "ACTION: GENERATE MD5 CHECKSUMS" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            if packages:
+                result = self._processAction(oPB.OPB_PRECHECK_MD5, action, ret, cwd = False)
+                if result != {}:
+                    packstring = (" ").join(packages)
+                    cmd = ["sh", "-c", "PACKETS=\"" + packstring + "\"; " + oPB.OPB_CALC_MD5]
+                    result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
         # return
         return self.ret, self.rettype, self.retmsg, result
@@ -636,7 +667,8 @@ class OpsiProcessing(QObject, LogMixin):
 
                         # Log standard out / but not for clients and products, too much!!!
                         if action not in [oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS, oPB.OpEnum.DO_GETDEPOTS,
-                                          oPB.OpEnum.DO_GETCLIENTSONDEPOTS, oPB.OpEnum.DO_GETPRODUCTSONDEPOTS]:
+                                          oPB.OpEnum.DO_GETCLIENTSONDEPOTS, oPB.OpEnum.DO_GETPRODUCTSONDEPOTS,
+                                          oPB.OpEnum.DO_CREATEJOBS, oPB.OpEnum.DO_GETATJOBS, oPB.OpEnum.DO_GETREPOCONTENT]:
                             out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
                             for line in out:
                                 line = self._obscurepass(line)
@@ -735,6 +767,7 @@ class OpsiProcessing(QObject, LogMixin):
 
         :param localfile: local file name
         :param remotefile: destination file name
+        :param localopen: specify, if local file is already opened or not
         """
         self.logger.debug("Copying file: %s (local) to %s (remote)", localfile, remotefile)
         try:

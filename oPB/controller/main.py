@@ -205,7 +205,7 @@ class MainWindowController(BaseController, QObject):
         self.logger.debug("Emit signal modelDataUpdated")
         self.modelDataUpdated.emit(0)
 
-    def update_table_model(self, model, data):
+    def update_table_model(self, model, data, itemclass = QtGui.QStandardItem):
         """
         Remove all rows from given tabel model and rebuild with new data
         from backend object.
@@ -231,7 +231,8 @@ class MainWindowController(BaseController, QObject):
             for val in elem:
                 if type(val) == list:
                     val = ', '.join(map(str, val))  # connect elements to a single comma-separated string
-                item = QtGui.QStandardItem(val)
+                item = itemclass()
+                item.setData(val, QtCore.Qt.DisplayRole)
                 item.setEditable(False)
                 row.append(item)
             model.appendRow(row)

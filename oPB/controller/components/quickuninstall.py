@@ -105,7 +105,7 @@ class QuickUninstallComponent(BaseController, QObject):
                 self.logger.debug("Selected product(s): " + str(prods))
                 self.ui.hide()
                 self._parent.ui.splash.show_()
-                self._parent.do_quickuninstall(prods)
+                self._parent.do_quickuninstall(packs = prods)
                 self.update_model_data()
                 self._parent.ui.splash.close()
                 self.ui.show()

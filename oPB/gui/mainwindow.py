@@ -41,6 +41,7 @@ from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
 from oPB.controller.settings import SettingsController
 from oPB.ui.ui import MainWindowBase, MainWindowUI
+from oPB.gui.splash import Splash
 
 translate = QtCore.QCoreApplication.translate
 
@@ -357,7 +358,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
             self._parent.startup.hide_me()
-            self._parent.do_quickinstall(script[0])
+            self._parent.do_quickinstall(pack = script[0])
             self._parent.startup.show_me()
         else:
             self.logger.debug("Dialog aborted.")
@@ -690,91 +691,3 @@ class ScriptFileValidator(QtGui.QValidator):
             return ScriptFileValidator.Acceptable, p_str, p_int
         else:
             return ScriptFileValidator.Invalid, p_str, p_int
-
-class Splash(LogMixin):
-    def __init__(self, parent, msg, withProgressbar = False):
-        self._parent = parent
-        self.isHidden = True
-        self._progress = 0
-
-        pixmap = QtGui.QPixmap(380, 100)
-        pixmap.fill(QtGui.QColor("darkgreen"))
-
-        self._splash = QSplashScreen(pixmap)
-        self._splash.setParent(self._parent)
-        self._splash.showMessage(msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
-
-        self._progressBar = None
-
-        if withProgressbar == True:
-            self.add_progressbar()
-
-    def add_progressbar(self):
-        self._progressBar = QProgressBar(self._splash)
-        self._progressBar.setGeometry(self._splash.width() / 10, 8 * self._splash.height() / 10,
-                               8 * self._splash.width() / 10, self._splash.height() / 10)
-
-    def setProgress(self, val: int):
-        if self.isHidden is True:
-            self.isHidden = False
-            self.show_()
-        self.progress = val
-        try:
-            self._progressBar.setValue(self.progress)
-        except:
-            pass
-
-    def incProgress(self, val: int):
-        if self.isHidden is True:
-            self.isHidden = False
-            self.show_()
-        self.progress = self.progress + val
-        try:
-            self.logger.debug("Set progress: " + str(self.progress))
-            self._progressBar.setValue(self.progress)
-        except:
-            pass
-
-    def setParent(self, parent):
-        self._parent = parent
-        self._splash.setParent(parent)
-
-    @pyqtSlot()
-    def close(self):
-        self.logger.debug("Hide splash, parent: " + str(self._parent))
-        self.isHidden = True
-        self._splash.close()
-
-    @pyqtSlot()
-    def show_(self):
-        self.logger.debug("Show splash, parent: " + str(self._parent))
-        try:
-            parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux
-        except:
-            parentUi = self._parent.childrenRect()  # need to use centralwidget for linux
-
-        mysize = self._splash.geometry()
-
-        hpos = parentUi.x() + ((parentUi.width() - mysize.width()) / 2)
-        vpos = parentUi.y() + ((parentUi.height() - mysize.height()) / 2)
-
-        self._splash.move(hpos, vpos)
-        self._splash.show()
-
-        qApp.processEvents()
-
-    @property
-    def progress(self):
-        return self._progress
-
-    @progress.setter
-    def progress(self, value):
-        # create new exception handling vor properties
-        # if (value != "True") and (value != "False"):
-        #    raise ValueError("describe exception")
-        if value > 100:
-            value = 0
-        if value < 0:
-            value = 0
-        self._progress = value
-

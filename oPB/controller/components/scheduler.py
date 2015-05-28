@@ -35,7 +35,7 @@ import oPB
 from oPB.core.confighandler import ConfigHandler
 from oPB.controller.base import BaseController
 from oPB.gui.scheduler import JobListDialog, JobCreatorDialog
-from oPB.gui.mainwindow import Splash
+from oPB.gui.splash import Splash
 
 translate = QtCore.QCoreApplication.translate
 
@@ -53,7 +53,7 @@ class SchedulerComponent(BaseController, QObject):
         self.ui_joblist = JobListDialog(self._parent.ui)
         self.ui_jobcreator = JobCreatorDialog(self._parent.ui)
 
-        self.splash = Splash(None, translate("MainWindow", "Please wait..."), True)
+        self.splash = Splash(None, translate("MainWindow", "Please wait..."))
         self.splash.close()  # only for linux
 
         self.joblist_generate_model()
