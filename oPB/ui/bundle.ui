@@ -72,16 +72,16 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="btnCancel">
+      <widget class="QPushButton" name="btnCreate">
        <property name="text">
-        <string>Cancel</string>
+        <string>Create</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnCreate">
+      <widget class="QPushButton" name="btnCancel">
        <property name="text">
-        <string>Create</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>

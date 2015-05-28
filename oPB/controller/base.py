@@ -371,6 +371,15 @@ class BaseController(LogMixin):
     def do_unregisterdepot(self, param):
         self._do(oPB.OpEnum.DO_UNREGISTERDEPOT, translate("baseController", "Remove depot registration from config server..."), depot = param)
 
+    def add_setup_before_dependency(self, product):
+        dep = ProductDependency()
+        dep.dependencyForAction = "setup"
+        dep.requiredProductId = product
+        dep.requiredAction = ""
+        dep.requiredInstallationStatus = "installed"
+        dep.requirementType = "before"
+        self.controlData.dependencies_append(dep)
+
     def run_command_line(self):
         """Process project action via command line"""
         self.logger.debug("Project via command line: " + self.args.path)

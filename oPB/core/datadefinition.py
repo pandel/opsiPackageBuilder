@@ -645,7 +645,7 @@ class ControlFileData(QObject, LogMixin):
         else:
             self._dependencies.append([dep.dependencyForAction, dep.requiredProductId, dep.requiredAction,
                                        dep.requiredInstallationStatus, dep.requirementType])
-
+            self.dataUpdated.emit()
 
     def del_dependency(self, dep: ProductDependency):
         """

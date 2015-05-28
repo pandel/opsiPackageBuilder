@@ -202,7 +202,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self.actionScheduler.triggered.connect(self._parent.scheduler_dialog)
             self.actionUninstall.triggered.connect(self.quickuninstall)
             self.actionDeploy.triggered.connect(self._parent.deployagent_dialog)
-            self.actionBundleCreation.triggered.connect(self.not_working)
+            self.actionBundleCreation.triggered.connect(self._parent.bundle_dialog)
             self.actionDepotManager.triggered.connect(self._parent.depotmanager_dialog)
         else:
             # connect online menu action signals

@@ -45,6 +45,7 @@ from oPB.controller.components.scheduler import SchedulerComponent
 from oPB.controller.components.quickuninstall import QuickUninstallComponent
 from oPB.controller.components.deployagent import DeployAgentComponent
 from oPB.controller.components.depotmanager import DepotManagerComponent
+from oPB.controller.components.bundle import BundleComponent
 
 translate = QtCore.QCoreApplication.translate
 
@@ -72,7 +73,7 @@ class MainWindowController(BaseController, QObject):
         # data mapping in the ui class
         self.generate_model()
 
-        # create windows and append additional controllers
+        # create windows and append additional components
         self.ui = MainWindow(self)
         self.startup = StartupDialog(self.ui)
         self.treedlg = ScriptTreeDialog(self.ui)
@@ -80,6 +81,7 @@ class MainWindowController(BaseController, QObject):
         self.scheduler = SchedulerComponent(self)
         self.deployagent = DeployAgentComponent(self)
         self.depotmanager = DepotManagerComponent(self)
+        self.bundle = BundleComponent(self)
 
         self.ui.init_recent()
 
@@ -167,6 +169,7 @@ class MainWindowController(BaseController, QObject):
 
         self.controlData.dataLoaded.connect(self.update_model_data)
         self.controlData.dataSaved.connect(self.update_model_data)
+        self.controlData.dataUpdated.connect(self.update_model_data)
 
         self.ui.windowMoved.connect(self.startup.set_position)
 
@@ -205,13 +208,15 @@ class MainWindowController(BaseController, QObject):
         self.logger.debug("Emit signal modelDataUpdated")
         self.modelDataUpdated.emit(0)
 
-    def update_table_model(self, model, data, itemclass = QtGui.QStandardItem):
+    def update_table_model(self, model, data, itemclass = QtGui.QStandardItem, checkable = False):
         """
         Remove all rows from given tabel model and rebuild with new data
         from backend object.
 
         :param model: QtStandardItemModel as QTableView model
         :param data: list with data rows
+        :param itemclass: item class for use in row generation
+        :param checkable: activate checkboxes for first column in a row
         :return:
         """
         self.logger.debug("Update table model data: " + model.objectName())
@@ -232,6 +237,9 @@ class MainWindowController(BaseController, QObject):
                 if type(val) == list:
                     val = ', '.join(map(str, val))  # connect elements to a single comma-separated string
                 item = itemclass()
+                if checkable:
+                    if elem[0] == val:
+                        item.setCheckable(True)
                 item.setData(val, QtCore.Qt.DisplayRole)
                 item.setEditable(False)
                 row.append(item)
@@ -507,7 +515,7 @@ class MainWindowController(BaseController, QObject):
         self.chLogEditor.ui.activateWindow()
 
 
-    def msgbox(self, msgtext = "", typ = oPB.MsgEnum.MS_STAT, parent = None):
+    def msgbox(self, msgtext = "", typ = oPB.MsgEnum.MS_STAT, parent = None, preload = ""):
         """ Messagebox function
 
         Valid values for typ:
@@ -523,6 +531,8 @@ class MainWindowController(BaseController, QObject):
 
         :param msgtext: Message text
         :param typ: type of message window, see oPB.core enums
+        :param parent: parent ui of message box
+        :param preload: pre-fill input boxes with this text
         """
         if parent is None:
             parent = self.ui
@@ -589,12 +599,12 @@ class MainWindowController(BaseController, QObject):
 
         elif typ == oPB.MsgEnum.MS_QUEST_PHRASE:
             text = QInputDialog.getText(parent, translate("mainController", "Additional information"),
-                                          msgtext, QLineEdit.Normal,"root")
+                                          msgtext, QLineEdit.Normal, preload)
             return text
 
         elif typ == oPB.MsgEnum.MS_QUEST_PASS:
             text = QInputDialog.getText(parent, translate("mainController", "Additional information"),
-                                          msgtext, QLineEdit.Password,"")
+                                          msgtext, QLineEdit.Password, preload)
             return text
 
     def get_properties_from_scripts(self):
@@ -648,6 +658,10 @@ class MainWindowController(BaseController, QObject):
     def quickuninstall_dialog(self):
         """Open quickuninstall dialog"""
         self.quickuninstall.show_()
+
+    def bundle_dialog(self):
+        """Open bundle creation dialog"""
+        self.bundle.show_()
 
     def scheduler_dialog(self):
         """Open job scheduler dialog"""

@@ -35,13 +35,13 @@ from PyQt5 import QtCore
 from PyQt5.Qt import QKeyEvent
 import oPB
 from oPB.core.tools import Helper, LogMixin
-from oPB.ui.ui import UninstallDialogBase, UninstallDialogUI
+from oPB.ui.ui import BundleDialogBase, BundleDialogUI
 
 
 translate = QtCore.QCoreApplication.translate
 
 
-class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
+class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
 
     def __init__(self, parent):
         """
@@ -53,10 +53,10 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
         self._parent = parent
         self._parentUi = parent._parent.ui
 
-        UninstallDialogBase.__init__(self, self._parentUi, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
+        BundleDialogBase.__init__(self, self._parentUi, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
-        print("gui/UninstallDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("gui/BundleDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.model = None
 

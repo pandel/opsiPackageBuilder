@@ -24,6 +24,7 @@ SOURCES += ..\oPB\controller\main.py
 SOURCES += ..\oPB\controller\settings.py
 
 SOURCES += ..\oPB\controller\components\__init__.py
+SOURCES += ..\oPB\controller\components\bundle.py
 SOURCES += ..\oPB\controller\components\changelog.py
 SOURCES += ..\oPB\controller\components\deployagent.py
 SOURCES += ..\oPB\controller\components\depotmanager.py
@@ -40,6 +41,7 @@ SOURCES += ..\oPB\core\scriptscanner.py
 SOURCES += ..\oPB\core\tools.py
 
 SOURCES += ..\oPB\gui\__init__.py
+SOURCES += ..\oPB\gui\bundle.py
 SOURCES += ..\oPB\gui\changelog.py
 SOURCES += ..\oPB\gui\deployagent.py
 SOURCES += ..\oPB\gui\depotmanager.py

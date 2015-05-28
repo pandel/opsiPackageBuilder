@@ -28,15 +28,19 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+import re
 from PyQt5 import QtCore, QtGui
+from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QObject
 import oPB
+from oPB.core.confighandler import ConfigHandler
 from oPB.controller.base import BaseController
-from oPB.gui.quickuninstall import UninstallDialog
+from oPB.gui.bundle import BundleDialog
+from oPB.core.tools import Helper
 
 translate = QtCore.QCoreApplication.translate
 
-class QuickUninstallComponent(BaseController, QObject):
+class BundleComponent(BaseController, QObject):
     def __init__(self, parent):
         super().__init__(self)
 
@@ -46,7 +50,7 @@ class QuickUninstallComponent(BaseController, QObject):
 
         self.generate_model()
 
-        self.ui = UninstallDialog(self)
+        self.ui = BundleDialog(self)
 
     def generate_model(self):
         # create model from data and assign, if not done before
@@ -54,16 +58,15 @@ class QuickUninstallComponent(BaseController, QObject):
             self.logger.debug("Generate product table model")
             self.model_products = QtGui.QStandardItemModel(0, 3, self)
             self.model_products.setObjectName("model_products")
-            self.model_products.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
-                                            translate("quickuninstallController", "version"),
-                                            translate("quickuninstallController", "description")]
+            self.model_products.setHorizontalHeaderLabels([translate("bundleController", "product id"),
+                                            translate("bundleController", "version"),
+                                            translate("bundleController", "description")]
                                             )
 
     def show_(self):
-        self.logger.debug("Open quick uninstall")
+        self.logger.debug("Open bundle products")
 
-        self.ui.btnRefresh.clicked.connect(self.update_model_data)
-        self.ui.btnUninstall.clicked.connect(self.uninstall_selection)
+        self.ui.btnCreate.clicked.connect(self.create_bundle)
 
         # first time opened after program start?
         if BaseController.productlist_dict == None:
@@ -92,23 +95,41 @@ class QuickUninstallComponent(BaseController, QObject):
         self.ui.resizeTable()
 
 
-    def uninstall_selection(self):
-        self.logger.debug("Uninstall selection")
+    def create_bundle(self):
+        self.logger.debug("Create bundle from selection")
 
         prods = []
         for row in self.ui.tblProducts.selectionModel().selectedRows():
             prods.append(self.ui.model.item(row.row(), 0).text())
 
         if prods:
-            msg = "\n\n" + translate("quickuninstallController", "Chosen products:") + "\n\n" + ("\n").join([p for p in prods])
-            reply = self._parent.msgbox(translate("quickuninstallController", "Do you really want to remove the selected product(s)? This can't be undone!") + msg, oPB.MsgEnum.MS_QUEST_YESNO)
+            msg = "\n\n" + translate("bundleController", "Chosen products:") + "\n\n" + ("\n").join([p for p in prods])
+            reply = self._parent.msgbox(translate("bundleController", "Create product bundle now?") + msg, oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
                 self.logger.debug("Selected product(s): " + str(prods))
-                self.ui.hide()
-                self._parent.ui.splash.show_()
-                self._parent.do_quickuninstall(packs = prods)
-                self.update_model_data()
-                self._parent.ui.splash.close()
-                self.ui.show()
+
+                comment = ""
+                while comment == "" or accept == False:
+                    (comment, accept) = self._parent.msgbox(translate("bundleController","Please enter package name (allowed characters: a-z, A-Z, 0-9, ._-):"),
+                                                    oPB.MsgEnum.MS_QUEST_PHRASE, parent = self.ui, preload = "meta-")
+                    if ConfigHandler.cfg.age == "True":
+                        test = re.match(oPB.OPB_PRODUCT_ID_REGEX_NEW, comment)
+                    else:
+                        test = re.match(oPB.OPB_PRODUCT_ID_REGEX_OLD, comment)
+                    if not test:
+                        comment = ""
+
+                if accept:
+                    directory = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, comment)
+                    self.logger.info("Chosen directory for new project: " + directory)
+                    self.ui.close()
+                    self._parent.ui.splash.show_()
+                    self._parent.project_create(directory)
+                    for p in prods:
+                        self._parent.add_setup_before_dependency(p)
+                    self._parent.save_backend()
+                    self._parent.ui.splash.close()
+                else:
+                    self.logger.debug("Dialog aborted.")
         else:
             self.logger.debug("Nothing selected.")

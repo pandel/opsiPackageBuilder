@@ -461,7 +461,7 @@ class DepotManagerComponent(BaseController, QObject):
             password = ""
             while user == "":
                 (user, accept) = self._parent.msgbox(translate("depotmanagerController","Please enter username with sufficient priviledges:"),
-                                                     oPB.MsgEnum.MS_QUEST_PHRASE, parent = self.ui)
+                                                     oPB.MsgEnum.MS_QUEST_PHRASE, parent = self.ui, preload = "root")
             while password == "":
                 (password, accept) = self._parent.msgbox(translate("depotmanagerController","Please enter password:"), oPB.MsgEnum.MS_QUEST_PASS,
                                     parent = self.ui)
