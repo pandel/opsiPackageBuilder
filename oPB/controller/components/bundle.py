@@ -45,6 +45,8 @@ class BundleComponent(BaseController, QObject):
         super().__init__(self)
 
         self._parent = parent
+        print("controller/BundleComponent parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
         self.ui = None
         self.model_products = None
 

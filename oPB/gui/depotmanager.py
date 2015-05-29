@@ -54,7 +54,8 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         DepotManagerDialogBase.__init__(self, self._parentUi, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
-        print("gui/UninstallDialog parent: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/DepotManagerDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/DepotManagerDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
 

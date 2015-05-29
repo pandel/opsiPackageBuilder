@@ -50,6 +50,8 @@ class DepotManagerComponent(BaseController, QObject):
         super().__init__(self)
 
         self._parent = parent
+        print("controller/DepotManagerComponent parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
         self.ui = None
         self.model_left = None
         self.model_right = None

@@ -37,10 +37,13 @@ from oPB.core.tools import LogMixin
 class LogDialog(LogDialogBase, LogDialogUI, LogMixin):
 
     def __init__(self, parent, main, level):
-        LogDialogBase.__init__(self, parent)
+        self._parent = parent
+
+        LogDialogBase.__init__(self, self._parent)
         self.setupUi(self)
 
-        self.parent = parent
+        print("\tgui/LogDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
         self.main = main
 
         if level == "DEBUG":

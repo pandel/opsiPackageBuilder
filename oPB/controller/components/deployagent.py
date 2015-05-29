@@ -41,6 +41,8 @@ class DeployAgentComponent(BaseController, QObject):
         super().__init__(self)
 
         self._parent = parent
+        print("controller/DeployAgentComponent parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
         self.ui = None
 
         self.ui = DeployAgentDialog(self._parent.ui)

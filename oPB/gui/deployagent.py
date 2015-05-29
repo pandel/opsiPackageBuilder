@@ -50,11 +50,12 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin):
         :param parent: parent controller instance
         :return:
         """
-        DeployAgentDialogBase.__init__(self, parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
+        self._parent = parent
+
+        DeployAgentDialogBase.__init__(self, self._parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
-        self._parent = parent
-        print("gui/DeployAgentDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/DeployAgentDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

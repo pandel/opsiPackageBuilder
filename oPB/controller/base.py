@@ -65,6 +65,7 @@ class BaseController(LogMixin):
     """
     def __init__(self, args):
         super().__init__()
+        print("controller/BaseController parent: None -> self: ", self) if oPB.PRINTHIER else None
         self.args = None
         self.ui = None
         self.controlData = None

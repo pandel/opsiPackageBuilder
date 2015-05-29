@@ -51,11 +51,12 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         :param parent: parent window for startup splash dialog
         :return:
         """
-        StartupDialogBase.__init__(self, parent, QtCore.Qt.ApplicationModal | QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
+        self._parent = parent
+
+        StartupDialogBase.__init__(self, self._parent, QtCore.Qt.ApplicationModal | QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
         self.setupUi(self)
 
-        self._parent = parent
-        print("gui/StartupWin parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/StartupWin parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.menuRecent = QMenu()
 

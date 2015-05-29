@@ -36,8 +36,8 @@ from PyQt5.QtCore import Qt
 
 # simple print object relationship besides normal logging
 # for object hierarchy debugging
-#PRINTHIER = True
-PRINTHIER = False
+PRINTHIER = True
+#PRINTHIER = False
 
 # overall program version
 PROGRAM_VERSION = "8.0.0"

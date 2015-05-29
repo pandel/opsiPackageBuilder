@@ -332,9 +332,9 @@ class CommandLine(object):
         self._parser.add_argument("--log", "-l", action="store", nargs="?", const = str(logpath),
                                   dest="log_file", help="Write logfile (optional: specify logfile name)")
 
-        self._parser.add_argument("--log-level", action="store", default='CRITICAL',
+        self._parser.add_argument("--log-level", action="store", default='NOTSET',
                                   choices=["CRITICAL", "ERROR", "SSH", "WARNING", "SSHINFO", "INFO", "DEBUG"],
-                                  dest="log_level", help="Specify log level (Standard: CRITICAL)")
+                                  dest="log_level", help="Specify log level")
 
         # self._parser.add_argument("--debug", "-d", action="store_true", default = argparse.SUPPRESS,
         #                          dest="nonetdrive", help="Write additional debug output (can create very much text!!)")

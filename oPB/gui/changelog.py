@@ -53,12 +53,14 @@ class ChangelogEditorDialog(LogMixin):
         :param parent: parent window for settings dialog
         :return:
         """
-        base.__init__(self, parent._parent.ui, QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint)
+        self._parent = parent
+        self._parentUi = parent._parent.ui
+
+        base.__init__(self, self._parentUi, QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint)
         self.setupUi(self)
 
-        self._parent = parent
-        print("gui/Changelog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
-        print("gui/Changelog parent._parent.ui: ", self._parent._parent.ui) if oPB.PRINTHIER else None
+        print("\tgui/Changelog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/Changelog parentUi: ", self._parentUi) if oPB.PRINTHIER else None
 
         self.datamapper = None
         self.model = self._parent.model

@@ -40,6 +40,7 @@ from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper
 from oPB.core.scriptscanner import ScriptTree
 from oPB.controller.base import BaseController
+from oPB.controller.settings import SettingsController
 from oPB.controller.components.changelog import ChangelogEditorComponent
 from oPB.controller.components.scheduler import SchedulerComponent
 from oPB.controller.components.quickuninstall import QuickUninstallComponent
@@ -75,6 +76,7 @@ class MainWindowController(BaseController, QObject):
 
         # create windows and append additional components
         self.ui = MainWindow(self)
+        self.settingsCtr = SettingsController(self)
         self.startup = StartupDialog(self.ui)
         self.treedlg = ScriptTreeDialog(self.ui)
         self.quickuninstall = QuickUninstallComponent(self)
@@ -172,6 +174,9 @@ class MainWindowController(BaseController, QObject):
         self.controlData.dataUpdated.connect(self.update_model_data)
 
         self.ui.windowMoved.connect(self.startup.set_position)
+        self.ui.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
+        self.settingsCtr.settingsClosed.connect(self.ui.set_dev_folder)
+
 
     def update_model_data(self):
         """

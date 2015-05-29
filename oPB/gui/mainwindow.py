@@ -39,9 +39,9 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 import oPB
 from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
-from oPB.controller.settings import SettingsController
-from oPB.ui.ui import MainWindowBase, MainWindowUI
 from oPB.gui.splash import Splash
+from oPB.gui.utilities import ScriptFileValidator
+from oPB.ui.ui import MainWindowBase, MainWindowUI
 
 translate = QtCore.QCoreApplication.translate
 
@@ -54,6 +54,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     MaxRecentFiles = 5
 
     def __init__(self, parent):
+        self._parent = parent
+        print("\tgui/MainWindow parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
         MainWindowBase.__init__(self)
         self.setupUi(self)
 
@@ -62,16 +65,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         if oPB.NETMODE == "offline":
             self.setWindowTitle("opsiPackageBuilder ( OFFLINE MODE )")
 
-        self._parent = parent
-        print("gui/MainWindow parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
-
         self.datamapper = None             # QDataWidgetMapper object for field mapping
         self.datamapper_dependencies = None
         self.datamapper_properties = None
-
-        # settings dialog / splash
-        self.settingsCtr = SettingsController(self)
-        self.settingsCtr.settingsClosed.connect(self.set_dev_folder)
 
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
         self.splash.close()  # only for linux
@@ -184,7 +180,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.actionClose.triggered.connect(self._parent.project_close)
         self.actionQuit.triggered.connect(self.close)
         self.actionSave.triggered.connect(self._parent.save_project)
-        self.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
         self.actionSaveAs.triggered.connect(self.not_working)
         self.actionStartWinst.triggered.connect(self.not_working)
@@ -664,30 +659,3 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         validator = ScriptFileValidator(self, field)
         field.setValidator(validator)
 
-class ScriptFileValidator(QtGui.QValidator):
-    """
-    Validator to check for existing files
-
-    (Constructor has to be called with parent and field,
-    because validate() needs to access some values from
-    different window elements.)
-    """
-
-    def __init__(self, parent, field):
-        """
-        Constructor of ScriptFileValidator
-
-        :param parent: parent window
-        :param field: field object to validate
-        """
-        super().__init__(parent)
-        self._parent = parent
-        self._field = field
-
-    def validate(self, p_str, p_int):
-        if p_str == "":
-            return ScriptFileValidator.Intermediate, p_str, p_int
-        if os.path.exists(Helper.concat_path_and_file(self._parent.lblPacketFolder.text().replace('\\','/') + "/CLIENT_DATA/", p_str)):
-            return ScriptFileValidator.Acceptable, p_str, p_int
-        else:
-            return ScriptFileValidator.Invalid, p_str, p_int

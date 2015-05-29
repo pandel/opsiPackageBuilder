@@ -76,7 +76,11 @@ class Main(QObject):
 
     def __init__(self, parent = None):
         """Create a wizard or the mainwindow"""
-        super().__init__(parent)
+        self._parent = parent
+
+        super().__init__(self._parent)
+
+        print("runner/Main parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.logger = None
         self.args = self.get_args()
@@ -117,7 +121,7 @@ class Main(QObject):
             else:
                 self._log_file = confighandler.ConfigHandler.cfg.log_file
 
-            if self.args.log_level.upper() != "CRITICAL":
+            if self.args.log_level.upper() != "NOTSET":
                 self._log_level = self.args.log_level.upper()
             else:
                 self._log_level = confighandler.ConfigHandler.cfg.log_level

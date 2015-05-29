@@ -28,9 +28,8 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
-from PyQt5.QtWidgets import QDataWidgetMapper, QMessageBox
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
 import oPB
 from oPB.core.datadefinition import ChangelogEntry, changelog_footer
@@ -58,7 +57,7 @@ class ChangelogEditorComponent(QObject, LogMixin):
         """
         super().__init__(parent)
         self._parent = parent
-        print("controller/ChangelogController parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("controller/ChangelogComponent parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.logger.debug("Initialize changelog editor")
 

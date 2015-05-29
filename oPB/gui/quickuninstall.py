@@ -56,7 +56,8 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
         UninstallDialogBase.__init__(self, self._parentUi, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
-        print("gui/UninstallDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/UninstallDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/UninstallDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.model = None
 

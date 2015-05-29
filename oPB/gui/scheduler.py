@@ -50,11 +50,12 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
         :param parent: parent controller instance
         :return:
         """
-        JobListDialogBase.__init__(self, parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
+        self._parent = parent
+
+        JobListDialogBase.__init__(self, self._parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
-        self._parent = parent
-        print("gui/JobListDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/JobListDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.model = None
 
@@ -92,11 +93,12 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin):
         :param parent: parent controller instance
         :return:
         """
-        JobCreatorDialogBase.__init__(self, parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
+        self._parent = parent
+
+        JobCreatorDialogBase.__init__(self, self._parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
-        self._parent = parent
-        print("gui/JobCreatorDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/JobCreatorDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.model_clients = None
         self.model_products = None

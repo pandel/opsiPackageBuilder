@@ -45,6 +45,8 @@ class SchedulerComponent(BaseController, QObject):
         super().__init__(self)
 
         self._parent = parent
+        print("controller/SchedulerComponent parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
         self.model_clients = None
         self.model_products = None
         self.model_jobs = None
