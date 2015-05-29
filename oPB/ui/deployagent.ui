@@ -308,14 +308,14 @@
    <item row="2" column="0" colspan="2">
     <widget class="QCheckBox" name="chkDeployToMulti">
      <property name="text">
-      <string>Deploy to multiple clients (only from Config server)</string>
+      <string>Deploy to multiple clients via opsi config server / enter one destination per line</string>
      </property>
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
     <widget class="QPlainTextEdit" name="inpDestMulti">
-     <property name="placeholderText" stdset="0">
-      <string notr="true">Enter client ip or name one per line</string>
+     <property name="placeholderText">
+      <string notr="true"/>
      </property>
     </widget>
    </item>

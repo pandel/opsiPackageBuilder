@@ -195,7 +195,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self.actionInstall.triggered.connect(self.quickinstall)
             self.actionUpload.triggered.connect(self.upload)
             self.actionScheduler.triggered.connect(self._parent.scheduler_dialog)
-            self.actionUninstall.triggered.connect(self.quickuninstall)
+            self.actionUninstall.triggered.connect(self._parent.quickuninstall_dialog)
             self.actionDeploy.triggered.connect(self._parent.deployagent_dialog)
             self.actionBundleCreation.triggered.connect(self._parent.bundle_dialog)
             self.actionDepotManager.triggered.connect(self._parent.depotmanager_dialog)
@@ -357,11 +357,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self._parent.startup.show_me()
         else:
             self.logger.debug("Dialog aborted.")
-
-    @pyqtSlot()
-    def quickuninstall(self):
-        """Open quickuninstall dialog"""
-        self._parent.quickuninstall.show_()
 
     @pyqtSlot()
     def upload(self):

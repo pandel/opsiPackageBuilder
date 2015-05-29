@@ -28,20 +28,22 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import os
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
 from PyQt5 import QtCore
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 from oPB.core.tools import Helper, LogMixin
 from oPB.ui.ui import UninstallDialogBase, UninstallDialogUI
+from oPB.gui.splash import Splash
 
 
 translate = QtCore.QCoreApplication.translate
 
 
 class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
+
+    dialogOpened = pyqtSignal()
+    dialogClosed = pyqtSignal()
 
     def __init__(self, parent):
         """
@@ -59,9 +61,19 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
         print("\tgui/UninstallDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/UninstallDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
+        self.splash = Splash(self, translate("MainWindow", "Please wait..."))
+        self.splash.close()  # only for linux
+
         self.model = None
 
         self.assign_model(self._parent.model_products)
+        self.connect_signals()
+
+    def connect_signals(self):
+        self.dialogOpened.connect(self.update_ui)
+        self.btnRefresh.clicked.connect(lambda: self.update_ui(True))
+        self.btnUninstall.clicked.connect(self.uninstall)
+        self.btnClose.clicked.connect(self.dialogClosed.emit)
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
@@ -86,3 +98,29 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
     def resizeTable(self):
         self.tblProducts.resizeRowsToContents()
         self.tblProducts.resizeColumnsToContents()
+
+    def show_(self):
+        self.logger.debug("Open quick uninstall dialog")
+
+        self.show()
+        self.activateWindow()
+
+        self.dialogOpened.emit()
+
+    def update_ui(self, force = False):
+        self.logger.debug("Update UI")
+        self.splash.show_()
+        self._parent.update_model_data(force)
+        self.resizeTable()
+        self.splash.close()
+
+    def uninstall(self):
+        self.close()
+
+        prods = []
+        for row in self.tblProducts.selectionModel().selectedRows():
+            prods.append(self.model.item(row.row(), 0).text())
+
+        self._parent.uninstall_selection(prods)
+
+        self.dialogClosed.emit()

@@ -121,9 +121,9 @@ class SettingsController(QObject, LogMixin):
 
     def connect_signals(self):
         """Connect signals"""
-
         self.logger.debug("Connect signals")
         self.model.itemChanged.connect(self.model_data_changed)
+        self.settingsClosed.connect(self._parentUi.set_dev_folder)
 
     @pyqtSlot()
     def model_data_changed(self):

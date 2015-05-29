@@ -45,13 +45,14 @@ class DeployAgentComponent(BaseController, QObject):
 
         self.ui = None
 
-        self.ui = DeployAgentDialog(self._parent.ui)
+        self.ui = DeployAgentDialog(self)
 
-    def show_(self):
-        self.logger.debug("Open deploy agent dialog")
+        self.connect_signals()
 
-        self._parent.startup.hide_me()
-        self.ui.finished.connect(self._parent.startup.show_me)
+    def connect_signals(self):
+        self.ui.dialogOpened.connect(self._parent.startup.hide)
+        self.ui.dialogClosed.connect(self._parent.startup.show)
 
-        self.ui.show()
-        self.ui.activateWindow()
+    def start_deploy(self, destination: list, options: dict):
+        self._parent.do_deploy(destination, options)
+

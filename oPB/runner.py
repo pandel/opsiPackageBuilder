@@ -127,7 +127,10 @@ class Main(QObject):
                 self._log_level = confighandler.ConfigHandler.cfg.log_level
         else:
             self._log_file = self.args.log_file
-            self._log_level = self.args.log_level.upper()
+            if self.args.log_level.upper() == "NOTSET":
+                self._log_level = "CRITICAL"
+            else:
+                self._log_level = self.args.log_level.upper()
 
         if self._log_file is not None:
             if not pathlib.Path(self._log_file).is_absolute():

@@ -54,6 +54,12 @@ class BundleComponent(BaseController, QObject):
 
         self.ui = BundleDialog(self)
 
+        self.connect_signals()
+
+    def connect_signals(self):
+        self.ui.dialogOpened.connect(self._parent.startup.hide)
+        self.ui.dialogClosed.connect(self._parent.startup.show)
+
     def generate_model(self):
         # create model from data and assign, if not done before
         if self.model_products == None:
@@ -65,27 +71,13 @@ class BundleComponent(BaseController, QObject):
                                             translate("bundleController", "description")]
                                             )
 
-    def show_(self):
-        self.logger.debug("Open bundle products")
-
-        self.ui.btnCreate.clicked.connect(self.create_bundle)
-
-        # first time opened after program start?
-        if BaseController.productlist_dict == None:
-            self._parent.startup.hide()
-            self._parent.ui.splash.show_()
-            self._parent.do_getproducts()
-            self._parent.ui.splash.close()
-            self._parent.startup.show()
-
-        self.update_model_data()
-
-        self.ui.show()
-        self.ui.resizeTable()
-        self.ui.activateWindow()
 
     def update_model_data(self):
         self.logger.debug("Update model data")
+
+        # first time opened after program start?
+        if BaseController.productlist_dict == None:
+            self._parent.do_getproducts()
 
         if BaseController.productlist_dict:
             tmplist = []
@@ -94,15 +86,9 @@ class BundleComponent(BaseController, QObject):
 
             self._parent.update_table_model(self.model_products, sorted(tmplist))
 
-        self.ui.resizeTable()
 
-
-    def create_bundle(self):
+    def create_bundle(self, prods = []):
         self.logger.debug("Create bundle from selection")
-
-        prods = []
-        for row in self.ui.tblProducts.selectionModel().selectedRows():
-            prods.append(self.ui.model.item(row.row(), 0).text())
 
         if prods:
             msg = "\n\n" + translate("bundleController", "Chosen products:") + "\n\n" + ("\n").join([p for p in prods])
@@ -124,13 +110,10 @@ class BundleComponent(BaseController, QObject):
                 if accept:
                     directory = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, comment)
                     self.logger.info("Chosen directory for new project: " + directory)
-                    self.ui.close()
-                    self._parent.ui.splash.show_()
                     self._parent.project_create(directory)
                     for p in prods:
                         self._parent.add_setup_before_dependency(p)
                     self._parent.save_backend()
-                    self._parent.ui.splash.close()
                 else:
                     self.logger.debug("Dialog aborted.")
         else:

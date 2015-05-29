@@ -50,6 +50,12 @@ class QuickUninstallComponent(BaseController, QObject):
 
         self.ui = UninstallDialog(self)
 
+        self.connect_signals()
+
+    def connect_signals(self):
+        self.ui.dialogOpened.connect(self._parent.startup.hide)
+        self.ui.dialogClosed.connect(self._parent.startup.show)
+
     def generate_model(self):
         # create model from data and assign, if not done before
         if self.model_products == None:
@@ -61,28 +67,12 @@ class QuickUninstallComponent(BaseController, QObject):
                                             translate("quickuninstallController", "description")]
                                             )
 
-    def show_(self):
-        self.logger.debug("Open quick uninstall")
-
-        self.ui.btnRefresh.clicked.connect(self.update_model_data)
-        self.ui.btnUninstall.clicked.connect(self.uninstall_selection)
+    def update_model_data(self, force = False):
+        self.logger.debug("Update model data")
 
         # first time opened after program start?
-        if BaseController.productlist_dict == None:
-            self._parent.startup.hide()
-            self._parent.ui.splash.show_()
+        if BaseController.productlist_dict == None or force == True:
             self._parent.do_getproducts()
-            self._parent.ui.splash.close()
-            self._parent.startup.show()
-
-        self.update_model_data()
-
-        self.ui.show()
-        self.ui.resizeTable()
-        self.ui.activateWindow()
-
-    def update_model_data(self):
-        self.logger.debug("Update model data")
 
         if BaseController.productlist_dict:
             tmplist = []
@@ -91,26 +81,14 @@ class QuickUninstallComponent(BaseController, QObject):
 
             self._parent.update_table_model(self.model_products, sorted(tmplist))
 
-        self.ui.resizeTable()
-
-
-    def uninstall_selection(self):
+    def uninstall_selection(self, prods = []):
         self.logger.debug("Uninstall selection")
-
-        prods = []
-        for row in self.ui.tblProducts.selectionModel().selectedRows():
-            prods.append(self.ui.model.item(row.row(), 0).text())
 
         if prods:
             msg = "\n\n" + translate("quickuninstallController", "Chosen products:") + "\n\n" + ("\n").join([p for p in prods])
             reply = self._parent.msgbox(translate("quickuninstallController", "Do you really want to remove the selected product(s)? This can't be undone!") + msg, oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
                 self.logger.debug("Selected product(s): " + str(prods))
-                self.ui.hide()
-                self._parent.ui.splash.show_()
                 self._parent.do_quickuninstall(packs = prods)
-                self.update_model_data()
-                self._parent.ui.splash.close()
-                self.ui.show()
         else:
             self.logger.debug("Nothing selected.")

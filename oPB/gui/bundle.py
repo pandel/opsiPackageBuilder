@@ -28,20 +28,22 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import os
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
 from PyQt5 import QtCore
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 from oPB.core.tools import Helper, LogMixin
 from oPB.ui.ui import BundleDialogBase, BundleDialogUI
+from oPB.gui.splash import Splash
 
 
 translate = QtCore.QCoreApplication.translate
 
 
 class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
+
+    dialogOpened = pyqtSignal()
+    dialogClosed = pyqtSignal()
 
     def __init__(self, parent):
         """
@@ -59,9 +61,18 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
         print("\tgui/BundleDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/BundleDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
+        self.splash = Splash(self, translate("MainWindow", "Please wait..."))
+        self.splash.close()  # only for linux
+
         self.model = None
 
         self.assign_model(self._parent.model_products)
+        self.connect_signals()
+
+    def connect_signals(self):
+        self.dialogOpened.connect(self.update_ui)
+        self.btnCreate.clicked.connect(self.create)
+        self.btnCancel.clicked.connect(self.dialogClosed.emit)
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
@@ -73,6 +84,7 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
         :return:
         """
         if evt.key() == QtCore.Qt.Key_Escape:
+            self.dialogClosed.emit()
             self.close()
         else:
             super().keyPressEvent(evt)
@@ -86,3 +98,26 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
     def resizeTable(self):
         self.tblProducts.resizeRowsToContents()
         self.tblProducts.resizeColumnsToContents()
+
+    def show_(self):
+        self.logger.debug("Open deploy agent dialog")
+
+        self.show()
+        self.activateWindow()
+
+        self.dialogOpened.emit()
+
+    def update_ui(self):
+        self.splash.show_()
+        self._parent.update_model_data()
+        self.resizeTable()
+        self.splash.close()
+
+    def create(self):
+        self.close()
+
+        prods = []
+        for row in self.tblProducts.selectionModel().selectedRows():
+            prods.append(self.model.item(row.row(), 0).text())
+
+        self._parent.create_bundle(prods)

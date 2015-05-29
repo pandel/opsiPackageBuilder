@@ -372,6 +372,10 @@ class BaseController(LogMixin):
     def do_unregisterdepot(self, param):
         self._do(oPB.OpEnum.DO_UNREGISTERDEPOT, translate("baseController", "Remove depot registration from config server..."), depot = param)
 
+    @pyqtSlot()
+    def do_deploy(self, destination, options):
+        self._do(oPB.OpEnum.DO_DEPLOY, translate("baseController", "Deploy opsi-client agent from config server..."), destination = destination, options=options)
+
     def add_setup_before_dependency(self, product):
         dep = ProductDependency()
         dep.dependencyForAction = "setup"

@@ -77,8 +77,8 @@ class MainWindowController(BaseController, QObject):
         # create windows and append additional components
         self.ui = MainWindow(self)
         self.settingsCtr = SettingsController(self)
-        self.startup = StartupDialog(self.ui)
-        self.treedlg = ScriptTreeDialog(self.ui)
+        self.startup = StartupDialog(self)
+        self.treedlg = ScriptTreeDialog(self)
         self.quickuninstall = QuickUninstallComponent(self)
         self.scheduler = SchedulerComponent(self)
         self.deployagent = DeployAgentComponent(self)
@@ -173,10 +173,7 @@ class MainWindowController(BaseController, QObject):
         self.controlData.dataSaved.connect(self.update_model_data)
         self.controlData.dataUpdated.connect(self.update_model_data)
 
-        self.ui.windowMoved.connect(self.startup.set_position)
         self.ui.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
-        self.settingsCtr.settingsClosed.connect(self.ui.set_dev_folder)
-
 
     def update_model_data(self):
         """
@@ -641,6 +638,7 @@ class MainWindowController(BaseController, QObject):
             if p not in used_props:
                 self.add_property(p)
 
+    @pyqtSlot()
     def show_script_structure(self):
         """Open script structure treeview"""
         scripts = []
@@ -660,22 +658,27 @@ class MainWindowController(BaseController, QObject):
         # sometimes the window isn't activated, so...
         self.treedlg.activateWindow()
 
+    @pyqtSlot()
     def quickuninstall_dialog(self):
         """Open quickuninstall dialog"""
-        self.quickuninstall.show_()
+        self.quickuninstall.ui.show_()
 
+    @pyqtSlot()
     def bundle_dialog(self):
         """Open bundle creation dialog"""
-        self.bundle.show_()
+        self.bundle.ui.show_()
 
+    @pyqtSlot()
     def scheduler_dialog(self):
         """Open job scheduler dialog"""
-        self.scheduler.show_joblist()
+        self.scheduler.ui_joblist.show_()
 
+    @pyqtSlot()
     def deployagent_dialog(self):
         """Open opsi client agent deploy dialog"""
-        self.deployagent.show_()
+        self.deployagent.ui.show_()
 
+    @pyqtSlot()
     def depotmanager_dialog(self):
         """Open depot manager dialog"""
         self.depotmanager.ui.show_()

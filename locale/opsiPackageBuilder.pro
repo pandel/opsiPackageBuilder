@@ -52,6 +52,7 @@ SOURCES += ..\oPB\gui\scheduler.py
 SOURCES += ..\oPB\gui\scripttree.py
 SOURCES += ..\oPB\gui\settings.py
 SOURCES += ..\oPB\gui\startup.py
+SOURCES += ..\oPB\gui\utilities.py
 
 SOURCES += ..\oPB\ui\__init__.py
 SOURCES += ..\oPB\ui\ui.py

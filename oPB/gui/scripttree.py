@@ -51,11 +51,13 @@ class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin):
         :return:
         """
         self._parent = parent
+        self._parentUi = parent.ui
 
-        ScriptTreeDialogBase.__init__(self, self._parent, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
+        ScriptTreeDialogBase.__init__(self, self._parentUi, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
 
         print("\tgui/ScriptTreeDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/ScriptTreeDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.model = None
 

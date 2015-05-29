@@ -52,28 +52,34 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         :return:
         """
         self._parent = parent
+        self._parentUi = parent.ui
 
-        StartupDialogBase.__init__(self, self._parent, QtCore.Qt.ApplicationModal | QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
+        StartupDialogBase.__init__(self, self._parentUi, QtCore.Qt.ApplicationModal | QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
         self.setupUi(self)
 
         print("\tgui/StartupWin parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+        print("\tgui/StartupWin parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.menuRecent = QMenu()
 
+        self.connect_signals()
+
+    def connect_signals(self):
         # assign slots to actions and indiv. methods
-        self.btnStartNew.clicked.connect(self._parent.actionNew.triggered)
-        self.btnStartOpen.clicked.connect(self._parent.actionOpen.triggered)
-        self.btnStartSettings.clicked.connect(self._parent.actionSettings.triggered)
-        self.btnStartBundle.clicked.connect(self._parent.actionBundleCreation.triggered)
-        self.btnStartDepotMgmt.clicked.connect(self._parent.actionDepotManager.triggered)
-        self.btnStartJobSched.clicked.connect(self._parent.actionScheduler.triggered)
+        self.btnStartNew.clicked.connect(self._parentUi.actionNew.triggered)
+        self.btnStartOpen.clicked.connect(self._parentUi.actionOpen.triggered)
+        self.btnStartSettings.clicked.connect(self._parentUi.actionSettings.triggered)
+        self.btnStartBundle.clicked.connect(self._parentUi.actionBundleCreation.triggered)
+        self.btnStartDepotMgmt.clicked.connect(self._parentUi.actionDepotManager.triggered)
+        self.btnStartJobSched.clicked.connect(self._parentUi.actionScheduler.triggered)
         self.btnStartRecent.setMenu(self.menuRecent)
-        self.btnStartInstall.clicked.connect(self._parent.actionInstall.triggered)
-        self.btnStartUpload.clicked.connect(self._parent.actionUpload.triggered)
-        self.btnStartUninstall.clicked.connect(self._parent.actionUninstall.triggered)
-        self.btnStartDeploy.clicked.connect(self._parent.actionDeploy.triggered)
-        self.btnStartShowLog.clicked.connect(self._parent.actionShowLog.triggered)
-        self.btnStartExit.clicked.connect(self._parent.close)
+        self.btnStartInstall.clicked.connect(self._parentUi.actionInstall.triggered)
+        self.btnStartUpload.clicked.connect(self._parentUi.actionUpload.triggered)
+        self.btnStartUninstall.clicked.connect(self._parentUi.actionUninstall.triggered)
+        self.btnStartDeploy.clicked.connect(self._parentUi.actionDeploy.triggered)
+        self.btnStartShowLog.clicked.connect(self._parentUi.actionShowLog.triggered)
+        self.btnStartExit.clicked.connect(self._parentUi.close)
+        self._parentUi.windowMoved.connect(self.set_position)
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
@@ -97,22 +103,22 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
     def hide_me(self):
         self.logger.debug("Hide startup window")
         self.close()
-        self._parent.centralWidget().setEnabled(True)
-        self._parent.oPB_menu.setEnabled(True)
-        self._parent.activateWindow()
+        self._parentUi.centralWidget().setEnabled(True)
+        self._parentUi.oPB_menu.setEnabled(True)
+        self._parentUi.activateWindow()
 
     @pyqtSlot()
     def show_me(self):
         self.logger.debug("Show startup window")
         self.set_position()
-        self._parent.centralWidget().setEnabled(False)
-        self._parent.oPB_menu.setEnabled(False)
+        self._parentUi.centralWidget().setEnabled(False)
+        self._parentUi.oPB_menu.setEnabled(False)
         self.show()
         self.activateWindow()
 
     @pyqtSlot()
     def set_position(self):
-        parentUi = self._parent.geometry()
+        parentUi = self._parentUi.geometry()
         mysize = self.geometry()
         hpos = parentUi.x() + ((parentUi.width() - mysize.width()) / 2)
         vpos = parentUi.y() + ((parentUi.height() - mysize.height()) / 2)

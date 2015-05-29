@@ -555,9 +555,54 @@ class OpsiProcessing(QObject, LogMixin):
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DEPLOY:
-            self.logger.sshinfo("Executing action: " + str(oPB.OpEnum(action)))
+            ret = oPB.RET_SSHCMDERR
+            cmd = kwargs.get("cmd", "")
+            destination = kwargs.get("destination", "")
+            options = kwargs.get("options", "")
+            self.logger.ssh(20 * "-" + "ACTION: DEPLOY OPSI-CLIENT-AGENT" + 20 * "-")
 
-            #result = self._processAction(cmd, action, ret)
+            result = self._processAction(oPB.OPB_PRECHECK_WINEXE, action, ret, cwd = False)
+            if result != {}:
+
+                # cd c:\TEMP\RZInstall\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd
+                destfile = str(PurePosixPath(tmppath, "deploy.sh"))
+
+                cmd = ""
+                cmd += oPB.OPB_DEPLOY_COMMAND
+                cmd += " -u " + options["user"]
+                cmd += " -p " + options["pass"]
+                cmd += " -c " if options["usefqdn"] else ""
+                cmd += " -x " if options["ignoreping"] else ""
+                cmd += " -S " if options["skipexisting"] else ""
+                cmd += " -v " if not options["proceed"] else ""
+
+                if options["post_action"] == "":
+                    pass
+                elif options["post_action"] == "startclient":
+                    cmd += " -o "
+                elif options["post_action"] == "reboot":
+                    cmd += " -r "
+                elif options["post_action"] == "shutdown":
+                    cmd += " -s "
+
+                if destination:
+                    f = None
+                    with tempfile.TemporaryFile(mode = "w+", encoding='UTF-8') as f:
+                        for client in destination:
+                                if options["pre_action"] != "":
+                                    f.write('winexe --debug-stderr --user "' + options["user"] + '" --password "' +
+                                            options["pass"] + '" //' + client + " 'cmd /c " + options["pre_action"] + "'" + "\n")
+                                f.write(cmd + " " + client + "\n")
+                        f.flush()
+                        f.seek(0)
+                        self.copyToRemote(f, destfile, True)
+
+                if options["proceed"]:
+                    cmd = ["nohup", "sh -c " + destfile + " &>/dev/null & sleep 2 ; exit 0"]
+                else:
+                    cmd = ["sh", "-c", destfile]
+
+                result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_SETRIGHTS_REPO:

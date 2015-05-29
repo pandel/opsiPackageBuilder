@@ -36,8 +36,8 @@ from PyQt5.QtCore import Qt
 
 # simple print object relationship besides normal logging
 # for object hierarchy debugging
-PRINTHIER = True
-#PRINTHIER = False
+#PRINTHIER = True
+PRINTHIER = False
 
 # overall program version
 PROGRAM_VERSION = "8.0.0"
@@ -85,6 +85,19 @@ OPB_PRODUCT_ID_REGEX_NEW = "^[a-z0-9-_\.]{1,128}$"
 OPB_PRODUCT_ID_REGEX_OLD = "^[a-z0-9-_\.]{1,32}$"
 OPB_PRODUCT_VER_REGEX = "^[a-z0-9\.]{1,32}$"
 OPB_PACKAGE_VER_REGEX = "^[a-z0-9\.]{1,16}$"
+OPB_VALID_IP_ADDRESS_REGEX = r"(?<!\S)(?:(?:\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\b|.\b){7}(?!\S)"
+OPB_VALID_HOSTNAME_REGEX = "^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))*$"
+
+"""
+Host/IP regex examples:
+-----------------
+
+www.rechner.de
+.test.net
+10.2225.65.13   <- Problem! Matches as HOST :-)
+10.226.98.132
+www.böse.net
+"""
 
 # basic commands
 OPB_INSTALL = "opsi-package-manager -i"
@@ -114,6 +127,7 @@ OPB_SETRIGHTS_NOSUDO = "opsi-setup --set-rights"
 OPB_SETRIGHTS_SUDO = "opsi-set-rights"
 OPB_GETPRODUPD_PID = "VAR=$(pidof -x opsi-product-updater); echo $VAR"
 OPB_PRECHECK_MD5 = "md5deep -h"
+OPB_PRECHECK_WINEXE = "winexe --help"
 # create MD5 file for packet; set in front: 'PACKETS=\"xca_0.9.3-1.opsi\";'
 OPB_CALC_MD5 = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do MD5=\"`md5deep $PACKETPATH/$p.opsi 2>/dev/null | cut -d \" \" -f 1`\"; echo -n $MD5 >$PACKETPATH/$p.opsi.md5; done'
 # get all products from repository directory incl. MD5
