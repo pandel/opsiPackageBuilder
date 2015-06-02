@@ -123,3 +123,13 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         hpos = parentUi.x() + ((parentUi.width() - mysize.width()) / 2)
         vpos = parentUi.y() + ((parentUi.height() - mysize.height()) / 2)
         self.move(hpos, vpos)
+
+    @pyqtSlot()
+    def hide_(self):
+        if not self._parent._active_project:
+            self.hide()
+
+    @pyqtSlot()
+    def show_(self):
+        if not self._parent._active_project:
+            self.show()

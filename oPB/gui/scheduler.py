@@ -76,7 +76,7 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
     def connect_signals(self):
         self.dialogOpened.connect(self.update_ui)
         self.finished.connect(self.dialogClosed.emit)
-        self.btnRefresh.clicked.connect(lambda: self.update_ui(True))
+        self.btnRefresh.clicked.connect(lambda: self.update_ui(force = True))
         self.btnCreate.clicked.connect(self._parent.ui_jobcreator.show_)
         self.btnRemove.clicked.connect(self.delete_jobs)
         self.btnClearAll.clicked.connect(self._parent.delete_all_jobs)
@@ -124,7 +124,8 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
     def update_ui(self, force = False):
         self.splash.show_()
         self.splash.setProgress(50)
-        self._parent.update_model_data_jobs(force = True)
+        self._parent.update_model_data_jobs(force = force)
+        self.setWindowTitle(translate("JobListDialog", "Job list") + translate("JobListDialog", " - Current server: ") + self._parent.at_server)
         self.resizeTable()
         self.splash.close()
 

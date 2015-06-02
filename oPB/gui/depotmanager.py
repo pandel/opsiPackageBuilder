@@ -29,6 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 
 import oPB
@@ -40,6 +41,9 @@ from oPB.gui.splash import Splash
 translate = QtCore.QCoreApplication.translate
 
 class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin):
+
+    dialogOpened = pyqtSignal()
+    dialogClosed = pyqtSignal()
 
     def __init__(self, parent):
         """
@@ -73,6 +77,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self.update_ui()
 
     def connect_signals(self):
+        self.finished.connect(self.dialogClosed.emit)
         self._parent.dataAboutToBeAquired.connect(self.splash.setProgress)
         self._parent.dataAquired.connect(self.splash.close)
         self._parent.dataAquired.connect(self.update_ui)
@@ -81,7 +86,6 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self._parent.modelDataUpdated.connect(self.update_ui)
         self._parent.modelDataUpdated.connect(self.splash.close)
 
-        self.finished.connect(self._parent._parent.startup.show_me)
         self.btnRefresh.clicked.connect(self._parent.update_data)
         self.btnCompare.clicked.connect(self.compare_sides)
         self.btnShowLog.clicked.connect(self._parentUi.showLogRequested)
@@ -273,7 +277,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
     def show_(self):
         self.logger.debug("Open depot manager")
 
-        self._parent._parent.startup.hide_me()
+        self.dialogOpened.emit()
 
         self.show()
 

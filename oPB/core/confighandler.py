@@ -442,6 +442,8 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @use_depot_funcs.setter
     def use_depot_funcs(self, value):
+        if value == "False":
+            self.depotcache = ""
         self.set("package", "usedepotfuncs", value)
 
     @property
@@ -674,5 +676,8 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @depotcache.setter
     def depotcache(self, value):
-        self.set("package", "depotCache", json.dumps(value))
+        if value == "":
+            self.set("package", "depotCache", "")
+        else:
+            self.set("package", "depotCache", json.dumps(value))
 

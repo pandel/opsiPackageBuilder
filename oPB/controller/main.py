@@ -68,6 +68,7 @@ class MainWindowController(BaseController, QObject):
         self.model_dependencies = None
 
         self._modelDataChanged = False  # see self.model_data_changed()
+        self._active_project = False
 
         # we have to generate the model first
         # because it is needed for creating the correct
@@ -396,6 +397,7 @@ class MainWindowController(BaseController, QObject):
         self._modelDataChanged = False
         self._dataSaved = None
         self._dataSaved = None
+        self._active_project = False
 
     @pyqtSlot()
     def project_close(self):
@@ -477,6 +479,7 @@ class MainWindowController(BaseController, QObject):
             self.msgbox(translate("mainController", "Project could not be loaded!"), oPB.MsgEnum.MS_ERR)
             self.startup.show_me()
         else:
+            self._active_project = True
             self.msgbox(translate("mainController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
             self.startup.hide_me()
 
@@ -502,6 +505,7 @@ class MainWindowController(BaseController, QObject):
             self._dataLoaded = None;
             self.msgbox(translate("mainController", "Project could not be created!"), oPB.MsgEnum.MS_ERR)
         else:
+            self._active_project = True
             self.logger.info("Backend data loaded")
             self.startup.hide_me()
 
@@ -530,6 +534,9 @@ class MainWindowController(BaseController, QObject):
             * oPB.MsgEnum.MS_QUEST_YESNO
             * oPB.MsgEnum.MS_QUEST_CTC
             * oPB.MsgEnum.MS_QUEST_OKCANCEL
+            * oPB.MsgEnum.MS_QUEST_PHRASE
+            * oPB.MsgEnum.MS_QUEST_PASS
+            * oPB.MsgEnum.MS_QUEST_DEPOT
 
         :param msgtext: Message text
         :param typ: type of message window, see oPB.core enums
@@ -539,8 +546,9 @@ class MainWindowController(BaseController, QObject):
         if parent is None:
             parent = self.ui
 
-        # first parse text
-        msgtext = Helper.parse_text(msgtext)
+        # first parse text, is argument is str
+        if type(msgtext) is str:
+            msgtext = Helper.parse_text(msgtext)
 
         if typ == oPB.MsgEnum.MS_ERR:
             self.msgSend.emit(msgtext)
@@ -608,6 +616,15 @@ class MainWindowController(BaseController, QObject):
             text = QInputDialog.getText(parent, translate("mainController", "Additional information"),
                                           msgtext, QLineEdit.Password, preload)
             return text
+
+        elif typ == oPB.MsgEnum.MS_QUEST_DEPOT:
+            preselectlist = [i for i, j in enumerate(msgtext) if ConfigHandler.cfg.opsi_server in j]
+            if preselectlist:
+                preselect = preselectlist[0]
+            else:
+                preselect = -1
+            item = QInputDialog.getItem(parent, translate("mainController", "Question"), translate("mainController", "Select which depot to use (Cancel = default opsi server):"), msgtext, preselect, False)
+            return item
 
     def get_properties_from_scripts(self):
         found_props = set()

@@ -53,8 +53,8 @@ class QuickUninstallComponent(BaseController, QObject):
         self.connect_signals()
 
     def connect_signals(self):
-        self.ui.dialogOpened.connect(self._parent.startup.hide)
-        self.ui.dialogClosed.connect(self._parent.startup.show)
+        self.ui.dialogOpened.connect(self._parent.startup.hide_)
+        self.ui.dialogClosed.connect(self._parent.startup.show_)
 
     def generate_model(self):
         # create model from data and assign, if not done before
@@ -89,6 +89,6 @@ class QuickUninstallComponent(BaseController, QObject):
             reply = self._parent.msgbox(translate("quickuninstallController", "Do you really want to remove the selected product(s)? This can't be undone!") + msg, oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
                 self.logger.debug("Selected product(s): " + str(prods))
-                self._parent.do_quickuninstall(packs = prods)
+                self._parent.do_quickuninstall(packs = prods, depot = self._parent.query_depot())
         else:
             self.logger.debug("Nothing selected.")

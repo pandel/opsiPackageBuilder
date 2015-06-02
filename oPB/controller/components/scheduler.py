@@ -49,6 +49,7 @@ class SchedulerComponent(BaseController, QObject):
         self.model_clients = None
         self.model_products = None
         self.model_jobs = None
+        self.at_server = ""
 
         self.msgbox = self._parent.msgbox
 
@@ -61,8 +62,8 @@ class SchedulerComponent(BaseController, QObject):
         self.connect_signals()
 
     def connect_signals(self):
-        self.ui_joblist.dialogOpened.connect(self._parent.startup.hide)
-        self.ui_joblist.dialogClosed.connect(self._parent.startup.show)
+        self.ui_joblist.dialogOpened.connect(self._parent.startup.hide_)
+        self.ui_joblist.dialogClosed.connect(self._parent.startup.show_)
 
     def generate_model(self):
         if self.model_jobs == None:
@@ -100,7 +101,7 @@ class SchedulerComponent(BaseController, QObject):
 
         # first time opened after program start?
         if BaseController.clientlist_dict == None or force == True:
-            self._parent.do_getclients()
+            self._parent.do_getclients(dest = self.at_server)
 
         if BaseController.clientlist_dict:
             tmplist = []
@@ -113,7 +114,7 @@ class SchedulerComponent(BaseController, QObject):
         self.logger.debug("Update model data: products")
 
         if BaseController.productlist_dict == None or force == True:
-            self._parent.do_getproducts()
+            self._parent.do_getproducts(dest = self.at_server)
 
         if BaseController.productlist_dict:
             tmplist = []
@@ -122,12 +123,14 @@ class SchedulerComponent(BaseController, QObject):
 
             self._parent.update_table_model(self.model_products, sorted(tmplist))
 
-    def update_model_data_jobs(self, force = False):
+    def update_model_data_jobs(self, force = False, querydepot = True):
         self.logger.debug("Update model data: jobs")
 
         # not the first time after program start?
         if not BaseController.joblist or force == True:
-            self._parent.do_getjobs()
+            if querydepot is True:
+                self.at_server = self._parent.query_depot(with_all = False)
+            self._parent.do_getjobs(dest = self.at_server)
 
         self._parent.update_table_model(self.model_jobs, sorted(BaseController.joblist))
 
@@ -139,8 +142,8 @@ class SchedulerComponent(BaseController, QObject):
                                         oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
                 self.logger.debug("Remove AT jobs")
-                self._parent.do_deletejobs(jobs)
-                self.update_model_data_jobs(force = True)
+                self._parent.do_deletejobs(joblist = jobs, dest = self.at_server)
+                self.update_model_data_jobs(force = True, querydepot = False)
         else:
             self.logger.debug("Deletion canceled")
 
@@ -151,8 +154,8 @@ class SchedulerComponent(BaseController, QObject):
             reply = self._parent.msgbox(translate("schedulerController", "Do you really want to remove all job(s)? This can't be undone!"),
                                         oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
-                self._parent.do_deletealljobs()
-                self.update_model_data_jobs(force = True)
+                self._parent.do_deletealljobs(dest = self.at_server)
+                self.update_model_data_jobs(force = True, querydepot = False)
             else:
                 self.logger.debug("Deletion canceled")
 
@@ -172,4 +175,6 @@ class SchedulerComponent(BaseController, QObject):
         reply = self._parent.msgbox(translate("schedulerController", "Create AT jobs now?"),
                                     oPB.MsgEnum.MS_QUEST_YESNO)
         if reply is True:
-            self._parent.do_createjobs(clients, products, ataction, dateVal, timeVal, on_demand, wol)
+            self._parent.do_createjobs(clIdx = clients, prodIdx = products, ataction = ataction, dateVal = dateVal,
+                                       timeVal = timeVal, od_demand = on_demand, wol = wol, dest = self.at_server)
+

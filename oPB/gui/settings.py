@@ -38,7 +38,7 @@ from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.utilities import SpecialOptionButtonGroup
 from oPB.ui.ui import SettingsDialogBase, SettingsDialogUI
-
+from oPB.gui.splash import Splash
 
 translate = QtCore.QCoreApplication.translate
 
@@ -63,6 +63,9 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
         print("\tgui/SettingsDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/SettingsDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
+
+        self.splash = Splash(self, translate("MainWindow", "Please wait..."))
+        self.splash.close()  # only for linux
 
         # take care of sys.platform
         if sys.platform.startswith("linux"):
@@ -89,6 +92,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         self.btnLogFile.clicked.connect(self.select_logfile)
 
         self.btnSave.clicked.connect(self._parent.save_config)
+        self.btnRefreshDepotCache.clicked.connect(self._parent.refresh_depot_cache)
         self.dataChanged.connect(self.datamapper.submit)
         self.settingsAboutToBeClosed.connect(self._parent.close_dialog)
 
@@ -167,7 +171,8 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
                                                              [self.chkSyntaxHighlight, self.chkCodeFolding],
                                                              [self.btnExternalEditor, self.inpExternalEditor])
 
-        self.optionGroupDepotFuncs = SpecialOptionButtonGroup(self.chkUseDepotFunctions, None, [],
+        self.optionGroupDepotFuncs = SpecialOptionButtonGroup(self.chkUseDepotFunctions, None,
+                                                              [self.btnRefreshDepotCache],
                                                               [self.inpInstallCommand, self.inpInstSetupCommand,
                                                                self.inpUninstallCommand, self.inpUploadCommand])
 

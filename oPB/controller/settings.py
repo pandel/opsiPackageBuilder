@@ -124,6 +124,8 @@ class SettingsController(QObject, LogMixin):
         self.logger.debug("Connect signals")
         self.model.itemChanged.connect(self.model_data_changed)
         self.settingsClosed.connect(self._parentUi.set_dev_folder)
+        self._parent.processingStarted.connect(self.ui.splash.show_)
+        self._parent.processingEnded.connect(self.ui.splash.close)
 
     @pyqtSlot()
     def model_data_changed(self):
@@ -202,3 +204,7 @@ class SettingsController(QObject, LogMixin):
             self._modelDataChanged = None
 
         self.close_dialog()
+
+    @pyqtSlot()
+    def refresh_depot_cache(self):
+        self._parent.do_getdepots()

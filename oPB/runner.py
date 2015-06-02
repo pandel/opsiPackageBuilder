@@ -267,7 +267,7 @@ class Main(QObject):
             else:
                 self.logger.info("System platform: "+ sys.platform)
                 self.logger.warning("This is not a windows based system. No network drive will be associated")
-                self.logger.warning("Please take care, if the specified development base path is correct.")
+                self.logger.warning("Please take care, that the specified development base path is correct.")
         else:
             self.logger.warning("opsi server not available. Offline mode activated.")
             self.logger.warning("Return value from connection test: " + str(ret))

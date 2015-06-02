@@ -57,8 +57,8 @@ class BundleComponent(BaseController, QObject):
         self.connect_signals()
 
     def connect_signals(self):
-        self.ui.dialogOpened.connect(self._parent.startup.hide)
-        self.ui.dialogClosed.connect(self._parent.startup.show)
+        self.ui.dialogOpened.connect(self._parent.startup.hide_)
+        self.ui.dialogClosed.connect(self._parent.startup.show_)
 
     def generate_model(self):
         # create model from data and assign, if not done before

@@ -314,9 +314,6 @@
    </item>
    <item row="3" column="0" colspan="2">
     <widget class="QPlainTextEdit" name="inpDestMulti">
-     <property name="placeholderText">
-      <string notr="true"/>
-     </property>
     </widget>
    </item>
   </layout>

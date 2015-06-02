@@ -31,6 +31,7 @@ __status__ = "Production"
 import os.path
 import webbrowser
 import platform
+from time import sleep
 
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui
@@ -239,9 +240,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
         if oPB.NETMODE != "offline":
             self.btnBuild.clicked.connect(self._parent.project_build)
-            self.btnInstall.clicked.connect(self._parent.do_install)
-            self.btnInstSetup.clicked.connect(self._parent.do_installsetup)
-            self.btnUninstall.clicked.connect(self._parent.do_uninstall)
+            self.btnInstall.clicked.connect(lambda: self._parent.do_install(depot = self._parent.query_depot()))
+            self.btnInstSetup.clicked.connect(lambda: self._parent.do_installsetup(depot = self._parent.query_depot()))
+            self.btnUninstall.clicked.connect(lambda: self._parent.do_uninstall(depot = self._parent.query_depot()))
         else:
             self.btnBuild.clicked.connect(self.offline)
             self.btnInstall.clicked.connect(self.offline)
@@ -353,7 +354,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
             self._parent.startup.hide_me()
-            self._parent.do_quickinstall(pack = script[0])
+            self._parent.do_quickinstall(pack = script[0], depot = self._parent.query_depot())
             self._parent.startup.show_me()
         else:
             self.logger.debug("Dialog aborted.")
@@ -370,13 +371,18 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
             self._parent.startup.hide_me()
-            self._parent.do_upload(script[0])
+            self._parent.do_upload(script[0], depot = self._parent.query_depot())
             self._parent.startup.show_me()
         else:
             self.logger.debug("Dialog aborted.")
 
     @pyqtSlot()
     def set_button_state(self):
+        # if sender is _parent, then signal is processingEnded from BaseController
+        # this is too fast for os.path.isfile (because of disk flushing), so we need
+        # to wait a short moment
+        if self.sender() == self._parent:
+            sleep(0.5)
         self.logger.debug("Set button state")
         if self.isFileAvailable():
             self.btnInstall.setEnabled(True)
@@ -388,6 +394,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     def isFileAvailable(self):
         pack = self.lblPacketFolder.text().replace("\\","/") + "/" + self.inpProductId.text() + \
                "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
+
         return os.path.isfile(pack)
 
     @pyqtSlot(int)

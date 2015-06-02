@@ -29,10 +29,16 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import os
+import sys
 import tempfile
 from enum import Enum
 from pathlib import PurePath
-from PyQt5.QtCore import Qt
+
+try:
+    from PyQt5.QtCore import Qt
+except:
+    print("PyQt5 language bindings could not be loaded. Are they installed? Existing...")
+    sys.exit(1)
 
 # simple print object relationship besides normal logging
 # for object hierarchy debugging
@@ -104,7 +110,7 @@ OPB_INSTALL = "opsi-package-manager -i"
 OPB_INSTSETUP = "opsi-package-manager -i -S"
 OPB_UNINSTALL = "opsi-package-manager -r"
 OPB_UPLOAD = "opsi-package-manager -u"
-OPB_PROD_UPDATER = "opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &" # must be started with nohup
+OPB_PROD_UPDATER = "nohup /usr/bin/opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &" # must be started with nohup
 OPB_DEPLOY_COMMAND = "/var/lib/opsi/depot/opsi-client-agent/opsi-deploy-client-agent"
 OPB_DEPOT_SWITCH = "-d"
 OPB_METHOD_ONDEMAND = "opsi-admin -d method hostControl_fireEvent 'on_demand'"
@@ -163,7 +169,8 @@ CHLOG_STATI = ["stable", "testing"]
 BASE_FOLDERS = ["OPSI", "CLIENT_DATA"]
 
 # Constants for _msg() - message type
-MsgEnum = Enum("MsgEnum", "MS_ERR MS_WARN MS_INFO MS_STAT MS_ALWAYS MS_PARSE MS_QUEST_YESNO MS_QUEST_CTC MS_QUEST_OKCANCEL MS_QUEST_PHRASE MS_QUEST_PASS")
+MsgEnum = Enum("MsgEnum", "MS_ERR MS_WARN MS_INFO MS_STAT MS_ALWAYS MS_PARSE MS_QUEST_YESNO MS_QUEST_CTC MS_QUEST_OKCANCEL "
+                          "MS_QUEST_PHRASE MS_QUEST_PASS MS_QUEST_DEPOT")
 
 # Constants for _updater()
 UpdEnum = Enum("UpdEnum", "UP_MANU UP_AUTO")

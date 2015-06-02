@@ -1,9 +1,7 @@
 General hint regarding opsi Package Builder
 ===========================================
 
-This repository is work in progress. There are many things that won't work at the moment and will change over 
-
-time. so don't use this in production.
+This repository is work in progress. There are many things that won't work at the moment and will change over time. so don't use this in production.
 
 I take no responsibility for your decision to use anything from here!!!
 
@@ -32,9 +30,7 @@ Included Scripts
 Compiling MapDrive.dll
 ======================
 
-You need to install VC++ 2010 Express and if you want to compile for a 64Bit Platform, Microsoft Windows SDK 
-
-v7.1 additionally.
+You need to install VC++ 2010 Express and if you want to compile for a 64Bit Platform, Microsoft Windows SDK v7.1 additionally.
 
 
 Using PyInstaller
@@ -42,9 +38,7 @@ Using PyInstaller
 
 *Please customize the path to your project in opsipackagebuiler.spec!*
 
-You need to download a Python 3 compatible version of PyInstaller from www.pyinstaller.org and install it 
-
-from the source package. Before you do that, modify the file:
+You need to download a Python 3 compatible version of PyInstaller from www.pyinstaller.org and install it from the source package. Before you do that, modify the file:
 
 ``pyinstaller-python3/PyInstaller/utils/hooks/hookutils.py``
 

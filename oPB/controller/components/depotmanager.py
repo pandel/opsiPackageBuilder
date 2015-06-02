@@ -71,6 +71,12 @@ class DepotManagerComponent(BaseController, QObject):
 
         self.ui = DepotManagerDialog(self)
 
+        self.connect_signals()
+
+    def connect_signals(self):
+        self.ui.dialogOpened.connect(self._parent.startup.hide_)
+        self.ui.dialogClosed.connect(self._parent.startup.show_)
+
     def generate_model(self):
         # create model from data and assign, if not done before
         if self.model_left == None:
@@ -183,7 +189,7 @@ class DepotManagerComponent(BaseController, QObject):
                 self.dataAboutToBeAquired.emit(33)
                 if self._type_left == "repo":
                     self.logger.debug("Left pane: repo content")
-                    tmplist = self._parent.do_getrepocontent(param.split()[0])
+                    tmplist = self._parent.do_getrepocontent(dest = param.split()[0])
                     self.update_model_data(0, param.split()[0], tmplist)
                 else:
                     self.logger.debug("Left pane: depot content")
@@ -193,7 +199,7 @@ class DepotManagerComponent(BaseController, QObject):
                 self.dataAboutToBeAquired.emit(66)
                 if self._type_right == "repo":
                     self.logger.debug("Right pane: repo content")
-                    tmplist = self._parent.do_getrepocontent(param.split()[0])
+                    tmplist = self._parent.do_getrepocontent(dest = param.split()[0])
                     self.update_model_data(1, param.split()[0], tmplist)
                 else:
                     self.logger.debug("Right pane: depot content")
@@ -253,7 +259,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.logger.debug("Selected packages: " + (", ").join(packs))
 
             self.dataAboutToBeAquired.emit(None)
-            self._parent.do_deletefilefromrepo(depot, packs)
+            self._parent.do_deletefilefromrepo(packs = packs, dest = depot)
 
             if self._active_side == "left":
                 self.side_content(self._ui_box_left.currentText(), "left")
@@ -282,7 +288,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.logger.debug("Selected packages: " + (", ").join(packs))
 
             self.dataAboutToBeAquired.emit(None)
-            self._parent.do_quickuninstall(depot, packs)
+            self._parent.do_quickuninstall(packs = packs, depot = depot)
 
             if self._active_side == "left":
                 self.side_content(self._ui_box_left.currentText(), "left")
@@ -315,7 +321,7 @@ class DepotManagerComponent(BaseController, QObject):
             if reply is True:
                 self.logger.debug("Selected depot: " + depot)
                 self.dataAboutToBeAquired.emit(None)
-                self._parent.do_unregisterdepot(depot)
+                self._parent.do_unregisterdepot(depot = depot)
                 self.update_data()
                 self.dataAquired.emit()
             else:
@@ -338,7 +344,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.logger.debug("Selected depot: " + depot)
 
             self.dataAboutToBeAquired.emit(None)
-            self._parent.do_setrights_on_repo(depot)
+            self._parent.do_setrights_on_repo(dest = depot)
             if self._active_side == "left":
                 self.side_content(self._ui_box_left.currentText(), "left")
             else:
@@ -362,7 +368,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.logger.debug("Selected depot: " + depot)
 
             self.dataAboutToBeAquired.emit(None)
-            self._parent.do_runproductupdater(depot)
+            self._parent.do_runproductupdater(dest = depot)
             self.dataAquired.emit()
         else:
             self.logger.debug("Dialog canceled.")
@@ -381,7 +387,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.logger.debug("Selected packages: " + (", ").join(packs))
 
             self.dataAboutToBeAquired.emit(None)
-            self._parent.do_generate_md5(depot, packs)
+            self._parent.do_generate_md5(packs = packs, dest = depot)
 
             if self._active_side == "left":
                 self.side_content(self._ui_box_left.currentText(), "left")
@@ -439,7 +445,7 @@ class DepotManagerComponent(BaseController, QObject):
                                     parent = self.ui)
 
             self.dataAboutToBeAquired.emit(None)
-            self._parent.do_reboot(depot, user, password)
+            self._parent.do_reboot(user = user, password = password, dest = depot)
             self.dataAquired.emit()
         else:
             self.logger.debug("Dialog canceled.")
@@ -469,7 +475,7 @@ class DepotManagerComponent(BaseController, QObject):
                                     parent = self.ui)
 
             self.dataAboutToBeAquired.emit(None)
-            self._parent.do_poweroff(depot, user, password)
+            self._parent.do_poweroff(user = user, password = password, dest = depot)
             self.dataAquired.emit()
         else:
             self.logger.debug("Dialog canceled.")
@@ -498,7 +504,7 @@ class DepotManagerComponent(BaseController, QObject):
 
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
-            self._parent.do_quickinstall(dest = depot, pack = script[0])
+            self._parent.do_quickinstall(pack = script[0], depot = depot)
         else:
             self.logger.debug("Dialog canceled.")
 

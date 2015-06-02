@@ -251,7 +251,33 @@ class Helper(LogMixin):
 
     @staticmethod
     def strip_ansi_codes(s):
-        return re.sub(r'\x1b\[([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K]?', '', s)
+        def removebackspaces(text):
+            backspace_or_eol = r'(.\010)|(\033\[K)'
+            n = 1
+            while n > 0:
+                text, n = re.subn(backspace_or_eol, '', text, 1)
+            return text
+
+        s = s.replace(r'\x1b', '\n' + r'\x1b')
+        s = re.sub(r'\x1b\[\d*;\d*;\d*m', '', s)
+        s = re.sub(r'\x1b\[\d*;\d*[fmHr]', '', s)
+        s = re.sub(r'\x1b\[\d*[tGEFDBCAPMnXJKjam@Ldkel]', '', s)
+        s = re.sub(r'\x1b\[\?\d*[hl]', '', s)
+        s = re.sub(r'\x1b\[\?\w*', '', s)
+        s = re.sub(r'\x1b\[>\d*[hl]', '', s)
+        s = re.sub(r'\x1b\[[Hsu]', '', s)
+        s = re.sub(r'\x1b\(\w*', '', s)
+        s = re.sub(r'\x1b\]0;[\w*]', '', s)
+        s = re.sub(r'\x1b[=>]', '', s)
+        s = re.sub('(\n)+', '\n', s)
+        s = re.sub('\A\n|\n\Z', '', s)
+        s = re.sub(r'\A\v|\v\Z', '', re.sub(r'(\v)+', '\n', s))
+        s = s.replace('\07', '')
+        s = removebackspaces(s)
+        return s
+        #s = re.sub(r'\x1b\[([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K]?', '', s)
+        #s = re.sub(r'\x1b\[(>\?)([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K|S|u]?', '', s)
+        #return s
 
 class CommandLine(object):
     """ Command line arguments generation and parsing.
