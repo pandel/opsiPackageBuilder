@@ -1,19 +1,22 @@
-.. opsi PackageBuilder documentation master file, created by
-   sphinx-quickstart on Wed Apr 15 15:35:28 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to opsi PackageBuilder's documentation!
 ===============================================
+
+**(I'm sorry, there is only a German manual available at moment!)**
+
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
+   :caption: User manuals
 
-   opsiPackageBuilder
-   oPB
+   de/opsiPackageBuilder
 
+.. toctree::
+   :maxdepth: 4
+   :caption: Sourcecode Documentation
+
+   modules
 
 Indices and tables
 ==================

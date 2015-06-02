@@ -14,11 +14,12 @@ Subpackages
     oPB.controller
     oPB.core
     oPB.gui
+    oPB.ui
 
 Submodules
 ----------
 
 .. toctree::
 
-   oPB.resources_qt
+   oPB.runner
 

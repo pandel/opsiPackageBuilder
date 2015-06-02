@@ -173,9 +173,10 @@ class Helper(LogMixin):
         """
         Converts comma-separated parameters from input field, to correct list format
         and takes into account, that the parameter itself could contain commas, but
-        enclosed within "...", i. e.
-            "OU=test1,dc=subdomain,dc=domain,dc=de", "OU=test2,dc=subdomain,dc=domain,dc=de"
-            -> these are two values, with commas inside the separate values
+        enclosed within "...", i. e.:
+
+        "OU=test1,dc=subdomain,dc=domain,dc=de", "OU=test2,dc=subdomain,dc=domain,dc=de"
+        -> these are two values, with commas inside the separate values
 
         :param value: pseudo-list as string
         :return: correctly separated parameters as real list

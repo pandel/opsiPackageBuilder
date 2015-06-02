@@ -7,7 +7,6 @@ I take no responsibility for your decision to use anything from here!!!
 
 opsi PackageBuilder is only tested with Python 3.4 and PyQT5.
 
-
 Requirements
 ============
 - PyQt5
@@ -15,7 +14,6 @@ Requirements
 - sphinx_rtd_theme
 - PyCrypto
 - simple-crypt>=4.0.0
-
 
 Included Scripts
 ================
@@ -25,18 +23,15 @@ Included Scripts
 - 1_update_locale.cmd: 		Re-scan source files for new(updated language strings.
 - 2_compile_resource.cmd:	Make Python file from \*.qrc file
 - 3_sphinx.cmd:			Re-scan source file in-place documentation
-- 4_distrib.cmd:		Build install package via PyInstaller (NOT REALLY WORKING AT THE MOMENT)
+- 4_distrib.cmd:		Build install package via PyInstaller
 
 Compiling MapDrive.dll
 ======================
 
 You need to install VC++ 2010 Express and if you want to compile for a 64Bit Platform, Microsoft Windows SDK v7.1 additionally.
 
-
 Using PyInstaller
 =================
-
-*Please customize the path to your project in opsipackagebuiler.spec!*
 
 You need to download a Python 3 compatible version of PyInstaller from www.pyinstaller.org and install it from the source package. Before you do that, modify the file:
 

@@ -6,12 +6,20 @@ oPB.controller package
     :undoc-members:
     :show-inheritance:
 
+Subpackages
+-----------
+
+.. toctree::
+
+    oPB.controller.components
+
 Submodules
 ----------
 
 .. toctree::
 
    oPB.controller.base
-   oPB.controller.guicontroller
-   oPB.controller.settingscontroller
+   oPB.controller.console
+   oPB.controller.main
+   oPB.controller.settings
 

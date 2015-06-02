@@ -13,5 +13,10 @@ Submodules
 
    oPB.core.confighandler
    oPB.core.datadefinition
+   oPB.core.logging
+   oPB.core.mapdrive
+   oPB.core.models
+   oPB.core.processing
+   oPB.core.scriptscanner
    oPB.core.tools
 

@@ -371,9 +371,9 @@ class Main(QObject):
         Adopted to Python 3 from here:
         http://www.riverbankcomputing.com/pipermail/pyqt/2009-May/022961.html
 
-        :param excType exception type
-        :param excValue exception value
-        :param tracebackobj traceback object
+        :param excType: exception type
+        :param excValue: exception value
+        :param tracebackobj: traceback object
         """
 
         try:

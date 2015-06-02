@@ -115,7 +115,7 @@ class ScriptTree(LogMixin):
             if m1:
                 include = self._clear_script_name(m1.group(2).replace('\\', '/'))
                 root.children.append(ScriptNode("Sub: " + include, []))
-                item = QStandardItem(QIcon(':/images/smallIcons_1453.ico'), include + " (sub)")
+                item = QStandardItem(QIcon(':/images/smallIcons_1127.ico'), include + " (sub)")
                 item.setEditable(False)
                 modelroot.appendRow(item)
 

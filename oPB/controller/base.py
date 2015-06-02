@@ -440,11 +440,13 @@ class BaseController(LogMixin):
             pass
 
     def msgbox(self, msgtext = "", typ = oPB.MsgEnum.MS_STAT, parent = None):
-        """ Messagebox function (virtual)
+        """
+        Message box function (virtual)
 
-        ** HAS TO BE RE-IMPLEMENTED **
+        **HAS TO BE RE-IMPLEMENTED**
 
         Valid values for ``typ``:
+
             * oPB.MsgEnum.MS_ERR -> Error message (status bar/ popup)
             * oPB.MsgEnum.MS_WARN -> Warning (status bar/ popup)
             * oPB.MsgEnum.MS_INFO -> Information (status bar/ popup)
@@ -458,8 +460,10 @@ class BaseController(LogMixin):
 
         :param msgtext: Message text
         :param typ: type of message window, see oPB.core enums
-        :return see descriptions for ``typ``
+        :return variant: see descriptions for ``typ``
+
         """
+
         if parent is None:
             parent = self.ui
 

@@ -1,2 +1,2 @@
-pyrcc5 opsiPackageBuilder.qrc -o opsiPackageBuilder_rc.py 
+pyrcc5 opsipackagebuilder.qrc -o opsipackagebuilder_rc.py 
 pause
