@@ -18,8 +18,6 @@ Requirements
 Included scripts and files
 ==========================
 
-(The scripts will only work under Windows!)
-
 - 1_update_locale.cmd/.sh: 		Re-scan source files for new(updated language strings.
 - 2_compile_resource.cmd/.sh:		Make Python file from \*.qrc file
 - 3_sphinx.cmd/.sh:			Re-scan source file in-place documentation
