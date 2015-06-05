@@ -83,7 +83,9 @@ class ScriptTree(LogMixin):
             if scriptname != "":
                 item = QStandardItem(QIcon(':/images/smallIcons_1712.ico'), self.scriptheader[i] + ": " + scriptname)
                 item.setEditable(False)
-                ScriptTree.model.appendRow(item)
+                item2 = QStandardItem(scriptname)
+                item2.setEditable(False)
+                ScriptTree.model.appendRow([item, item2])
                 ScriptTree.root.children.append(ScriptNode(scriptname + "(" + self.scriptheader[i] + ")", []))
                 self._scan_script(scriptname, ScriptTree.root.children[len(ScriptTree.root.children) - 1], 0, item)
 
@@ -117,7 +119,9 @@ class ScriptTree(LogMixin):
                 root.children.append(ScriptNode("Sub: " + include, []))
                 item = QStandardItem(QIcon(':/images/smallIcons_1127.ico'), include + " (sub)")
                 item.setEditable(False)
-                modelroot.appendRow(item)
+                item2 = QStandardItem(include)
+                item2.setEditable(False)
+                modelroot.appendRow([item, item2])
 
                 self.logger.debug("\t\t" * level + "Found Sub: " + include)
 
@@ -125,8 +129,9 @@ class ScriptTree(LogMixin):
                 include = self._clear_script_name(m2.group(2).replace('\\', '/'))
                 root.children.append(ScriptNode("Include_append: " + include, []))
                 item = QStandardItem(QIcon(':/images/smallIcons_1453.ico'), include + " (include_append)")
-                item.setEditable(False)
-                modelroot.appendRow(item)
+                item2 = QStandardItem(include)
+                item2.setEditable(False)
+                modelroot.appendRow([item, item2])
 
                 self.logger.debug("\t\t" * level + "Found include_append: " + include)
 
@@ -134,8 +139,9 @@ class ScriptTree(LogMixin):
                 include = self._clear_script_name(m3.group(2).replace('\\', '/'))
                 root.children.append(ScriptNode("Include_insert: " + include, []))
                 item = QStandardItem(QIcon(':/images/smallIcons_1453.ico'), include + " (include_insert)")
-                item.setEditable(False)
-                modelroot.appendRow(item)
+                item2 = QStandardItem(include)
+                item2.setEditable(False)
+                modelroot.appendRow([item, item2])
 
                 self.logger.debug("\t\t" * level + "Found include_insert: " + include)
 

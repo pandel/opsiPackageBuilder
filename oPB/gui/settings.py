@@ -158,6 +158,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         self.datamapper.addMapping(self.optionGroupLogFile, 41, "checked")
         self.datamapper.addMapping(self.inpLogFile, 42)
         self.datamapper.addMapping(self.cmbLogLevel, 43)
+        self.datamapper.addMapping(self.inpEditorOptions, 44)
         self.datamapper.toFirst()
 
     def create_optionbuttongroups(self):
@@ -171,7 +172,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
         self.optionGroupEditorTyp = SpecialOptionButtonGroup(self.rdEditorInternal, self.rdEditorExternal,
                                                              [self.chkSyntaxHighlight, self.chkCodeFolding],
-                                                             [self.btnExternalEditor, self.inpExternalEditor])
+                                                             [self.btnExternalEditor, self.inpExternalEditor, self.inpEditorOptions])
 
         self.optionGroupDepotFuncs = SpecialOptionButtonGroup(self.chkUseDepotFunctions, None,
                                                               [self.btnRefreshDepotCache],

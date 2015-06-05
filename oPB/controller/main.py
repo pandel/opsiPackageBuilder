@@ -656,7 +656,7 @@ class MainWindowController(BaseController, QObject):
                 self.add_property(p)
 
     @pyqtSlot()
-    def show_script_structure(self):
+    def show_scripttree(self):
         """Open script structure treeview"""
         scripts = []
 

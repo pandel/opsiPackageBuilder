@@ -118,6 +118,7 @@ class SettingsController(QObject, LogMixin):
         self.model.setItem(0, 41, QtGui.QStandardItem(ConfigHandler.cfg.log_always))
         self.model.setItem(0, 42, QtGui.QStandardItem(ConfigHandler.cfg.log_file))
         self.model.setItem(0, 43, QtGui.QStandardItem(ConfigHandler.cfg.log_level))
+        self.model.setItem(0, 44, QtGui.QStandardItem(ConfigHandler.cfg.editor_options))
 
     def connect_signals(self):
         """Connect signals"""
@@ -179,6 +180,7 @@ class SettingsController(QObject, LogMixin):
         ConfigHandler.cfg.log_always = self.model.item(0, 41).text().title()
         ConfigHandler.cfg.log_file = self.model.item(0, 42).text()
         ConfigHandler.cfg.log_level = self.model.item(0, 43).text()
+        ConfigHandler.cfg.editor_options = self.model.item(0, 44).text()
 
     def close_dialog(self):
         """Close settings dialog"""

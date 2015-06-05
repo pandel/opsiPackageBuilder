@@ -82,6 +82,7 @@ class ConfigHandler(ConfigParser, LogMixin):
         "tools": {
             "extchlog": "True",
             "scripteditor": "notepad.exe",
+            "editoroptions": "",
             "editintern": "True",
             "editstyle": "True",
             "editfold": "False",
@@ -235,6 +236,14 @@ class ConfigHandler(ConfigParser, LogMixin):
         self.editor_intern = "False" if self.editor_intern == "0" else "True"
         self.editor_use_styling = "False" if self.editor_use_styling == "0" else "True"
         self.editor_use_folding = "False" if self.editor_use_folding == "0" else "True"
+
+        # if internal editor was used before, let's hope for existence of an old standard installation
+        # and set parameters accordingly
+        if self.editor_intern == "True":
+            self.editor_intern = "False"
+            self.scripteditor = "C:\Program Files (x86)\opsi PackageBuilder\ScriptEditor.exe"
+            self.editor_options = "-x=opsi -s --path="
+
         self.chlog_on_build = "False" if self.chlog_on_build == "0" else "True"
         self.chlog_on_save = "False" if self.chlog_on_save == "0" else "True"
 
@@ -485,6 +494,14 @@ class ConfigHandler(ConfigParser, LogMixin):
     @editor_use_folding.setter
     def editor_use_folding(self, value):
         self.set("tools", "editfold", value)
+
+    @property
+    def editor_options(self):
+        return self.get("tools", "editoroptions")
+
+    @editor_options.setter
+    def editor_options(self, value):
+        self.set("tools", "editoroptions", value)
 
     @property
     def chlog_block_marker(self):

@@ -31,6 +31,7 @@ __status__ = "Production"
 import os.path
 import webbrowser
 import platform
+import subprocess
 from time import sleep
 
 from PyQt5.QtWidgets import *
@@ -184,8 +185,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.actionSave.triggered.connect(self._parent.save_project)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
         self.actionSaveAs.triggered.connect(self.not_working)
-        self.actionStartWinst.triggered.connect(self.not_working)
-        self.actionScriptEditor.triggered.connect(self.not_working)
+        self.actionStartWinst.triggered.connect(self.start_winst)
+        self.actionScriptEditor.triggered.connect(self.open_scripteditor)
         self.actionHelp.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX))
         self.actionSearchForUpdates.triggered.connect(self.not_working)
         self.actionShowChangeLog.triggered.connect(self.not_working)
@@ -215,7 +216,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         # buttons
         self.btnSave.clicked.connect(self._parent.save_project)
         self.btnChangelogEdit.clicked.connect(self._parent.show_changelogeditor)
-        self.btnShowScrStruct.clicked.connect(self._parent.show_script_structure)
+        self.btnShowScrStruct.clicked.connect(self._parent.show_scripttree)
         self.btnHelpPacket.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPACKET))
         self.btnHelpDependencies.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABDEPEND))
         self.btnHelpProperties.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPROP))
@@ -234,13 +235,13 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.btnScrOnceDel.clicked.connect(lambda: self.select_script_dialog("once", False))
         self.btnScrCustomDel.clicked.connect(lambda: self.select_script_dialog("custom", False))
         self.btnScrUserLoginDel.clicked.connect(lambda: self.select_script_dialog("userlogin", False))
-        self.btnScrSetupEdit.clicked.connect(self.not_working)
-        self.btnScrUninstallEdit.clicked.connect(self.not_working)
-        self.btnScrUpdateEdit.clicked.connect(self.not_working)
-        self.btnScrAlwaysEdit.clicked.connect(self.not_working)
-        self.btnScrOnceEdit.clicked.connect(self.not_working)
-        self.btnScrCustomEdit.clicked.connect(self.not_working)
-        self.btnScrUserLoginEdit.clicked.connect(self.not_working)
+        self.btnScrSetupEdit.clicked.connect(self.open_scripteditor)
+        self.btnScrUninstallEdit.clicked.connect(self.open_scripteditor)
+        self.btnScrUpdateEdit.clicked.connect(self.open_scripteditor)
+        self.btnScrAlwaysEdit.clicked.connect(self.open_scripteditor)
+        self.btnScrOnceEdit.clicked.connect(self.open_scripteditor)
+        self.btnScrCustomEdit.clicked.connect(self.open_scripteditor)
+        self.btnScrUserLoginEdit.clicked.connect(self.open_scripteditor)
 
         if oPB.NETMODE != "offline":
             self.btnBuild.clicked.connect(self._parent.project_build)
@@ -345,6 +346,82 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     @pyqtSlot()
     def offline(self):
         self._parent.msgbox(translate("MainWindow", "You are working in offline mode. Functionality not available!"), oPB.MsgEnum.MS_ALWAYS, self)
+
+    @pyqtSlot()
+    def start_winst(self):
+        self.logger.debug("Start Winst under " + platform.system())
+        if platform.system() in ["Windows"]:
+            if os.path.exists(oPB.OPB_WINST_NT):
+                subprocess.call([oPB.OPB_WINST_NT, self.lblPacketFolder.text().replace("\\","/")])
+            else:
+                self._parent.msgbox(translate("MainWindow", "Local opsi-winst installation not found or client-agent not installed!"), oPB.MsgEnum.MS_ERR, self)
+        else:
+            self._parent.msgbox(translate("MainWindow", "Function not available at the moment for system:" + " " + platform.system()), oPB.MsgEnum.MS_ALWAYS, self)
+
+    @pyqtSlot()
+    def open_scripteditor(self):
+        self.logger.debug("Start scripteditor")
+
+        if ConfigHandler.cfg.editor_intern == "True":
+            self._parent.msgbox(translate("MainWindow", "Internal editor not available at the moment. Use external editor instead!"), oPB.MsgEnum.MS_ALWAYS, self)
+            self.actionSettings.trigger()
+            return
+
+        if os.path.exists(ConfigHandler.cfg.scripteditor):
+            path = Helper.concat_path_and_file(self.lblPacketFolder.text(), "CLIENT_DATA")
+            if self.sender() == self.btnScrSetupEdit:
+                if self.inpScrSetup.text().strip() == "":
+                    script = "setup.opsiscript"
+                else:
+                    script = self.inpScrSetup.text()
+            elif self.sender() == self.btnScrUninstallEdit:
+                if self.inpScrUninstall.text().strip() == "":
+                    script = "uninstall.opsiscript"
+                else:
+                    script = self.inpScrUninstall.text()
+            elif self.sender() == self.btnScrUpdateEdit:
+                if self.inpScrUpdate.text().strip() == "":
+                    script = "update.opsiscript"
+                else:
+                    script = self.inpScrUpdate.text()
+            elif self.sender() == self.btnScrAlwaysEdit:
+                if self.inpScrAlways.text().strip() == "":
+                    script = "always.opsiscript"
+                else:
+                    script = self.inpScrAlways.text()
+            elif self.sender() == self.btnScrOnceEdit:
+                if self.inpScrOnce.text().strip() == "":
+                    script = "once.opsiscript"
+                else:
+                    script = self.inpScrOnce.text()
+            elif self.sender() == self.btnScrCustomEdit:
+                if self.inpScrCustom.text().strip() == "":
+                    script = "custom.opsiscript"
+                else:
+                    script = self.inpScrCustom.text()
+            elif self.sender() == self.btnScrUserLoginEdit:
+                if self.inpScrUserLogin.text().strip() == "":
+                    script = "userlogin.opsiscript"
+                else:
+                    script = self.inpScrUserLogin.text()
+            elif self.sender() == self.actionScriptEditor:
+                path = ""
+                script = ""
+
+            # script editor from menu
+            if path != "" and script != "":
+                path = Helper.concat_path_and_file(path, script)
+
+            self.logger.debug("Opening script: " + path)
+            cmd = [ConfigHandler.cfg.scripteditor]
+            for part in (ConfigHandler.cfg.editor_options + path).split():
+                cmd.append(part)
+            cmd.append(path)
+
+            subprocess.call(cmd)
+
+        else:
+            self._parent.msgbox(translate("MainWindow", "Editor not found:" + " " + ConfigHandler.cfg.scripteditor), oPB.MsgEnum.MS_ERR, self)
 
     @pyqtSlot()
     def quickinstall(self):

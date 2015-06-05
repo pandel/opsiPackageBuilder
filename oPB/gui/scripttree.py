@@ -29,11 +29,12 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import os
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
+import subprocess
 from PyQt5 import QtCore
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
+from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
 from oPB.ui.ui import ScriptTreeDialogBase, ScriptTreeDialogUI
 
@@ -60,6 +61,7 @@ class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin):
         print("\tgui/ScriptTreeDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.model = None
+        self.connect_signals()
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
@@ -79,4 +81,42 @@ class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin):
     def assign_model(self, model):
         self.model = model
         self.treeView.setModel(self.model)
+        self.treeView.setColumnHidden(1, True)
         self.treeView.expandAll()
+
+    def connect_signals(self):
+        self.treeView.doubleClicked.connect(self.open_scripteditor)
+
+    @pyqtSlot()
+    def open_scripteditor(self, *args, **kwargs):
+        self.logger.debug("Start scripteditor")
+
+        idx = self.treeView.currentIndex()
+        if idx.isValid():
+            sibling = idx.sibling(idx.row(), idx.column() + 1)
+            item = self.model.itemFromIndex(sibling)
+            script = item.text()
+
+        if "(External)" in script:
+            self._parent.msgbox(translate("MainWindow", "Sorry! You cannot edit a script outside the project folder!"), oPB.MsgEnum.MS_ERR, self)
+            return
+
+        if ConfigHandler.cfg.editor_intern == "True":
+            self._parent.msgbox(translate("MainWindow", "Internal editor not available at the moment. Use external editor instead!"), oPB.MsgEnum.MS_ALWAYS, self)
+            self._parentUi.actionSettings.trigger()
+            return
+
+        if os.path.exists(ConfigHandler.cfg.scripteditor):
+            path = Helper.concat_path_and_file(self._parentUi.lblPacketFolder.text(), "CLIENT_DATA")
+
+            path = Helper.concat_path_and_file(path, script)
+
+            self.logger.debug("Opening script: " + path)
+            cmd = [ConfigHandler.cfg.scripteditor]
+            for part in (ConfigHandler.cfg.editor_options + path).split():
+                cmd.append(part)
+            cmd.append(path)
+            subprocess.call(cmd)
+
+        else:
+            self._parent.msgbox(translate("MainWindow", "Editor not found:" + " " + ConfigHandler.cfg.scripteditor), oPB.MsgEnum.MS_ERR, self)

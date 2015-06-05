@@ -167,6 +167,8 @@ OPB_DEPOT_FILE_REMOVE = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do '
 
 OPB_REBOOT = "shutdown -r now"
 OPB_POWEROFF = "shutdown -h now"
+OPB_WINST_NT = "C:\\Program Files (x86)\\opsi.org\\opsi-client-agent\\opsi-winst\\winst32.exe"
+OPB_WINST_LINUX = ""
 
 # file extensions for selection dialogs
 SCRIPT_EXT = ["opsiscript", "opsiinc", "ins", "py", "*"]
