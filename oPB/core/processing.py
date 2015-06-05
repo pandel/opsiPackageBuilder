@@ -220,7 +220,7 @@ class OpsiProcessing(QObject, LogMixin):
                 cmd = oPB.OPB_SETRIGHTS_NOSUDO + " '" + self._control.path_on_server + "'"
 
             cmd = ["sh", "-c", cmd]
-            result = self._processAction(cmd, action, ret)
+            result = self._processAction(cmd, action, ret, split = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_QUICKINST:

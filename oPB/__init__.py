@@ -52,8 +52,13 @@ def get_script_dir(follow_symlinks=True):
         path = os.path.realpath(path)
     return os.path.dirname(path)
 
-# add base path to environement and append ui package to module search path
-# necessary for uic to find resource file
+"""
+We have to set an environment variables to correct paths when freezing the application.
+OPB_BASE   -> to correct paths to *.ui files in corresponding modules
+
+- add base path to environement and append ui package to module search path
+- necessary for uic to find resource file
+"""
 os.environ['OPB_BASE'] = get_script_dir()
 sys.path.append(os.environ['OPB_BASE'] + "/ui")
 
