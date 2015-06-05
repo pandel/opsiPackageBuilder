@@ -13,9 +13,9 @@ eingegangen.
    :maxdepth: 2
 
    start
-   tabPacket
-   tabDepend
-   tabProp
+   tabpacket
+   tabdepend
+   tabprop
    packetfunctions
    changelogeditor
    scripttree

@@ -261,5 +261,3 @@ if "%1" == "pseudoxml" (
 )
 
 :end
-
-pause

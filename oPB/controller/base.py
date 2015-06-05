@@ -386,7 +386,7 @@ class BaseController(LogMixin):
     def do_deploy(self, clientlist = [], options = {}, dest = ""):
         self._do(oPB.OpEnum.DO_DEPLOY, translate("baseController", "Deploy opsi-client agent from config server..."), alt_destination = dest, clientlist = clientlist, options = options)
 
-    def query_depot(self, with_all = True):
+    def query_depot(self, with_all = True, parent = None):
         if ConfigHandler.cfg.use_depot_funcs == "True":
             if ConfigHandler.cfg.depotcache == {}:
                 self.do_getdepots()
@@ -399,7 +399,7 @@ class BaseController(LogMixin):
             if with_all is True:
                 l.insert(0, "ALL" + " (" + translate("baseController", "opsi-package-manager commands only: -d ALL") + ")")
 
-            (result, accept) = self.msgbox(msgtext = l, typ = oPB.MsgEnum.MS_QUEST_DEPOT)
+            (result, accept) = self.msgbox(msgtext = l, typ = oPB.MsgEnum.MS_QUEST_DEPOT, parent = parent)
             if accept:
                 depot = result.split()[0]
                 self.logger.debug("Chosen depot: " + depot)

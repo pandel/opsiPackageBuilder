@@ -33,6 +33,7 @@ __status__ = "Production"
 #ez_setup.use_setuptools()
 
 import os
+import platform
 
 from setuptools import setup, find_packages
 
@@ -40,6 +41,15 @@ def read(*paths):
     """Build a file path from *paths* and return the contents."""
     with open(os.path.join(*paths), 'r') as f:
         return f.read()
+
+if platform.system() == "Windows":
+    data=[('oPB/core/x86', ['oPB/core/x86/MapDrive.dll']),
+                ('oPB/core/x64', ['oPB/core/x64/MapDrive.dll']),
+                ('oPB/help', ['oPB/help/opsiPackageBuilder.qch']),
+                ('oPB/help', ['oPB/help/opsipackagebuilder.qhc'])]
+else:
+    data=[('oPB/help', ['oPB/help/opsiPackageBuilder.qch']),
+                ('oPB/help', ['oPB/help/opsipackagebuilder.qhc'])]
 
 setup(name = "opsiPackageBuilder",
     version = "8.0.0",
@@ -56,12 +66,10 @@ setup(name = "opsiPackageBuilder",
         # Include any *.ui files found in the 'oPB.ui' package, too:
         'oPB.ui': ['*.ui', '*.qss'],
     },
-    data_files=[('oPB/core/x86', ['oPB/core/x86/MapDrive.dll']),
-                ('oPB/core/x64', ['oPB/core/x64/MapDrive.dll']),
-                ('', ['opsipackagebuilder_rc.py'])],
+    data_files=data,
     entry_points={
           'gui_scripts': [
               'opsipackagebuilder = oPB.runner:Main'
           ]
     },
-) 
+)

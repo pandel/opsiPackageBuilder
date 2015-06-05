@@ -69,8 +69,6 @@ def get_script_dir(follow_symlinks=True):
 """ We have to set an environment variables to correct paths when freezing the application.
     OPB_BASE   -> to correct paths to *.ui files in corresponding modules
 """
-os.environ['OPB_BASE'] = get_script_dir()
-
 
 class Main(QObject):
 
@@ -207,7 +205,7 @@ class Main(QObject):
         sys.exit(oPB.EXITCODE)
 
     def install_stylesheet(self):
-        css = get_script_dir()+"/ui/stylesheet.qss"
+        css = os.environ['OPB_BASE'] + "/ui/stylesheet.qss"
 
         try:
             file = open(css, "r", encoding="utf-8", newline="\n")
@@ -224,7 +222,7 @@ class Main(QObject):
         # and one for the standard qt message texts
         # qm = 'opsiPackageBuilder_en_EN.qm'
         # get files
-        qm_app = ':locale/opsiPackageBuilder_%s.qm' % QtCore.QLocale().system().name()
+        qm_app = ':locale/opsipackagebuilder_%s.qm' % QtCore.QLocale().system().name()
         self.logger.debug("Load application translation: " + qm_app)
         qm_qt = ':locale/qtbase_%s.qm' % QtCore.QLocale().system().name()
         self.logger.debug("Load Qt standard translation: " + qm_qt)

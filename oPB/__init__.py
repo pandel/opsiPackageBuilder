@@ -29,16 +29,33 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import os
+import inspect
 import sys
 import tempfile
 from enum import Enum
 from pathlib import PurePath
 
 try:
+    from PyQt5 import QtCore
     from PyQt5.QtCore import Qt
 except:
     print("PyQt5 language bindings could not be loaded. Are they installed? Existing...")
     sys.exit(1)
+
+def get_script_dir(follow_symlinks=True):
+    """Get file path of script. Take freezing into account."""
+    if getattr(sys, 'frozen', False): # py2exe, PyInstaller, cx_Freeze
+        path = os.path.abspath(sys.executable)
+    else:
+        path = inspect.getabsfile(get_script_dir)
+    if follow_symlinks:
+        path = os.path.realpath(path)
+    return os.path.dirname(path)
+
+# add base path to environement and append ui package to module search path
+# necessary for uic to find resource file
+os.environ['OPB_BASE'] = get_script_dir()
+sys.path.append(os.environ['OPB_BASE'] + "/ui")
 
 # simple print object relationship besides normal logging
 # for object hierarchy debugging
@@ -209,3 +226,18 @@ RET_PRODUPDRUN = 58   # Err 58: opsi-product-updater already running
 RET_NOREPO = 59       # Err 59: could not get repo content
 
 EXITCODE = RET_OK
+
+# Help destinations
+HLP_FILE = get_script_dir() + "/help/opsipackagebuilder.qhc"
+HLP_PREFIX = "qthelp://org.sphinx.opsipackagebuilder.8.0/doc/"
+HLP_DST_TABPACKET = QtCore.QLocale().system().name()[:2] + "/tabpacket.html"
+HLP_DST_TABDEPEND = QtCore.QLocale().system().name()[:2] + "/tabdepend.html"
+HLP_DST_TABPROP = QtCore.QLocale().system().name()[:2] + "/tabprop.html"
+HLP_DST_BUNDLE = QtCore.QLocale().system().name()[:2] + "/bundle.html"
+HLP_DST_CHLOGEXT = QtCore.QLocale().system().name()[:2] + "/chlog_extended.html"
+HLP_DST_CHLOGSIMPLE = QtCore.QLocale().system().name()[:2] + "/chlog_simple.html"
+HLP_DST_DEPLOY = QtCore.QLocale().system().name()[:2] + "/deployclientagent.html"
+HLP_DST_DEPOTM = QtCore.QLocale().system().name()[:2] + "/depotmanager.html"
+HLP_DST_QUINST = QtCore.QLocale().system().name()[:2] + "/"
+HLP_DST_JOBCREATOR = QtCore.QLocale().system().name()[:2] + "/scheduler.html#auftrage-anlegen"
+HLP_DST_JOBLIST = QtCore.QLocale().system().name()[:2] + "/scheduler.html"

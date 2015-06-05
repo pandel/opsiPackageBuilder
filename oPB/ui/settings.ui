@@ -1128,7 +1128,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="5" column="1" alignment="Qt::AlignHCenter">
     <widget class="QPushButton" name="btnHelp">
      <property name="maximumSize">
       <size>

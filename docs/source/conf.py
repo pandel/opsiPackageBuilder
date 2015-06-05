@@ -15,12 +15,17 @@
 
 import sys
 import os
+import platform
 import shlex
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('D:/Pythonprojects/Python oPB'))
+if platform.system() == "Windows":
+    sys.path.insert(0, os.path.abspath('D:/Pythonprojects/Python oPB'))
+elif platform.system() == "Linux":
+    sys.path.insert(0, os.path.abspath('/home/holger/Pythonprojects/Python oPB'))
+    print (sys.path)
 
 # -- General configuration ------------------------------------------------
 
@@ -206,7 +211,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'opsiPackageBuilderdoc'
+htmlhelp_basename = 'opsipackagebuilderdoc'
 
 # Which stylesheet to use
 html_style = 'my_nature.css'
@@ -231,7 +236,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'opsiPackageBuilder.tex', 'opsi PackageBuilder Documentation',
+  (master_doc, 'opsipackagebuilder.tex', 'opsi PackageBuilder Documentation',
    'Holger Pandel', 'manual'),
 ]
 
@@ -275,8 +280,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'opsiPackageBuilder', 'opsi PackageBuilder Documentation',
-   author, 'opsiPackageBuilder', 'One line description of project.',
+  (master_doc, 'opsipackagebuilder', 'opsi PackageBuilder Documentation',
+   author, 'opsipackagebuilder', 'One line description of project.',
    'Miscellaneous'),
 ]
 

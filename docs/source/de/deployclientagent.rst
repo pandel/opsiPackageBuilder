@@ -1,11 +1,11 @@
-Client Agent verteilen
+﻿Client Agent verteilen
 ======================
 
 |image73|
 
-Erläuterung zur Option "Nicht warten":
+**Erläuterung zur Option "Nicht warten":**
 
-Wird diese Option angewählt, so wird der Deploy Befehl auf dem Server abgesetzt und nicht auf die Beendigung der Ausführung gewartet, d. h. es gibt keine Rückmeldung über das PLINK Log. Bei größeren Deploys führt das dazu, dass der opsiPackageBuilder nicht "ewig" zu hägen scheint, sondern man kann direkt weiterarbeiten.
+Wird diese Option angewählt, so wird der Deploy Befehl auf dem Server abgesetzt und nicht auf die Beendigung der Ausführung gewartet, d. h. es gibt keine Rückmeldung über das PLINK Log. Bei größeren Deploys führt das dazu, dass der opsi PackageBuilder nicht "ewig" zu hägen scheint, sondern man kann direkt weiterarbeiten.
 
 Hinweise zum Feld "Vorab-Befehl":
 
@@ -18,38 +18,19 @@ Daran sind allerdings einige Bedingungen geknüpft:
     - Befehlsverkettung funktioniert begrenzt. && und \|\| müssen in normale Anführungszeichen (kein Apostroph) gesetzt werden, bspw. "&&" oder "\|\|"
     - Piping und Ausgabeumlenkung sind sehr fallabhängig. Da hilft nur opsiPackageBuilder Log einschalten und ausprobieren.
 
-+--------------------------------------------------------------------------+
-| Beispiel:                                                                |
-|                                                                          |
-| - folgender Befehl soll abgesetzt werden:                cd              |
-| c:\\TEMP\\RZInstall\\ETHLineSpeed && set NWDUPLEXMODE=AUTOSENS && start  |
-| install.cmd                                                              |
-|                                                                          |
-| - gem. obiger Hinweise muss in das Feld:        cd                       |
-| c:\\TEMP\\RZInstall\\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&"    |
-| start install.cmd                                                        |
-|                                                                          |
-| - opsiPackageBuilder macht daraus im Hintergrund (plink Authorisation,   |
-| Port können ja nach Einstellung variieren):                              |
-|                                                                          |
-| "plink.exe" -batch -P 22 <opsi admin>@<config server> -pw                |
-| "<opsiserverpass>" winexe --debug-stderr --user "esaadm" --password      |
-| "<localadminpass>" //client 'cmd /c cd c:\\TEMP\\RZInstall\\ETHLineSpeed |
-| "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd'                   |
-|                                                                          |
-| Das Kommando wir natürlich ohne Zeilenumbrüche abgesetzt. Die Werte in   |
-| <> sind entsprechend der eigenen Umgebung zu ersetzen.)                  |
-|                                                                          |
-| Am besten ist es, den zu setzenden Befehl per Hand auf der Kommandozeile |
-| erst an einer Maschine zu prüfen und dann entsprechend im Feld zu        |
-| hinterlegen. Die letzten 20 Befehle werden in der INI Datei gespeichert  |
-| und bleiben somit für zukünftige Verwendung erhalten (Sollte in einem    |
-| dieser Befehle das Paragraphensymbol "§" verwendet worden sein, wird die |
-| Liste beim erneuten Öffnen des Dialogs merkwürdig aussehen, da dieses    |
-| Symbol intern für die Trennung der Kombobox Elemente verwendet wird.)    |
-|                                                                          |
+**Beispiel:**
 
-+--------------------------------------------------------------------------+
+- folgender Befehl soll abgesetzt werden:
+    ``cd c:\\TEMP\\RZInstall\\ETHLineSpeed && set NWDUPLEXMODE=AUTOSENS && start install.cmd``
+- gem. obiger Hinweise muss in das Feld:
+    ``cd c:\\TEMP\\RZInstall\\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd``
+
+- opsiPackageBuilder macht daraus im Hintergrund (plink Authorisation, Port können ja nach Einstellung variieren):
+    ``winexe --debug-stderr --user "esaadm" --password "<localadminpass>" //client 'cmd /c cd c:\\TEMP\\RZInstall\\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd'``
+
+Das Kommando wir natürlich ohne Zeilenumbrüche abgesetzt. Die Werte in <> sind entsprechend der eigenen Umgebung zu ersetzen.)
+
+Am besten ist es, den zu setzenden Befehl per Hand auf der Kommandozeile erst an einer Maschine zu prüfen und dann entsprechend im Feld zu hinterlegen. Die letzten 20 Befehle werden in der INI Datei gespeichert und bleiben somit für zukünftige Verwendung erhalten (Sollte in einem dieser Befehle das Paragraphensymbol "§" verwendet worden sein, wird die Liste beim erneuten Öffnen des Dialogs merkwürdig aussehen, da dieses Symbol intern für die Trennung der Kombobox Elemente verwendet wird.)
 
 **Achtung:**
 

@@ -1,4 +1,4 @@
-pyinstaller --onefile --noconfirm --log-level=DEBUG opsipackagebuilder.spec
+pyinstaller --onefile --noconfirm --log-level=DEBUG pyinstaller-windows.spec
 
 pause
 

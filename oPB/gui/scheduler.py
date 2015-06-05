@@ -29,12 +29,11 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 from datetime import datetime
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
+import oPB.gui.helpviewer
 from oPB.core.tools import LogMixin
 from oPB.core.confighandler import ConfigHandler
 from oPB.ui.ui import JobListDialogUI, JobCreatorDialogUI, JobListDialogBase, JobCreatorDialogBase
@@ -80,7 +79,7 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
         self.btnCreate.clicked.connect(self._parent.ui_jobcreator.show_)
         self.btnRemove.clicked.connect(self.delete_jobs)
         self.btnClearAll.clicked.connect(self._parent.delete_all_jobs)
-        self.btnHelp.clicked.connect(self._parentUi.not_working)
+        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_JOBLIST))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
@@ -179,6 +178,7 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin):
         self.dialogOpened.connect(self.update_ui)
         self.btnCreate.clicked.connect(self.create_jobs)
         self.finished.connect(lambda: self._parent.ui_joblist.update_ui(True))
+        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_JOBCREATOR))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

@@ -5,7 +5,7 @@ Erweitert
 
 |image29|
 
-Ist in den `Einstellungen <#Programmeinstellungen>`__  die Nutzung des erweiterten Changelog Editors aktiviert, erscheint beim Klick auf die Schaltfläche "Changelog" im `Reiter "Paket" <#ReiterPaket>`__ das erweiterte Editorfenster. Damit können die einzelnen Changelog Einträge komfortabel verwaltet werden.
+Ist in den `Einstellungen <#Settings>`__ die Nutzung des erweiterten Changelog Editors aktiviert, erscheint beim Klick auf die Schaltfläche "Changelog" im `Reiter "Paket" <#ReiterPaket>`__ das erweiterte Editorfenster. Damit können die einzelnen Changelog Einträge komfortabel verwaltet werden.
 
 *Hinweis:*
 *Ist der erweiterte Editor ausgewählt und es tritt beim Einlesen eines Pakets ein Fehler bei der Changelog Blockerkennung auf, so wird der einfache Editor geöffnet. Der Benutzer erhält einen entsprechenden Warnhinweis.*

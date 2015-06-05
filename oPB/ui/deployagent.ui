@@ -216,8 +216,8 @@
          <widget class="QPushButton" name="btnHelp">
           <property name="maximumSize">
            <size>
-            <width>23</width>
-            <height>23</height>
+            <width>20</width>
+            <height>20</height>
            </size>
           </property>
           <property name="text">
@@ -313,8 +313,7 @@
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="QPlainTextEdit" name="inpDestMulti">
-    </widget>
+    <widget class="QPlainTextEdit" name="inpDestMulti"/>
    </item>
   </layout>
  </widget>

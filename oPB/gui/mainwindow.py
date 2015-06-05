@@ -38,6 +38,7 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 import oPB
+import oPB.gui.helpviewer
 from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.splash import Splash
@@ -185,7 +186,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.actionSaveAs.triggered.connect(self.not_working)
         self.actionStartWinst.triggered.connect(self.not_working)
         self.actionScriptEditor.triggered.connect(self.not_working)
-        self.actionHelp.triggered.connect(self.not_working)
+        self.actionHelp.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX))
         self.actionSearchForUpdates.triggered.connect(self.not_working)
         self.actionShowChangeLog.triggered.connect(self.not_working)
         self.actionAbout.triggered.connect(self.not_working)
@@ -215,6 +216,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.btnSave.clicked.connect(self._parent.save_project)
         self.btnChangelogEdit.clicked.connect(self._parent.show_changelogeditor)
         self.btnShowScrStruct.clicked.connect(self._parent.show_script_structure)
+        self.btnHelpPacket.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPACKET))
+        self.btnHelpDependencies.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABDEPEND))
+        self.btnHelpProperties.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPROP))
 
         self.btnScrSetup.clicked.connect(lambda: self.select_script_dialog("setup"))
         self.btnScrUninstall.clicked.connect(lambda: self.select_script_dialog("uninstall"))
@@ -240,9 +244,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
         if oPB.NETMODE != "offline":
             self.btnBuild.clicked.connect(self._parent.project_build)
-            self.btnInstall.clicked.connect(lambda: self._parent.do_install(depot = self._parent.query_depot()))
-            self.btnInstSetup.clicked.connect(lambda: self._parent.do_installsetup(depot = self._parent.query_depot()))
-            self.btnUninstall.clicked.connect(lambda: self._parent.do_uninstall(depot = self._parent.query_depot()))
+            self.btnInstall.clicked.connect(lambda: self._parent.do_install(depot = self._parent.query_depot(parent = self)))
+            self.btnInstSetup.clicked.connect(lambda: self._parent.do_installsetup(depot = self._parent.query_depot(parent = self)))
+            self.btnUninstall.clicked.connect(lambda: self._parent.do_uninstall(depot = self._parent.query_depot(parent = self)))
         else:
             self.btnBuild.clicked.connect(self.offline)
             self.btnInstall.clicked.connect(self.offline)
@@ -354,7 +358,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
             self._parent.startup.hide_me()
-            self._parent.do_quickinstall(pack = script[0], depot = self._parent.query_depot())
+            self._parent.do_quickinstall(pack = script[0], depot = self._parent.query_depot(parent = self))
             self._parent.startup.show_me()
         else:
             self.logger.debug("Dialog aborted.")
@@ -371,7 +375,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
             self._parent.startup.hide_me()
-            self._parent.do_upload(script[0], depot = self._parent.query_depot())
+            self._parent.do_upload(script[0], depot = self._parent.query_depot(parent = self))
             self._parent.startup.show_me()
         else:
             self.logger.debug("Dialog aborted.")

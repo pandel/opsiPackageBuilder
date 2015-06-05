@@ -34,6 +34,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
+import oPB.gui.helpviewer
 from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.utilities import SpecialOptionButtonGroup
@@ -90,6 +91,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         self.btnSetKeyFile.clicked.connect(self.select_keyfile)
         self.btnExternalEditor.clicked.connect(self.select_externaleditor)
         self.btnLogFile.clicked.connect(self.select_logfile)
+        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_SETTINGS))
 
         self.btnSave.clicked.connect(self._parent.save_config)
         self.btnRefreshDepotCache.clicked.connect(self._parent.refresh_depot_cache)

@@ -345,7 +345,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="181"/>
+        <location filename="../oPB/gui/depotmanager.py" line="183"/>
         <source>Fetch REPO content</source>
         <translation></translation>
     </message>
@@ -380,7 +380,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="235"/>
+        <location filename="../oPB/gui/depotmanager.py" line="237"/>
         <source>Uninstall</source>
         <translation></translation>
     </message>
@@ -440,13 +440,21 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="240"/>
+        <location filename="../oPB/gui/depotmanager.py" line="242"/>
         <source>Delete</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="178"/>
+        <location filename="../oPB/gui/depotmanager.py" line="180"/>
         <source>Fetch DEPOT content</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>HelpViewer</name>
+    <message>
+        <location filename="../oPB/gui/helpviewer.py" line="92"/>
+        <source>Reset</source>
         <translation></translation>
     </message>
 </context>
@@ -564,12 +572,12 @@
 <context>
     <name>JobListDialog</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="128"/>
+        <location filename="../oPB/gui/scheduler.py" line="127"/>
         <source>Job list</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="128"/>
+        <location filename="../oPB/gui/scheduler.py" line="127"/>
         <source> - Current server: </source>
         <translation></translation>
     </message>
@@ -650,42 +658,42 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../oPB/gui/settings.py" line="67"/>
+        <location filename="../oPB/gui/settings.py" line="68"/>
         <source>Please wait...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="368"/>
+        <location filename="../oPB/gui/mainwindow.py" line="372"/>
         <source>Choose package file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="487"/>
+        <location filename="../oPB/gui/mainwindow.py" line="491"/>
         <source>Open project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="513"/>
+        <location filename="../oPB/gui/mainwindow.py" line="517"/>
         <source>Create new project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="561"/>
+        <location filename="../oPB/gui/mainwindow.py" line="565"/>
         <source>Choose script</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="599"/>
+        <location filename="../oPB/gui/mainwindow.py" line="603"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="339"/>
+        <location filename="../oPB/gui/mainwindow.py" line="343"/>
         <source>Sorry, this function doesn&apos;t work at the moment!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="343"/>
+        <location filename="../oPB/gui/mainwindow.py" line="347"/>
         <source>You are working in offline mode. Functionality not available!</source>
         <translation></translation>
     </message>
@@ -1252,22 +1260,22 @@
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../oPB/gui/settings.py" line="272"/>
+        <location filename="../oPB/gui/settings.py" line="274"/>
         <source>Select development folder</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="288"/>
+        <location filename="../oPB/gui/settings.py" line="290"/>
         <source>Choose keyfile</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="304"/>
+        <location filename="../oPB/gui/settings.py" line="306"/>
         <source>Choose Scripteditor</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="328"/>
+        <location filename="../oPB/gui/settings.py" line="330"/>
         <source>Select logfile folder</source>
         <translation></translation>
     </message>
@@ -1582,7 +1590,7 @@
 <context>
     <name>infoMessages</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="121"/>
+        <location filename="../oPB/gui/scheduler.py" line="120"/>
         <source>infoAT</source>
         <translation>VERY IMPORTANT:@@If you want to use the Job scheduler functionality of opsi PackageBuilder,@you have to take care of the following:@@- The ATD daemon has to be installed and running!@@- The opsi user you configured in the Settings dialog has to have the right@ to add and delete AT jobs, therefor take a look at /etc/at.deny and/or /etc/at.allow, respectively!@@- If you use AT jobs yourself for other things on the same server and take advantage of the ATD queue functionality, make ABSOLUTELY SURE that you don&apos;t use the &apos;D&apos; queue, as it is used by opsi PackageBuilder to set up@ the jobs! Otherwise opsi PackageBuilder might alter your jobs!@@You can easily test that: login to opsi server console and enter the@following command: atq -q D@If you don&apos;t see any jobs, eveerything should be fine!@@Please add some test jobs to ensure that the Scheduler works as expected@before you use it in your normal production environment.</translation>
     </message>

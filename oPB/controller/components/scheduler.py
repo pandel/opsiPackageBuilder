@@ -129,7 +129,7 @@ class SchedulerComponent(BaseController, QObject):
         # not the first time after program start?
         if not BaseController.joblist or force == True:
             if querydepot is True:
-                self.at_server = self._parent.query_depot(with_all = False)
+                self.at_server = self._parent.query_depot(with_all = False, parent = self.ui_joblist)
             self._parent.do_getjobs(dest = self.at_server)
 
         self._parent.update_table_model(self.model_jobs, sorted(BaseController.joblist))

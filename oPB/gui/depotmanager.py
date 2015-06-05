@@ -33,6 +33,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 
 import oPB
+import oPB.gui.helpviewer
 from oPB.core.tools import LogMixin
 from oPB.core.confighandler import ConfigHandler
 from oPB.ui.ui import DepotManagerDialogBase, DepotManagerDialogUI
@@ -100,6 +101,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self.btnOnlineCheck.clicked.connect(self._parent.onlinecheck)
         self.btnReboot.clicked.connect(self._parent.reboot_depot)
         self.btnPoweroff.clicked.connect(self._parent.poweroff_depot)
+        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_DEPOTM))
 
         self.cmbDepotLeft.currentTextChanged.connect(self._parent.side_content) #side_content
         self.cmbDepotRight.currentTextChanged.connect(self._parent.side_content)

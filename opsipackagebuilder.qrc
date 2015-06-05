@@ -1,6 +1,6 @@
 <RCC>
   <qresource>
-    <file>locale/opsiPackageBuilder_de.qm</file>
+    <file>locale/opsipackagebuilder_de.qm</file>
     <file>locale/qtbase_de.qm</file>
     <file>images/prog.ico</file>
     <file>images/winst32_MAINICON.ico</file>

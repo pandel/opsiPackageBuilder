@@ -360,7 +360,7 @@
         <translation>Depot:</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="181"/>
+        <location filename="../oPB/gui/depotmanager.py" line="183"/>
         <source>Fetch REPO content</source>
         <translation>Hole REPO Inhalt</translation>
     </message>
@@ -395,7 +395,7 @@
         <translation>Installieren</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="235"/>
+        <location filename="../oPB/gui/depotmanager.py" line="237"/>
         <source>Uninstall</source>
         <translation>Deinstallieren</translation>
     </message>
@@ -455,14 +455,22 @@
         <translation>Zeige Logbuch</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="240"/>
+        <location filename="../oPB/gui/depotmanager.py" line="242"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="178"/>
+        <location filename="../oPB/gui/depotmanager.py" line="180"/>
         <source>Fetch DEPOT content</source>
         <translation>Hole DEPOT Inhalt</translation>
+    </message>
+</context>
+<context>
+    <name>HelpViewer</name>
+    <message>
+        <location filename="../oPB/gui/helpviewer.py" line="92"/>
+        <source>Reset</source>
+        <translation>Zurücksetzen</translation>
     </message>
 </context>
 <context>
@@ -589,12 +597,12 @@
 <context>
     <name>JobListDialog</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="128"/>
+        <location filename="../oPB/gui/scheduler.py" line="127"/>
         <source>Job list</source>
         <translation>Zeitplaner Auftragsliste</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="128"/>
+        <location filename="../oPB/gui/scheduler.py" line="127"/>
         <source> - Current server: </source>
         <translation>- Aktueller Server:</translation>
     </message>
@@ -688,42 +696,42 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="487"/>
+        <location filename="../oPB/gui/mainwindow.py" line="491"/>
         <source>Open project</source>
         <translation>Projekt öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="561"/>
+        <location filename="../oPB/gui/mainwindow.py" line="565"/>
         <source>Choose script</source>
         <translation>Script wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="599"/>
+        <location filename="../oPB/gui/mainwindow.py" line="603"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation>Das Skript muss sich innerhalb des CLIENT_DATA Ordners des Pakets befinden!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="513"/>
+        <location filename="../oPB/gui/mainwindow.py" line="517"/>
         <source>Create new project</source>
         <translation>Neues Projekt</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="67"/>
+        <location filename="../oPB/gui/settings.py" line="68"/>
         <source>Please wait...</source>
         <translation>Bitte warten...</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="368"/>
+        <location filename="../oPB/gui/mainwindow.py" line="372"/>
         <source>Choose package file</source>
         <translation>Paketdatei wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="339"/>
+        <location filename="../oPB/gui/mainwindow.py" line="343"/>
         <source>Sorry, this function doesn&apos;t work at the moment!</source>
         <translation>Diese Funktion steht leider derzeit noch nicht zur Verfügung!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="343"/>
+        <location filename="../oPB/gui/mainwindow.py" line="347"/>
         <source>You are working in offline mode. Functionality not available!</source>
         <translation>Offline Modus aktiv. Die Funktion ist nicht verügbar!</translation>
     </message>
@@ -1290,22 +1298,22 @@
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../oPB/gui/settings.py" line="272"/>
+        <location filename="../oPB/gui/settings.py" line="274"/>
         <source>Select development folder</source>
         <translation>Basis Entiwcklungsordner wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="288"/>
+        <location filename="../oPB/gui/settings.py" line="290"/>
         <source>Choose keyfile</source>
         <translation>Schlüsseldatei wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="304"/>
+        <location filename="../oPB/gui/settings.py" line="306"/>
         <source>Choose Scripteditor</source>
         <translation>Skripteditor auswählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="328"/>
+        <location filename="../oPB/gui/settings.py" line="330"/>
         <source>Select logfile folder</source>
         <translation>Logfile Ordner auswählen</translation>
     </message>
@@ -1635,7 +1643,7 @@
 <context>
     <name>infoMessages</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="121"/>
+        <location filename="../oPB/gui/scheduler.py" line="120"/>
         <source>infoAT</source>
         <translation>WICHTIGER HINWEIS:@@Wenn sie den Zeitplaner von opsi PackageBuilder nutzen wollen,@müssen sie UNBEDINGT folgende Dinge sicherstellen:@@- Der ATD Daemon muss auf dem Server installiert und in Betrieb sein!@@- Der opsi Benutzer, den sie in den Einstellungen hinterlegt haben, muss das Recht besitzen, AT Jobs anzulegen und zu löschen. Kontrollieren Sie hierzu die Einträge@in /etc/at.deny, bzw. wenn vorhanden, /etc/at.allow!@@- Wenn Sie selber At Jobs für eigene Aufträge am gleichen Server nutzen und dabei unterschiedliche Warteschlangen verwenden, stellen sie ABSOLUT sicher, dass Sie keine Aufträge in Warteschlange &apos;D&apos; einstellen. Diese Warteschlange wird von@opsi PackageBuilder benutzt. Wenn sie nicht darauf achten, werden ggf. Ihre@eigenen Aufträge verändert!@@Sie können das einfach prüfen: loggen Sie sich an der Serverkonsole ein und@setzen Sie das folgende Kommando ab: atq -q D@wenn sie keine Aufträge angezeigt bekommen, sollte alles ordnungsgemäß funktionieren.@@@Bitte erstellen Sie anfangs einige Testjobs um sicherzustellen, dass der Zeitplaner wie erwartet funktioniert, bevor Sie größere Aufträge in der Produktivumgebung einstellen.</translation>
     </message>

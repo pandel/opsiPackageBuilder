@@ -10,7 +10,7 @@ Contents:
    :maxdepth: 4
    :caption: User manuals
 
-   de/opsiPackageBuilder
+   de/opsipackagebuilder
 
 .. toctree::
    :maxdepth: 4

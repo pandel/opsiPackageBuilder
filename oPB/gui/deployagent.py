@@ -33,6 +33,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
+import oPB.gui.helpviewer
 from oPB.core.tools import LogMixin
 from oPB.gui.utilities import SpecialOptionButtonGroup
 from oPB.ui.ui import DeployAgentDialogUI, DeployAgentDialogBase
@@ -75,6 +76,7 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin):
         self.btnShowLog.clicked.connect(self._parentUi.showLogRequested)
         self.btnDeploy.clicked.connect(self.deploy)
         self.chkDeployToMulti.clicked.connect(lambda: self.optionGroupDeploy.setChecked(self.chkDeployToMulti.isChecked()))
+        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_DEPLOY))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

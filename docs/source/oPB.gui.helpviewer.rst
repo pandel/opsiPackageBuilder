@@ -1,7 +1,7 @@
-oPB.gui.startupwin module
+oPB.gui.helpviewer module
 =========================
 
-.. automodule:: oPB.gui.startupwin
+.. automodule:: oPB.gui.helpviewer
     :members:
     :undoc-members:
     :show-inheritance:

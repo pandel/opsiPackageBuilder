@@ -89,6 +89,6 @@ class QuickUninstallComponent(BaseController, QObject):
             reply = self._parent.msgbox(translate("quickuninstallController", "Do you really want to remove the selected product(s)? This can't be undone!") + msg, oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
                 self.logger.debug("Selected product(s): " + str(prods))
-                self._parent.do_quickuninstall(packs = prods, depot = self._parent.query_depot())
+                self._parent.do_quickuninstall(packs = prods, depot = self._parent.query_depot(parent = self.ui))
         else:
             self.logger.debug("Nothing selected.")

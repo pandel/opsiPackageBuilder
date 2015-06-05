@@ -32,6 +32,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
+import oPB.gui.helpviewer
 from oPB.core.tools import Helper, LogMixin
 from oPB.ui.ui import UninstallDialogBase, UninstallDialogUI
 from oPB.gui.splash import Splash
@@ -74,6 +75,7 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
         self.btnRefresh.clicked.connect(lambda: self.update_ui(True))
         self.btnUninstall.clicked.connect(self.uninstall)
         self.btnClose.clicked.connect(self.dialogClosed.emit)
+        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_QUINST))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

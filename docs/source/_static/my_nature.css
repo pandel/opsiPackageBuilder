@@ -1,8 +1,8 @@
 @import url("nature.css");
 
 table.docutils {
-    border: 0;
-    border-collapse: collapse;
+	border: 0;
+	border-collapse: collapse;
 	max-width: 70%;
 }
 

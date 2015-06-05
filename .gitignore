@@ -61,3 +61,5 @@ target/
 .idea/
 # GitEye files
 /.project
+
+oPB/help/.opsipackagebuilder

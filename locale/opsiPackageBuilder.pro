@@ -45,6 +45,7 @@ SOURCES += ..\oPB\gui\bundle.py
 SOURCES += ..\oPB\gui\changelog.py
 SOURCES += ..\oPB\gui\deployagent.py
 SOURCES += ..\oPB\gui\depotmanager.py
+SOURCES += ..\oPB\gui\helpviewer.py
 SOURCES += ..\oPB\gui\logging.py
 SOURCES += ..\oPB\gui\mainwindow.py
 SOURCES += ..\oPB\gui\quickuninstall.py
