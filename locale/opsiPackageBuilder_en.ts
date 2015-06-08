@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="en">
+<!DOCTYPE TS><TS version="2.0" language="en" sourcelanguage="">
 <context>
     <name>BaseController</name>
     <message>
@@ -345,7 +344,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="183"/>
+        <location filename="../oPB/gui/depotmanager.py" line="184"/>
         <source>Fetch REPO content</source>
         <translation></translation>
     </message>
@@ -380,7 +379,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="237"/>
+        <location filename="../oPB/gui/depotmanager.py" line="236"/>
         <source>Uninstall</source>
         <translation></translation>
     </message>
@@ -440,12 +439,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="242"/>
+        <location filename="../oPB/gui/depotmanager.py" line="241"/>
         <source>Delete</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="180"/>
+        <location filename="../oPB/gui/depotmanager.py" line="181"/>
         <source>Fetch DEPOT content</source>
         <translation></translation>
     </message>
@@ -663,27 +662,27 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="443"/>
+        <location filename="../oPB/gui/mainwindow.py" line="451"/>
         <source>Choose package file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="562"/>
+        <location filename="../oPB/gui/mainwindow.py" line="570"/>
         <source>Open project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="588"/>
+        <location filename="../oPB/gui/mainwindow.py" line="596"/>
         <source>Create new project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="636"/>
+        <location filename="../oPB/gui/mainwindow.py" line="644"/>
         <source>Choose script</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="674"/>
+        <location filename="../oPB/gui/mainwindow.py" line="682"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation></translation>
     </message>
@@ -844,6 +843,54 @@
     </message>
 </context>
 <context>
+    <name>ReportSelector</name>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="14"/>
+        <source>Report selector</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="49"/>
+        <source>Choose reference server:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="99"/>
+        <source>Select All</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="112"/>
+        <source>Deselect all</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="178"/>
+        <source>Generate</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="185"/>
+        <source>Close</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="194"/>
+        <source>Basis of comparison</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="200"/>
+        <source>Depot content</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="210"/>
+        <source>Content of repository folder</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>ScriptTree</name>
     <message>
         <location filename="../oPB/core/scriptscanner.py" line="92"/>
@@ -859,7 +906,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/scripttree.ui" line="55"/>
+        <location filename="../oPB/ui/scripttree.ui" line="61"/>
         <source>(Double click on entry to open file in editor.)</source>
         <translation></translation>
     </message>
@@ -1522,93 +1569,123 @@
 <context>
     <name>depotmanagerController</name>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="465"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="493"/>
         <source>Selected depot:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="365"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="393"/>
         <source>Start opsi product updater now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="416"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="444"/>
         <source>The selected depot is ONLINE.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="420"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="448"/>
         <source>The selected depot is OFFLINE.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="433"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="461"/>
         <source>Do you really want to reboot the selected depot?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="475"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="503"/>
         <source>Please enter username with sufficient priviledges:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="478"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="506"/>
         <source>Please enter password:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="466"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="494"/>
         <source>Do you really want to power off the selected depot?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="278"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="306"/>
         <source>Nothing selected.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="382"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="410"/>
         <source>Selected packages:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="255"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="283"/>
         <source>Remove selected packages from repository now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="284"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="312"/>
         <source>Uninstall selected packages from depot now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="311"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="339"/>
         <source>Config server:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="312"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="340"/>
         <source>Do you really want to unregister the depot from the config server? This CAN&apos;T be undone!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="317"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="345"/>
         <source>Are you absolutely sure?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="341"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="369"/>
         <source>Set rights on repository folder now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="383"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="411"/>
         <source>Generate MD5 checksums now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="504"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="532"/>
         <source>Choose package file</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <source>product id</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <source>product version</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <source>package version</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <source>type</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/depotmanager.py" line="123"/>
+        <source>server name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/depotmanager.py" line="123"/>
+        <source>description</source>
         <translation></translation>
     </message>
 </context>
@@ -2275,21 +2352,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../oPB/controller/components/quickuninstall.py" line="89"/>
         <source>Do you really want to remove the selected product(s)? This can&apos;t be undone!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="102"/>
-        <source>product version</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="102"/>
-        <source>package version</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="102"/>
-        <source>type</source>
         <translation></translation>
     </message>
 </context>

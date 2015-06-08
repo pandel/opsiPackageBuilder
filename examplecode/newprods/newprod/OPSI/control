@@ -27,42 +27,6 @@ requiredProduct: gnupg
 requiredStatus: installed
 requirementType: before
 
-[ProductDependency]
-action: setup
-requiredProduct: hwaudit
-requiredStatus: installed
-requirementType: before
-
-[ProductDependency]
-action: setup
-requiredProduct: swaudit
-requiredStatus: installed
-requirementType: before
-
-[ProductDependency]
-action: setup
-requiredProduct: ekk
-requiredStatus: installed
-requirementType: before
-
-[ProductDependency]
-action: setup
-requiredProduct: db2v97fp9rtcl
-requiredStatus: installed
-requirementType: before
-
-[ProductDependency]
-action: setup
-requiredProduct: lotus-notes
-requiredStatus: installed
-requirementType: before
-
-[ProductDependency]
-action: setup
-requiredProduct: lotus-notes-fp6
-requiredStatus: installed
-requirementType: before
-
 [ProductProperty]
 type: unicode
 name: testvar_2
@@ -76,7 +40,7 @@ default: ["val2"]
 type: bool
 name: testvar_1
 description: Testvar bool
-default: 
+default: False
 
 [ProductProperty]
 type: unicode

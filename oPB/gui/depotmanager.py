@@ -28,7 +28,7 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 
@@ -62,12 +62,13 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         print("\tgui/DepotManagerDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/DepotManagerDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
-        self.splash = Splash(self, translate("MainWindow", "Please wait..."))
-
         self.model_left = None
         self.model_right = None
 
         self.assign_model(self._parent.model_left, self._parent.model_right)
+
+        self.splash = Splash(self, translate("MainWindow", "Please wait..."))
+
         self.connect_signals()
 
         self._parent._ui_box_left = self.cmbDepotLeft
@@ -90,7 +91,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self.btnRefresh.clicked.connect(self._parent.update_data)
         self.btnCompare.clicked.connect(self.compare_sides)
         self.btnShowLog.clicked.connect(self._parentUi.showLogRequested)
-        self.btnReport.clicked.connect(self._parent.report)
+        self.btnReport.clicked.connect(self._parent.ui_report.show_)
         self.btnInstall.clicked.connect(self._parent.install)
         self.btnUninstall.clicked.connect(self.remove_delegate)
         self.btnUpload.clicked.connect(self._parentUi.upload)
@@ -198,7 +199,6 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
             self.btnCompare.setEnabled(True)
 
         if self._parent._active_side is None:
-            self.btnReport.setEnabled(False)
             self.btnInstall.setEnabled(False)
             self.btnUninstall.setEnabled(False)
             self.btnUpload.setEnabled(False)
@@ -210,7 +210,6 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
             self.btnPoweroff.setEnabled(False)
             self.btnReboot.setEnabled(False)
         else:
-            self.btnReport.setEnabled(True)
             self.btnInstall.setEnabled(True)
             self.btnUninstall.setEnabled(True)
             self.btnUpload.setEnabled(True)
@@ -370,17 +369,4 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
                                    self.model_right.item(row.row(),2).text())
                 self._parent.generate_md5(depot, prodIdx)
 
-"""
-class TableRowItem(QtGui.QStandardItem):
-    def __init__(self, *args):
-        super(QtGui.QStandardItem, self).__init__(*args)
 
-    def data(self, role=QtCore.Qt.DisplayRole):
-        if role == QtCore.Qt.ForegroundRole:
-            text = QtGui.QStandardItem.data(self, QtCore.Qt.DisplayRole)
-            if "LOCALBOOT" in text.upper():
-                print(text)
-                return QtGui.QBrush(QtGui.QColor(oPB.OPB_RED))
-
-        return QtGui.QStandardItem.data(self, role)
-"""

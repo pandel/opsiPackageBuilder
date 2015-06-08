@@ -127,7 +127,7 @@ class BaseController(LogMixin):
             self.add_changelog_entry("Project created with opsi Package Builder " + oPB.PROGRAM_VERSION)
             self.save_backend()
             self._dataSaved = None
-            self._dataSaved = True
+            #self._dataSaved = True
         except Exception:
             self.reset_backend()
             raise

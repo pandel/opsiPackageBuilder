@@ -113,6 +113,7 @@ class BundleComponent(BaseController, QObject):
                     self._parent.project_create(directory)
                     for p in prods:
                         self._parent.add_setup_before_dependency(p)
+                    self._parent.controlData.priority = -100
                     self._parent.save_backend()
                 else:
                     self.logger.debug("Dialog aborted.")

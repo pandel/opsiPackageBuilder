@@ -98,7 +98,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         numRecentFiles = min(len(files), MainWindow.MaxRecentFiles)
 
         for i in range(numRecentFiles):
-            text = "&%d %s" % (i + 1, self.strippedName(files[i]))
+            text = "&%d %s" % (i + 1, self.stripped_name(files[i]))
             self.recentFileActions[i].setText(text)
             self.recentFileActions[i].setData(files[i])
             self.recentFileActions[i].setVisible(True)
@@ -106,10 +106,10 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         for j in range(numRecentFiles, MainWindow.MaxRecentFiles):
             self.recentFileActions[j].setVisible(False)
 
-    def strippedName(self, fullFileName):
+    def stripped_name(self, fullFileName):
         return QtCore.QFileInfo(fullFileName).fileName()
 
-    def setCurrentProject(self, project):
+    def set_current_project(self, project):
         files = ConfigHandler.cfg.recent
 
         try:
@@ -465,14 +465,14 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         if self.sender() == self._parent:
             sleep(0.5)
         self.logger.debug("Set button state")
-        if self.isFileAvailable():
+        if self.is_file_available():
             self.btnInstall.setEnabled(True)
             self.btnInstSetup.setEnabled(True)
         else:
             self.btnInstall.setEnabled(False)
             self.btnInstSetup.setEnabled(False)
 
-    def isFileAvailable(self):
+    def is_file_available(self):
         pack = self.lblPacketFolder.text().replace("\\","/") + "/" + self.inpProductId.text() + \
                "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
 

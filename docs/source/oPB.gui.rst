@@ -19,6 +19,7 @@ Submodules
    oPB.gui.logging
    oPB.gui.mainwindow
    oPB.gui.quickuninstall
+   oPB.gui.report
    oPB.gui.scheduler
    oPB.gui.scripttree
    oPB.gui.settings

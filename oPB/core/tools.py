@@ -372,5 +372,126 @@ class CommandLine(object):
     def getParser(self):
         return self._parser
 
+class HTMLTools(LogMixin):
+
+    @staticmethod
+    def HTMLHeader(title = "", bodybgcolor = "#ffffff", highlightbgcolor = "#F0F9FF", headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff"):
+
+        head = ""
+        if title != "":
+            head = '<center><h2>' + title + '</h2></center>'
+
+        css = "table {margin: 1em; border-collapse: collapse; } \n" \
+              "td, th {padding: .3em; border: 1px #ccc solid; }\n" \
+              "thead {background: " + headerbgcolor + "; }\n" \
+              "thead {color:" + headertxtcolor + ";}\n" \
+              "tbody {background: " + bodybgcolor + "; }\n" \
+              "tbody {color: " + bodytxtcolor + "; }\n" \
+              "#highlight tr.hilight { background: " + highlightbgcolor + "; }\n" \
+              "h2 { font-size: 100%; }\n" \
+              "@media print { h2 { font-size: 94%; } }\n" \
+              "body { font-size: 94%; font-family: Helvetica, Arial, sans-serif; line-height: 100%; }\n"
+
+        javascript = "function tableHighlightRow() {\n" \
+              "  if (document.getElementById && document.createTextNode) {\n" \
+              '    var tables=document.getElementsByTagName("table");\n' \
+              "    for (var i=0;i<tables.length;i++)\n" \
+              "    {\n" \
+              '      if(tables[i].className=="hilite") {\n' \
+              '        var trs=tables[i].getElementsByTagName("tr");\n' \
+              "        for(var j=0;j<trs.length;j++)\n" \
+              "           {\n" \
+              '          if(trs[j].parentNode.nodeName=="TBODY") {\n' \
+              '            trs[j].onmouseover=function(){this.className="hilight";return false}\n' \
+              "            trs[j].onmouseout=function(){this.className="";return false}\n" \
+              "          }\n" \
+              "        }\n" \
+              "      }\n" \
+              "    }\n" \
+              "  }\n" \
+              "}\n" \
+              "window.onload=function(){tableHighlightRow();}\n"
+
+        html = "<!DOCTYPE html><html>\n" + \
+              "<head> " + \
+              "<title>" + title + "</title>\n" \
+              "<Style>\n" + \
+              css + \
+              "</Style>\n" + \
+              "<script>\n" + \
+              javascript + \
+              "</script>\n" + \
+              "</head>\n" + \
+              "<body>\n" + head
+
+        return html
+
+    @staticmethod
+    def HTMLFooter():
+
+        return "</body></html>"
+
+    @staticmethod
+    def Array2HTMLTable(element_list = [], title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
+        headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = False):
+
+        if not element_list:
+            return
+
+        table_rows = ""
+        table_header  = ""
+        bodystart = 1
+
+        try:
+            total_rows = len(element_list)
+            total_columns = len(element_list[0]) # first element sets column count for whole table
+        except:
+            return
+
+        if not headers_on:
+            bodystart = 0
+        else:
+            if total_rows < 2:
+                return # there need to be at least two rows if headers are on
+
+            for x in range(total_columns):
+                t = str(element_list[0][x]) if element_list[0][x] is not None else ""
+                table_header = table_header + '   <th>' + t + '</th>\n'
+
+        for r in range(bodystart, total_rows):
+            table_columns = ""
+            for c in range(0, total_columns):
+                t = str(element_list[r][c]) if element_list[r][c] is not None else ""
+                table_columns = table_columns + '   <td>' + t + '</td>\n'
+
+            table_rows += '<tr>' + table_columns + '</tr>\n'
+
+        if not only_table:
+            html = HTMLTools.HTMLHeader(title, bodybgcolor, hightlightbgcolor, headerbgcolor, bodytxtcolor, headertxtcolor) + \
+                    '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
+                    '<thead>\n' + \
+                    '<tr>' + \
+                    table_header + \
+                    '</tr>\n' + \
+                    '</thead>\n' + \
+                    '</p><tbody>\n' + \
+                    table_rows + \
+                    '</tbody>\n' + \
+                    '</table>\n' + \
+                    HTMLTools.HTMLFooter()
+        else:
+            html = '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
+                    '<thead>\n' + \
+                    '<tr>' + \
+                    table_header + \
+                    '</tr>\n' + \
+                    '</thead>\n' + \
+                    '</p><tbody>\n' + \
+                    table_rows + \
+                    '</tbody>\n' + \
+                    '</table>\n'
+
+        return html
+
 # import oPB.core.tools; p=oPB.core.tools.CommandLine(); p.getParser().parse_args("-h".split())
 # import oPB.core.tools; p=oPB.core.tools.CommandLine(); args = p.getParser().parse_args("--build=new --instsetup -n -r --log=c:\\temp\\log.txt".split());args.__dict__

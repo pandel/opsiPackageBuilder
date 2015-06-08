@@ -29,6 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 import oPB
@@ -37,6 +38,7 @@ from oPB.core.tools import Helper
 from oPB.controller.base import BaseController
 from oPB.core.confighandler import ConfigHandler
 from oPB.gui.depotmanager import DepotManagerDialog
+from oPB.gui.report import ReportSelectorDialog
 
 translate = QtCore.QCoreApplication.translate
 
@@ -53,22 +55,31 @@ class DepotManagerComponent(BaseController, QObject):
         print("controller/DepotManagerComponent parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.ui = None
+        self.ui_report = None
+
         self.model_left = None
         self.model_right = None
+        self.model_report = None
+
         self._data_left = []
         self._data_right = []
+        self.reportlist = []
+
         self._type_left = "depot"  # depot / repo modus
         self._type_right = "depot"  # depot / repo modus
+
         self._ui_box_left = QtWidgets.QComboBox  # left depot combobox selecotor
         self._ui_box_right = QtWidgets.QComboBox # right depot combobox selecotor
         self._ui_repobtn_left = QtWidgets.QPushButton  # left fetch repo button
         self._ui_repobtn_right = QtWidgets.QPushButton # right fetch repo button
+
         self._active_side = None
 
         self._compare = False
 
         self.generate_model()
 
+        self.ui_report = ReportSelectorDialog(self)
         self.ui = DepotManagerDialog(self)
 
         self.connect_signals()
@@ -86,10 +97,10 @@ class DepotManagerComponent(BaseController, QObject):
             self.model_left.set_error_color(oPB.OPB_COLOR_ERROR)
             self.model_left.append_error_marker("Error")
             self.model_left.setObjectName("model_left")
-            self.model_left.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
-                                            translate("quickuninstallController", "product version"),
-                                            translate("quickuninstallController", "package version"),
-                                            translate("quickuninstallController", "type")]
+            self.model_left.setHorizontalHeaderLabels([translate("depotmanagerController", "product id"),
+                                            translate("depotmanagerController", "product version"),
+                                            translate("depotmanagerController", "package version"),
+                                            translate("depotmanagerController", "type")]
                                             )
 
         if self.model_right == None:
@@ -99,19 +110,27 @@ class DepotManagerComponent(BaseController, QObject):
             self.model_right.set_error_color(oPB.OPB_COLOR_ERROR)
             self.model_right.append_error_marker("Error")
             self.model_right.setObjectName("model_right")
-            self.model_right.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
-                                            translate("quickuninstallController", "product version"),
-                                            translate("quickuninstallController", "package version"),
-                                            translate("quickuninstallController", "type")]
+            self.model_right.setHorizontalHeaderLabels([translate("depotmanagerController", "product id"),
+                                            translate("depotmanagerController", "product version"),
+                                            translate("depotmanagerController", "package version"),
+                                            translate("depotmanagerController", "type")]
                                             )
 
-    def update_model_data(self, side, depot, dict):
+        if self.model_report == None:
+            self.logger.debug("Generate report table model")
+            self.model_report = QStandardItemModel(0, 2, self)
+            self.model_report.setObjectName("model_report")
+            self.model_report.setHorizontalHeaderLabels([translate("depotmanagerController", "server name"),
+                                            translate("depotmanagerController", "description")]
+                                            )
+
+    def update_model_data(self, side, depot, dict_):
         self.logger.debug("Update model data")
 
         tmplist = []
         prodlist = []
-        if dict:
-            for elem in dict:
+        if dict_:
+            for elem in dict_:
                 d = elem.split(";")
                 if d[4] == depot:
                     prodlist.append((";").join([d[0], "", d[2],d[3]]))
@@ -127,6 +146,15 @@ class DepotManagerComponent(BaseController, QObject):
             # save abstract product list, but only if NOT in comparison mode
             if self._compare is False:
                 self._data_right = prodlist
+
+    def update_reportmodel_data(self):
+        self.logger.debug("Update report model data")
+
+        self.reportlist = []
+        for key, val in ConfigHandler.cfg.depotcache.items():
+            self.reportlist.append([key, val])
+
+        self._parent.update_table_model(self.model_report, sorted(self.reportlist))
 
     def update_data(self, resetgui = True):
         self.logger.debug("Update data")

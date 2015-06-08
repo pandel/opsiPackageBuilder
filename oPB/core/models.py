@@ -101,3 +101,20 @@ class OpsiProductTableModel(QtGui.QStandardItemModel):
         except:
             pass
         QtGui.QStandardItemModel.appendRow(self, rowlist)
+
+
+
+"""
+class TableRowItem(QtGui.QStandardItem):
+    def __init__(self, *args):
+        super(QtGui.QStandardItem, self).__init__(*args)
+
+    def data(self, role=QtCore.Qt.DisplayRole):
+        if role == QtCore.Qt.ForegroundRole:
+            text = QtGui.QStandardItem.data(self, QtCore.Qt.DisplayRole)
+            if "LOCALBOOT" in text.upper():
+                print(text)
+                return QtGui.QBrush(QtGui.QColor(oPB.OPB_RED))
+
+        return QtGui.QStandardItem.data(self, role)
+"""

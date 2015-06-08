@@ -416,7 +416,7 @@ class MainWindowController(BaseController, QObject):
                 [self.chLogEditor.ui.close(), None][self.chLogEditor.ui.isVisible()] # instance only conditional available (when user has ever openend the dialog
             except AttributeError:
                 pass
-            self.ui.setCurrentProject(self.controlData.projectfolder)
+            self.ui.set_current_project(self.controlData.projectfolder)
             self.reset_state()
             self.startup.show_me()
 
@@ -483,7 +483,7 @@ class MainWindowController(BaseController, QObject):
             self.msgbox(translate("mainController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
             self.startup.hide_me()
 
-        self.ui.setCurrentProject(self.controlData.projectfolder)
+        self.ui.set_current_project(self.controlData.projectfolder)
 
     @pyqtSlot(str)
     def project_create(self, project_name):

@@ -11,5 +11,6 @@ Submodules
 
 .. toctree::
 
+   oPB.ui.opsipackagebuilder_rc
    oPB.ui.ui
 

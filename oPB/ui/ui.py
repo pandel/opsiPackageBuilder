@@ -49,6 +49,7 @@ JobCreatorDialogUI, JobCreatorDialogBase = uic.loadUiType(os.path.join(path, 'jo
 BundleDialogUI, BundleDialogBase = uic.loadUiType(os.path.join(path, 'bundle.ui'))
 DeployAgentDialogUI, DeployAgentDialogBase = uic.loadUiType(os.path.join(path, 'deployagent.ui'))
 DepotManagerDialogUI, DepotManagerDialogBase = uic.loadUiType(os.path.join(path, 'depotmanager.ui'))
+ReportSelectorDialogUI, ReportSelectorDialogBase = uic.loadUiType(os.path.join(path, 'reportselector.ui'))
 
 """
 Example:

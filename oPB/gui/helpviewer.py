@@ -49,7 +49,7 @@ class HelpDialog(QObject):
         self._helpEngine = helpEngine
 
         # base dialog widget
-        self.ui = QDialog()
+        self.ui = QDialog(None, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint )
 
         # webview for help information
         self._wv = QWebView()
@@ -88,7 +88,7 @@ class HelpDialog(QObject):
         self._lowerWidget = QWidget()
         self._btnReset = QPushButton()
         self._btnReset.setMaximumHeight(23)
-        self._btnReset.setMaximumWidth(70)
+        self._btnReset.setMaximumWidth(100)
         self._btnReset.setText(translate("HelpViewer", "Reset"))
 
         # build search structure
@@ -231,7 +231,11 @@ class Help(QObject):
             self._help.setUrl(self._helpprefix + short_url)
         else:
             self._help.setUrl(self._helpprefix + "index.html")
-        self._help.ui.show()
+        #parentsize = self._help.ui.parent().geometry()
+        #self._help.ui.setGeometry(parentsize.height * (2/3),parentsize.height * (2/3))
+        #self._help.ui.show()
+
+        self._help.ui.showMaximized()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
