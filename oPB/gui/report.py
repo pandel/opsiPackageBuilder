@@ -30,17 +30,16 @@ __status__ = "Production"
 
 from datetime import datetime
 from itertools import zip_longest
+
 from PyQt5 import QtCore
-from PyQt5.QtPrintSupport import QPrintPreviewDialog, QPrinter
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QPushButton
-from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtGui import QKeyEvent
 
 import oPB
 from oPB.core.tools import HTMLTools, LogMixin
 from oPB.gui.depotmanager import translate
 from oPB.gui.splash import Splash
+from oPB.gui.utilities import HtmlDialog
 from oPB.ui.ui import ReportSelectorDialogBase, ReportSelectorDialogUI
 
 translate = QtCore.QCoreApplication.translate
@@ -68,6 +67,7 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
         print("\tgui/ReportSelectorDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
+        self.viewer = HtmlDialog(self)
 
         self.model_left = None
         self.model_right = None
@@ -79,8 +79,10 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
         self.btnSelAll.clicked.connect(lambda: self.select(True))
         self.btnSelNone.clicked.connect(lambda: self.select(False))
         self.btnGenerate.clicked.connect(self.generate_report)
+        self._parent.modelDataUpdated.connect(self.splash.close)
 
     def show_(self):
+        """Open report selector dialog and update values"""
         self.logger.debug("Open report selector")
 
         self.dialogOpened.emit()
@@ -90,6 +92,7 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
         self._parent.update_reportmodel_data()
 
         self.resizeTables()
+        self.select(None)
         self.activateWindow()
 
     def keyPressEvent(self, evt: QKeyEvent):
@@ -127,8 +130,14 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
         self.tblSrvRight.resizeRowsToContents()
         self.tblSrvRight.resizeColumnsToContents()
 
-    def select(self, all):
-        if all:
+    def select(self, all_: bool):
+        """
+        Select / Unselect every row in tableview
+
+        :param all_: True = select all / False = select nothing
+        :return:
+        """
+        if all_:
             self.btnSelAll.setVisible(False)
             self.btnSelNone.setVisible(True)
             for row in range(self.tblSrvRight.selectionModel().model().rowCount()):
@@ -142,33 +151,12 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
             self.btnSelNone.setVisible(False)
             self.tblSrvRight.selectionModel().clearSelection()
 
-    def showReport(self, html):
-        self.logger.debug("Show HTML report")
-
-        # base dialog widget
-        ui = QDialog(self, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint )
-        vertLayout = QVBoxLayout()
-
-        # print button
-        print = QPushButton()
-        print.setText(translate("ReportDialog", "Print"))
-        print.setMaximumWidth(100)
-
-        # webview for help information
-        wv = QWebView()
-
-        # build structure
-        vertLayout.addWidget(print)
-        vertLayout.addWidget(wv)
-
-        ui.setLayout(vertLayout)
-
-        print.clicked.connect(lambda: wv.print_(QPrinter()))
-        wv.setHtml(html)
-
-        ui.show()
-
     def generate_report(self):
+        """
+        Generate HTML comparison report
+
+        :return:
+        """
         self.logger.debug("Generate HTML report")
         left = ""
         time = ""
@@ -179,10 +167,20 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
         else:
             modus = "repo"
 
-        server_left = self.tblSrvLeft.selectionModel().model().item(
-            self.tblSrvLeft.selectionModel().selectedRows()[0].row(),
-            0).text()
+        try:
+            self.logger.debug("Getting reference server from left tableview")
+            server_left = self.tblSrvLeft.selectionModel().model().item(
+                self.tblSrvLeft.selectionModel().selectedRows()[0].row(),
+                0).text()
+        except:
+            self.logger.debug("No reference server selected.")
+            return
+
+        self.logger.debug("Getting list of server to compare to from right tableview")
         slave = self.tblSrvRight.selectionModel().selectedRows()
+        if not slave:
+            self.logger.debug("Nothing to compare to selected.")
+            return
 
         steps = 1 + len(slave)
         step = 100 / steps
@@ -190,75 +188,124 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
         self.splash.incProgress(step)
 
         if modus == "depot":
+            self.logger.debug("Depot comparison modus")
             html = HTMLTools.HTMLHeader(translate("depotManagerController", "Compare depots:") + " " + server_left + " / " + str(datetime.now()),
                                         "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#ffffff")
             data_left = self.get_prodlist_to_server(server_left, self._parent.productsondepotslist)
         else:
+            self.logger.debug("Repository comparison modus")
             html = HTMLTools.HTMLHeader(translate("depotManagerController", "Compare repositories:") + " " + server_left + " / " + str(datetime.now()),
                                         "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#ffffff")
-            data_left = self.trim_prodlist_to_server(self._parent.do_getrepocontent(dest = server_left))
+            data_left = self.get_repolist_to_server(self._parent.do_getrepocontent(dest = server_left))
 
+        self.logger.debug("Processing server list...")
         for row in slave:
             self.splash.incProgress(step)
             server_right = self.tblSrvRight.selectionModel().model().item(row.row(), 0).text()
+            self.logger.debug("Processing server: " + server_right)
             if modus == "depot":
                 data_right = self.get_prodlist_to_server(server_right, self._parent.productsondepotslist)
             else:
-                data_right = self.trim_prodlist_to_server(self._parent.do_getrepocontent(dest = server_right))
+                data_right = self.get_repolist_to_server(self._parent.do_getrepocontent(dest = server_right))
 
-            tmp = self.compare(data_left, data_right)
-            tmp.insert(0, ["Depot (Ref): " + server_left, "Depot: " + server_right])
+            tmp = self.compare(data_left, data_right, tablefill="")
+            if tmp:
+                colspan = len(tmp[0]) / 2
+            else:
+                tmp = []
+                colspan = 1
+
+            tmp.insert(0, [translate("depotManagerController", "Reference:") + " " + server_left, "Depot: " + server_right])
 
             if tmp:
-                html += HTMLTools.Array2HTMLTable(tmp, '', "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#ffffff", True, True)
+                html += HTMLTools.Array2HTMLTable(element_list = tmp, colspan = colspan, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
+                                                  headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = True)
 
         html += HTMLTools.HTMLFooter()
 
         self.splash.close()
 
-        self.showReport(html)
+        self.viewer.showHtml(html)
 
-    def trim_prodlist_to_server(self, repolist):
+    def get_repolist_to_server(self, repolist):
+        """
+        Turn raw repository product list into comparable list format
+
+        :param repolist: raw list of products in repository
+
+        :return: list of products
+        """
         self.logger.debug("Return product list to server via list")
         ret = []
 
         for elem in repolist:
             d = elem.split(";")
-            ret.append(d[0] + "_" + d[2] + "-" + d[3] + "(" + d[1] + ")")
+            ret.append([d[0], d[2] + "-" + d[3], d[1]])  # [['mysql.workbench, '6.2.4-go1', 456453de782...],...]
 
         return ret
 
     def get_prodlist_to_server(self, depot, dict_):
-        self.logger.debug("Return product list to server vua dict")
+        """
+        Evalute products to named depot server from server-product dictionary.
+
+        :param depot: depotserver name
+        :param dict_: server-product dictionary
+        :return: list of products
+        """
+        self.logger.debug("Return product list to server via dict")
 
         tmplist = []
-        prodlist = []
         if dict_:
             for elem in dict_:
                 d = elem.split(";")
                 if d[4] == depot:
-                    #prodlist.append((";").join([d[0], "", d[2],d[3]]))
-                    #tmplist.append([d[0], d[2], d[3]])    # [['mysql.workbench', '6.2.4', 'go1'],...]
-                    tmplist.append(d[0] + "_" + d[2] + "-" + d[3])    # [['mysql.workbench', '6.2.4', 'go1'],...]
+                    tmplist.append([d[0], d[2] + "-" + d[3]])    # [['mysql.workbench, '6.2.4-go1'],...]
+
         return tmplist
 
     @pyqtSlot()
-    def compare(self, data_left, data_right, modus = "depot"):
+    def compare(self, data_left: list, data_right: list, tablefill: str = "--"):
+        """
+        Compare two lists and combine them side by side.
+
+        :param data_left: left list
+        :param data_right: right list
+        :param tablefill: fill empty values with ``tablefill``
+        :return: combined list
+        """
         self.logger.debug("Comparing sides")
 
         uniqueLeft = [item for item in data_left if item not in data_right]
         uniqueRight = [item for item in data_right if item not in data_left]
 
-        zipped = zip_longest(uniqueLeft, uniqueRight)
-        ret = []
+        try:
+            maxLeft = max(len(s) for s in uniqueLeft)
+        except:
+            maxLeft = 0
 
         try:
-            for elem in zipped:
-                ret.append([elem[0], elem[1] if elem[1] is not None else ''])
+            maxRight = max(len(s) for s in uniqueRight)
         except:
-            pass
+            maxRight = 0
+
+        fillvalue = []
+        if maxLeft >= maxRight:
+            fillvalue.extend([tablefill] * maxLeft)
+        else:
+            fillvalue.extend([tablefill] * maxRight)
+
+        zipped = zip_longest(uniqueLeft, uniqueRight, fillvalue = fillvalue)
+
+        ret = []
+        for row in zipped:
+            row_zip = []
+            for part in row:
+                row_zip += part if part else ['']
+
+            ret.append(row_zip)
 
         if len(ret) == 0:
-            ret.append(["(no differences found)", ""])
+            ret.append([translate("depotManagerController", "(no differences found)"), ""])
 
         return ret
+

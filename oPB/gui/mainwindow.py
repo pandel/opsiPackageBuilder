@@ -50,13 +50,19 @@ translate = QtCore.QCoreApplication.translate
 
 
 class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
-    """MainWindow UI class"""
+
     showLogRequested = pyqtSignal()
     windowMoved = pyqtSignal()
 
     MaxRecentFiles = 5
 
     def __init__(self, parent):
+        """
+        Constructor of MainWindow
+
+        :param parent: parent
+        :return:
+        """
         self._parent = parent
         print("\tgui/MainWindow parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
@@ -82,6 +88,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.reset_datamapper_and_display()
 
     def init_recent(self):
+        """Init recent files menu items"""
         for i in range(MainWindow.MaxRecentFiles):
                     self.recentFileActions.append(
                             QAction(self, visible=False,
@@ -93,6 +100,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.update_recent_file_actions()
 
     def update_recent_file_actions(self):
+        """Update recent file menu actions"""
         files = ConfigHandler.cfg.recent
 
         numRecentFiles = min(len(files), MainWindow.MaxRecentFiles)
@@ -107,9 +115,19 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self.recentFileActions[j].setVisible(False)
 
     def stripped_name(self, fullFileName):
+        """
+        Remove any path component from ``fullFileName``
+
+        :param fullFileName: complete path of file or folder
+        :return: last path part
+        """
         return QtCore.QFileInfo(fullFileName).fileName()
 
     def set_current_project(self, project):
+        """
+        Insert current project into recent files list
+        :param project: project name
+        """
         files = ConfigHandler.cfg.recent
 
         try:
@@ -127,7 +145,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
                 widget.update_recent_file_actions()
 
     def create_datamapper(self):
-        """Create datamapper for fields and tables"""
         self.logger.debug("Create data widget mapper for fields")
         self.datamapper = QDataWidgetMapper(self)
         self.datamapper.setModel(self._parent.model_fields)
@@ -176,7 +193,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self.datamapper_properties.toFirst()
 
     def connect_signals(self):
-        """Connect signals and slots"""
         self.logger.debug("Connect signals")
         self.actionNew.triggered.connect(self.new_project)
         self.actionOpen.triggered.connect(self.open_project)
@@ -277,7 +293,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self._parent.processingEnded.connect(self.set_button_state)
 
     def connect_validators(self):
-        """Connect field validators"""
         self.logger.debug("Connect validators to fields")
         # set validators
         if ConfigHandler.cfg.age == "True":
@@ -341,14 +356,17 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def not_working(self):
+        """Show a short "Not working" message"""
         self._parent.msgbox(translate("MainWindow", "Sorry, this function doesn't work at the moment!"), oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def offline(self):
+        """Show offline message"""
         self._parent.msgbox(translate("MainWindow", "You are working in offline mode. Functionality not available!"), oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def start_winst(self):
+        """Start opsi winst32"""
         self.logger.debug("Start Winst under " + platform.system())
         if platform.system() in ["Windows"]:
             if os.path.exists(oPB.OPB_WINST_NT):
@@ -360,6 +378,11 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def open_scripteditor(self):
+        """
+        Open configured script editor.
+
+        Method reaction depends on calling widget (self.sender())
+        """
         self.logger.debug("Start scripteditor")
 
         if ConfigHandler.cfg.editor_intern == "True":
@@ -425,6 +448,12 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def quickinstall(self):
+        """
+        Initiate backend quick install
+
+        See: :meth:`oPB.controller.base.BaseController.do_quickinstall`
+
+        """
         self.logger.debug("Quick install package")
 
         ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
@@ -442,6 +471,12 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def upload(self):
+        """
+        Initiate backend package upload
+
+        See: :meth:`oPB.controller.base.BaseController.do_upload`
+
+        """
         self.logger.debug("Upload package")
 
         ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
@@ -459,11 +494,14 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def set_button_state(self):
+        """Set state of online install/instsetup buttons"""
+
         # if sender is _parent, then signal is processingEnded from BaseController
         # this is too fast for os.path.isfile (because of disk flushing), so we need
         # to wait a short moment
         if self.sender() == self._parent:
             sleep(0.5)
+
         self.logger.debug("Set button state")
         if self.is_file_available():
             self.btnInstall.setEnabled(True)
@@ -473,6 +511,11 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
             self.btnInstSetup.setEnabled(False)
 
     def is_file_available(self):
+        """
+        Check if opsi package file is available
+
+        :return: True/False
+        """
         pack = self.lblPacketFolder.text().replace("\\","/") + "/" + self.inpProductId.text() + \
                "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
 
@@ -562,7 +605,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     @pyqtSlot()
     def open_project(self):
         """
-        Opens a folder selection dialog and emits selected folder name via Signal projectLoadRequested
+        Opens a folder selection dialog and emits selected folder name via signal projectLoadRequested
         """
         self.logger.debug("Open project dialog")
         directory = QFileDialog.getExistingDirectory(self, translate("MainWindow", "Open project"),
@@ -579,6 +622,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def open_recent_project(self):
+        """Open project via recent files menu entry"""
         action = self.sender()
         if action:
             self.logger.debug("Chosen recent project: " + action.data())
@@ -608,14 +652,23 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
         self._parent.quit_application(event)
 
     def moveEvent(self, *args, **kwargs):
-        """Send signal if main window is moved"""
+        """
+        Send signal if main window is moved
+
+        Used to position startup windows
+        """
         self.windowMoved.emit()
 
     def resizeEvent(self, *args, **kwargs):
-        """Send signal if main window is resized"""
+        """
+        Send signal if main window is resized
+
+        Used to position startup windows
+        """
         self.windowMoved.emit()
 
     def open_project_folder(self):
+        """Open os based explorer dialog"""
         self.logger.debug("Open project folder" + platform.system())
         if platform.system() in ["Windows", "Linux"]:
             webbrowser.open(self.lblPacketFolder.text())
@@ -625,7 +678,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
     @pyqtSlot()
     def select_script_dialog(self, script_type, setvalue = True):
         """
-        Opens a dialog to select a script file / Clear field content
+        Opens a dialog to select a script file or clear field content
 
         :param script_type: field type identifier (setup, uninstall, update, always, once, custom, userlogin)
         :param setvalue: set new value = True, empty field only = False
@@ -659,7 +712,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot()
     def check_state(self, *args, **kwargs):
-        """Sets background color of QLineEdit depending on validator state"""
+        """
+        Sets background color of QLineEdit depending on validator state
+        """
         sender = self.sender()
         validator = sender.validator()
 
@@ -689,12 +744,20 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
 
     @pyqtSlot(str, str)
     def set_statbar_text(self, msg):
-        """Sets status bar text"""
+        """
+        Sets status bar text
+
+        :param msg: message text
+        """
         self.oPB_statBar.showMessage(msg.replace("<br>", " ").strip(), 0)
 
     @pyqtSlot(int)
     def check_combobox_selection(self, value):
-        """Check combobox status and update ui (set widgets enabled/disabled accordingly)"""
+        """
+        Check combobox status and update ui (set widgets enabled/disabled accordingly)
+
+        :param value: control value dependend on self.sender(), see :meth:`check_combobox_selection`
+        """
         if self.sender() == self.cmbDepReqAction:
             if value != 0: self.cmbDepInstState.setCurrentIndex(0)
         elif self.sender() == self.cmbDepInstState:

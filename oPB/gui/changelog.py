@@ -46,12 +46,16 @@ translate = QtCore.QCoreApplication.translate
 
 
 class ChangelogEditorDialog(LogMixin):
+    """Changelog Editor dialog factory"""
 
     def __init__(self, parent, base, ui):
         """
-        Constructor for settings dialog
+        Constructor for ChangelogEditor
 
         :param parent: parent window for settings dialog
+        :param base: base instance of dialog to create
+        :param ui: ui instance of dialog to create
+
         :return:
         """
         self._parent = parent
@@ -70,9 +74,11 @@ class ChangelogEditorDialog(LogMixin):
         self.connect_signals()
 
     def create_datamapper(self):
+        """virtual"""
         pass
 
     def connect_signals(self):
+        """virtual"""
         pass
 
     def keyPressEvent(self, evt: QKeyEvent):
@@ -130,6 +136,7 @@ class ChangelogEditorDialogExtended(ChangelogEditorDialog, ChangelogEditorDialog
 
     @pyqtSlot()
     def reset_datamapper_and_display(self):
+        """Reset datamapper to initial state"""
         # select first row in mapped model
         self.logger.debug("Reset datamapper and display")
 
@@ -141,6 +148,11 @@ class ChangelogEditorDialogExtended(ChangelogEditorDialog, ChangelogEditorDialog
 
     @pyqtSlot(QtCore.QItemSelection)
     def update_fields(self, idx:QtCore.QItemSelection):
+        """
+        Updates dialog label from table selection
+        :param idx: selected table row index
+        :return:
+        """
         # indexes() returns list of selected items
         # as we only have 1 at a time, return first item and get corresponding row number
         if not idx.indexes() == []:

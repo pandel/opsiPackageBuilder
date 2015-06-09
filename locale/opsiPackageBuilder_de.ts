@@ -882,6 +882,19 @@
     </message>
 </context>
 <context>
+    <name>ReportDialog</name>
+    <message>
+        <location filename="../oPB/gui/utilities.py" line="186"/>
+        <source>Print</source>
+        <translation>Drucken</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/utilities.py" line="189"/>
+        <source>Close</source>
+        <translation>Schließen</translation>
+    </message>
+</context>
+<context>
     <name>ReportSelector</name>
     <message>
         <location filename="../oPB/ui/reportselector.ui" line="14"/>
@@ -1621,94 +1634,117 @@
     </message>
 </context>
 <context>
+    <name>depotManagerController</name>
+    <message>
+        <location filename="../oPB/gui/report.py" line="179"/>
+        <source>Compare depots:</source>
+        <translation>Depotvergleich:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="183"/>
+        <source>Compare repositories:</source>
+        <translation>Repository Vergleich:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="202"/>
+        <source>Reference:</source>
+        <translation>Referenz:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="274"/>
+        <source>(no differences found)</source>
+        <translation>(keine Unterschiede gefunden)</translation>
+    </message>
+</context>
+<context>
     <name>depotmanagerController</name>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="493"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="495"/>
         <source>Selected depot:</source>
         <translation>Ausgewähltes Depot:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="393"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="395"/>
         <source>Start opsi product updater now?</source>
         <translation>opsi-product-updater jetzt starten?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="444"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="446"/>
         <source>The selected depot is ONLINE.</source>
         <translation>Das Depot ist ONLINE.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="448"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="450"/>
         <source>The selected depot is OFFLINE.</source>
         <translation>Das Depot is OFFLINE.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="461"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="463"/>
         <source>Do you really want to reboot the selected depot?</source>
         <translation>Das gewählte Depot wirklich neu starten?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="503"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="505"/>
         <source>Please enter username with sufficient priviledges:</source>
         <translation>Benutzername (mit ausreichenden Rechten) eingeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="506"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="508"/>
         <source>Please enter password:</source>
         <translation>Passwort eingeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="494"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="496"/>
         <source>Do you really want to power off the selected depot?</source>
         <translation>Das gewählte Depot wirklich herunterfahren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="306"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="308"/>
         <source>Nothing selected.</source>
         <translation>Nichts ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="410"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="412"/>
         <source>Selected packages:</source>
         <translation>Ausgewählte Pakete:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="283"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="285"/>
         <source>Remove selected packages from repository now?</source>
         <translation>Ausgewählte Pakete jetzt aus dem Repository entfernen?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="312"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="314"/>
         <source>Uninstall selected packages from depot now?</source>
         <translation>Ausgewählte Produkte jetzt am Depot deinstallieren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="339"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="341"/>
         <source>Config server:</source>
         <translation>Konfigserver:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="340"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="342"/>
         <source>Do you really want to unregister the depot from the config server? This CAN&apos;T be undone!</source>
         <translation>Das gewählte Depot wirklich am Konfigserver deregistrieren? Der Vorgang kann NICHT rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="345"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="347"/>
         <source>Are you absolutely sure?</source>
         <translation>Sind Sie absolut sicher?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="369"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="371"/>
         <source>Set rights on repository folder now?</source>
         <translation>Rechte auf dem Repository Ordner jetzt setzen?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="411"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="413"/>
         <source>Generate MD5 checksums now?</source>
         <translation>MD5 Checksummen jetzt generieren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="532"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="534"/>
         <source>Choose package file</source>
         <translation>Paketdatei wählen</translation>
     </message>

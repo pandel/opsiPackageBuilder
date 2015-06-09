@@ -88,7 +88,9 @@ class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin):
         self.treeView.doubleClicked.connect(self.open_scripteditor)
 
     @pyqtSlot()
-    def open_scripteditor(self, *args, **kwargs):
+    def open_scripteditor(self):
+        """Open script editor after double click on tree view item"""
+
         self.logger.debug("Start scripteditor")
 
         idx = self.treeView.currentIndex()

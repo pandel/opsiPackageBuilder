@@ -28,6 +28,8 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+"""Pre-define every UI component to be used in oPB.gui classes"""
+
 import os
 from PyQt5 import QtCore, uic
 

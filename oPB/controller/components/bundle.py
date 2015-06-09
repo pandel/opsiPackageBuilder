@@ -41,6 +41,7 @@ from oPB.core.tools import Helper
 translate = QtCore.QCoreApplication.translate
 
 class BundleComponent(BaseController, QObject):
+
     def __init__(self, parent):
         super().__init__(self)
 

@@ -29,7 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 from PyQt5 import QtCore
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
@@ -48,7 +48,7 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
 
     def __init__(self, parent):
         """
-        Constructor for settings dialog
+        Constructor for bundle creation dialog
 
         :param parent: parent controller instance
         :return:
@@ -109,13 +109,25 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
 
         self.dialogOpened.emit()
 
+    @pyqtSlot()
     def update_ui(self):
+        """
+        Update model data and reset tableviews
+
+        See: :meth:`oPB.controller.components.bundle.BundleComponent.update_model_data`
+        """
         self.splash.show_()
         self._parent.update_model_data()
         self.resizeTable()
         self.splash.close()
 
+    @pyqtSlot()
     def create(self):
+        """
+        Get selected products from tableview and initiate backend bundle creation
+
+        See: :meth:`oPB.controller.components.bundle.BundleComponent.create_bundle`
+        """
         self.close()
 
         prods = []

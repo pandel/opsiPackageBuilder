@@ -49,7 +49,7 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
 
     def __init__(self, parent):
         """
-        Constructor for settings dialog
+        Constructor for JobList dialog
 
         :param parent: parent controller instance
         :return:
@@ -117,10 +117,19 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
         self.dialogOpened.emit()
 
     def usage_hint(self):
+        """Show longer AT usage hint message"""
+
         msg = translate("infoMessages", "infoAT")
         self._parent.msgbox(msg, oPB.MsgEnum.MS_ALWAYS)
 
     def update_ui(self, force = False):
+        """
+        Update model data and reset tableview
+
+        See: :meth:`oPB.controller.components.scheduler.SchedulerComponent.update_model_data_jobs`
+
+        :param force: Force ui AND backend data refresh
+        """
         self.splash.show_()
         self.splash.setProgress(50)
         self._parent.update_model_data_jobs(force = force)
@@ -129,6 +138,10 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
         self.splash.close()
 
     def delete_jobs(self):
+        """Initiate job deletion via backend
+
+        See: :meth:`oPB.controller.components.scheduler.SchedulerComponent.delete_jobs`
+        """
         self.splash.show_()
 
         selection = self.tblJobs.selectionModel().selectedRows()
@@ -147,7 +160,7 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin):
 
     def __init__(self, parent):
         """
-        Constructor for settings dialog
+        Constructor for JobCreator dialog
 
         :param parent: parent controller instance
         :return:
@@ -219,7 +232,13 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin):
 
         self.dialogOpened.emit()
 
-    def update_ui(self, force = False):
+    def update_ui(self):
+        """
+        Update model data and reset tableview
+
+        See: :meth:`oPB.controller.components.scheduler.SchedulerComponent.update_model_data_clients`
+        See: :meth:`oPB.controller.components.scheduler.SchedulerComponent.update_model_data_products`
+        """
         self.splash.show_()
         self.splash.setProgress(33)
         self._parent.update_model_data_clients()
@@ -229,6 +248,11 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin):
         self.splash.close()
 
     def create_jobs(self):
+        """
+        Initiate AT job creation via backend
+
+        See: :meth:`oPB.controller.components.scheduler.SchedulerComponent.create_jobs`
+        """
         self.logger.debug("Create AT jobs")
 
         self.splash.show_()

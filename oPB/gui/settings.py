@@ -29,6 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import sys
+import platform
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
@@ -83,7 +84,6 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         self.tabWidget.setCurrentIndex(0)
 
     def connect_signals(self):
-        """Connect signals to parent"""
         self.logger.debug("Connect signals")
 
         self.btnCancel.clicked.connect(self.request_close_dialog)
@@ -191,7 +191,8 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
     @pyqtSlot()
     def set_model_data(self):
-        """Whenever a special radio button or checkbox is clicked,
+        """
+        Whenever a special radio button or checkbox is clicked,
         the corresponding model data element will be set accordingly.
 
         This has to be done like so, because radio buttons and checkboxes are not directly linked
@@ -271,6 +272,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
     @pyqtSlot()
     def select_dev_dir(self):
+        """Development directory selector dialog"""
         self.logger.debug("Select development directory")
         directory = QFileDialog.getExistingDirectory(self, translate("SettingsDialog", "Select development folder"),
                                                      ConfigHandler.cfg.dev_dir, QFileDialog.ShowDirsOnly)
@@ -284,6 +286,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
     @pyqtSlot()
     def select_keyfile(self):
+        """SSH keyfile selector dialog"""
         self.logger.debug("Select SSH keyfile dialog")
 
         ext = "Private key file (" + ("; ").join(["*." + x for x in oPB.KEYFILE_EXT]) + ")"  # generate file extension selection string for dialog
@@ -300,9 +303,13 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
     @pyqtSlot()
     def select_externaleditor(self):
+        """External editor selector dialog"""
         self.logger.debug("Select scripteditor dialog")
 
-        ext = "Program (" + ("; ").join(["*." + x for x in oPB.PRG_EXT]) + ")"  # generate file extension selection string for dialog
+        if platform.system() != "Windows":
+            ext = "Program (" + ("; ").join(["*." + x for x in oPB.PRG_EXT]) + ")"  # generate file extension selection string for dialog
+        else:
+            ext = "Any (*)"
 
         script = QFileDialog.getOpenFileName(self, translate("SettingsDialog", "Choose Scripteditor"),
                                             ConfigHandler.cfg.dev_dir, ext)
@@ -316,6 +323,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
     @pyqtSlot()
     def select_logfile(self):
+        """Logfile selector dialog"""
         self.logger.debug("Select log file dialog")
 
         """

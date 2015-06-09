@@ -59,6 +59,7 @@ OPB_BASE   -> to correct paths to *.ui files in corresponding modules
 - add base path to environement and append ui package to module search path
 - necessary for uic to find resource file
 """
+
 os.environ['OPB_BASE'] = get_script_dir()
 sys.path.append(os.environ['OPB_BASE'] + "/ui")
 
@@ -115,97 +116,132 @@ OPB_PRODUCT_VER_REGEX = "^[a-z0-9\.]{1,32}$"
 OPB_PACKAGE_VER_REGEX = "^[a-z0-9\.]{1,16}$"
 OPB_VALID_IP_ADDRESS_REGEX = r"(?<!\S)(?:(?:\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\b|.\b){7}(?!\S)"
 OPB_VALID_HOSTNAME_REGEX = "^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))*$"
-
 """
 Host/IP regex examples:
------------------
-
-www.rechner.de
-.test.net
-10.2225.65.13   <- Problem! Matches as HOST :-)
-10.226.98.132
-www.böse.net
+    * www.rechner.de
+    * .test.net
+    * 10.2225.65.13   <- Problem! Matches as HOST :-)
+    * 10.226.98.132
+    * www.böse.net
 """
 
 # basic commands
 OPB_INSTALL = "opsi-package-manager -i"
+"""opsi basic install command"""
 OPB_INSTSETUP = "opsi-package-manager -i -S"
+"""opsi basic install + setup command"""
 OPB_UNINSTALL = "opsi-package-manager -r"
+"""opsi basic uninstall command"""
 OPB_UPLOAD = "opsi-package-manager -u"
+"""opsi basic upload command"""
 OPB_PROD_UPDATER = "nohup /usr/bin/opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &" # must be started with nohup
+"""product updater command"""
 OPB_DEPLOY_COMMAND = "/var/lib/opsi/depot/opsi-client-agent/opsi-deploy-client-agent"
+"""opsi client agent deploy command"""
 OPB_DEPOT_SWITCH = "-d"
+"""opsi command line switch for depot operations"""
 OPB_METHOD_ONDEMAND = "opsi-admin -d method hostControl_fireEvent 'on_demand'"
+"""opsi 4.0 API method: on demand"""
 OPB_METHOD_PRODUCTACTION = "opsi-admin -d method setProductActionRequestWithDependencies"
+"""opsi 4.0 API method: product installation"""
 OPB_METHOD_WOL = "opsi-admin -d method powerOnHost"
+"""opsi 4.0 API method: wake on lan"""
 OPB_METHOD_GETDEPOTS = "opsi-admin -d method host_getHashes '[]' '{" + '"type":"OpsiDepotserver"}' + "'"
-OPB_METHOD_DELETHOST = "opsi-admin -d method host_delete"
+"""opsi 4.0 API method: get depot server list"""
 OPB_METHOD_GETPRODUCTS = "opsi-admin -r -d method product_getHashes"
+"""opsi 4.0 API method: short / get all products"""
 OPB_METHOD_GETCLIENTS = "opsi-admin -d method host_getHashes '[]' '{" + '"type":"OpsiClient"}' + "'"
-OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with behind: '["***REMOVED***1hp.sd8106.***REMOVED***"]'
+"""opsi 4.0 API method: get client list"""
+OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with added: '["***REMOVED***1hp.sd8106.***REMOVED***"]'
+"""opsi 4.0 API method: get client<->depot list, filter with added: '["<hostname>"]' """
 OPB_METHOD_GETPRODUCTSONDEPOTS = "opsi-admin -d method productOnDepot_getIdents"
+"""opsi 4.0 API method: long / get all products"""
 OPB_METHOD_UNREGISTERDEPOT = "opsi-admin -d method host_delete"
-
-OPB_AT_QUEUE = "atq -q D"
-OPB_AT_JOB_DETAIL = "atq -q D | cut -f1 | xargs at -q D -c | grep opsi-admin"
-OPB_AT_CREATE = "at -q D -t"
-OPB_AT_REMOVE = "atrm"
-OPB_AT_REMOVE_ALL = "atrm $(atq -q D | cut -f 1)"
+"""opsi 4.0 API method: unregister depot server host"""
 OPB_SETRIGHTS_NOSUDO = "opsi-setup --set-rights"
+"""opsi set rights without sudo command"""
 OPB_SETRIGHTS_SUDO = "opsi-set-rights"
+"""opsi set rights with sudo command"""
 OPB_GETPRODUPD_PID = "VAR=$(pidof -x opsi-product-updater); echo $VAR"
+"""get pid of running opsi-product-updater"""
+
+# additional commands
+OPB_AT_QUEUE = "atq -q D"
+"""AT command: get content of queue 'D'"""
+OPB_AT_JOB_DETAIL = "atq -q D | cut -f1 | xargs at -q D -c | grep opsi-admin"
+"""AT command: get job details for queue 'D' and user opsi-admin"""
+OPB_AT_CREATE = "at -q D -t"
+"""AT command: create AT job"""
+OPB_AT_REMOVE = "atrm"
+"""AT command: remove single AT job"""
+OPB_AT_REMOVE_ALL = "atrm $(atq -q D | cut -f 1)"
+"""AT command: remove all AT jobs at once"""
 OPB_PRECHECK_MD5 = "md5deep -h"
+"""md5deep command accessibility check"""
 OPB_PRECHECK_WINEXE = "winexe --help"
-# create MD5 file for packet; set in front: 'PACKETS=\"xca_0.9.3-1.opsi\";'
+"""winexe command accessibility check"""
 OPB_CALC_MD5 = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do MD5=\"`md5deep $PACKETPATH/$p.opsi 2>/dev/null | cut -d \" \" -f 1`\"; echo -n $MD5 >$PACKETPATH/$p.opsi.md5; done'
-# get all products from repository directory incl. MD5
+"""Create MD5 file for packet; add in front: 'PACKETS=\"xca_0.9.3-1.opsi\";'"""
 OPB_GETREPOCONTENT = 'PACKETPATH="' + REPO_PATH + '"; PACKETS=\"`ls $PACKETPATH/*.opsi 2>/dev/null | cut -d "/" -f 6`\"; ' \
                        'for p in $PACKETS; do MD5=\"`cat $PACKETPATH/$p.md5 2>/dev/null`\"; echo $MD5-@MD5@-$p; done'
-# remove files from repository; set in front: 'PACKETS=\"xca_0.9.3-1\";'
+"""Get all products from repository directory incl. MD5"""
 OPB_DEPOT_FILE_REMOVE = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do ' \
                             'rm -v -f $PACKETPATH/$p.opsi; rm -v -f $PACKETPATH/$p.opsi.md5; rm -v -f $PACKETPATH/$p.opsi.zsync; done'
-
+"""Remove files from repository; add in front: 'PACKETS=\"xca_0.9.3-1\";'"""
 OPB_REBOOT = "shutdown -r now"
+"""Reboot machine command"""
 OPB_POWEROFF = "shutdown -h now"
+"""Poweroff machine command"""
 OPB_WINST_NT = "C:\\Program Files (x86)\\opsi.org\\opsi-client-agent\\opsi-winst\\winst32.exe"
+"""winst32.exe path on windows client"""
 OPB_WINST_LINUX = ""
+"""winst32 path on linux client"""
 
 # file extensions for selection dialogs
 SCRIPT_EXT = ["opsiscript", "opsiinc", "ins", "py", "*"]
+"""opsi script file extensions"""
 KEYFILE_EXT = ["ppk"]
+"""SSH keyfile extension"""
 PRG_EXT = ["exe"]
+"""Program executable extension (Windows)"""
 
 # log formats
 LOG_DATETIME = "%Y-%m-%d %I:%M:%S %p"
+"""Log entry: datetime format"""
 LOG_LONG =  "[%(asctime)s] - %(name)-35s - %(levelname)8s - %(message)s (%(module)s: %(funcName)s - line %(lineno)s, process %(process)s)"
+"""Log entry: long format"""
 LOG_SHORT = "[%(asctime)s] - %(name)-35s - %(levelname)8s - %(message)s"
+"""Log entry: short format"""
 LOG_SSH = "[%(asctime)s] - %(message)s"
+"""Log entry (only SSH): format"""
 
-# product types
 PRODTYPES = ["localboot", "netboot"]
+"""opsi product types"""
 
-# changelog relevant parameter
 CHLOG_BLOCKMARKER = "urgency="
+"""Changelog block marker"""
 CHLOG_URGENCIES = ["low", "middle", "high"]
+"""Changelog urgencies"""
 CHLOG_STATI = ["stable", "testing"]
+"""Changelog status"""
 
-# base folders inside project directory
 BASE_FOLDERS = ["OPSI", "CLIENT_DATA"]
+"""Base folders inside project directory"""
 
-# Constants for _msg() - message type
 MsgEnum = Enum("MsgEnum", "MS_ERR MS_WARN MS_INFO MS_STAT MS_ALWAYS MS_PARSE MS_QUEST_YESNO MS_QUEST_CTC MS_QUEST_OKCANCEL "
                           "MS_QUEST_PHRASE MS_QUEST_PASS MS_QUEST_DEPOT")
+"""Constants for _msg() - message type"""
 
-# Constants for _updater()
 UpdEnum = Enum("UpdEnum", "UP_MANU UP_AUTO")
+"""Constants for _updater()"""
 
-# command line build modes
 BModEnum = Enum("BModEnum", "BD_CANCEL BD_REBUILD BD_NEW BD_INTERACTIVE")
+"""Command line build modes"""
 
-# Constants for opsi operations
 OpEnum = Enum("OpEnum", "DO_BUILD DO_INSTALL DO_UNINSTALL DO_SETRIGHTS DO_GETCLIENTS DO_GETPRODUCTS DO_CREATEJOBS DO_DELETEJOBS DO_GETATJOBS "
                         "DO_DELETEALLJOBS DO_GETREPOCONTENT DO_GETDEPOTS DO_GETPRODUCTSONDEPOTS DO_QUICKINST DO_QUICKUNINST DO_INSTSETUP DO_UPLOAD "
                         "DO_DELETEFILEFROMREPO DO_UNREGISTERDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_GENMD5 DO_GETCLIENTSONDEPOTS")
+"""Constants for opsi operations"""
 
 # return codes
 RET_OK = 0            # Err  0: OK
@@ -233,6 +269,7 @@ RET_PRODUPDRUN = 58   # Err 58: opsi-product-updater already running
 RET_NOREPO = 59       # Err 59: could not get repo content
 
 EXITCODE = RET_OK
+"""Standard program exitcode"""
 
 # Help destinations
 HLP_FILE = get_script_dir() + "/help/opsipackagebuilder.qhc"

@@ -156,6 +156,8 @@ class DepotManagerComponent(BaseController, QObject):
 
         self._parent.update_table_model(self.model_report, sorted(self.reportlist))
 
+        self.modelDataUpdated.emit()
+
     def update_data(self, resetgui = True):
         self.logger.debug("Update data")
 

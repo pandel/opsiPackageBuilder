@@ -29,7 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 from PyQt5 import QtCore
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 
 import oPB
@@ -48,7 +48,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
 
     def __init__(self, parent):
         """
-        Constructor for settings dialog
+        Constructor for DepotManager dialog
 
         :param parent: parent controller instance
         :return:
@@ -117,6 +117,11 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
 
 
     def closeEvent(self, event):
+        """
+        Overrides base method, disconnects custom signals
+
+        :param event: close event
+        """
         try:
             self._parent.dataAboutToBeAquired.disconnect(self.splash.show_)
             self._parent.dataAquired.disconnect(self.splash.close)
@@ -161,7 +166,9 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self.tblDepotRight.resizeRowsToContents()
         self.tblDepotRight.resizeColumnsToContents()
 
+    @pyqtSlot()
     def update_ui(self):
+        """Update ui state"""
         self.logger.debug("Update ui")
 
         if self._parent._compare is False:
@@ -242,7 +249,9 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
 
         self.resizeTables()
 
+    @pyqtSlot()
     def update_fields(self):
+        """Reload combobox content and reset their state"""
         self.logger.debug("Update field content")
         l = []
         for key, val in ConfigHandler.cfg.depotcache.items():
@@ -270,6 +279,20 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self.cmbDepotRight.currentTextChanged.connect(self.set_active_side)
 
     def decorate_button(self, button, state):
+        """
+        Set custom button property ``dispState``
+
+        ``dispState`` is a conditional CSS parameter, like::
+
+            QPushButton[dispState="red"] {
+                color: rgb(255, 0, 0);
+            }
+
+        Dependend on its value, the button will be colored differently.
+
+        :param button: QPushButton
+        :param state: color ["red", "green", "blue"]
+        """
         button.setProperty("dispState", state)
         button.style().unpolish(button)
         button.style().polish(button)
@@ -293,7 +316,13 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self.resizeTables()
         self.activateWindow()
 
+    @pyqtSlot()
     def compare_sides(self):
+        """
+        Initiate side-by-side comparison of table views
+
+        See: :meth:`oPB.controller.components.depotmanager.DepotManagerComponent.compare_leftright`
+        """
 
         if self.cmbDepotLeft.currentIndex() == -1 or self.cmbDepotRight.currentIndex() == -1:
             return
@@ -301,7 +330,9 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
         self._parent._compare = True if self._parent._compare is False else False
         self._parent.compare_leftright()
 
+    @pyqtSlot()
     def set_active_side(self):
+        """Set active table marker and initiate ui update accordingly"""
 
         if self.sender() == self.tblDepotLeft or self.sender() == self.cmbDepotLeft:
             self.logger.debug("Set active tableview: left")
@@ -313,7 +344,15 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
 
         self.update_ui()
 
+    @pyqtSlot()
     def remove_delegate(self):
+        """
+        Decide between depot or repository removal of selected product(s)
+
+        See: :meth:`oPB.controller.components.depotmanager.DepotManagerComponent.remove_from_depot`
+        See: :meth:`oPB.controller.components.depotmanager.DepotManagerComponent.delete_from_repo`
+        """
+
         if self._parent._active_side == "left":
             depot = self.cmbDepotLeft.currentText().split()[0]
             selection = self.tblDepotLeft.selectionModel().selectedRows()
@@ -347,6 +386,11 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin)
                 self._parent.delete_from_repo(depot, prodIdx)
 
     def generate_md5(self):
+        """
+        Get dialog widget state and initiate backend MD5 generation
+
+        See: :meth:`oPB.controller.components.depotmanager.DepotManagerComponent.generate_md5`
+        """
         if self._parent._active_side == "left":
             depot = self.cmbDepotLeft.currentText().split()[0]
             selection = self.tblDepotLeft.selectionModel().selectedRows()

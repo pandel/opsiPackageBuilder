@@ -40,7 +40,15 @@ translate = QtCore.QCoreApplication.translate
 
 
 class HelpDialog(QObject):
+    """qthelp viewer dialog"""
+
     def __init__(self, qthelp_file):
+        """
+        Constructor of HelpDialog
+
+        :param qthelp_file: full path to qthelp helpfile
+
+        """
         QObject.__init__(self)
 
         # instantiate help engine
@@ -133,11 +141,11 @@ class HelpDialog(QObject):
         self._btnReset.clicked.connect(self.resetResult)
 
     def search(self):
-        #print("Searching...")
+        """Initiate qthelp search"""
         self._se.search(self._helpSearchQuery.query())
 
     def showResults(self):
-        #print("Hits:", self._se.hitCount())
+        """Show search results, if any"""
         if self._se.hitCount() > 0:
             self._helpIndex.hide()
             h = self._splitterMain.geometry().height()
@@ -146,9 +154,16 @@ class HelpDialog(QObject):
             self._btnReset.show()
 
     def setUrl(self, urlstring):
+        """
+        Set internal qthelp url
+
+        :param urlstring: url string
+        """
         self._wv.setUrl(QUrl(urlstring))
 
     def resetResult(self):
+        """Reset search result widget"""
+
         self._helpSearchResult.hide()
         self._btnReset.hide()
         self._helpIndex.show()
@@ -156,13 +171,30 @@ class HelpDialog(QObject):
         self._splitterMain.setSizes([h*(1/9), h*(7/9), h*(1/9)])
 
 class HelpNetworkAccessManager(QNetworkAccessManager):
+    """Subclass standard QNetworkAccessManager to redirect url requests
+    from file system to qthelp:// scheme"""
 
     def __init__(self, parent = None, helpEngine = None):
+        """
+        Constructor of HelpNetworkAccessManager
+
+        :param parent: parent
+        :param helpEngine: help engine to attach to
+        :return:
+        """
         self._parent = parent
         self._helpEngine = helpEngine
         super().__init__(self._parent)
 
     def createRequest(self, operation, request, device):
+        """
+        Create network reply, if url scheme is "qthelp" or pass request to super()
+
+        :param operation: QNetworkAccessManager.Operation types
+        :param request: QNetworkRequest
+        :param device: IO device
+        :return: QNetworkReply / HelpReply
+        """
         # ONLY react on qthelp://... requests
         if request.url().scheme() == 'qthelp':
             #print(request.url().toString())
@@ -171,8 +203,18 @@ class HelpNetworkAccessManager(QNetworkAccessManager):
 
 
 class HelpReply(QNetworkReply):
+    """Single network reply"""
 
     def __init__(self, parent, operation, request, device, helpEngine):
+        """
+        Constructor of HelpReply
+
+        :param parent: parent
+        :param operation: QNetworkAccessManager.Operations
+        :param request: QNetworkRequest
+        :param device: IO device
+        :param helpEngine: attached help engine
+        """
         self._parent = parent
         self._helpEngine = helpEngine
         super().__init__(self._parent)
@@ -186,6 +228,8 @@ class HelpReply(QNetworkReply):
         QTimer.singleShot(200, self.load_content)
 
     def load_content(self):
+        """Load fileData content from helpEngine"""
+
         if self.operation() == QNetworkAccessManager.PostOperation:
             # handle post operations ... but not here ;-)
             pass
@@ -218,8 +262,18 @@ class HelpReply(QNetworkReply):
     def manager(self):
         return self.parent()
 
+
 class Help(QObject):
-    def __init__(self, helpfile, prefix,short_url = None):
+    """Main Help class"""
+
+    def __init__(self, helpfile, prefix, short_url = None):
+        """
+        Constructor of Help
+        :param helpfile: full path to qthelp file
+        :param prefix: url prefix, like qthelp://org.sphinx...
+        :param short_url: shortcut url to help content, omits ``prefix``
+
+        """
         super().__init__()
         self._help = HelpDialog(helpfile)
         self._helpprefix = prefix
@@ -227,10 +281,12 @@ class Help(QObject):
         self.showHelp(short_url)
 
     def showHelp(self, short_url):
+        """Find short ``short_url`` in help file and open maximized viewer"""
         if type(short_url) is str:
             self._help.setUrl(self._helpprefix + short_url)
         else:
             self._help.setUrl(self._helpprefix + "index.html")
+
         #parentsize = self._help.ui.parent().geometry()
         #self._help.ui.setGeometry(parentsize.height * (2/3),parentsize.height * (2/3))
         #self._help.ui.show()

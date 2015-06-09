@@ -48,7 +48,7 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
 
     def __init__(self, parent):
         """
-        Constructor for settings dialog
+        Constructor for UninstallDialog dialog
 
         :param parent: parent controller instance
         :return:
@@ -110,6 +110,13 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
         self.dialogOpened.emit()
 
     def update_ui(self, force = False):
+        """
+        Update model data and reset tableviews
+
+        See: :meth:`oPB.controller.components.quickuninstall.QuickUninstallComponent.update_model_data`
+
+        :param force: Force ui AND backend data refresh
+        """
         self.logger.debug("Update UI")
         self.splash.show_()
         self._parent.update_model_data(force)
@@ -117,6 +124,11 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin):
         self.splash.close()
 
     def uninstall(self):
+        """
+        Initiate product removal via backend
+
+        See: :meth:`oPB.controller.components.quickuninstall.QuickUninstallComponent.uninstall_selection`
+        """
         self.close()
 
         prods = []

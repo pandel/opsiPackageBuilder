@@ -432,7 +432,7 @@ class HTMLTools(LogMixin):
         return "</body></html>"
 
     @staticmethod
-    def Array2HTMLTable(element_list = [], title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
+    def Array2HTMLTable(element_list = [], colspan = 1, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
         headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = False):
 
         if not element_list:
@@ -444,7 +444,10 @@ class HTMLTools(LogMixin):
 
         try:
             total_rows = len(element_list)
-            total_columns = len(element_list[0]) # first element sets column count for whole table
+            if not headers_on:
+                total_columns = len(element_list[0]) # first real data row sets column count for whole table
+            else:
+                total_columns = len(element_list[1]) # first real data row sets column count for whole table
         except:
             return
 
@@ -455,8 +458,11 @@ class HTMLTools(LogMixin):
                 return # there need to be at least two rows if headers are on
 
             for x in range(total_columns):
-                t = str(element_list[0][x]) if element_list[0][x] is not None else ""
-                table_header = table_header + '   <th>' + t + '</th>\n'
+                try: # fewer header columns than data columns?
+                    t = str(element_list[0][x]) if element_list[0][x] is not None else ""
+                    table_header = table_header + '   <th colspan=' + str(colspan) + '>' + t + '</th>\n'
+                except:
+                    pass
 
         for r in range(bodystart, total_rows):
             table_columns = ""

@@ -38,7 +38,16 @@ translate = QtCore.QCoreApplication.translate
 
 
 class Splash(LogMixin):
+    """Splash screen class"""
+
     def __init__(self, parent, msg):
+        """
+        Constructor of Splash screen
+
+        :param parent: ui parent
+        :param msg: initial message text
+
+        """
         self._parent = parent
         self.isHidden = True
         self._progress = 0
@@ -54,12 +63,23 @@ class Splash(LogMixin):
         self.add_progressbar()
 
     def add_progressbar(self):
+        """Add separate progress bar to splash screen"""
+
         self._progressBar = QProgressBar(self._splash)
         self._progressBar.setGeometry(self._splash.width() / 10, 8 * self._splash.height() / 10,
                                8 * self._splash.width() / 10, self._splash.height() / 10)
         self._progressBar.hide()
 
     def setProgress(self, val):
+        """
+        Set progress bar to ``val``
+
+        If splash has no progressbar, it will be added dynamically.
+        Remove progressbar with ``val`` as None.
+
+        :param val: absolut percent value
+        :return:
+        """
         if val is not None:
             self._progressBar.show()
             self._progressBar.setTextVisible(True)
@@ -78,6 +98,15 @@ class Splash(LogMixin):
             self.show_()
 
     def incProgress(self, val):
+        """
+        Increase progressbar value by ``val``
+
+        If splash has no progressbar, it will be added dynamically.
+        Remove progressbar with ``val`` as None.
+
+        :param val: value to increase by
+        :return:
+        """
         if val is not None:
             self._progressBar.show()
             self._progressBar.setTextVisible(True)
@@ -96,6 +125,7 @@ class Splash(LogMixin):
             self.show_()
 
     def setParent(self, parent):
+        """Set splash's parent"""
         self._parent = parent
         self._splash.setParent(parent)
 

@@ -100,7 +100,14 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         event.setAccepted(not event.spontaneous())
 
     @pyqtSlot()
+    def hide_(self):
+        """Overrides standard hide() method, check for active_project state before"""
+        if not self._parent._active_project:
+            self.hide()
+
+    @pyqtSlot()
     def hide_me(self):
+        """Hides startup window and reactivates main window functionality."""
         self.logger.debug("Hide startup window")
         self.close()
         self._parentUi.centralWidget().setEnabled(True)
@@ -108,7 +115,14 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         self._parentUi.activateWindow()
 
     @pyqtSlot()
+    def show_(self):
+        """Overrides standard show() method, check for active_project state before"""
+        if not self._parent._active_project:
+            self.show()
+
+    @pyqtSlot()
     def show_me(self):
+        """Showes startup window and deactivates main window functionality."""
         self.logger.debug("Show startup window")
         self.set_position()
         self._parentUi.centralWidget().setEnabled(False)
@@ -123,13 +137,3 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
         hpos = parentUi.x() + ((parentUi.width() - mysize.width()) / 2)
         vpos = parentUi.y() + ((parentUi.height() - mysize.height()) / 2)
         self.move(hpos, vpos)
-
-    @pyqtSlot()
-    def hide_(self):
-        if not self._parent._active_project:
-            self.hide()
-
-    @pyqtSlot()
-    def show_(self):
-        if not self._parent._active_project:
-            self.show()

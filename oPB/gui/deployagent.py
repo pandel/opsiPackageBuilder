@@ -49,7 +49,7 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin):
 
     def __init__(self, parent):
         """
-        Constructor for settings dialog
+        Constructor for deploy opsi client agent dialog
 
         :param parent: parent controller instance
         :return:
@@ -102,6 +102,11 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin):
         self.activateWindow()
 
     def create_optionsgroups(self):
+        """
+        Create group of dependend dialog widgets
+
+        See :class:`oPB.gui.utilities.SpecialOptionButtonGroup`
+        """
         self.logger.debug("Create option button group")
         # build special button groups for False/True choice
         self.optionGroupDeploy = SpecialOptionButtonGroup(self.chkDeployToMulti, None,
@@ -110,6 +115,12 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin):
 
 
     def deploy(self):
+        """
+        Get values from dialog widgets and pass them to backend method start_deploy.
+
+        See: :meth:`oPB.controller.components.deployagent.DeployAgentComponent.start_deploy`
+        :return:
+        """
         self.logger.debug("Deploy client agent")
 
         check_ip = re.compile(oPB.OPB_VALID_IP_ADDRESS_REGEX)

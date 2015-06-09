@@ -34,9 +34,18 @@ import oPB
 from oPB.ui.ui import LogDialogBase, LogDialogUI
 from oPB.core.tools import LogMixin
 
+
 class LogDialog(LogDialogBase, LogDialogUI, LogMixin):
+    """Main LogDialog class"""
 
     def __init__(self, parent, main, level):
+        """
+        Constructor of LogDialog
+
+        :param parent: dialog parent
+        :param main: main logger instance
+        :param level: initial log level
+        """
         self._parent = parent
 
         LogDialogBase.__init__(self, self._parent)
@@ -70,6 +79,21 @@ class LogDialog(LogDialogBase, LogDialogUI, LogMixin):
         self.chkFormat.stateChanged.connect(self.changeFormat)
 
     def changeLogLevel(self,  index):
+        """
+        Set changelog level
+
+        Possible values are:
+
+            * logging.DEBUG
+            * logging.INFO
+            * oPB.core.logging.SSHINFO
+            * logging.WARNING
+            * oPB.core.logging.SSH
+            * logging.ERROR
+            * logging.CRITICAL
+
+        :param index: log level
+        """
         self.cmbLogLevel.setCurrentIndex(index)
         if index == 6:
             self.logger.debug("Set dialog log level to: DEBUG")
@@ -137,6 +161,16 @@ class LogDialog(LogDialogBase, LogDialogUI, LogMixin):
                 pass
 
     def changeFormat(self,  state):
+        """
+        Set log format
+
+        Possible values are:
+
+            * oPB.LOG_LONG
+            * oPB.LOG_SHORT
+
+        :param state: state constant
+        """
         if state == Qt.Checked:
             format = logging.Formatter(oPB.LOG_LONG, oPB.LOG_DATETIME)
             self.logger.debug("Set dialog log format to: LONG")
