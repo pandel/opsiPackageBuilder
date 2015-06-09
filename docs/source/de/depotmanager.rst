@@ -1,3 +1,5 @@
+.. index:: ! Depot Manager
+
 Depot Manager
 =============
 
@@ -158,6 +160,8 @@ Wie man erkennen kann, sind folgende Funktionen aktiv:
 
 *Hinweis:*
 *Das in der Spalte "Typ" nur "(depo<->repo)" angezeigt wird, liegt daran, dass im Repository Ordner die Produkttypen "NetbootProduct" bzw. "LocalbootProduct" nicht einfach ermittelbar sind.*
+
+.. index:: ! Depot Manager; Reporte generieren
 
 Report generieren
 -----------------

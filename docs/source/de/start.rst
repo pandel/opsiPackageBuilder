@@ -1,4 +1,6 @@
-﻿Start
+﻿.. index:: ! Start
+
+Start
 =====
 
 |image2|

@@ -1,3 +1,5 @@
+.. index:: ! Kommandozeilenparameter
+
 Kommandozeilenparameter
 =======================
 
@@ -262,6 +264,8 @@ Gemischte Form: OPSIPackageBuilder.exe --path=testpak -b=rebuild --install --uni
 
 Dieser Befehl startet das Programm ohne Oberfläche, lädt das Paket im Ordner w:\\opsi\\testpak (sofern w:\\opsi der hinterlegte Entwicklungsordner ist), setzt die Rechte auf dem Paketordner neu, überschreibt beim Paketieren ein evtl. vorhandenes Paket gleicher Version, deinstalliert die bestehende Version (falls vorhanden) und installiert die gerade neu paketierte Fassung. Auf der Konsole wird nichts ausgegeben, sämtliche Ausgaben gehen in die Log-Datei .\\opb.log.
 
+.. index:: ! Mehrere Konfigurationen
+
 Mehrere Konfigurationen
 =======================
 
@@ -311,6 +315,8 @@ Es wird in diesem Fall immer die zuletzt gewählte Konfiguration verwendet. Wurd
 +--------------------------------------+--------------------------------------+
 | -h                                   | --help                               |
 +--------------------------------------+--------------------------------------+
+
+.. index:: ! Rückgabewerte
 
 Return Codes
 ============
@@ -365,10 +371,14 @@ opsi Package Builder gibt bei Ausführung über die Kommandozeile folgende Fehle
 | 5600                                 | Program exit due to running updater  |
 +--------------------------------------+--------------------------------------+
 
+.. index:: ! Systemvoraussetzungen
+
 Systemvoraussetzungen
 =====================
 
 (Muss noch geschrieben werden...)
+
+.. index:: ! Weitere Hilfe
 
 Weitere Hilfe...
 ================

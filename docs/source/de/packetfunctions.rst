@@ -1,4 +1,6 @@
-﻿Paketfunktionen
+﻿.. index:: ! Paketfunktionen
+
+Paketfunktionen
 ===============
 
 |image17|
@@ -145,7 +147,9 @@ Funktionsbeschreibung
 |                         | Datei des Pakets neu.            |                         |
 +-------------------------+----------------------------------+-------------------------+
 
-Einschränkungen
+.. index:: ! Paketfunktionen; Einschränkungen
+
+**Einschränkungen**
 
 Einige der o. a. Funktionen stehen nur unter bestimmten Voraussetzungen
 zur Verfügung:

@@ -1,4 +1,6 @@
-﻿Reiter "Paket"
+﻿.. index:: ! Reiter "Paket"
+
+Reiter "Paket"
 ==============
 
 |image3|

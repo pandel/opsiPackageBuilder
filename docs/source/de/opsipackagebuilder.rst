@@ -1,4 +1,6 @@
-﻿opsi PackageBuilder Handbuch
+﻿.. index:: ! Deutsches Handbuch
+
+opsi PackageBuilder Handbuch
 ============================
 
 |image0|\  opsi Package Builder

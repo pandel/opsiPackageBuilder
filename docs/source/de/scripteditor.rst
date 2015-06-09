@@ -1,3 +1,5 @@
+.. index:: ! Tool "Skript Editor"
+
 Tool "Skript Editor"
 ====================
 

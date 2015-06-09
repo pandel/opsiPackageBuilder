@@ -1,3 +1,5 @@
+.. index:: ! Paketbündel
+
 Paketbündel erzeugen
 ====================
 

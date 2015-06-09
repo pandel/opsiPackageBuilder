@@ -1,4 +1,6 @@
-﻿Client Agent verteilen
+﻿.. index:: ! Client Agent verteilen
+
+Client Agent verteilen
 ======================
 
 |image73|

@@ -1,4 +1,6 @@
-﻿.. _conversionhints:
+﻿.. index:: ! Changelog Editor; Konvertierungshinweise
+
+.. _conversionhints:
 
 Konvertierungshinweise
 ======================

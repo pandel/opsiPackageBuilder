@@ -1,4 +1,6 @@
-﻿.. _changelogeditor_simple:
+﻿.. index:: ! Changelog Editor; Einfacher Editor
+
+.. _changelogeditor_simple:
 
 Einfach
 =======

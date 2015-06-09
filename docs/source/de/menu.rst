@@ -1,12 +1,18 @@
+.. index:: ! Menü
+
 Menü
 ====
 
 Erläuterungen zum Menü erfolgen in den einzelnen Kapiteln, falls notwendig.
 
+.. index:: ! Menü; Datei
+
 Datei
 -----
 
 |image74|
+
+.. index:: ! Menü; Werkzeuge
 
 Werkzeuge
 ---------
@@ -22,6 +28,8 @@ Werkzeuge
       %ProgramFiles%\\opsi.org\\opsi-client-agent\\opsi-winst\\winst32.exe
    -  Skripteditor
       Startet den in den Einstellungen hinterlegten Editor.
+
+.. index:: ! Menü; Extras
 
 Extras
 ------

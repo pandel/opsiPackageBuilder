@@ -1,4 +1,6 @@
-﻿.. _changelogeditor_extended:
+﻿.. index:: ! Changelog Editor; Erweiterter Editor
+
+.. _changelogeditor_extended:
 
 Erweitert
 =========

@@ -204,7 +204,7 @@ html_static_path = ['_static']
 # Sphinx supports the following languages:
 #   'da', 'de', 'en', 'es', 'fi', 'fr', 'h', 'it', 'ja'
 #   'nl', 'no', 'pt', 'ro', 'r', 'sv', 'tr'
-#html_search_language = 'en'
+html_search_language = 'de'
 
 # A dictionary with options for the search language support, empty by default.
 # Now only 'ja' uses this config value
@@ -219,6 +219,8 @@ htmlhelp_basename = 'opsipackagebuilderdoc'
 
 # Which stylesheet to use
 #html_style = 'my_nature.css'
+
+html_add_permalinks = True
 
 # -- Options for LaTeX output ---------------------------------------------
 

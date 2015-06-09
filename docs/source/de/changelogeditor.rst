@@ -1,4 +1,6 @@
-﻿Changelog Editor
+﻿.. index:: ! Changelog Editor
+
+Changelog Editor
 ================
 
 .. toctree::
@@ -9,6 +11,8 @@
    chlog_conversionhints
 
 |image26|
+
+.. index:: ! Changelog Editor; Funktionalität
 
 Beschreibung zur Changelog Editor Funktionalität
 ------------------------------------------------

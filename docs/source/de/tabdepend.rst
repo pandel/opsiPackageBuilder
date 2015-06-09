@@ -1,4 +1,6 @@
-﻿Reiter "Abhängigkeit"
+﻿.. index:: ! Reiter "Abhängigkeit"
+
+Reiter "Abhängigkeit"
 =====================
 
 |image8|

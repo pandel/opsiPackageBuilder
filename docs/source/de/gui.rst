@@ -1,6 +1,7 @@
-﻿Programmoberfläche
-==================
+﻿.. index:: ! Programmoberfläche
 
+Programmoberfläche
+==================
 
 |image1|
 

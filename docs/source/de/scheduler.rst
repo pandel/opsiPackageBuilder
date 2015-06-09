@@ -1,3 +1,5 @@
+.. index:: ! Zeitplaner
+
 Zeitplaner
 ==========
 
@@ -52,6 +54,8 @@ Paket an die betreffende Maschine gesendet.
 
 on\_demand:        Nachdem die Aufträge eingestellt worden sind, wird
 ein "on\_demand" Ereignis ausgelöst.
+
+.. index:: ! Zeitplaner; Aufträge anlegen
 
 Aufträge anlegen
 ----------------
@@ -115,6 +119,8 @@ beachten!
 | |image47|                            | Abbrechen, es werden keine Jobs      |
 |                                      | erstellt.                            |
 +--------------------------------------+--------------------------------------+
+
+.. index:: ! Zeitplaner; Technisches Hinweise
 
 Technische Hinweise
 -------------------

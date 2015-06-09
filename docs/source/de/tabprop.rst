@@ -1,4 +1,6 @@
-﻿Reiter "Produktvariablen"
+﻿.. index:: ! Reiter "Produktvariablen"
+
+Reiter "Produktvariablen"
 =========================
 
 |image12|
