@@ -32,7 +32,8 @@ __status__ = "Production"
 
 from PyQt5 import QtCore, QtGui
 from oPB.core import *
-from oPB.core.tools import Helper, LogMixin, EventMixin
+from oPB.core.tools import Helper, LogMixin
+from oPB.gui.utilities import EventMixin
 
 translate = QtCore.QCoreApplication.translate
 

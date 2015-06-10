@@ -42,9 +42,9 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 import oPB
 import oPB.gui.helpviewer
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper, LogMixin, EventMixin
+from oPB.core.tools import Helper, LogMixin
 from oPB.gui.splash import Splash
-from oPB.gui.utilities import ScriptFileValidator
+from oPB.gui.utilities import ScriptFileValidator, EventMixin
 from oPB.ui.ui import MainWindowBase, MainWindowUI
 
 translate = QtCore.QCoreApplication.translate

@@ -32,7 +32,8 @@ import logging
 from PyQt5.QtCore import *
 import oPB
 from oPB.ui.ui import LogDialogBase, LogDialogUI
-from oPB.core.tools import LogMixin, EventMixin
+from oPB.core.tools import LogMixin
+from oPB.gui.utilities import EventMixin
 
 
 class LogDialog(LogDialogBase, LogDialogUI, LogMixin, EventMixin):

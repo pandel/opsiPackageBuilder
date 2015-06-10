@@ -35,7 +35,8 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper, LogMixin, EventMixin
+from oPB.core.tools import Helper, LogMixin
+from oPB.gui.utilities import EventMixin
 from oPB.ui.ui import ScriptTreeDialogBase, ScriptTreeDialogUI
 
 

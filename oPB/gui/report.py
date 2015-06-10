@@ -36,10 +36,10 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtGui import QKeyEvent
 
 import oPB
-from oPB.core.tools import HTMLTools, LogMixin, EventMixin
+from oPB.core.tools import HTMLTools, LogMixin
 from oPB.gui.depotmanager import translate
 from oPB.gui.splash import Splash
-from oPB.gui.utilities import HtmlDialog
+from oPB.gui.utilities import HtmlDialog, EventMixin
 from oPB.ui.ui import ReportSelectorDialogBase, ReportSelectorDialogUI
 
 translate = QtCore.QCoreApplication.translate

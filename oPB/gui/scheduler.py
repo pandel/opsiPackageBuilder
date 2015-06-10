@@ -34,7 +34,8 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import LogMixin, EventMixin
+from oPB.core.tools import LogMixin
+from oPB.gui.utilities import EventMixin
 from oPB.core.confighandler import ConfigHandler
 from oPB.ui.ui import JobListDialogUI, JobCreatorDialogUI, JobListDialogBase, JobCreatorDialogBase
 from oPB.gui.splash import Splash

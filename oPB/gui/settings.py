@@ -37,8 +37,8 @@ from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper, LogMixin, EventMixin
-from oPB.gui.utilities import SpecialOptionButtonGroup, Translator
+from oPB.core.tools import Helper, LogMixin
+from oPB.gui.utilities import SpecialOptionButtonGroup, Translator, EventMixin
 from oPB.ui.ui import SettingsDialogBase, SettingsDialogUI
 from oPB.gui.splash import Splash
 

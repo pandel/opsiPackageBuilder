@@ -34,8 +34,8 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import LogMixin, EventMixin
-from oPB.gui.utilities import SpecialOptionButtonGroup
+from oPB.core.tools import LogMixin
+from oPB.gui.utilities import SpecialOptionButtonGroup, EventMixin
 from oPB.ui.ui import DeployAgentDialogUI, DeployAgentDialogBase
 from oPB.gui.splash import Splash
 

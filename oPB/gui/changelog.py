@@ -37,7 +37,8 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import Helper, LogMixin, EventMixin
+from oPB.core.tools import Helper, LogMixin
+from oPB.gui.utilities import EventMixin
 from oPB.ui.ui import ChangelogEditorDialogExtendedBase,ChangelogEditorDialogSimpleBase, \
     ChangelogEditorDialogExtendedUI, ChangelogEditorDialogSimpleUI
 

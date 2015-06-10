@@ -37,7 +37,8 @@ from oPB.gui.startup import StartupDialog
 from oPB.gui.scripttree import ScriptTreeDialog
 from oPB.core.datadefinition import *
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper, EventMixin
+from oPB.core.tools import Helper
+from oPB.gui.utilities import EventMixin
 from oPB.core.scriptscanner import ScriptTree
 from oPB.controller.base import BaseController
 from oPB.controller.settings import SettingsController

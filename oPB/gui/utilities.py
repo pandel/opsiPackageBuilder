@@ -39,7 +39,6 @@ from PyQt5.QtPrintSupport import QPrintPreviewDialog, QPrinter
 from PyQt5.QtWebKitWidgets import QWebView
 import oPB
 from oPB.core.tools import LogMixin, Helper
-from oPB.gui.depotmanager import translate
 
 translate = QtCore.QCoreApplication.translate
 
@@ -431,3 +430,24 @@ class Translator(QObject, LogMixin):
         """Reset language to Translator.cfg._current_lang explicitly"""
         index = cls.cfg.combobox.findText(cls.cfg._current_lang)
         cls.cfg.combobox.setCurrentIndex(index)
+
+
+class EventMixin(object):
+    """
+    Event mixin class / add-on for Translator class
+
+    For reacting on changeEvent, especially language change event
+    """
+    def __init__(self, *args, **kwargs):
+        super(EventMixin, self).__init__(*args, **kwargs)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.LanguageChange:
+            self.logger.debug("Retranslating ui...")
+            self.retranslateUi(self)
+
+            try:
+                self._parent.retranslateUi(self)
+            except:
+                pass
+                #super(type(self), self).changeEvent(event)
