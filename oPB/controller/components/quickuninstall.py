@@ -62,10 +62,10 @@ class QuickUninstallComponent(BaseController, QObject):
             self.logger.debug("Generate product table model")
             self.model_products = QtGui.QStandardItemModel(0, 3, self)
             self.model_products.setObjectName("model_products")
-            self.model_products.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
-                                            translate("quickuninstallController", "version"),
-                                            translate("quickuninstallController", "description")]
-                                            )
+
+            self.retranslateUi()
+
+
 
     def update_model_data(self, force = False):
         self.logger.debug("Update model data")
@@ -92,3 +92,10 @@ class QuickUninstallComponent(BaseController, QObject):
                 self._parent.do_quickuninstall(packs = prods, depot = self._parent.query_depot(parent = self.ui))
         else:
             self.logger.debug("Nothing selected.")
+
+    def retranslateUi(self, *arg):
+        """Retranslate model headers, will be called via changeEvent of self.ui """
+        self.model_products.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
+                                        translate("quickuninstallController", "version"),
+                                        translate("quickuninstallController", "description")]
+                                        )

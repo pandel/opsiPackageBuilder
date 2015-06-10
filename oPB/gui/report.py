@@ -36,7 +36,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtGui import QKeyEvent
 
 import oPB
-from oPB.core.tools import HTMLTools, LogMixin
+from oPB.core.tools import HTMLTools, LogMixin, EventMixin
 from oPB.gui.depotmanager import translate
 from oPB.gui.splash import Splash
 from oPB.gui.utilities import HtmlDialog
@@ -45,7 +45,7 @@ from oPB.ui.ui import ReportSelectorDialogBase, ReportSelectorDialogUI
 translate = QtCore.QCoreApplication.translate
 
 
-class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, LogMixin):
+class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, LogMixin, EventMixin):
 
     dialogOpened = pyqtSignal()
     dialogClosed = pyqtSignal()

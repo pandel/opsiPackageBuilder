@@ -345,7 +345,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="184"/>
+        <location filename="../oPB/gui/depotmanager.py" line="191"/>
         <source>Fetch REPO content</source>
         <translation></translation>
     </message>
@@ -380,7 +380,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="236"/>
+        <location filename="../oPB/gui/depotmanager.py" line="243"/>
         <source>Uninstall</source>
         <translation></translation>
     </message>
@@ -440,12 +440,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="241"/>
+        <location filename="../oPB/gui/depotmanager.py" line="248"/>
         <source>Delete</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="181"/>
+        <location filename="../oPB/gui/depotmanager.py" line="188"/>
         <source>Fetch DEPOT content</source>
         <translation></translation>
     </message>
@@ -453,7 +453,7 @@
 <context>
     <name>HelpViewer</name>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="92"/>
+        <location filename="../oPB/gui/helpviewer.py" line="145"/>
         <source>Reset</source>
         <translation></translation>
     </message>
@@ -572,12 +572,12 @@
 <context>
     <name>JobListDialog</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="127"/>
+        <location filename="../oPB/gui/scheduler.py" line="136"/>
         <source>Job list</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="127"/>
+        <location filename="../oPB/gui/scheduler.py" line="136"/>
         <source> - Current server: </source>
         <translation></translation>
     </message>
@@ -658,58 +658,65 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../oPB/gui/settings.py" line="68"/>
+        <location filename="../oPB/gui/settings.py" line="69"/>
         <source>Please wait...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="451"/>
+        <location filename="../oPB/gui/mainwindow.py" line="506"/>
         <source>Choose package file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="570"/>
+        <location filename="../oPB/gui/mainwindow.py" line="633"/>
         <source>Open project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="596"/>
+        <location filename="../oPB/gui/mainwindow.py" line="660"/>
         <source>Create new project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="644"/>
+        <location filename="../oPB/gui/mainwindow.py" line="717"/>
         <source>Choose script</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="682"/>
+        <location filename="../oPB/gui/mainwindow.py" line="757"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="344"/>
+        <location filename="../oPB/gui/mainwindow.py" line="361"/>
         <source>Sorry, this function doesn&apos;t work at the moment!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="348"/>
+        <location filename="../oPB/gui/mainwindow.py" line="366"/>
         <source>You are working in offline mode. Functionality not available!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="357"/>
+        <location filename="../oPB/gui/mainwindow.py" line="376"/>
         <source>Local opsi-winst installation not found or client-agent not installed!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scripttree.py" line="105"/>
+        <location filename="../oPB/gui/scripttree.py" line="107"/>
         <source>Internal editor not available at the moment. Use external editor instead!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scripttree.py" line="101"/>
+        <location filename="../oPB/gui/scripttree.py" line="103"/>
         <source>Sorry! You cannot edit a script outside the project folder!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/scripttree.py" line="134"/>
+        <source>Editor startup did not cleanup correctly.
+
+The following message(s) returned:</source>
         <translation></translation>
     </message>
 </context>
@@ -846,12 +853,12 @@
 <context>
     <name>ReportDialog</name>
     <message>
-        <location filename="../oPB/gui/utilities.py" line="186"/>
+        <location filename="../oPB/gui/utilities.py" line="214"/>
         <source>Print</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/utilities.py" line="189"/>
+        <location filename="../oPB/gui/utilities.py" line="217"/>
         <source>Close</source>
         <translation></translation>
     </message>
@@ -920,7 +927,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/scripttree.ui" line="61"/>
+        <location filename="../oPB/ui/scripttree.ui" line="70"/>
         <source>(Double click on entry to open file in editor.)</source>
         <translation></translation>
     </message>
@@ -943,425 +950,440 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="69"/>
+        <location filename="../oPB/ui/settings.ui" line="84"/>
         <source>Config server:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="83"/>
+        <location filename="../oPB/ui/settings.ui" line="98"/>
         <source>opsiadmin User:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="90"/>
+        <location filename="../oPB/ui/settings.ui" line="105"/>
         <source>opsiadmin Password:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="100"/>
+        <location filename="../oPB/ui/settings.ui" line="115"/>
         <source>Connection parameter</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="109"/>
+        <location filename="../oPB/ui/settings.ui" line="139"/>
         <source>SSH port:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="134"/>
+        <location filename="../oPB/ui/settings.ui" line="164"/>
         <source>Use SSH private key file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="160"/>
+        <location filename="../oPB/ui/settings.ui" line="190"/>
         <source>opsi server version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="175"/>
+        <location filename="../oPB/ui/settings.ui" line="220"/>
         <source>compatible to 4.0.3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="182"/>
+        <location filename="../oPB/ui/settings.ui" line="227"/>
         <source>4.0.4 or newer</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="198"/>
+        <location filename="../oPB/ui/settings.ui" line="243"/>
         <source>root Password:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="215"/>
+        <location filename="../oPB/ui/settings.ui" line="260"/>
         <source>Set root password to use &quot;Set rights on package&quot; function from Tools menu.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="231"/>
+        <location filename="../oPB/ui/settings.ui" line="276"/>
         <source>SUDO without password</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="241"/>
+        <location filename="../oPB/ui/settings.ui" line="286"/>
         <source>SUDO with password</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="248"/>
+        <location filename="../oPB/ui/settings.ui" line="293"/>
         <source>If you use it WITH password, make sure your sudo command supports the &apos;-S&apos; parameter to read the password via STDIN.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="285"/>
+        <location filename="../oPB/ui/settings.ui" line="330"/>
         <source>Maintainer information</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="291"/>
+        <location filename="../oPB/ui/settings.ui" line="351"/>
         <source>Package maintainer:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="304"/>
+        <location filename="../oPB/ui/settings.ui" line="364"/>
         <source>Mail address:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="334"/>
+        <location filename="../oPB/ui/settings.ui" line="394"/>
         <source>Program</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="346"/>
+        <location filename="../oPB/ui/settings.ui" line="406"/>
         <source>Program settings</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="352"/>
+        <location filename="../oPB/ui/settings.ui" line="427"/>
         <source>Extended changelog editor</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="362"/>
+        <location filename="../oPB/ui/settings.ui" line="437"/>
         <source>Force changelog entry when building</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="400"/>
+        <location filename="../oPB/ui/settings.ui" line="475"/>
         <source>Changelog block recognition:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="407"/>
+        <location filename="../oPB/ui/settings.ui" line="482"/>
         <source>Language:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="421"/>
+        <location filename="../oPB/ui/settings.ui" line="501"/>
         <source>en</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="426"/>
+        <location filename="../oPB/ui/settings.ui" line="506"/>
         <source>de</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="434"/>
+        <location filename="../oPB/ui/settings.ui" line="514"/>
         <source>The development folder has to be a drive mapped to the opsi_workbench share. You can either let opsi PackageBuilder connect the network drive at runtime or you use your own pre-existing drive mapping. But beware: Because of windows access restrictions you can not use both mapping types at the same time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="444"/>
+        <location filename="../oPB/ui/settings.ui" line="524"/>
         <source>Force changelog entry when saving changes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="451"/>
+        <location filename="../oPB/ui/settings.ui" line="531"/>
         <source>Development folder:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="470"/>
+        <location filename="../oPB/ui/settings.ui" line="550"/>
         <source>Use existing network drive</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="492"/>
+        <location filename="../oPB/ui/settings.ui" line="572"/>
         <source>Script Editor</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="498"/>
+        <location filename="../oPB/ui/settings.ui" line="593"/>
         <source>External</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="523"/>
+        <location filename="../oPB/ui/settings.ui" line="618"/>
         <source>Choose which editor to use:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="530"/>
+        <location filename="../oPB/ui/settings.ui" line="625"/>
         <source>Code folding</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="537"/>
+        <location filename="../oPB/ui/settings.ui" line="632"/>
         <source>notepad.exe</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="547"/>
+        <location filename="../oPB/ui/settings.ui" line="642"/>
         <source>External editor:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="554"/>
+        <location filename="../oPB/ui/settings.ui" line="649"/>
         <source>Editor options:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="561"/>
+        <location filename="../oPB/ui/settings.ui" line="656"/>
         <source>Internal</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="571"/>
+        <location filename="../oPB/ui/settings.ui" line="669"/>
         <source>Syntax highlighting</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="640"/>
+        <location filename="../oPB/ui/settings.ui" line="736"/>
         <source>opsi Commands</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="653"/>
+        <location filename="../oPB/ui/settings.ui" line="764"/>
         <source>Show command output after execution</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="660"/>
+        <location filename="../oPB/ui/settings.ui" line="771"/>
         <source>Always reload machines and products when opening scheduler</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="667"/>
+        <location filename="../oPB/ui/settings.ui" line="778"/>
         <source>Upload command:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="690"/>
+        <location filename="../oPB/ui/settings.ui" line="801"/>
         <source>Use depot functions</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="697"/>
+        <location filename="../oPB/ui/settings.ui" line="808"/>
         <source>Build command:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="710"/>
+        <location filename="../oPB/ui/settings.ui" line="821"/>
         <source>Install+setup command:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="720"/>
+        <location filename="../oPB/ui/settings.ui" line="831"/>
         <source>Uninstall command:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="733"/>
+        <location filename="../oPB/ui/settings.ui" line="844"/>
         <source>If you activate the depot functions, the above commands won&apos;t be used, they are computed internally. BEWARE: depot functions will be inactive when processing via command line parameters without GUI!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="743"/>
+        <location filename="../oPB/ui/settings.ui" line="854"/>
         <source>Install command:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="753"/>
+        <location filename="../oPB/ui/settings.ui" line="864"/>
         <source>WakeOnLan lead time:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="770"/>
+        <location filename="../oPB/ui/settings.ui" line="881"/>
         <source>(in minutes)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="794"/>
+        <location filename="../oPB/ui/settings.ui" line="905"/>
         <source>Messages and Logging</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="800"/>
+        <location filename="../oPB/ui/settings.ui" line="911"/>
         <source>Messages</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="806"/>
+        <location filename="../oPB/ui/settings.ui" line="932"/>
         <source>Disable ERROR message boxes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="813"/>
+        <location filename="../oPB/ui/settings.ui" line="939"/>
         <source>Disable AT job warning</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="820"/>
+        <location filename="../oPB/ui/settings.ui" line="946"/>
         <source>Disable WARNING message boxes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="827"/>
+        <location filename="../oPB/ui/settings.ui" line="953"/>
         <source>Disable INFO message boxes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="834"/>
+        <location filename="../oPB/ui/settings.ui" line="960"/>
         <source>These settings will disable most of the common messages. However, some of the messages won&apos;t be filtered because of their importance.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="847"/>
+        <location filename="../oPB/ui/settings.ui" line="973"/>
         <source>Log configuration</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="884"/>
+        <location filename="../oPB/ui/settings.ui" line="1025"/>
         <source>Always write log file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="891"/>
+        <location filename="../oPB/ui/settings.ui" line="1032"/>
         <source>Log level:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="898"/>
+        <location filename="../oPB/ui/settings.ui" line="1039"/>
         <source>Log file:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="930"/>
+        <location filename="../oPB/ui/settings.ui" line="1071"/>
         <source>DEBUG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="935"/>
+        <location filename="../oPB/ui/settings.ui" line="1076"/>
         <source>INFO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="940"/>
+        <location filename="../oPB/ui/settings.ui" line="1081"/>
         <source>SSHINFO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="945"/>
+        <location filename="../oPB/ui/settings.ui" line="1086"/>
         <source>WARNING</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="955"/>
+        <location filename="../oPB/ui/settings.ui" line="1096"/>
         <source>ERROR</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="950"/>
+        <location filename="../oPB/ui/settings.ui" line="1091"/>
         <source>SSH</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="993"/>
+        <location filename="../oPB/ui/settings.ui" line="1134"/>
         <source>Updates</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="999"/>
+        <location filename="../oPB/ui/settings.ui" line="1140"/>
         <source>Update parameters</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1005"/>
+        <location filename="../oPB/ui/settings.ui" line="1158"/>
         <source>Search for new program version at startup</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1028"/>
+        <location filename="../oPB/ui/settings.ui" line="1181"/>
         <source>Proxy settings</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1037"/>
+        <location filename="../oPB/ui/settings.ui" line="1205"/>
         <source>Port:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1044"/>
+        <location filename="../oPB/ui/settings.ui" line="1212"/>
         <source>Server:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1051"/>
+        <location filename="../oPB/ui/settings.ui" line="1219"/>
         <source>Username:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1068"/>
+        <location filename="../oPB/ui/settings.ui" line="1236"/>
         <source>Password:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1078"/>
+        <location filename="../oPB/ui/settings.ui" line="1246"/>
         <source>Use proxy server for internet connection</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1124"/>
+        <location filename="../oPB/ui/settings.ui" line="1292"/>
         <source>Save</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1137"/>
+        <location filename="../oPB/ui/settings.ui" line="1305"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="646"/>
+        <location filename="../oPB/ui/settings.ui" line="757"/>
         <source>Refresh depot cache</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="607"/>
-        <source>Options:</source>
+        <location filename="../oPB/ui/settings.ui" line="705"/>
+        <source>Editor command line options:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="712"/>
+        <source>Concat filename:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="719"/>
+        <source>Attach directly to options</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="496"/>
+        <source>System</source>
         <translation></translation>
     </message>
 </context>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../oPB/gui/settings.py" line="275"/>
+        <location filename="../oPB/gui/settings.py" line="288"/>
         <source>Select development folder</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="291"/>
+        <location filename="../oPB/gui/settings.py" line="305"/>
         <source>Choose keyfile</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="307"/>
+        <location filename="../oPB/gui/settings.py" line="325"/>
         <source>Choose Scripteditor</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="331"/>
+        <location filename="../oPB/gui/settings.py" line="350"/>
         <source>Select logfile folder</source>
         <translation></translation>
     </message>
@@ -1512,32 +1534,32 @@
 <context>
     <name>bundleController</name>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="69"/>
+        <location filename="../oPB/controller/components/bundle.py" line="70"/>
         <source>product id</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="69"/>
+        <location filename="../oPB/controller/components/bundle.py" line="70"/>
         <source>version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="69"/>
+        <location filename="../oPB/controller/components/bundle.py" line="70"/>
         <source>description</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="94"/>
+        <location filename="../oPB/controller/components/bundle.py" line="95"/>
         <source>Chosen products:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="95"/>
+        <location filename="../oPB/controller/components/bundle.py" line="96"/>
         <source>Create product bundle now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="102"/>
+        <location filename="../oPB/controller/components/bundle.py" line="103"/>
         <source>Please enter package name (allowed characters: a-z, A-Z, 0-9, ._-):</source>
         <translation></translation>
     </message>
@@ -1583,22 +1605,22 @@
 <context>
     <name>depotManagerController</name>
     <message>
-        <location filename="../oPB/gui/report.py" line="179"/>
+        <location filename="../oPB/gui/report.py" line="195"/>
         <source>Compare depots:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/report.py" line="183"/>
+        <location filename="../oPB/gui/report.py" line="200"/>
         <source>Compare repositories:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/report.py" line="202"/>
+        <location filename="../oPB/gui/report.py" line="221"/>
         <source>Reference:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/report.py" line="274"/>
+        <location filename="../oPB/gui/report.py" line="311"/>
         <source>(no differences found)</source>
         <translation></translation>
     </message>
@@ -1729,7 +1751,7 @@
 <context>
     <name>infoMessages</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="120"/>
+        <location filename="../oPB/gui/scheduler.py" line="122"/>
         <source>infoAT</source>
         <translation>VERY IMPORTANT:@@If you want to use the Job scheduler functionality of opsi PackageBuilder,@you have to take care of the following:@@- The ATD daemon has to be installed and running!@@- The opsi user you configured in the Settings dialog has to have the right@ to add and delete AT jobs, therefor take a look at /etc/at.deny and/or /etc/at.allow, respectively!@@- If you use AT jobs yourself for other things on the same server and take advantage of the ATD queue functionality, make ABSOLUTELY SURE that you don&apos;t use the &apos;D&apos; queue, as it is used by opsi PackageBuilder to set up@ the jobs! Otherwise opsi PackageBuilder might alter your jobs!@@You can easily test that: login to opsi server console and enter the@following command: atq -q D@If you don&apos;t see any jobs, eveerything should be fine!@@Please add some test jobs to ensure that the Scheduler works as expected@before you use it in your normal production environment.</translation>
     </message>
@@ -1882,7 +1904,7 @@
     <message>
         <location filename="../oPB/ui/mainwindow.ui" line="54"/>
         <source>Package</source>
-        <translation></translation>
+        <translation>Package</translation>
     </message>
     <message>
         <location filename="../oPB/ui/mainwindow.ui" line="98"/>
@@ -2479,7 +2501,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>settingsController</name>
     <message>
-        <location filename="../oPB/controller/settings.py" line="189"/>
+        <location filename="../oPB/controller/settings.py" line="191"/>
         <source>There are unsaved changes! Do you really want to continue?</source>
         <translation></translation>
     </message>

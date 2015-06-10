@@ -97,7 +97,6 @@ class HelpDialog(QObject):
         self._btnReset = QPushButton()
         self._btnReset.setMaximumHeight(23)
         self._btnReset.setMaximumWidth(100)
-        self._btnReset.setText(translate("HelpViewer", "Reset"))
 
         # build search structure
         self._splitterSearch.insertWidget(0, self._helpSearchQuery)
@@ -139,6 +138,11 @@ class HelpDialog(QObject):
         self._helpSearchResult.requestShowLink.connect(self._wv.setUrl)
         self._se.searchingFinished.connect(self.showResults)
         self._btnReset.clicked.connect(self.resetResult)
+
+        self.retranslateUi()
+
+    def retranslateUi(self, *args):
+        self._btnReset.setText(translate("HelpViewer", "Reset"))
 
     def search(self):
         """Initiate qthelp search"""

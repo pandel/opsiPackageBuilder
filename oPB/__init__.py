@@ -63,28 +63,29 @@ OPB_BASE   -> to correct paths to *.ui files in corresponding modules
 os.environ['OPB_BASE'] = get_script_dir()
 sys.path.append(os.environ['OPB_BASE'] + "/ui")
 
-# simple print object relationship besides normal logging
-# for object hierarchy debugging
 #PRINTHIER = True
 PRINTHIER = False
+"""Simple printing of object hierarchie / relationship besides normal logging"""
 
-# overall program version
 PROGRAM_VERSION = "8.0.0"
+"""Overall program version"""
 
-# network mode, offline/online
 NETMODE="online"
+"""Current network mode, offline/online"""
 
-# auto-connected drive letter
 NETDRV=None
+"""Auto-connected drive letter"""
 
-# standard path for config file
+CONFIG_PATH = ""
+"""Standard path for config file"""
 if os.name == "nt":
     CONFIG_PATH = PurePath(os.environ["APPDATA"], "opsiPackageBuilder")
 elif os.name == "posix":
     CONFIG_PATH = PurePath(os.environ["HOME"], ".opsiPackageBuilder")
 
-# standard INI file full path
+
 CONFIG_INI = str(PurePath(CONFIG_PATH,"config-new.ini"))
+"""Standard INI file full path"""
 
 # base folders
 DEV_BASE = "/home/opsiproducts"

@@ -34,7 +34,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import LogMixin
+from oPB.core.tools import LogMixin, EventMixin
 from oPB.core.confighandler import ConfigHandler
 from oPB.ui.ui import JobListDialogUI, JobCreatorDialogUI, JobListDialogBase, JobCreatorDialogBase
 from oPB.gui.splash import Splash
@@ -42,7 +42,7 @@ from oPB.gui.splash import Splash
 translate = QtCore.QCoreApplication.translate
 
 
-class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
+class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin, EventMixin):
 
     dialogOpened = pyqtSignal()
     dialogClosed = pyqtSignal()
@@ -153,7 +153,7 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin):
         self.splash.close()
 
 
-class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin):
+class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin, EventMixin):
 
     dialogOpened = pyqtSignal()
     dialogClosed = pyqtSignal()

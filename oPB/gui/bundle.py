@@ -33,7 +33,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import Helper, LogMixin
+from oPB.core.tools import Helper, LogMixin, EventMixin
 from oPB.ui.ui import BundleDialogBase, BundleDialogUI
 from oPB.gui.splash import Splash
 
@@ -41,7 +41,7 @@ from oPB.gui.splash import Splash
 translate = QtCore.QCoreApplication.translate
 
 
-class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin):
+class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin, EventMixin):
 
     dialogOpened = pyqtSignal()
     dialogClosed = pyqtSignal()

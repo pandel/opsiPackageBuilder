@@ -83,6 +83,7 @@ class ConfigHandler(ConfigParser, LogMixin):
             "extchlog": "True",
             "scripteditor": "notepad.exe",
             "editoroptions": "",
+            "attachdirect": "False",
             "editintern": "True",
             "editstyle": "True",
             "editfold": "False",
@@ -237,6 +238,9 @@ class ConfigHandler(ConfigParser, LogMixin):
         self.editor_use_styling = "False" if self.editor_use_styling == "0" else "True"
         self.editor_use_folding = "False" if self.editor_use_folding == "0" else "True"
 
+        # reset changelog block reconition / individual not needed at the moment
+        self.chlog_block_marker = oPB.CHLOG_BLOCKMARKER
+
         # if internal editor was used before, let's hope for existence of an old standard installation
         # and set parameters accordingly
         if self.editor_intern == "True":
@@ -258,6 +262,11 @@ class ConfigHandler(ConfigParser, LogMixin):
         self.updatecheck = "False" if self.updatecheck == "0" else "True"
 
         # remove unneeded options
+        self.remove_option("recent", "rec0")
+        self.remove_option("recent", "rec1")
+        self.remove_option("recent", "rec2")
+        self.remove_option("recent", "rec3")
+        self.remove_option("recent", "rec4")
         self.remove_option("language", "path")
         self.remove_option("package", "noutf8check")
         self.remove_option("package", "depotcache")  # inititates one time reading of all depots
@@ -494,6 +503,14 @@ class ConfigHandler(ConfigParser, LogMixin):
     @editor_use_folding.setter
     def editor_use_folding(self, value):
         self.set("tools", "editfold", value)
+
+    @property
+    def editor_attachdirect(self):
+        return self.get("tools", "attachdirect")
+
+    @editor_attachdirect.setter
+    def editor_attachdirect(self, value):
+        self.set("tools", "attachdirect", value)
 
     @property
     def editor_options(self):

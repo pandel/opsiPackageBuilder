@@ -38,29 +38,59 @@ import ctypes
 import itertools
 import string
 import platform
+import winreg
 from datetime import datetime
 from binascii import hexlify, unhexlify
 from pathlib import PurePath
-from Crypto.Cipher import XOR
 
+from Crypto.Cipher import XOR
 from PyQt5 import QtCore
 
 import oPB
 
 translate = QtCore.QCoreApplication.translate
 
-# This class could be imported from a utility module
 class LogMixin(object):
+    """
+    Log mixin class
+
+    Inherit from this class to access app-wide logger via
+
+        self.logger
+
+    from your own class
+    """
     @property
     def logger(self):
         name = '.'.join([__name__, self.__class__.__name__])
         return logging.getLogger(name)
 
+
+class EventMixin(object):
+    """
+    Event mixin class
+
+    For reacting on changeEvent, especially language change event
+    """
+    def __init__(self, *args, **kwargs):
+        super(EventMixin, self).__init__(*args, **kwargs)
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.LanguageChange:
+            self.logger.debug("Retranslating ui...")
+            self.retranslateUi(self)
+
+            try:
+                self._parent.retranslateUi(self)
+            except:
+                pass
+                #super(type(self), self).changeEvent(event)
+
 class Helper(LogMixin):
     """ Simple tool functions
     """
-    @staticmethod
-    def extCheck(filename):
+    @classmethod
+    def extCheck(cls, filename):
         """File extension check:
         Valid extension: ins, opsiscript, opsiinc
 
@@ -76,8 +106,8 @@ class Helper(LogMixin):
         ext = value.rpartition('.')[-1]  # extract file extension, rpartition returns 3-tuple:  part before the separator, the separator itself, and the part after the separator
         return False if not ext in oPB.SCRIPT_EXT else True
 
-    @staticmethod
-    def concat_path_and_file(path: str, file: str) -> str:
+    @classmethod
+    def concat_path_and_file(cls, path: str, file: str) -> str:
         """
         Help function for connecting paths and filenames/foldernames.
         Takes underlying os into account.
@@ -87,8 +117,8 @@ class Helper(LogMixin):
         """
         return str(PurePath(path, file))
 
-    @staticmethod
-    def get_file_from_path(complete: str) -> str:
+    @classmethod
+    def get_file_from_path(cls, complete: str) -> str:
         """
         Return file name from complete path as string
         :param complete: path incl. filename
@@ -96,8 +126,8 @@ class Helper(LogMixin):
         """
         return str(PurePath(complete).name)
 
-    @staticmethod
-    def parse_text(text: str) -> str:
+    @classmethod
+    def parse_text(cls, text: str) -> str:
         """
         Replace individual TABS and CRLF templates from message text
 
@@ -108,8 +138,8 @@ class Helper(LogMixin):
         text = text.replace("@", "<br>")
         return text
 
-    @staticmethod
-    def str_to_bool(s: str) -> bool:
+    @classmethod
+    def str_to_bool(cls, s: str) -> bool:
         print("str_to_bool called with value: " + s)
         if s == 'True':
              return True
@@ -118,8 +148,8 @@ class Helper(LogMixin):
         else:
              raise ValueError("Cannot covert {} to a bool".format(s))
 
-    @staticmethod
-    def get_user():
+    @classmethod
+    def get_user(cls):
         for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
             user = os.environ.get(name)
             if user:
@@ -128,8 +158,8 @@ class Helper(LogMixin):
             #import pwd
             #return pwd.getpwuid(os.getuid())[0]
 
-    @staticmethod
-    def encrypt(text):
+    @classmethod
+    def encrypt(cls, text):
         encrypted = (
             hexlify(
                 Helper.Cipher.XORencrypt(Helper.get_user(), text)
@@ -138,8 +168,8 @@ class Helper(LogMixin):
         return encrypted.decode('utf-8')
 
 
-    @staticmethod
-    def decrypt(text):
+    @classmethod
+    def decrypt(cls, text):
         decrypted = (
             Helper.Cipher.XORdecrypt(
                 Helper.get_user(), unhexlify(text)
@@ -149,27 +179,27 @@ class Helper(LogMixin):
 
     class Cipher:
 
-        @staticmethod
-        def XORencrypt(key, plaintext):
+        @classmethod
+        def XORencrypt(cls, key, plaintext):
             cipher = XOR.new(key)
             return base64.b64encode(cipher.encrypt(plaintext))
 
-        @staticmethod
-        def XORdecrypt(key, ciphertext):
+        @classmethod
+        def XORdecrypt(cls, key, ciphertext):
             cipher = XOR.new(key)
             return cipher.decrypt(base64.b64decode(ciphertext))
 
-    @staticmethod
-    def timestamp():
+    @classmethod
+    def timestamp(cls):
         return datetime.now().strftime("%Y%m%d-%H%M%S")
 
-    @staticmethod
-    def timestamp_changelog():
+    @classmethod
+    def timestamp_changelog(cls):
         #  Mon, 27 Apr 2015 12:33:04 + 0100
         return datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
 
-    @staticmethod
-    def paramlist2list(value):
+    @classmethod
+    def paramlist2list(cls, value):
         """
         Converts comma-separated parameters from input field, to correct list format
         and takes into account, that the parameter itself could contain commas, but
@@ -211,16 +241,16 @@ class Helper(LogMixin):
             retval.append(value)
             return retval
 
-    @staticmethod
-    def ui_file_path(uifile):
-        return Helper.concat_path_and_file(os.environ['OPB_BASE'], "ui/" + uifile)
+    @classmethod
+    def ui_file_path(cls, uifile):
+        return cls.concat_path_and_file(os.environ['OPB_BASE'], "ui/" + uifile)
 
 
     # the following two routines are modifications of:
     # see: http://stackoverflow.com/questions/4188326/in-python-how-do-i-check-if-a-drive-exists-w-o-throwing-an-error-for-removable
 
-    @staticmethod
-    def get_available_drive_letters():
+    @classmethod
+    def get_available_drive_letters(cls):
         """Returns every non-mapped drive letter"""
         if 'Windows' not in platform.system():
             return []
@@ -228,8 +258,8 @@ class Helper(LogMixin):
         return list(itertools.compress(string.ascii_uppercase,
                map(lambda x:ord(x) - ord('1'), bin(drive_bitmask)[:1:-1])))
 
-    @staticmethod
-    def get_existing_drive_letters():
+    @classmethod
+    def get_existing_drive_letters(cls):
         """Returns every mapped drive letter"""
         if 'Windows' not in platform.system():
             return []
@@ -237,8 +267,8 @@ class Helper(LogMixin):
         return list(itertools.compress(string.ascii_uppercase,
                map(lambda x:ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
 
-    @staticmethod
-    def test_port(host, port, timeout=2):
+    @classmethod
+    def test_port(cls, host, port, timeout=2):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(timeout)
@@ -250,8 +280,8 @@ class Helper(LogMixin):
             sock.close()
             return True
 
-    @staticmethod
-    def strip_ansi_codes(s):
+    @classmethod
+    def strip_ansi_codes(cls, s):
         def removebackspaces(text):
             backspace_or_eol = r'(.\010)|(\033\[K)'
             n = 1
@@ -279,6 +309,41 @@ class Helper(LogMixin):
         #s = re.sub(r'\x1b\[([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K]?', '', s)
         #s = re.sub(r'\x1b\[(>\?)([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K|S|u]?', '', s)
         #return s
+
+    @classmethod
+    def regkey_value(cls, path, name="", start_key = None):
+        """
+        Query windows registry value
+
+        seealso: http://code.activestate.com/recipes/578689-get-a-value-un-windows-registry/
+
+        :Example:
+
+            bios_vendor = regkey_value(r"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\BIOS", "BIOSVendor")
+
+        :param path: registry path
+        :param name: value name ("" for default)
+        :param start_key: start key
+
+        :return: key value
+        """
+        if isinstance(path, str):
+            path = path.split("\\")
+        if start_key is None:
+            start_key = getattr(winreg, path[0])
+            return Helper.regkey_value(path[1:], name, start_key)
+        else:
+            subkey = path.pop(0)
+        with winreg.OpenKey(start_key, subkey) as handle:
+            assert handle
+            if path:
+                return Helper.regkey_value(path, name, handle)
+            else:
+                desc, i = None, 0
+                while not desc or desc[0] != name:
+                    desc = winreg.EnumValue(handle, i)
+                    i += 1
+                return desc[1]
 
 class CommandLine(object):
     """ Command line arguments generation and parsing.
@@ -374,8 +439,8 @@ class CommandLine(object):
 
 class HTMLTools(LogMixin):
 
-    @staticmethod
-    def HTMLHeader(title = "", bodybgcolor = "#ffffff", highlightbgcolor = "#F0F9FF", headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff"):
+    @classmethod
+    def HTMLHeader(cls, title = "", bodybgcolor = "#ffffff", highlightbgcolor = "#F0F9FF", headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff"):
 
         head = ""
         if title != "":
@@ -426,13 +491,13 @@ class HTMLTools(LogMixin):
 
         return html
 
-    @staticmethod
-    def HTMLFooter():
+    @classmethod
+    def HTMLFooter(cls):
 
         return "</body></html>"
 
-    @staticmethod
-    def Array2HTMLTable(element_list = [], colspan = 1, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
+    @classmethod
+    def Array2HTMLTable(cls, element_list = [], colspan = 1, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
         headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = False):
 
         if not element_list:
@@ -473,7 +538,7 @@ class HTMLTools(LogMixin):
             table_rows += '<tr>' + table_columns + '</tr>\n'
 
         if not only_table:
-            html = HTMLTools.HTMLHeader(title, bodybgcolor, hightlightbgcolor, headerbgcolor, bodytxtcolor, headertxtcolor) + \
+            html = cls.HTMLHeader(title, bodybgcolor, hightlightbgcolor, headerbgcolor, bodytxtcolor, headertxtcolor) + \
                     '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
                     '<thead>\n' + \
                     '<tr>' + \
@@ -484,7 +549,7 @@ class HTMLTools(LogMixin):
                     table_rows + \
                     '</tbody>\n' + \
                     '</table>\n' + \
-                    HTMLTools.HTMLFooter()
+                    cls.HTMLFooter()
         else:
             html = '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
                     '<thead>\n' + \

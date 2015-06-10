@@ -70,31 +70,17 @@ class SchedulerComponent(BaseController, QObject):
             self.logger.debug("Generate job table model")
             self.model_jobs = QtGui.QStandardItemModel(0, 7, self)
             self.model_jobs.setObjectName("model_jobs")
-            self.model_jobs.setHorizontalHeaderLabels([translate("schedulerController_joblist", "client"),
-                                            translate("schedulerController_joblist", "packet"),
-                                            translate("schedulerController_joblist", "action"),
-                                            translate("schedulerController_joblist", "date"),
-                                            translate("schedulerController_joblist", "time"),
-                                            translate("schedulerController_joblist", "AT jobid"),
-                                            translate("schedulerController_joblist", "user")]
-                                            )
-
         # create model from data and assign, if not done before
         if self.model_clients == None:
             self.logger.debug("Generate client table model")
             self.model_clients = QtGui.QStandardItemModel(0, 1, self)
             self.model_clients.setObjectName("model_clients")
-            self.model_clients.setHorizontalHeaderLabels([translate("schedulerController_jobcreator", "client")]
-                                            )
-
         if self.model_products == None:
             self.logger.debug("Generate product table model")
             self.model_products = QtGui.QStandardItemModel(0, 3, self)
             self.model_products.setObjectName("model_products")
-            self.model_products.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
-                                            translate("quickuninstallController", "version"),
-                                            translate("quickuninstallController", "description")]
-                                            )
+
+        self.retranslateUi()
 
     def update_model_data_clients(self, force = False):
         self.logger.debug("Update model data: clients")
@@ -178,3 +164,19 @@ class SchedulerComponent(BaseController, QObject):
             self._parent.do_createjobs(clIdx = clients, prodIdx = products, ataction = ataction, dateVal = dateVal,
                                        timeVal = timeVal, od_demand = on_demand, wol = wol, dest = self.at_server)
 
+    def retranslateUi(self, *arg):
+        """Retranslate model headers, will be called via changeEvent of self.ui """
+        self.model_jobs.setHorizontalHeaderLabels([translate("schedulerController_joblist", "client"),
+                                        translate("schedulerController_joblist", "packet"),
+                                        translate("schedulerController_joblist", "action"),
+                                        translate("schedulerController_joblist", "date"),
+                                        translate("schedulerController_joblist", "time"),
+                                        translate("schedulerController_joblist", "AT jobid"),
+                                        translate("schedulerController_joblist", "user")]
+                                        )
+        self.model_clients.setHorizontalHeaderLabels([translate("schedulerController_jobcreator", "client")]
+                                        )
+        self.model_products.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
+                                        translate("quickuninstallController", "version"),
+                                        translate("quickuninstallController", "description")]
+                                        )

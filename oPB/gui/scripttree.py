@@ -35,14 +35,14 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper, LogMixin
+from oPB.core.tools import Helper, LogMixin, EventMixin
 from oPB.ui.ui import ScriptTreeDialogBase, ScriptTreeDialogUI
 
 
 translate = QtCore.QCoreApplication.translate
 
 
-class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin):
+class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin, EventMixin):
 
     def __init__(self, parent):
         """
@@ -115,10 +115,26 @@ class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin):
 
             self.logger.debug("Opening script: " + path)
             cmd = [ConfigHandler.cfg.scripteditor]
-            for part in (ConfigHandler.cfg.editor_options + path).split():
-                cmd.append(part)
-            cmd.append(path)
-            subprocess.call(cmd)
+            if (ConfigHandler.cfg.editor_options).strip() != "":
+                for part in (ConfigHandler.cfg.editor_options).split():
+                    cmd.append(part)
+                if ConfigHandler.cfg.editor_attachdirect == "True":
+                    cmd[-1] = cmd[-1] + path
+                else:
+                    cmd.append(path)
+            else:
+                cmd.append(path)
+
+            self.logger.debug("Executing subprocess: " + str(cmd))
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+            outs, errs = proc.communicate()
+            self.logger.info(outs)
+            self.logger.error(errs)
+            if proc.returncode != 0:
+                self._parent.msgbox(translate("MainWindow", "Editor startup did not cleanup correctly.\n\nThe following message(s) returned:") +
+                                    "\n\nStandard Out:\n" + outs +
+                                    "\n\nStandard Err:\n" + errs,
+                                    oPB.MsgEnum.MS_WARN, self)
 
         else:
             self._parent.msgbox(translate("MainWindow", "Editor not found:" + " " + ConfigHandler.cfg.scripteditor), oPB.MsgEnum.MS_ERR, self)

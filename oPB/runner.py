@@ -53,6 +53,7 @@ from oPB.controller import main, console
 import oPB.core.logging
 import oPB.gui.logging
 from oPB.core.tools import CommandLine, Helper
+from oPB.gui.utilities import Translator
 
 translate = QtCore.QCoreApplication.translate
 
@@ -71,6 +72,7 @@ class Main(QObject):
         self.args = self.get_args()
         self._log_level = None
         self._log_file = None
+        self.translator = None
 
         # instantiate configuration class
         confighandler.ConfigHandler(oPB.CONFIG_INI)
@@ -146,9 +148,11 @@ class Main(QObject):
         for elem in self.app.libraryPaths():
             self.logger.debug("QT5 library path: " + elem)
 
-        self.install_translations()
+        # installing translators
+        self.translator = Translator(self.app, "opsipackagebuilder")
+        self.translator.install_translations(confighandler.ConfigHandler.cfg.language)
 
-        # retranslate logWindow, as it is loaded bfore the translations
+        # retranslate logWindow, as it is loaded before the translations
         self.logWindow.retranslateUi(self.logWindow)
 
         self.check_online_status()
@@ -202,27 +206,6 @@ class Main(QObject):
             return
 
         self.app.setStyleSheet(("\n").join(style))
-
-    def install_translations(self):
-        # get current system language and load translation
-        # we need two translators: one for the individual appplication strings
-        # and one for the standard qt message texts
-        # qm = 'opsiPackageBuilder_en_EN.qm'
-        # get files
-        qm_app = ':locale/opsipackagebuilder_%s.qm' % QtCore.QLocale().system().name()
-        self.logger.debug("Load application translation: " + qm_app)
-        qm_qt = ':locale/qtbase_%s.qm' % QtCore.QLocale().system().name()
-        self.logger.debug("Load Qt standard translation: " + qm_qt)
-
-        # create translators
-        translator_app = QtCore.QTranslator(self.app)
-        translator_app.load(qm_app)
-        translator_qt = QtCore.QTranslator(self.app)
-        translator_qt.load(qm_qt)
-
-        # install translators to use it later
-        self.app.installTranslator(translator_app)
-        self.app.installTranslator(translator_qt)
 
     def check_online_status(self):
         self.logger.debug("Check online status")

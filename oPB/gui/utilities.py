@@ -28,9 +28,12 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+import re
 import os.path
+import platform
+import PyQt5
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import pyqtProperty, QUrl
+from PyQt5.QtCore import pyqtProperty, QUrl, QObject, QSortFilterProxyModel, QDir
 from PyQt5.QtWidgets import QWidget, QDialog, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton
 from PyQt5.QtPrintSupport import QPrintPreviewDialog, QPrinter
 from PyQt5.QtWebKitWidgets import QWebView
@@ -237,3 +240,194 @@ class HtmlDialog(QDialog):
         """
         self.wv.setHtml(html)
         self.show()
+
+class Translator(QObject, LogMixin):
+    """
+    Translator class, can only be instantiated once
+
+    To conveniently set ui language on the fly, see :ref:`oPB.core.tools.EventMixin`
+
+    .. code-block:: python
+
+        class EventMixin(object):
+        \"""
+        Event mixin class
+
+        For reacting on changeEvent, especially language change event
+        \"""
+            def __init__(self, *args, **kwargs):
+                super(EventMixin, self).__init__(*args, **kwargs)
+
+            def changeEvent(self, event):
+                if event.type() == QtCore.QEvent.LanguageChange:
+                    self.logger.debug("Retranslating ui...")
+                    self.retranslateUi(self)
+
+                    super(type(self), self).changeEvent(event)
+
+    """
+
+    cfg = None
+    """Class variable holding current Translator instance"""
+
+    def __init__(self, parent = None, applangprefix = ""):
+        """
+        Constructor of Translator class
+
+        :param parent: parent, mostly qApp
+        :param applangprefix: application language file prefix
+        """
+
+        if Translator.cfg is None:
+            Translator.cfg = self
+
+            Translator.cfg._parent = parent
+
+            super().__init__(Translator.cfg._parent)
+
+            Translator.cfg._qt_local_path = None
+            Translator.cfg._app_locale_path = None
+            Translator.cfg._syslocale = None
+            Translator.cfg._current_lang = "en"
+            Translator.cfg.applangprefix = applangprefix
+
+            Translator.cfg._combobox = None
+            Translator.cfg._dialog = None
+
+            # different translators
+            Translator.cfg.translator_qthelp = None
+            Translator.cfg.translator_qtmm = None
+            Translator.cfg.translator_qt = None
+            Translator.cfg.translator_app = None
+
+            pyqt_path = os.path.dirname(PyQt5.__file__)
+
+            if platform.system() == "Windows":
+                Translator.cfg._qt_locale_path = Helper.concat_path_and_file(pyqt_path, "translations")
+            else:
+                Translator.cfg._qt_locale_path = "/usr/share/qt5/translations/"
+
+            Translator.cfg._app_locale_path = ":locale/"
+            Translator.cfg._syslocale = QtCore.QLocale().system().name()[:2]
+
+    @classmethod
+    def install_translations(cls, config_lang):
+        """
+        Get current system language and load translation
+
+        We need more than one translator: one for the individual appplication strings
+        and some other for the standard qt message texts.
+
+        :param config_lang: two-character language string, or "System"
+        """
+
+        # remove possible existing translators
+        if cls.cfg.translator_qthelp is not None:
+            cls.cfg._parent.removeTranslator(cls.cfg.translator_qthelp)
+            cls.cfg.translator_qthelp = None
+        if cls.cfg.translator_qtmm is not None:
+            cls.cfg._parent.removeTranslator(cls.cfg.translator_qtmm)
+            cls.cfg.translator_qtmm = None
+        if cls.cfg.translator_qt is not None:
+            cls.cfg._parent.removeTranslator(cls.cfg.translator_qt)
+            cls.cfg.translator_qt = None
+        if cls.cfg.translator_app is not None:
+            cls.cfg._parent.removeTranslator(cls.cfg.translator_app)
+            cls.cfg.translator_app = None
+
+        # decide, if we load the system language or specified language from config
+        if config_lang == "System":
+            use_local = QtCore.QLocale().system()
+            qm_qt = "qt_%s" % cls.cfg._syslocale
+            qm_app = cls.cfg.applangprefix + '_%s' % cls.cfg._syslocale
+            cls.cfg.logger.debug("Installing language: " + use_local.name()[:2])
+        else:
+            use_local = QtCore.QLocale(config_lang)
+            qm_qt = 'qt_%s.qm' % config_lang
+            qm_app = cls.cfg.applangprefix + '_%s.qm' % config_lang
+            cls.cfg.logger.debug("Installing language: " + config_lang)
+        cls.cfg.logger.debug("Load Qt standard translation: " + qm_qt + " from: " + cls.cfg._qt_locale_path)
+        cls.cfg.logger.debug("Load application translation: " + qm_app + " from: " + cls.cfg._app_locale_path)
+
+        # create translators
+
+        # translator_qt.load(use_local, "qtquick1", "_", qt_locale_path, ".qm")
+        # translator_qt.load(use_local, "qtmultimedia", "_", qt_locale_path, ".qm")
+        # translator_qt.load(use_local, "qtxmlpatterns", "_", qt_locale_path, ".qm")
+
+        # qt base
+        cls.cfg.translator_qt = QtCore.QTranslator(cls.cfg._parent)
+        if cls.cfg.translator_qt.load(use_local, "qtbase", "_", cls.cfg._qt_locale_path, ".qm"):
+            cls.cfg.logger.debug("Qtbase translations successfully loaded.")
+
+        # qt help
+        cls.cfg.translator_qthelp = QtCore.QTranslator(cls.cfg._parent)
+        if cls.cfg.translator_qthelp.load(use_local, "qt_help", "_", cls.cfg._qt_locale_path, ".qm"):
+            cls.cfg.logger.debug("Qthelp translations successfully loaded.")
+
+        # qt multimedia
+        cls.cfg.translator_qtmm = QtCore.QTranslator(cls.cfg._parent)
+        if cls.cfg.translator_qtmm.load(use_local, "qtmultimedia", "_", cls.cfg._qt_locale_path, ".qm"):
+            cls.cfg.logger.debug("Qtmultimedia translations successfully loaded.")
+
+        # application
+        cls.cfg.translator_app = QtCore.QTranslator(cls.cfg._parent)
+        if cls.cfg.translator_app.load(use_local, "opsipackagebuilder", "_", cls.cfg._app_locale_path, ".qm"):
+            cls.cfg.logger.debug("Application translations successfully loaded.")
+
+        # install translators to app
+        if not cls.cfg.translator_qthelp.isEmpty():
+            cls.cfg._parent.installTranslator(cls.cfg.translator_qthelp)
+        if not cls.cfg.translator_qtmm.isEmpty():
+            cls.cfg._parent.installTranslator(cls.cfg.translator_qtmm)
+        if not cls.cfg.translator_qt.isEmpty():
+            cls.cfg._parent.installTranslator(cls.cfg.translator_qt)
+        if not cls.cfg.translator_app.isEmpty():
+            cls.cfg._parent.installTranslator(cls.cfg.translator_app)
+
+        # save current language
+        cls.cfg._current_lang = use_local.name()[:2]
+
+    @classmethod
+    def setup_language_combobox(cls, dialog: PyQt5.QtWidgets, combobox: PyQt5.QtWidgets.QComboBox):
+        """
+        Setup language chooser ``combobox`` in ``dialog``
+        Makes it very easy to setup a language changer with on-the-fly setup of ui language
+
+        :param dialog: the parent dialog widget of ``combobox``
+        :param combobox: the language combobox
+        """
+        cls.cfg.combobox = combobox
+        cls.cfg.dialog = dialog
+
+        cls.cfg.combobox.clear()
+        cls.cfg.combobox.addItem("System" , "")
+
+        for filePath in QDir(cls.cfg._app_locale_path).entryList():
+            fileName  = os.path.basename(filePath)
+            fileMatch = re.match(cls.cfg.applangprefix + "_([a-z]{2,}).qm", fileName)
+            if fileMatch:
+                cls.cfg.combobox.addItem(fileMatch.group(1), filePath)
+
+        cls.cfg.dialog.sortFilterProxyModelLanguage = QSortFilterProxyModel(cls.cfg.combobox)
+        cls.cfg.dialog.sortFilterProxyModelLanguage.setSourceModel(cls.cfg.combobox.model())
+        cls.cfg.combobox.model().setParent(cls.cfg.dialog.sortFilterProxyModelLanguage)
+        cls.cfg.combobox.setModel(cls.cfg.dialog.sortFilterProxyModelLanguage)
+
+        cls.cfg.combobox.currentIndexChanged.connect(cls.cfg.on_comboBoxLanguage_currentIndexChanged)
+        cls.cfg.combobox.model().sort(0)
+
+    @classmethod
+    @QtCore.pyqtSlot()
+    def on_comboBoxLanguage_currentIndexChanged(cls):
+        """
+        Convinience method for setting ui language after changing selection
+        in combobox.
+        """
+        cls.cfg.install_translations(cls.cfg.combobox.currentText())
+
+    @classmethod
+    def resetLanguage(cls):
+        """Reset language to Translator.cfg._current_lang explicitly"""
+        index = cls.cfg.combobox.findText(cls.cfg._current_lang)
+        cls.cfg.combobox.setCurrentIndex(index)

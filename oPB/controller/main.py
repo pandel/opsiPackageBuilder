@@ -37,7 +37,7 @@ from oPB.gui.startup import StartupDialog
 from oPB.gui.scripttree import ScriptTreeDialog
 from oPB.core.datadefinition import *
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper
+from oPB.core.tools import Helper, EventMixin
 from oPB.core.scriptscanner import ScriptTree
 from oPB.controller.base import BaseController
 from oPB.controller.settings import SettingsController
@@ -51,7 +51,7 @@ from oPB.controller.components.bundle import BundleComponent
 translate = QtCore.QCoreApplication.translate
 
 
-class MainWindowController(BaseController, QObject):
+class MainWindowController(BaseController, QObject, EventMixin):
 
     # send after model or backend data has been updated
     # tab index to switch to
@@ -136,24 +136,12 @@ class MainWindowController(BaseController, QObject):
         self.logger.debug("Generate dependencies table model")
         self.model_dependencies = QtGui.QStandardItemModel(0, 5, self)
         self.model_dependencies.setObjectName("model_dependencies")
-        self.model_dependencies.setHorizontalHeaderLabels([translate("mainController", "name"),
-                                                        translate("mainController", "product id"),
-                                                        translate("mainController", "required action"),
-                                                        translate("mainController", "installation status"),
-                                                        translate("mainController", "type")]
-                                                        )
 
         self.logger.debug("Generate properties table model")
         self.model_properties = QtGui.QStandardItemModel(0, 7, self)
         self.model_properties.setObjectName("model_properties")
-        self.model_properties.setHorizontalHeaderLabels([translate("mainController", "name"),
-                                                        translate("mainController", "type"),
-                                                        translate("mainController", "multivalue"),
-                                                        translate("mainController", "editable"),
-                                                        translate("mainController", "description"),
-                                                        translate("mainController", "values"),
-                                                        translate("mainController", "default")]
-                                                        )
+
+        self.retranslateUi()
 
     def connect_signals(self):
         """Connect object events to slots"""
@@ -699,3 +687,20 @@ class MainWindowController(BaseController, QObject):
     def depotmanager_dialog(self):
         """Open depot manager dialog"""
         self.depotmanager.ui.show_()
+
+    def retranslateUi(self, *arg):
+        """Retranslate model headers, will be called via changeEvent of self.ui """
+        self.model_dependencies.setHorizontalHeaderLabels([translate("mainController", "name"),
+                                                        translate("mainController", "product id"),
+                                                        translate("mainController", "required action"),
+                                                        translate("mainController", "installation status"),
+                                                        translate("mainController", "type")]
+                                                        )
+        self.model_properties.setHorizontalHeaderLabels([translate("mainController", "name"),
+                                                        translate("mainController", "type"),
+                                                        translate("mainController", "multivalue"),
+                                                        translate("mainController", "editable"),
+                                                        translate("mainController", "description"),
+                                                        translate("mainController", "values"),
+                                                        translate("mainController", "default")]
+                                                        )

@@ -97,11 +97,6 @@ class DepotManagerComponent(BaseController, QObject):
             self.model_left.set_error_color(oPB.OPB_COLOR_ERROR)
             self.model_left.append_error_marker("Error")
             self.model_left.setObjectName("model_left")
-            self.model_left.setHorizontalHeaderLabels([translate("depotmanagerController", "product id"),
-                                            translate("depotmanagerController", "product version"),
-                                            translate("depotmanagerController", "package version"),
-                                            translate("depotmanagerController", "type")]
-                                            )
 
         if self.model_right == None:
             self.logger.debug("Generate right table model")
@@ -110,19 +105,13 @@ class DepotManagerComponent(BaseController, QObject):
             self.model_right.set_error_color(oPB.OPB_COLOR_ERROR)
             self.model_right.append_error_marker("Error")
             self.model_right.setObjectName("model_right")
-            self.model_right.setHorizontalHeaderLabels([translate("depotmanagerController", "product id"),
-                                            translate("depotmanagerController", "product version"),
-                                            translate("depotmanagerController", "package version"),
-                                            translate("depotmanagerController", "type")]
-                                            )
 
         if self.model_report == None:
             self.logger.debug("Generate report table model")
             self.model_report = QStandardItemModel(0, 2, self)
             self.model_report.setObjectName("model_report")
-            self.model_report.setHorizontalHeaderLabels([translate("depotmanagerController", "server name"),
-                                            translate("depotmanagerController", "description")]
-                                            )
+
+        self.retranslateUi()
 
     def update_model_data(self, side, depot, dict_):
         self.logger.debug("Update model data")
@@ -546,3 +535,19 @@ class DepotManagerComponent(BaseController, QObject):
             self.side_content(self._ui_box_right.currentText(), "right")
 
         self.dataAquired.emit()
+
+    def retranslateUi(self, *arg):
+        """Retranslate model headers, will be called via changeEvent of self.ui """
+        self.model_left.setHorizontalHeaderLabels([translate("depotmanagerController", "product id"),
+                                        translate("depotmanagerController", "product version"),
+                                        translate("depotmanagerController", "package version"),
+                                        translate("depotmanagerController", "type")]
+                                        )
+        self.model_right.setHorizontalHeaderLabels([translate("depotmanagerController", "product id"),
+                                        translate("depotmanagerController", "product version"),
+                                        translate("depotmanagerController", "package version"),
+                                        translate("depotmanagerController", "type")]
+                                        )
+        self.model_report.setHorizontalHeaderLabels([translate("depotmanagerController", "server name"),
+                                        translate("depotmanagerController", "description")]
+                                        )

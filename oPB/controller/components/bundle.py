@@ -67,10 +67,7 @@ class BundleComponent(BaseController, QObject):
             self.logger.debug("Generate product table model")
             self.model_products = QtGui.QStandardItemModel(0, 3, self)
             self.model_products.setObjectName("model_products")
-            self.model_products.setHorizontalHeaderLabels([translate("bundleController", "product id"),
-                                            translate("bundleController", "version"),
-                                            translate("bundleController", "description")]
-                                            )
+            self.retranslateUi()
 
 
     def update_model_data(self):
@@ -120,3 +117,10 @@ class BundleComponent(BaseController, QObject):
                     self.logger.debug("Dialog aborted.")
         else:
             self.logger.debug("Nothing selected.")
+
+    def retranslateUi(self, *arg):
+        """Retranslate model headers, will be called via changeEvent of self.ui """
+        self.model_products.setHorizontalHeaderLabels([translate("bundleController", "product id"),
+                                        translate("bundleController", "version"),
+                                        translate("bundleController", "description")]
+                                        )

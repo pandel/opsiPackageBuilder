@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>670</width>
-    <height>515</height>
+    <height>517</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -60,6 +60,21 @@
           <string>opsi credentials</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="0" column="1">
            <widget class="QLineEdit" name="inpConfigServer"/>
           </item>
@@ -100,6 +115,21 @@
              <string>Connection parameter</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_2">
+             <property name="leftMargin">
+              <number>5</number>
+             </property>
+             <property name="topMargin">
+              <number>5</number>
+             </property>
+             <property name="rightMargin">
+              <number>5</number>
+             </property>
+             <property name="bottomMargin">
+              <number>5</number>
+             </property>
+             <property name="spacing">
+              <number>5</number>
+             </property>
              <item row="2" column="0" colspan="4">
               <widget class="QLineEdit" name="inpKeyFile"/>
              </item>
@@ -169,6 +199,21 @@
                 </size>
                </property>
                <layout class="QGridLayout" name="gridLayout_6">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
                 <item row="0" column="1">
                  <widget class="QRadioButton" name="rdOpsiSrvOld">
                   <property name="text">
@@ -285,6 +330,21 @@
           <string>Maintainer information</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_10">
             <property name="text">
@@ -346,6 +406,21 @@
           <string>Program settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="chkExtendedEditor">
             <property name="text">
@@ -395,7 +470,7 @@
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="lblBlockRecognition">
             <property name="text">
              <string>Changelog block recognition:</string>
             </property>
@@ -414,8 +489,13 @@
              <bool>false</bool>
             </property>
             <property name="currentText">
-             <string notr="true">en</string>
+             <string notr="true">System</string>
             </property>
+            <item>
+             <property name="text">
+              <string>System</string>
+             </property>
+            </item>
             <item>
              <property name="text">
               <string>en</string>
@@ -492,6 +572,21 @@
           <string>Script Editor</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_7">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="0" column="2">
            <widget class="QRadioButton" name="rdEditorExternal">
             <property name="text">
@@ -565,6 +660,9 @@
             </property>
            </widget>
           </item>
+          <item row="3" column="1" colspan="3">
+           <widget class="QLineEdit" name="inpEditorOptions"/>
+          </item>
           <item row="1" column="1">
            <widget class="QCheckBox" name="chkSyntaxHighlight">
             <property name="text">
@@ -604,28 +702,26 @@
           <item row="3" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
-             <string>Options:</string>
+             <string>Editor command line options:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1" colspan="3">
-           <widget class="QLineEdit" name="inpEditorOptions"/>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Concat filename:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1" colspan="2">
+           <widget class="QCheckBox" name="chkAttachDirect">
+            <property name="text">
+             <string>Attach directly to options</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -640,6 +736,21 @@
           <string>opsi Commands</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="7" column="0">
            <widget class="QPushButton" name="btnRefreshDepotCache">
             <property name="text">
@@ -800,6 +911,21 @@
           <string>Messages</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_10">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="0" column="0">
            <widget class="QCheckBox" name="chkMsgError">
             <property name="text">
@@ -847,6 +973,21 @@
           <string>Log configuration</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_9">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="1" column="2">
            <widget class="QPushButton" name="btnLogFile">
             <property name="enabled">
@@ -999,6 +1140,18 @@
           <string>Update parameters</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_12">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="0" column="0">
            <widget class="QCheckBox" name="chkUpdates">
             <property name="text">
@@ -1028,6 +1181,21 @@
           <string>Proxy settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_11">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
           <item row="1" column="1">
            <widget class="QLineEdit" name="inpProxyServer"/>
           </item>

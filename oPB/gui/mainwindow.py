@@ -32,6 +32,7 @@ import os.path
 import webbrowser
 import platform
 import subprocess
+#from subprocess import Popen, PIPE, STDOUT
 from time import sleep
 
 from PyQt5.QtWidgets import *
@@ -41,7 +42,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 import oPB
 import oPB.gui.helpviewer
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper, LogMixin
+from oPB.core.tools import Helper, LogMixin, EventMixin
 from oPB.gui.splash import Splash
 from oPB.gui.utilities import ScriptFileValidator
 from oPB.ui.ui import MainWindowBase, MainWindowUI
@@ -49,7 +50,7 @@ from oPB.ui.ui import MainWindowBase, MainWindowUI
 translate = QtCore.QCoreApplication.translate
 
 
-class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
+class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
     showLogRequested = pyqtSignal()
     windowMoved = pyqtSignal()
@@ -436,13 +437,32 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin):
                 path = Helper.concat_path_and_file(path, script)
 
             self.logger.debug("Opening script: " + path)
+            # construct calling array
+            # first add basic scripteditor executable
             cmd = [ConfigHandler.cfg.scripteditor]
-            for part in (ConfigHandler.cfg.editor_options + path).split():
-                cmd.append(part)
-            cmd.append(path)
+            # if there are options, split and append them
+            if (ConfigHandler.cfg.editor_options).strip() != "":
+                for part in (ConfigHandler.cfg.editor_options).split():
+                    cmd.append(part)
+                # if attach direct is true, combine last option with script file path
+                if ConfigHandler.cfg.editor_attachdirect == "True":
+                    cmd[-1] = cmd[-1] + path
+                # or else, append as separate value to list
+                else:
+                    cmd.append(path)
+            else:
+                cmd.append(path)
 
-            subprocess.call(cmd)
-
+            self.logger.debug("Executing subprocess: " + str(cmd))
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+            outs, errs = proc.communicate()
+            self.logger.info(outs)
+            self.logger.error(errs)
+            if proc.returncode != 0:
+                self._parent.msgbox(translate("MainWindow", "Editor startup did not cleanup correctly.\n\nThe following message(s) returned:") +
+                                    "\n\nStandard Out:\n" + outs +
+                                    "\n\nStandard Err:\n" + errs,
+                                    oPB.MsgEnum.MS_WARN, self)
         else:
             self._parent.msgbox(translate("MainWindow", "Editor not found:" + " " + ConfigHandler.cfg.scripteditor), oPB.MsgEnum.MS_ERR, self)
 

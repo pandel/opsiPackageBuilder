@@ -37,7 +37,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import Helper, LogMixin
+from oPB.core.tools import Helper, LogMixin, EventMixin
 from oPB.ui.ui import ChangelogEditorDialogExtendedBase,ChangelogEditorDialogSimpleBase, \
     ChangelogEditorDialogExtendedUI, ChangelogEditorDialogSimpleUI
 
@@ -45,7 +45,7 @@ from oPB.ui.ui import ChangelogEditorDialogExtendedBase,ChangelogEditorDialogSim
 translate = QtCore.QCoreApplication.translate
 
 
-class ChangelogEditorDialog(LogMixin):
+class ChangelogEditorDialog(LogMixin, EventMixin):
     """Changelog Editor dialog factory"""
 
     def __init__(self, parent, base, ui):

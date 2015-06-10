@@ -32,12 +32,12 @@ __status__ = "Production"
 
 from PyQt5 import QtCore, QtGui
 from oPB.core import *
-from oPB.core.tools import Helper, LogMixin
+from oPB.core.tools import Helper, LogMixin, EventMixin
 
 translate = QtCore.QCoreApplication.translate
 
 
-class Splash(LogMixin):
+class Splash(LogMixin, EventMixin):
     """Splash screen class"""
 
     def __init__(self, parent, msg):

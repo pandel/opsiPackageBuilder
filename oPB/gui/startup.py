@@ -35,14 +35,14 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
-from oPB.core.tools import Helper, LogMixin
+from oPB.core.tools import Helper, LogMixin, EventMixin
 from oPB.ui.ui import StartupDialogBase, StartupDialogUI
 
 
 translate = QtCore.QCoreApplication.translate
 
 
-class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin):
+class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
 
     def __init__(self, parent):
         """

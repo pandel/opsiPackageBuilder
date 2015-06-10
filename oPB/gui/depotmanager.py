@@ -34,14 +34,14 @@ from PyQt5.Qt import QKeyEvent
 
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import LogMixin
+from oPB.core.tools import LogMixin, EventMixin
 from oPB.core.confighandler import ConfigHandler
 from oPB.ui.ui import DepotManagerDialogBase, DepotManagerDialogUI
 from oPB.gui.splash import Splash
 
 translate = QtCore.QCoreApplication.translate
 
-class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin):
+class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin, EventMixin):
 
     dialogOpened = pyqtSignal()
     dialogClosed = pyqtSignal()

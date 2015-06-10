@@ -34,7 +34,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
-from oPB.core.tools import LogMixin
+from oPB.core.tools import LogMixin, EventMixin
 from oPB.gui.utilities import SpecialOptionButtonGroup
 from oPB.ui.ui import DeployAgentDialogUI, DeployAgentDialogBase
 from oPB.gui.splash import Splash
@@ -42,7 +42,7 @@ from oPB.gui.splash import Splash
 translate = QtCore.QCoreApplication.translate
 
 
-class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin):
+class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin, EventMixin):
 
     dialogOpened = pyqtSignal()
     dialogClosed = pyqtSignal()

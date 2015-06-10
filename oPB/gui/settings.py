@@ -37,15 +37,15 @@ from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper, LogMixin
-from oPB.gui.utilities import SpecialOptionButtonGroup
+from oPB.core.tools import Helper, LogMixin, EventMixin
+from oPB.gui.utilities import SpecialOptionButtonGroup, Translator
 from oPB.ui.ui import SettingsDialogBase, SettingsDialogUI
 from oPB.gui.splash import Splash
 
 translate = QtCore.QCoreApplication.translate
 
 
-class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
+class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin):
 
     settingsAboutToBeClosed = pyqtSignal()
     dataChanged = pyqtSignal()
@@ -76,12 +76,21 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         self.datamapper = None
         self.model = self._parent.model
 
+        # setup translation combobox, must appear before data mapper creation
+        Translator.setup_language_combobox(self, self.cmbLanguage)
+
+        # additional setup
         self.create_optionbuttongroups()
         self.create_datamapper()
         self.connect_signals()
 
         # reset tabs
         self.tabWidget.setCurrentIndex(0)
+
+        # hide not needed widgets
+        self.lblBlockRecognition.setVisible(False)
+        self.inpBlockMarker.setVisible(False)
+        self.btnResetRecognition.setVisible(False)
 
     def connect_signals(self):
         self.logger.debug("Connect signals")
@@ -159,6 +168,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
         self.datamapper.addMapping(self.inpLogFile, 42)
         self.datamapper.addMapping(self.cmbLogLevel, 43)
         self.datamapper.addMapping(self.inpEditorOptions, 44)
+        self.datamapper.addMapping(self.chkAttachDirect, 45, "checked")
         self.datamapper.toFirst()
 
     def create_optionbuttongroups(self):
@@ -172,7 +182,8 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin):
 
         self.optionGroupEditorTyp = SpecialOptionButtonGroup(self.rdEditorInternal, self.rdEditorExternal,
                                                              [self.chkSyntaxHighlight, self.chkCodeFolding],
-                                                             [self.btnExternalEditor, self.inpExternalEditor, self.inpEditorOptions])
+                                                             [self.btnExternalEditor, self.inpExternalEditor, self.inpEditorOptions,
+                                                              self.chkAttachDirect])
 
         self.optionGroupDepotFuncs = SpecialOptionButtonGroup(self.chkUseDepotFunctions, None,
                                                               [self.btnRefreshDepotCache],
