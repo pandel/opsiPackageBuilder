@@ -67,6 +67,7 @@ setup(name = "opsiPackageBuilder",
         'oPB.ui': ['*.ui', '*.qss'],
     },
     data_files=data,
+    install_requires = ["releases", "spur", "simple-crypt>=4.0.0", "pycrypto"],
     entry_points={
           'gui_scripts': [
               'opsipackagebuilder = oPB.runner:Main'

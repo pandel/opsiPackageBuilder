@@ -1,3 +1,4 @@
+releases
 spur
 simple-crypt>=4.0.0
 pycrypto

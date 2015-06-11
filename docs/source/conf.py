@@ -40,7 +40,11 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
+    'releases',
 ]
+
+# releases parameter
+releases_github_path = 'pandel/opsiPackageBuilder'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

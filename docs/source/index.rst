@@ -16,6 +16,7 @@ Contents:
    :maxdepth: 4
    :caption: Sourcecode Documentation
 
+   changelog
    modules
 
 Indices and tables
