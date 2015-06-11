@@ -48,25 +48,6 @@ On Linux:
 
 On Windows:
     - follow the instruction on http://pythonhosted.org/PyInstaller/#installing-in-windows and install from archive
-    - Before you do that, modify the file:
-
-        ``pyinstaller-python3/PyInstaller/utils/hooks/hookutils.py``
-
-        according to this:
-
-        .. code-block:: html
-
-        	def qt5_qml_dir():
-        	    try:
-        	        qmldir = compat.exec_command("qmake", "-query", "QT_INSTALL_QML")
-        	        qmldir = qmldir.strip()
-        	    except IOError:
-        	        qmldir = ''
-        	    if len(qmldir) == 0:
-        		....
-
-Reason:
-Under Windows , the command "qmake -query QT_INSTALL_QML" returns the path to the qml folder, but has carriage return ("\\r\\n") at the end of the string under windows. This can't be handled correctly, so remove it.
 
 Infos regarding reST
 ====================
