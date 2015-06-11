@@ -36,10 +36,12 @@ from PyQt5.QtCore import QIODevice, QTimer, QObject, QUrl
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 
+from oPB.core.tools import LogMixin
+
 translate = QtCore.QCoreApplication.translate
 
 
-class HelpDialog(QObject):
+class HelpDialog(QObject, LogMixin):
     """qthelp viewer dialog"""
 
     def __init__(self, qthelp_file):
