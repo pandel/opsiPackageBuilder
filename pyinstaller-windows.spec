@@ -18,6 +18,7 @@ img_tree = Tree('c:/Python34/Lib/site-packages/PyQt5/plugins/imageformats', pref
 icon_tree = Tree('c:/Python34/Lib/site-packages/PyQt5/plugins/iconengines', prefix='qt5_plugins/iconengines')
 sql_tree = Tree('c:/Python34/Lib/site-packages/PyQt5/plugins/sqldrivers', prefix='qt5_plugins/sqldrivers')
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss', 'opsipackagebuilder_rc.py'])
+lang_tree = Tree('c:/Python34/Lib/site-packages/PyQt5/translations', 'PyQt5/translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
 help_tree = Tree('oPB/help', prefix='help')
 dll64_tree = Tree('oPB/core/x64', prefix='x64')
 dll86_tree = Tree('oPB/core/x86', prefix='x86')
@@ -27,7 +28,8 @@ coll = COLLECT(exe,
                a.datas,
                platforms_tree,
                ui_tree,
-               help_tree,
+               lang_tree,
+			   help_tree,
                dll64_tree,
                dll86_tree,
                [('ui/opsipackagebuilder_rc.py', 'oPB/ui/opsipackagebuilder_rc.py', 'DATA')],

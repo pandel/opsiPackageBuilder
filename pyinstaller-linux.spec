@@ -15,12 +15,14 @@ exe = EXE(pyz,
           console=True , icon='images/prog.ico')
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss'])
 help_tree = Tree('oPB/help', prefix='help')
+lang_tree = Tree('/usr/share/qt5/translations', 'translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
                ui_tree,
                help_tree,
+			   lang_tree,
                [('ui/opsipackagebuilder_rc.py', 'oPB/ui/opsipackagebuilder_rc.py', 'DATA')],
                [('ui/stylesheet.qss', 'oPB/ui/stylesheet.qss', 'DATA')],
                strip=None,
