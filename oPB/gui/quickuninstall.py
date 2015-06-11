@@ -139,3 +139,7 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin, EventMix
         self._parent.uninstall_selection(prods)
 
         self.dialogClosed.emit()
+
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")

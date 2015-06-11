@@ -39,7 +39,22 @@ translate = QtCore.QCoreApplication.translate
 
 
 class ScriptNode(object):
+    """
+
+    Script Tree node object
+
+    (only necessary for programmatic documentation of tree structure)
+
+    """
+
     def __init__(self, value, children = []):
+        """
+        Constructor of ScriptNode
+
+        :param value: value
+        :param children: child list
+        :return:
+        """
         self.value = value
         self.children = children
 
@@ -53,11 +68,20 @@ class ScriptNode(object):
         return '<script tree node representation>'
 
 class ScriptTree(LogMixin):
+    """Script Tree object"""
 
     root = ScriptNode("(tree root)", [])
+    """Holds tree root node"""
     model = None
+    """Assigned data model"""
 
     def __init__(self, projectfolder: str, scripts: list):
+        """
+        Constructor of ScriptTree
+
+        :param projectfolder: name of folder
+        :param scripts: list of scripts to scan (not every project has always every script type assigned)
+        """
         self.sub_regex = re.compile('^\s*([Ss][uU][bB]\s+)\"?([a-zA-Z0-9_%\$\.\\\-]*)\"?\s*$')  # two groups, 1 = "Sub ", 2 = scriptname or variable
         self.include_append_regex = re.compile('^\s*([iI][nN][cC][lL][uU][dD][eE]_[aA][pP][pP][eE][nN][dD]\s+)\"?([a-zA-Z0-9_%\$\.\\\-]*)\"?\s*$')
         self.include_insert_regex = re.compile('^\s*([iI][nN][cC][lL][uU][dD][eE]_[iI][nN][sS][eE][rR][tT]\s+)\"?([a-zA-Z0-9_%\$\.\\\-]*)\"?\s*$')
@@ -71,11 +95,8 @@ class ScriptTree(LogMixin):
         self.get_script_structure()
 
     def get_script_structure(self):
-        """
-        Scan script files for sub/include_insert/include_append and build tree structure
+        """Scanning dispatcher"""
 
-        :return: tree representation of scripts
-        """
         self.logger.debug("Scan script structure recursively")
         # first, find all product properties in every script and return a set
         for i in range(len(self.scripts)):
@@ -94,12 +115,12 @@ class ScriptTree(LogMixin):
 
     def _scan_script(self, script, root, level, modelroot):
         """
-        Scan script files recursively for included script files
+        Scan script files recursively for sub/include_insert/include_append and build tree structure
 
-        :param script: script to search through
-        :param root: root node
+        :param script: script to scan
+        :param root: ScriptTree root node of tree limb
         :param level: level of recursion
-        :return:
+        :param modelroot: root of tree limb inside ScriptTree.model (QStandardItemModel)
         """
         currentline = 1
         scriptname = self.projectfolder.replace('\\', '/') + "/CLIENT_DATA/" + script
@@ -151,12 +172,24 @@ class ScriptTree(LogMixin):
             currentline += 1
             line = linecache.getline(scriptname, currentline)
 
-    def _clear_script_name(self, raw):
+    def _clear_script_name(self, raw: str):
         """
-        Clear raw line string from any unwanted characters and
-        annotate externals
+        Clear ``raw`` line string from any unwanted characters and annotate externals
+
+        :Example:
+
+            opsi script language line:
+
+                include_append "%ScriptDrive%\lib\subroutines.opsiscript"
+                sub "%ScriptPath%\subroutines.opsiscript"
+
+            Annotated:
+
+                (External) "%ScriptDrive%\lib\subroutines.opsiscript" (include_append)
+                "subroutines.opsiscript" (sub)
+
         :param raw: unmodified script line
-        :return:
+        :return: modified string
         """
 
         # remove all occurrences of "%ScriptPath%\"

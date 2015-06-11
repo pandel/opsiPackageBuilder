@@ -28,9 +28,13 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+import sys
+if sys.version_info[0] != 3 and sys.version_info[0] != 4:
+    print("Current Python interpreter version is not supported. You need at least Python 3.4. Exiting...")
+    sys.exit(1)
+
 import os
 import inspect
-import sys
 import tempfile
 from enum import Enum
 from pathlib import PurePath

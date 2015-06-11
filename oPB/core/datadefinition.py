@@ -52,8 +52,13 @@ def changelog_footer() ->str:
 
 
 class ChangelogEntry(object):
-    """Holds a single changelog entry for extended mode"""
+    """Holds a single changelog entry in extended mode"""
     def __init__(self, productId):
+        """
+        Constructor of ChangelogEntry
+
+        :param productId: product id of entry
+        """
         self._version = ""
         self._status = ""
         self._urgency = ""
@@ -118,10 +123,13 @@ class ChangelogEntry(object):
         self._text = value
 
 class ProductProperty(object):
-    """ProductProperty class: holds a single product property
-    ProductProperty(self, name = "new")
-    """
+    """Holds a single product property"""
     def __init__(self, name = "new"):
+        """
+        Constructor of ProductProperty
+
+        :param name: property name
+        """
         self._name = name           # name of the property
         self._type = ""           # type of value: unicode / boolean
         self._multivalue = ""     # is multivalue str "True" / "False"
@@ -210,9 +218,7 @@ class ProductProperty(object):
 
 
 class ProductDependency(object):
-    """ProductDependency class: holds a single product dependency
-    ProductDependency(self)
-    """
+    """ProductDependency class: holds a single product dependency"""
     def __init__(self):
         self._dependencyForAction = ""
         self._requiredProductId = ""
@@ -277,18 +283,21 @@ class ProductDependency(object):
 
 
 class ControlFileData(QObject, LogMixin):
-    """ Defines data structure of a complete opsi control file
-    ControlData(self, productId="newId")
-
-    SIGNAL:
-    dataLoaded - true, when data is successfully load from file / false, if not
-    """
+    """ Defines data structure of a complete opsi control file"""
 
     dataLoaded = pyqtSignal(bool)
-    dataSaved = pyqtSignal(int)  # 0 = success, 1 = failure
+    """Signal, true, when data is successfully load from file / false, if not"""
+    dataSaved = pyqtSignal(bool)
+    """Signal, true, when data is successfully saved to file / false, if not"""
     dataUpdated = pyqtSignal()
+    """Signal, send when product dependency / product property was added"""
 
     def __init__(self, productId = "new_product"):
+        """
+        Constructor of ControlFileData
+
+        :param productId: Create dataset for this product id
+        """
         super().__init__()
         self._depends = ""
         self._incremental = "False"
@@ -319,6 +328,12 @@ class ControlFileData(QObject, LogMixin):
         self.init_data(productId)
 
     def init_data(self, productId = "new_product"):
+        """
+        Re-Init current ControlFileData object
+
+        :param productId: product id
+        :return:
+        """
         self.depends = ""
         self.incremental = "False"
         self.id = productId
@@ -443,7 +458,14 @@ class ControlFileData(QObject, LogMixin):
         self._packageversion = str(value).strip()
 
     def inc_packageversion(self):
-        # increment package version
+        """
+        Increment current package version
+
+        Creates automatic increment and embeds it between to strings, like
+
+            ".corr"<version>"corr"
+
+        """
         match = re.compile(r"^(\d*)\.?((\d*)|(corr\d*corr))$")
         m = match.search(self.packageversion)
         print(m.group(0))
@@ -578,7 +600,7 @@ class ControlFileData(QObject, LogMixin):
     @properties.setter
     def properties(self, value):
         # create new exception handling vor properties
-        #if (value != "True") and (value != "False"):
+        # if (value != "True") and (value != "False"):
         #    raise ValueError("describe exception")
         self._properties = value
 
@@ -586,18 +608,20 @@ class ControlFileData(QObject, LogMixin):
         """
         Add product property object to list.
 
-        :param prop Property object of class ProductProperty
+        :param prop: Object of class ProductProperty
         """
         if not type(prop) == ProductProperty:
             raise TypeError(translate("ControlFileData", "Wrong type for property data"))
         else:
-            self._properties.append([prop.name, prop.type, prop.multivalue, prop.editable, prop.description, prop.values, prop.default])
+            self._properties.append([prop.name, prop.type, prop.multivalue, prop.editable,
+                                     prop.description, prop.values, prop.default])
+            self.dataUpdated.emit()
 
     def del_property(self, prop: ProductProperty):
         """
         Remove product property object from list.
 
-        :param prop Property object of class ProductProperty
+        :param prop: Object of class ProductProperty
         """
         if not type(prop) == ProductProperty:
             raise TypeError(translate("ControlFileData", "Wrong type for property data"))
@@ -606,6 +630,10 @@ class ControlFileData(QObject, LogMixin):
                 self._properties.remove([prop.name, prop.type, prop.multivalue, prop.editable, prop.description, prop.values, prop.default])
 
     def properties_getnames(self):
+        """
+        List of property names
+        :return: list
+        """
         if self._properties == []:
             return []
         else:
@@ -638,7 +666,7 @@ class ControlFileData(QObject, LogMixin):
         """
         Add product dependency object to list.
 
-        :param dep dependency object of class ProductDependency
+        :param dep: Object of class ProductDependency
         """
         if not type(dep) == ProductDependency:
             raise TypeError(translate("ControlFileData", "Wrong type for dependency data"))
@@ -651,7 +679,7 @@ class ControlFileData(QObject, LogMixin):
         """
         Remove product dependency object from list.
 
-        :param dep Dependency object of class ProductDependency
+        :param dep: Object of class ProductDependency
         """
         if not type(dep) == ProductDependency:
             raise TypeError(translate("ControlFileData", "Wrong type for dependency data"))
@@ -689,7 +717,7 @@ class ControlFileData(QObject, LogMixin):
         return self._changelog_converted
 
     @changelog_converted.setter
-    def changelog_converted(self, value):
+    def changelog_converted(self, value: bool):
         if value not in [True, False]:
             raise ValueError(translate("ControlFileData", "changelog_converted must be True or False"))
         self._changelog_converted = value
@@ -703,7 +731,7 @@ class ControlFileData(QObject, LogMixin):
         :return: list of lists of changelog entries
         """
 
-        # entry format:  ' -- MaintainerName <EMail>  Timestamp'
+        # Entry format:  ' -- MaintainerName <EMail>  Timestamp'
         dummy_added = None
 
         if (ConfigHandler.cfg.use_extended_changelog == "True") and (ConfigHandler.cfg.chlog_block_marker.upper() == oPB.CHLOG_BLOCKMARKER.upper()):
@@ -816,16 +844,21 @@ class ControlFileData(QObject, LogMixin):
         else:
             raise ValueError(translate("ControlFileData", "changelog_getlist cannot be used for simple changelog format"))
 
-    def changelog_append(self, entry):
-            if type(entry) is not ChangelogEntry:
-                raise ValueError(translate("ControlFileData", "Parameter elements in list must be of type ChangelogEntry"))
+    def changelog_append(self, entry: ChangelogEntry):
+        """
+        Add changelog entry object to list.
+
+        :param dep: Object of class ChangelogEntry
+        """
+        if type(entry) is not ChangelogEntry:
+            raise ValueError(translate("ControlFileData", "Parameter elements in list must be of type ChangelogEntry"))
+        else:
+            if self._raw_changelog.strip() != "":
+                entries = self.changelog_getobjects()
+                entries.insert(0, entry)
             else:
-                if self._raw_changelog.strip() != "":
-                    entries = self.changelog_getobjects()
-                    entries.insert(0, entry)
-                else:
-                    entries = [entry]
-                self.changelog = entries
+                entries = [entry]
+            self.changelog = entries
 
     def _changelog_setfromlist(self, values: list):
         """
@@ -874,6 +907,12 @@ class ControlFileData(QObject, LogMixin):
                 return repo_base + "/" + self.id
 
     def load_data(self, projectfolder):
+        """
+        Load control file data
+
+        :param projectfolder: name of project
+        :return:
+        """
         matchSection = re.compile('^\s*\[([^\]]+)\]\s*$')
         # valueContinuationRegex = re.compile('^\s(.*)$')
         matchOption = re.compile('^([^\:]+)\s*\:\s*(.*)$')
@@ -882,10 +921,9 @@ class ControlFileData(QObject, LogMixin):
         self.logger.debug("Backend project to load: " + projectfolder)
 
         try:
-            file = open(projectfolder + "/OPSI/control", "r", encoding="utf-8", newline="\n")
-            self.logger.debug("Control file opened: " + projectfolder + "/OPSI/control")
-            lines = file.readlines()
-            file.close()
+            with open(projectfolder + "/OPSI/control", "r", encoding="utf-8", newline="\n") as file:
+                self.logger.debug("Control file opened: " + projectfolder + "/OPSI/control")
+                lines = file.readlines()
         except:
             self.logger.error("Error reading control file")
             self.logger.debug("Emit dataLoaded(False)")
@@ -1073,7 +1111,9 @@ class ControlFileData(QObject, LogMixin):
         self.dataLoaded.emit(True)
 
     def save_data(self):
+        """Save control file data of current project"""
         controlfile = self._projectfolder + "/OPSI/control"
+
         if Path(controlfile).exists():
             try:
                 shutil.move(controlfile, controlfile + "-" + Helper.timestamp() + ".bak")
@@ -1085,74 +1125,74 @@ class ControlFileData(QObject, LogMixin):
                 return
 
         try:
-            file = open(self._projectfolder + "/OPSI/control", "x", encoding="utf-8", newline="\n")
-            self.logger.debug("Control file opened: " + self._projectfolder + "/OPSI/control")
+            with open(self._projectfolder + "/OPSI/control", "x", encoding="utf-8", newline="\n") as file:
+                self.logger.debug("Control file opened: " + self._projectfolder + "/OPSI/control")
 
-            file.write("[Package]\n")
-            file.write("version: " + self.packageversion + "\n")
-            file.write("depends: " + self.depends + "\n")
-            file.write("incremental: " + self.incremental + "\n\n")
-            file.write("[Product]\n")
-            file.write("type: " + self.type + "\n")
-            file.write("id: " + self.id + "\n")
-            file.write("name: " + self.name + "\n")
-            file.write("description: " + self.description.strip() + "\n")
-            file.write("advice: " + self.advice + "\n")
-            file.write("version: " + self.productversion + "\n")
-            file.write("priority: " + str(self.priority) + "\n")
-            file.write("licenseRequired: " + self.licenseRequired + "\n")
-            file.write("productClasses: " + self.productClasses + "\n")
-            file.write("setupScript: " + self.setupScript + "\n")
-            file.write("uninstallScript: " + self.uninstallScript + "\n")
-            file.write("updateScript: " + self.updateScript + "\n")
-            file.write("alwaysScript: " + self.alwaysScript + "\n")
-            file.write("onceScript: " + self.onceScript + "\n")
-            file.write("customScript: " + self.customScript + "\n")
-            file.write("userLoginScript: " + self.userLoginScript + "\n")
+                file.write("[Package]\n")
+                file.write("version: " + self.packageversion + "\n")
+                file.write("depends: " + self.depends + "\n")
+                file.write("incremental: " + self.incremental + "\n\n")
+                file.write("[Product]\n")
+                file.write("type: " + self.type + "\n")
+                file.write("id: " + self.id + "\n")
+                file.write("name: " + self.name + "\n")
+                file.write("description: " + self.description.strip() + "\n")
+                file.write("advice: " + self.advice + "\n")
+                file.write("version: " + self.productversion + "\n")
+                file.write("priority: " + str(self.priority) + "\n")
+                file.write("licenseRequired: " + self.licenseRequired + "\n")
+                file.write("productClasses: " + self.productClasses + "\n")
+                file.write("setupScript: " + self.setupScript + "\n")
+                file.write("uninstallScript: " + self.uninstallScript + "\n")
+                file.write("updateScript: " + self.updateScript + "\n")
+                file.write("alwaysScript: " + self.alwaysScript + "\n")
+                file.write("onceScript: " + self.onceScript + "\n")
+                file.write("customScript: " + self.customScript + "\n")
+                file.write("userLoginScript: " + self.userLoginScript + "\n")
 
-            if self.dependencies:
-                for elem in self.dependencies:
-                    file.write("\n")
-                    file.write("[ProductDependency]\n")
-                    file.write("action: " + elem[0] + "\n")
-                    file.write("requiredProduct: " + elem[1] + "\n")
-                    if elem[2] not in ["", "none"]:
-                        file.write("requiredAction: " + elem[2] + "\n")
-                    else:
-                        file.write("requiredStatus: " + elem[3] + "\n")
-                    file.write("requirementType: " + elem[4] + "\n")
-
-            if self.properties:
-                for elem in self.properties:
-                    file.write("\n")
-                    file.write("[ProductProperty]\n")
-                    file.write("type: " + elem[1] + "\n")
-                    file.write("name: " + elem[0] + "\n")
-                    if elem[1] == "unicode":
-                        file.write("multivalue: " + elem[2] + "\n")
-                        file.write("editable: " + elem[3] + "\n")
-                    file.write("description: " + elem[4] + "\n")
-                    if elem[1] == "unicode":
-                        v = json.dumps(elem[5], ensure_ascii=False)
-                        d = json.dumps(elem[6], ensure_ascii=False)
-                        if v == '""':  # empty string returned by json.dumps
-                            file.write("values: \n")
+                if self.dependencies:
+                    for elem in self.dependencies:
+                        file.write("\n")
+                        file.write("[ProductDependency]\n")
+                        file.write("action: " + elem[0] + "\n")
+                        file.write("requiredProduct: " + elem[1] + "\n")
+                        if elem[2] not in ["", "none"]:
+                            file.write("requiredAction: " + elem[2] + "\n")
                         else:
-                            file.write("values: " + v + "\n")
-                        if d == '""':  # empty string returned by json.dumps
-                            file.write("default: \n")
+                            file.write("requiredStatus: " + elem[3] + "\n")
+                        file.write("requirementType: " + elem[4] + "\n")
+
+                if self.properties:
+                    for elem in self.properties:
+                        file.write("\n")
+                        file.write("[ProductProperty]\n")
+                        file.write("type: " + elem[1] + "\n")
+                        file.write("name: " + elem[0] + "\n")
+                        if elem[1] == "unicode":
+                            file.write("multivalue: " + elem[2] + "\n")
+                            file.write("editable: " + elem[3] + "\n")
+                        file.write("description: " + elem[4] + "\n")
+                        if elem[1] == "unicode":
+                            v = json.dumps(elem[5], ensure_ascii=False)
+                            d = json.dumps(elem[6], ensure_ascii=False)
+                            if v == '""':  # empty string returned by json.dumps
+                                file.write("values: \n")
+                            else:
+                                file.write("values: " + v + "\n")
+                            if d == '""':  # empty string returned by json.dumps
+                                file.write("default: \n")
+                            else:
+                                file.write("default: " + d + "\n")
                         else:
-                            file.write("default: " + d + "\n")
-                    else:
-                        file.write("default: " + elem[6] + "\n")
+                            file.write("default: " + elem[6] + "\n")
 
-            file.write("\n")
-            file.write("[Changelog]\n")
-            file.write(self.changelog)
+                file.write("\n")
+                file.write("[Changelog]\n")
+                file.write(self.changelog)
 
-            file.close()
-            self.logger.debug("Emit dataSaved(True)")
-            self.dataSaved.emit(True)  # on success
+                file.close()
+                self.logger.debug("Emit dataSaved(True)")
+                self.dataSaved.emit(True)  # on success
 
         except:
             self.logger.error("Error writing control file")

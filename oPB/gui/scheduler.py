@@ -153,6 +153,9 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin, EventMixin):
         self._parent.delete_jobs(remIdx)
         self.splash.close()
 
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")
 
 class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin, EventMixin):
 
@@ -296,3 +299,7 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin, Event
 
         self.splash.close()
         self.close()
+
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")

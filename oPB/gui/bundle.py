@@ -136,3 +136,7 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin, EventMixin):
             prods.append(self.model.item(row.row(), 0).text())
 
         self._parent.create_bundle(prods)
+
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")

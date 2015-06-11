@@ -11,6 +11,7 @@ Submodules
 
 .. toctree::
 
+   oPB.core.commandline
    oPB.core.confighandler
    oPB.core.datadefinition
    oPB.core.logging

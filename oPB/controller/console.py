@@ -46,10 +46,11 @@ class ConsoleController(BaseController, QObject):
         self.logger.debug("Initialize console")
 
         # if --path defined, try to load project
-        if not self.args.path == "":
+        if not self.args.path.strip() == "":
             self.run_command_line()
         else:
-            self.logger.info("Nothing to do")
+            self.logger.error("No projectname given")
+            oPB.EXITCODE = oPB.RET_CMDLINE
 
         self.finished()
 

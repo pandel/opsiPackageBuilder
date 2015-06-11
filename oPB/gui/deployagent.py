@@ -171,3 +171,7 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin, Ev
         self._parent.start_deploy(destination, options)
 
         self.splash.close()
+
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")

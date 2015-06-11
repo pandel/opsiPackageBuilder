@@ -1,4 +1,4 @@
-#!/usr/bin/python
+ #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
 This module is part of the opsi PackageBuilder
@@ -29,16 +29,19 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import os
+import sys
 import re
 import logging
-import argparse
 import base64
 import socket
 import ctypes
 import itertools
 import string
 import platform
-import winreg
+
+if sys.platform.lower().startswith('win'):
+    import winreg
+
 from datetime import datetime
 from binascii import hexlify, unhexlify
 from pathlib import PurePath
@@ -58,8 +61,9 @@ class LogMixin(object):
 
         self.logger
 
-    from your own class
+    from own class
     """
+
     @property
     def logger(self):
         name = '.'.join([__name__, self.__class__.__name__])
@@ -67,10 +71,14 @@ class LogMixin(object):
 
 
 class Helper(LogMixin):
-    """ Simple tool functions
     """
+    Simple tool functions
+
+    Every method is defined as ``@classmethod``
+    """
+
     @classmethod
-    def extCheck(cls, filename):
+    def extCheck(cls, filename: str) -> bool:
         """File extension check:
         Valid extension: ins, opsiscript, opsiinc
 
@@ -78,7 +86,10 @@ class Helper(LogMixin):
 
         Alternatives
         1) ext = m.rpartition('.')[-1]; if ext == ...
-        2) m.lower().endswith(('.png', '.jpg', '.jpeg')) ...."""
+        2) m.lower().endswith(('.png', '.jpg', '.jpeg')) ....
+
+        :param filename: filename to check
+        """
 
         if filename == "": return True
 
@@ -95,41 +106,59 @@ class Helper(LogMixin):
         :param path: base path
         :param file: file or folder
         """
+
         return str(PurePath(path, file))
 
     @classmethod
     def get_file_from_path(cls, complete: str) -> str:
         """
         Return file name from complete path as string
+
         :param complete: path incl. filename
         :return: filename
         """
+
         return str(PurePath(complete).name)
 
     @classmethod
     def parse_text(cls, text: str) -> str:
         """
-        Replace individual TABS and CRLF templates from message text
+        Replace individual @TABS and @ (cr+lf) templates within ``text``
+
+        with HTML-based replacement (for QMessageBox messages)
+
+        @TAB -> "&nbsp;&nbsp;&nbsp;&nbsp;"
+        @ -> "<br>"
 
         :param text: text with templates
         :return: display text
         """
+
         text = text.replace("@TAB", "&nbsp;&nbsp;&nbsp;&nbsp;")
         text = text.replace("@", "<br>")
         return text
 
     @classmethod
     def str_to_bool(cls, s: str) -> bool:
+        """
+        Convert string to bool
+
+        :param s: "true" / "false" as string
+        :return: boolean expression
+        """
+
         print("str_to_bool called with value: " + s)
-        if s == 'True':
+        if s.upper() == 'TRUE':
              return True
-        elif s == 'False':
-             ret =  False
+        elif s.upper() == 'FALSE':
+             return False
         else:
              raise ValueError("Cannot covert {} to a bool".format(s))
 
     @classmethod
-    def get_user(cls):
+    def get_user(cls) -> str:
+        """Return current username, if found"""
+
         for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
             user = os.environ.get(name)
             if user:
@@ -139,7 +168,16 @@ class Helper(LogMixin):
             #return pwd.getpwuid(os.getuid())[0]
 
     @classmethod
-    def encrypt(cls, text):
+    def encrypt(cls, text: str) -> str:
+        """
+        Wrapper for Hexlify obfuscator
+
+        Uses Helper.get_user() to obtain *cipher* key
+
+        :param text: string to obfuscate
+        :return: obfuscated string
+        """
+
         encrypted = (
             hexlify(
                 Helper.Cipher.XORencrypt(Helper.get_user(), text)
@@ -149,7 +187,16 @@ class Helper(LogMixin):
 
 
     @classmethod
-    def decrypt(cls, text):
+    def decrypt(cls, text: str) -> str:
+        """
+        Wrapper for Hexlify obfuscator
+
+        Uses Helper.get_user() to obtain *cipher* key
+
+        :param text: obfuscated string
+        :return: not obfuscated string
+        """
+
         decrypted = (
             Helper.Cipher.XORdecrypt(
                 Helper.get_user(), unhexlify(text)
@@ -158,6 +205,7 @@ class Helper(LogMixin):
         return decrypted.decode('utf-8')
 
     class Cipher:
+        """Cipher (wrapper) class"""
 
         @classmethod
         def XORencrypt(cls, key, plaintext):
@@ -170,27 +218,42 @@ class Helper(LogMixin):
             return cipher.decrypt(base64.b64decode(ciphertext))
 
     @classmethod
-    def timestamp(cls):
+    def timestamp(cls) -> str:
+        """
+        Small timestamp
+
+        :return: timestamp string "%Y%m%d-%H%M%S"
+        """
+
         return datetime.now().strftime("%Y%m%d-%H%M%S")
 
     @classmethod
-    def timestamp_changelog(cls):
-        #  Mon, 27 Apr 2015 12:33:04 + 0100
+    def timestamp_changelog(cls) -> str:
+        """
+        Long changelog timestamp
+
+        :return: Mon, 27 Apr 2015 12:33:04 + 0100
+        """
+
         return datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000")
 
     @classmethod
-    def paramlist2list(cls, value):
+    def paramlist2list(cls, value) ->list:
         """
-        Converts comma-separated parameters from input field, to correct list format
-        and takes into account, that the parameter itself could contain commas, but
+        Converts comma-separated ``value``, to correct list format
+        and takes into account, that the ``value`` itself could contain commas, but
         enclosed within "...", i. e.:
 
-        "OU=test1,dc=subdomain,dc=domain,dc=de", "OU=test2,dc=subdomain,dc=domain,dc=de"
-        -> these are two values, with commas inside the separate values
+            "OU=test1,dc=subdomain,dc=domain,dc=de", "OU=test2,dc=subdomain,dc=domain,dc=de"
+            -> these are two values, with commas inside the separate values
+
+            Convert to rea list:
+            ["\"OU=Member Computers,dc=subdomain,dc=domain,dc=de\"", "\"OU=Member Computers2,dc=subdomain,dc=domain,dc=de\""]
 
         :param value: pseudo-list as string
         :return: correctly separated parameters as real list
         """
+
         quot = 0
         quotpos = []
         retval = []
@@ -222,16 +285,15 @@ class Helper(LogMixin):
             return retval
 
     @classmethod
-    def ui_file_path(cls, uifile):
-        return cls.concat_path_and_file(os.environ['OPB_BASE'], "ui/" + uifile)
+    def get_available_drive_letters(cls) -> list:
+        """
+        Returns every non-mapped drive letter
 
+        .. see: http://stackoverflow.com/questions/4188326/in-python-how-do-i-check-if-a-drive-exists-w-o-throwing-an-error-for-removable
 
-    # the following two routines are modifications of:
-    # see: http://stackoverflow.com/questions/4188326/in-python-how-do-i-check-if-a-drive-exists-w-o-throwing-an-error-for-removable
+        :return: list
+        """
 
-    @classmethod
-    def get_available_drive_letters(cls):
-        """Returns every non-mapped drive letter"""
         if 'Windows' not in platform.system():
             return []
         drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
@@ -239,8 +301,15 @@ class Helper(LogMixin):
                map(lambda x:ord(x) - ord('1'), bin(drive_bitmask)[:1:-1])))
 
     @classmethod
-    def get_existing_drive_letters(cls):
-        """Returns every mapped drive letter"""
+    def get_existing_drive_letters(cls) -> list:
+        """
+        Returns every mapped drive letter
+
+        .. see: http://stackoverflow.com/questions/4188326/in-python-how-do-i-check-if-a-drive-exists-w-o-throwing-an-error-for-removable
+
+        :return: list
+        """
+
         if 'Windows' not in platform.system():
             return []
         drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
@@ -248,7 +317,16 @@ class Helper(LogMixin):
                map(lambda x:ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
 
     @classmethod
-    def test_port(cls, host, port, timeout=2):
+    def test_port(cls, host: str, port: str, timeout: int = 2):
+        """
+        Test if network port is reachable
+
+        :param host: hostname or ip
+        :param port:  port number
+        :param timeout: connection timeout
+        :return: True or error
+        """
+
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(timeout)
@@ -261,8 +339,22 @@ class Helper(LogMixin):
             return True
 
     @classmethod
-    def strip_ansi_codes(cls, s):
+    def strip_ansi_codes(cls, s: str) -> str:
+        """
+        Remove as many ANSI color and control codes from ``s`` as possible
+
+        :param s: raw input string
+        :return: cleaned string
+        """
+
         def removebackspaces(text):
+            """
+            Removes backspaces from ``text``
+
+            :param text:
+            :return: cleaned string
+            """
+
             backspace_or_eol = r'(.\010)|(\033\[K)'
             n = 1
             while n > 0:
@@ -285,143 +377,71 @@ class Helper(LogMixin):
         s = re.sub(r'\A\v|\v\Z', '', re.sub(r'(\v)+', '\n', s))
         s = s.replace('\07', '')
         s = removebackspaces(s)
+
         return s
         #s = re.sub(r'\x1b\[([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K]?', '', s)
         #s = re.sub(r'\x1b\[(>\?)([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K|S|u]?', '', s)
         #return s
 
-    @classmethod
-    def regkey_value(cls, path, name="", start_key = None):
-        """
-        Query windows registry value
+    # WINDOWS ONLY
+    if sys.platform.lower().startswith('win'):
+        @classmethod
+        def regkey_value(cls, path, name="", start_key = None):
+            """
+            Query windows registry value
 
-        seealso: http://code.activestate.com/recipes/578689-get-a-value-un-windows-registry/
+            .. see: http://code.activestate.com/recipes/578689-get-a-value-un-windows-registry/
 
-        :Example:
+            :Example:
 
-            bios_vendor = regkey_value(r"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\BIOS", "BIOSVendor")
+                bios_vendor = regkey_value(r"HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\BIOS", "BIOSVendor")
 
-        :param path: registry path
-        :param name: value name ("" for default)
-        :param start_key: start key
+            :param path: registry path
+            :param name: value name ("" for default)
+            :param start_key: start key
+            :return: key value
+            """
 
-        :return: key value
-        """
-        if isinstance(path, str):
-            path = path.split("\\")
-        if start_key is None:
-            start_key = getattr(winreg, path[0])
-            return Helper.regkey_value(path[1:], name, start_key)
-        else:
-            subkey = path.pop(0)
-        with winreg.OpenKey(start_key, subkey) as handle:
-            assert handle
-            if path:
-                return Helper.regkey_value(path, name, handle)
+            if isinstance(path, str):
+                path = path.split("\\")
+            if start_key is None:
+                start_key = getattr(winreg, path[0])
+                return Helper.regkey_value(path[1:], name, start_key)
             else:
-                desc, i = None, 0
-                while not desc or desc[0] != name:
-                    desc = winreg.EnumValue(handle, i)
-                    i += 1
-                return desc[1]
+                subkey = path.pop(0)
+            with winreg.OpenKey(start_key, subkey) as handle:
+                assert handle
+                if path:
+                    return Helper.regkey_value(path, name, handle)
+                else:
+                    desc, i = None, 0
+                    while not desc or desc[0] != name:
+                        desc = winreg.EnumValue(handle, i)
+                        i += 1
+                    return desc[1]
 
-class CommandLine(object):
-    """ Command line arguments generation and parsing.
-    """
-    def __init__(self):
-        prog_name = "opsiPackageBuilder"
-        desc = "opsi PackageBuilder (MIT licensed) " + oPB.PROGRAM_VERSION + " Command Line Interface"
-        logpath = PurePath(oPB.CONFIG_PATH,"opb-session.log")
-        epi = (
-                "Processing order, if you specify --build, --install, --uninstall and --set-rights together:\n"
-                "1. Set rights -> 2. Build -> 3. Uninstall (existing) -> 4. Install (new)\n"
-                "NOTICE: If you don""t specify --no-gui, every action will take place after opening the GUI.\n\n"
-                "Suboptions for --build:\n"
-                "\tcancel:\tdon't overwrite an existing package\n"
-                "\trebuild:\trebuild (overwrite) an existing package\n"
-                "\tnew        :\tcreate new package, append timestamp to package version\n"
-                "\tinteractive:\tinteractive mode\n"
-                "If you don""t specify any suboption, the default value is 'cancel'.\n\n"
-                "Default LOG file path: " + str(logpath) + "\n\n")
-        if 'Windows' not in platform.system():
-            epi += (
-                "Example:\n\topsipackagebuilder --path=/home/opsiproducts/testpak --build=new --no-gui --log=/tmp/opb.log\n"
-                "\tThis starts opsi PackageBuilder without GUI and builds the package in /home/opsiproducts/testpak.\n"
-                "\tLogging messages go into /tmp/opb.log.\n")
-        else:
-            epi += (
-                "Example:\n\topsipackagebuilder.exe --path=W:\opsi\\testpak --build=new --no-gui --log=c:\\temp\opb.log\n"
-                "\tThis starts opsi PackageBuilder without GUI and builds the package in W:\opsi\\testpak.\n"
-                "\tLogging messages go into c:\\temp\opb.log.\n")
-
-        epi += ( "\tIf the package exists before, the package version gets timestamped and building proceeds.\n\n"
-                "Tipp:\n\tIf you just specify --path=<name of packagefolder> it will get expanded\n"
-                "\tto the full development folder path. (Don't combine with --no-netdrv!)\n")
-
-        if 'Windows' not in platform.system():
-            epi += ( "\tExample: --path=testpak    ==>   --path=/home/opsiproducts/testpak")
-        else:
-            epi += (
-                "\tExample: --path=testpak    ==>   --path=w:\opsi\\testpak")
-
-        self._parser = argparse.ArgumentParser(prog=prog_name, description = desc, epilog=epi,
-                                               formatter_class=argparse.RawDescriptionHelpFormatter)
-
-        self._parser.add_argument("--path", "-p", action="store", default = "",
-                                  dest="path", help="Path to package root directory")
-
-        self._parser.add_argument("--no-netdrv", "-w", action="store_true", default = False,
-                                  dest="nonetdrive", help="Don't mount development drive")
-
-        self._parser.add_argument("--build", "-b", action="store",
-                                  choices=["cancel", "rebuild", "add"],
-                                  dest="build_mode", help="Build package (see suboptions)")
-
-        groupexclude = self._parser.add_mutually_exclusive_group()
-
-        groupexclude.add_argument("--install", "-i", action="append_const", const="install",
-                                  dest="packetaction", help="Install package")
-
-        groupexclude.add_argument("--instsetup", "-s", action="append_const", const="instsetup",
-                                  dest="packetaction",
-                                  help="Install package and set clients to setup if installed previously")
-
-        groupexclude.add_argument("--uninstall", "-u", action="append_const", const="uninstall",
-                                  dest="packetaction", help="Uninstall package")
-
-        self._parser.add_argument("--set-rights", "-r", action="store_true", default = False,
-                                  dest="setrights", help="Set rights on server-side package directory")
-
-        self._parser.add_argument("--no-gui", "-n", action="store_true", default = False,
-                                  dest="nogui", help="Don't open GUI, log messages to command line")
-
-        self._parser.add_argument("--quiet", "-q", action="store_true", default = False,
-                                  dest="quiet", help="Don't show any message (forces --no-gui)")
-
-        self._parser.add_argument("--no-update", "-x", action="store_true", default = False,
-                                  dest="noupdate", help="Don't run update check regardless of INI setting")
-
-        self._parser.add_argument("--log", "-l", action="store", nargs="?", const = str(logpath),
-                                  dest="log_file", help="Write logfile (optional: specify logfile name)")
-
-        self._parser.add_argument("--log-level", action="store", default='NOTSET',
-                                  choices=["CRITICAL", "ERROR", "SSH", "WARNING", "SSHINFO", "INFO", "DEBUG"],
-                                  dest="log_level", help="Specify log level")
-
-        # self._parser.add_argument("--debug", "-d", action="store_true", default = argparse.SUPPRESS,
-        #                          dest="nonetdrive", help="Write additional debug output (can create very much text!!)")
-
-    def getArgs(self):
-        return self._parser.parse_args()
-
-    def getParser(self):
-        return self._parser
 
 class HTMLTools(LogMixin):
+    """
+    HTMLTools class provides convenient functions to create working HTML pages from simple text
 
+    Every method is defined as ``@classmethod``
+
+    """
     @classmethod
-    def HTMLHeader(cls, title = "", bodybgcolor = "#ffffff", highlightbgcolor = "#F0F9FF", headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff"):
+    def HTMLHeader(cls, title = "", bodybgcolor = "#ffffff", highlightbgcolor = "#F0F9FF",
+                   headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff") -> str:
+        """
+        Return valid HTML page header
 
+        :param title: page title
+        :param bodybgcolor: body background color
+        :param highlightbgcolor: highlight background color
+        :param headerbgcolor: header background color
+        :param bodytxtcolor: body text color
+        :param headertxtcolor: header text color
+        :return: HTML string
+        """
         head = ""
         if title != "":
             head = '<center><h2>' + title + '</h2></center>'
@@ -473,12 +493,31 @@ class HTMLTools(LogMixin):
 
     @classmethod
     def HTMLFooter(cls):
+        """
+        Very simple HTML page footer
 
+        :return: footer string "</body></html>"
+        """
         return "</body></html>"
 
     @classmethod
     def Array2HTMLTable(cls, element_list = [], colspan = 1, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
-        headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = False):
+        headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = False) -> str:
+        """
+        Convert list of lists (2D table) two HTML table
+
+        :param element_list: list of lists
+        :param colspan: colspan of header row, only valid if ``headers_on`` is True
+        :param title: page title, only valid if ``only_table`` is False
+        :param bodybgcolor: body background color, only valid if ``only_table`` is False
+        :param highlightbgcolor: highlight background color, only valid if ``only_table`` is False
+        :param headerbgcolor: header background color, only valid if ``only_table`` is False
+        :param bodytxtcolor: body text color, only valid if ``only_table`` is False
+        :param headertxtcolor: header text color, only valid if ``only_table`` is False
+        :param headers_on: ``element_list`` contains table headers in first row (True) or not (False)
+        :param only_table: generate table only (True), or return complete HTML page (False)
+        :return: HTML string
+        """
 
         if not element_list:
             return
@@ -543,6 +582,3 @@ class HTMLTools(LogMixin):
                     '</table>\n'
 
         return html
-
-# import oPB.core.tools; p=oPB.core.tools.CommandLine(); p.getParser().parse_args("-h".split())
-# import oPB.core.tools; p=oPB.core.tools.CommandLine(); args = p.getParser().parse_args("--build=new --instsetup -n -r --log=c:\\temp\\log.txt".split());args.__dict__

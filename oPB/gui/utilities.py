@@ -244,7 +244,7 @@ class Translator(QObject, LogMixin):
     """
     Translator class, can only be instantiated once
 
-    To conveniently set ui language on the fly, see :ref:`oPB.core.tools.EventMixin`
+    To conveniently set ui language on the fly, see :class:`oPB.gui.utilities.EventMixin`
 
     .. code-block:: python
 
@@ -336,9 +336,24 @@ class Translator(QObject, LogMixin):
 
         # decide, if we load the system language or specified language from config
         if config_lang == "System":
-            use_local = QtCore.QLocale().system()
-            qm_qt = "qt_%s" % cls.cfg._syslocale
-            qm_app = cls.cfg.applangprefix + '_%s' % cls.cfg._syslocale
+            # search if we have a language file according to system locale
+            found = False
+            for filePath in QDir(cls.cfg._app_locale_path).entryList():
+                fileName  = os.path.basename(filePath)
+                fileMatch = re.match(cls.cfg.applangprefix + "_([a-z]{2,}).qm", fileName)
+                if fileMatch:
+                    if fileMatch.group(1) == cls.cfg._syslocale:
+                        found = True
+            # if we don't have a language file, fall back to "en"
+            if not found:
+                cls.cfg.logger.debug("No language file for system locale found. Falling back to English.")
+                use_local = QtCore.QLocale("en")
+            else:
+                cls.cfg.logger.debug("Language file for system locale found.")
+                use_local = QtCore.QLocale().system()
+
+            qm_qt = "qt_%s" % use_local.name()[:2]
+            qm_app = cls.cfg.applangprefix + '_%s' % use_local.name()[:2]
             cls.cfg.logger.debug("Installing language: " + use_local.name()[:2])
         else:
             use_local = QtCore.QLocale(config_lang)
@@ -396,11 +411,12 @@ class Translator(QObject, LogMixin):
         :param dialog: the parent dialog widget of ``combobox``
         :param combobox: the language combobox
         """
+
         cls.cfg.combobox = combobox
         cls.cfg.dialog = dialog
 
         cls.cfg.combobox.clear()
-        cls.cfg.combobox.addItem("System" , "")
+        cls.cfg.combobox.addItem("System", "")
 
         for filePath in QDir(cls.cfg._app_locale_path).entryList():
             fileName  = os.path.basename(filePath)
@@ -423,11 +439,13 @@ class Translator(QObject, LogMixin):
         Convinience method for setting ui language after changing selection
         in combobox.
         """
+
         cls.cfg.install_translations(cls.cfg.combobox.currentText())
 
     @classmethod
     def resetLanguage(cls):
         """Reset language to Translator.cfg._current_lang explicitly"""
+
         index = cls.cfg.combobox.findText(cls.cfg._current_lang)
         cls.cfg.combobox.setCurrentIndex(index)
 
@@ -438,16 +456,27 @@ class EventMixin(object):
 
     For reacting on changeEvent, especially language change event
     """
+
     def __init__(self, *args, **kwargs):
         super(EventMixin, self).__init__(*args, **kwargs)
 
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.LanguageChange:
+
+            # first, run uic generated retranslateUi
             self.logger.debug("Retranslating ui...")
             self.retranslateUi(self)
 
+            # next, look for self.retranslateMsg
             try:
-                self._parent.retranslateUi(self)
+                self.retranslateMsg()
+            except:
+                pass
+
+            # now try, if ui parent has a retranslateMsg also
+            # ie, if dialog controller has to update model header data
+            try:
+                self._parent.retranslateMsg()
             except:
                 pass
                 #super(type(self), self).changeEvent(event)

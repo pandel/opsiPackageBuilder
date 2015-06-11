@@ -80,7 +80,7 @@ class SchedulerComponent(BaseController, QObject):
             self.model_products = QtGui.QStandardItemModel(0, 3, self)
             self.model_products.setObjectName("model_products")
 
-        self.retranslateUi()
+        self.retranslateMsg()
 
     def update_model_data_clients(self, force = False):
         self.logger.debug("Update model data: clients")
@@ -164,7 +164,8 @@ class SchedulerComponent(BaseController, QObject):
             self._parent.do_createjobs(clIdx = clients, prodIdx = products, ataction = ataction, dateVal = dateVal,
                                        timeVal = timeVal, od_demand = on_demand, wol = wol, dest = self.at_server)
 
-    def retranslateUi(self, *arg):
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
         """Retranslate model headers, will be called via changeEvent of self.ui """
         self.model_jobs.setHorizontalHeaderLabels([translate("schedulerController_joblist", "client"),
                                         translate("schedulerController_joblist", "packet"),

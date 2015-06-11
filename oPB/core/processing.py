@@ -50,19 +50,20 @@ from oPB.core.tools import Helper, LogMixin
 translate = QtCore.QCoreApplication.translate
 
 class OpsiProcessing(QObject, LogMixin):
+    """Opsi server job online processing class"""
 
     progressChanged = pyqtSignal(str)
+    """Signal, emitted on change in job processing"""
 
-    """
-    opsi server job handler
-    """
+
     # def __init__(self, project, project_folder, server="127.0.0.1", port=22, username = None, password = None, keyfile = None, cfg = None):
     def __init__(self, control = None):
         """
+        Constructor of OpsiProcessing
+
         Initialises job processing.
 
         :param control: backend controlData object
-        :return:
         """
         super().__init__()
         self._shell = None
@@ -89,14 +90,27 @@ class OpsiProcessing(QObject, LogMixin):
         """
         Starts job processing.
 
-        :param action: job to run (see oPB.OpEnum for job types)
-        :param kwargs: optional arguments depending on job type, see below
-        :return: tuple(3): (return code(see oPB.RET_*), msg type (see oPB.MsgEnum), msg text)
+        :param action: job type to run (:data:`.OpEnum` for job types)
+        :param kwargs: optional arguments depending on job type, see single job section below
+        :return: return (return code oPB.RET_*, msg type :data:`.MsgEnum`), msg text)
+        :rtype: tuple
 
-        Following additional options are recognized, depending on job action:
-        General: alt_server - overrides opsi server from INI file
-        QUICKINST / UPLOAD: packagefile
-        QUICKUNINST: productlist
+        Following additional ``**kwargs`` options are recognized, depending on job action:
+
+            - Always recognized: alt_destination, alt_user, alt_pass - overrides opsi server parameters from INI file
+            - DO_INSTALL: depot
+            - DO_INSTSETUP: depot
+            - DO_UNINSTALL: depot
+            - DO_QUICKINST: depot, packagefile
+            - DO_UPLOAD: depot, packagefile
+            - DO_QUICKUNINST: depot, productlist
+            - DO_CREATEJOBS: clients, products, ataction, dateVal, timeVal, on_demand, wol
+            - DO_DELETEJOBS: joblist
+            - DO_DELETEFILEFROMREPO: packages
+            - DO_UNREGISTERDEPOT: depot
+            - DO_DEPLOY: clientlist, options
+            - DO_GENMD5: packages
+
         """
 
         #options = {
@@ -105,9 +119,6 @@ class OpsiProcessing(QObject, LogMixin):
         #options.update(kwargs)
         #packname = self.control.name + "_" + options['prodver'] + "-" + options['packver'] + ".opsi"
 
-        # individual user / pass for shell
-        # if not set, ConfigHandler.cfg.opsi_user + ConfigHandler.cfg.opsi_pass are used
-
         self._hide_secret_in_output = []
 
         # override server name/ user or pass to use
@@ -115,6 +126,8 @@ class OpsiProcessing(QObject, LogMixin):
         if alt_destination != "":
             self._server = alt_destination
 
+        # individual user / pass for shell
+        # if not set, ConfigHandler.cfg.opsi_user + ConfigHandler.cfg.opsi_pass are used
         alt_user = kwargs.get("alt_user", "")
         if alt_user != "":
             self._sshuser = alt_user
@@ -134,6 +147,7 @@ class OpsiProcessing(QObject, LogMixin):
         # temporary file path for copy operations
         tmppath = oPB.UNIX_TMP_PATH
 
+        # define empty result as default
         result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
@@ -144,12 +158,11 @@ class OpsiProcessing(QObject, LogMixin):
                 self.logger.ssh("Package already build.")
                 self.logger.warning("Set return code to RET_PEXISTS")
                 self.ret = ret
-                self.retmsg = oPB.MsgEnum.MS_WARN
+                self.rettype = oPB.MsgEnum.MS_WARN
                 self.retmsg = translate("OpsiProcessing", "Package has been build before. It will not be overwritten!")
             else:
                 cmd = ConfigHandler.cfg.buildcommand
-
-            result = self._processAction(cmd, action, ret)
+                result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_INSTALL:
@@ -161,7 +174,7 @@ class OpsiProcessing(QObject, LogMixin):
                 self.logger.ssh("Package not available: " + self._control.packagename)
                 self.logger.warning("Set return code to RET_PINSTALL")
                 self.ret = ret
-                self.retmsg = oPB.MsgEnum.MS_ERR
+                self.rettype = oPB.MsgEnum.MS_ERR
                 self.retmsg = translate("OpsiProcessing", "Package file could not be found!")
             else:
                 if ConfigHandler.cfg.use_depot_funcs == "False":
@@ -169,7 +182,7 @@ class OpsiProcessing(QObject, LogMixin):
                 else:
                     cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.packagename
 
-            result = self._processAction(cmd, action, ret)
+                result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_INSTSETUP:
@@ -179,9 +192,9 @@ class OpsiProcessing(QObject, LogMixin):
             self.logger.ssh(20 * "-" + "ACTION: INSTALLSETUP" + 20 * "-")
             if not os.path.isfile(self._control.local_package_path):
                 self.logger.ssh("Package not available.")
-                self.logger.warning("Set return code to RET_PINSTALL")
+                self.logger.warning("Set return code to RET_PINSTSETUP")
                 self.ret = ret
-                self.retmsg = oPB.MsgEnum.MS_ERR
+                self.rettype = oPB.MsgEnum.MS_ERR
                 self.retmsg = translate("OpsiProcessing", "Package file could not be found!")
             else:
                 if ConfigHandler.cfg.use_depot_funcs == "False":
@@ -189,7 +202,7 @@ class OpsiProcessing(QObject, LogMixin):
                 else:
                     cmd = oPB.OPB_INSTSETUP + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.packagename
 
-            result = self._processAction(cmd, action, ret)
+                result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_UNINSTALL:
@@ -236,6 +249,14 @@ class OpsiProcessing(QObject, LogMixin):
             try:
                 self.logger.ssh("Copy file: " + package + " --> " + destfile)
                 self.copyToRemote(package, destfile)
+
+                if ConfigHandler.cfg.use_depot_funcs == "False":
+                    cmd = ConfigHandler.cfg.installcommand + " " + destfile
+                else:
+                    cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
+
+                result = self._processAction(cmd, action, ret)
+
             except Exception as error:
                 self.logger.ssh("Could not copy file to remote destination.")
                 self.logger.error(repr(error).replace("\\n"," --> "))
@@ -243,13 +264,6 @@ class OpsiProcessing(QObject, LogMixin):
                 self.ret = oPB.RET_SSHCONNERR
                 self.rettype = oPB.MsgEnum.MS_ERR
                 self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
-
-            if ConfigHandler.cfg.use_depot_funcs == "False":
-                cmd = ConfigHandler.cfg.installcommand + " " + destfile
-            else:
-                cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
-
-            result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_UPLOAD:
@@ -265,6 +279,14 @@ class OpsiProcessing(QObject, LogMixin):
             try:
                 self.logger.ssh("Copy file: " + package + " --> " + destfile)
                 self.copyToRemote(package, destfile)
+
+                if ConfigHandler.cfg.use_depot_funcs == "False":
+                    cmd = ConfigHandler.cfg.uploadcommand + " " + destfile
+                else:
+                    cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
+
+                result = self._processAction(cmd, action, ret)
+
             except Exception as error:
                 self.logger.ssh("Could not copy file to remote destination.")
                 self.logger.error(repr(error).replace("\\n"," --> "))
@@ -272,13 +294,6 @@ class OpsiProcessing(QObject, LogMixin):
                 self.ret = oPB.RET_SSHCONNERR
                 self.rettype = oPB.MsgEnum.MS_ERR
                 self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
-
-            if ConfigHandler.cfg.use_depot_funcs == "False":
-                cmd = ConfigHandler.cfg.uploadcommand + " " + destfile
-            else:
-                cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
-
-            result = self._processAction(cmd, action, ret)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETCLIENTS:
@@ -548,8 +563,6 @@ class OpsiProcessing(QObject, LogMixin):
                 packstring = (" ").join(packages)
                 cmd = ["sh", "-c", "PACKETS=\"" + packstring + "\"; " + oPB.OPB_DEPOT_FILE_REMOVE]
                 result = self._processAction(cmd, action, ret, split = False, cwd = False)
-            else:
-                result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_UNREGISTERDEPOT:
@@ -560,8 +573,6 @@ class OpsiProcessing(QObject, LogMixin):
             if depot:
                 cmd = oPB.OPB_METHOD_UNREGISTERDEPOT + " " + depot
                 result = self._processAction(cmd, action, ret, cwd = False)
-            else:
-                result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DEPLOY:
@@ -617,6 +628,7 @@ class OpsiProcessing(QObject, LogMixin):
         if action == oPB.OpEnum.DO_SETRIGHTS_REPO:
             ret = oPB.RET_SSHCMDERR
             self.logger.ssh(20 * "-" + "ACTION: SET RIGHTS ON REPO" + 20 * "-")
+
             if ConfigHandler.cfg.age == "True":
                 cmd = oPB.OPB_SETRIGHTS_SUDO + " '" + oPB.REPO_PATH + "'"
                 if ConfigHandler.cfg.sudo == "True":
@@ -678,6 +690,16 @@ class OpsiProcessing(QObject, LogMixin):
         return self.ret, self.rettype, self.retmsg, result
 
     def _processAction(self, cmd, action, retval, split = True, cwd = True):
+        """
+        Process actual job execution
+
+        :param cmd: command to execute, see ``spur.shell.run`` for details
+        :param action: action, see ``oPB.OpEnum``
+        :param retval: process errorcodes, see ``oPB.RET_**``
+        :param split: optionally split ``cmd`` into parts (True) or not (False)
+        :param cwd: change to working directory (``ControlFileData.path_on_server``) before command execution (True) or not (False)
+        :return:
+        """
         self.logger.sshinfo("Processing action...")
 
         self.reset_shell()
@@ -774,14 +796,14 @@ class OpsiProcessing(QObject, LogMixin):
         else:
             return {}
 
-    def _obscurepass(self, line):
+    def _obscurepass(self, line: str) ->str:
         """
         Try to find current SSH password in string and replace it with ***SECRET***
 
-        Works only for the first found secret at the moment!!!
+        Works only for first occurence of SSH password in ``line`` at the moment!!!
 
         :param line: string to scan
-        :return: string with password obscured
+        :return: string with obscured password
         """
         if line.find(self._sshpass) != -1:
             try:
@@ -792,7 +814,15 @@ class OpsiProcessing(QObject, LogMixin):
         else:
             return line
 
-    def hasErrors(self, text):
+    def hasErrors(self, text: str) -> bool:
+        """
+        Check ``text`` for some common error messages in output after SSH command execution
+
+        List is far from being complete ;-)
+
+        :param text: text to scan
+        :return: errors found (True) or not (False)
+        """
         found = False
         msg = ""
         if "ERROR: 'ascii' codec can't encode character".upper() in text.upper():
@@ -817,11 +847,11 @@ class OpsiProcessing(QObject, LogMixin):
 
         return (found, msg)
 
-    def copyToRemote(self, localfile, remotefile, localopen = False):
+    def copyToRemote(self, localfile: object, remotefile: str, localopen: bool = False):
         """
         Copy local file to remote destination viy SSH connection
 
-        :param localfile: local file name
+        :param localfile: local file name / local file handle (``localopen`` = True)
         :param remotefile: destination file name
         :param localopen: specify, if local file is already opened or not
         """
@@ -840,6 +870,7 @@ class OpsiProcessing(QObject, LogMixin):
 
 
     def reset_shell(self):
+        """Clear _shell object"""
         if self._shell is not None:
             self._shell = None
 
@@ -847,7 +878,8 @@ class OpsiProcessing(QObject, LogMixin):
     def shell(self):
         """
         Dispatch ssh shell creation depending on online status and configuration value
-        :return: spue shell object
+
+        :return: spur shell object
         """
         if self._shell is None:
             if self.ip.startswith("127."):
@@ -881,6 +913,7 @@ class OpsiProcessing(QObject, LogMixin):
     def _get_local_ip(self):
         """
         Try to get local network ip address.
+
         :return: current ip address or "127.0.0.1"
         """
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -938,14 +971,24 @@ class AnalyseProgressHook(StringIO):
     based on this idea: http://bulkan-evcimen.com/redirecting-stdout-to-stringio-object.html
     """
     def __init__(self, parent, stderr):
+        """
+        Constructor of AnalyseProgressHook
+
+        :param parent: parent object
+        :param stderr: stderr to analyse
+        """
         self._match = re.compile('\s*(\d*\.?\d*)')
         self.__stderr = stderr
         self._parent = parent
         self._line = ""
         StringIO.__init__(self)
 
-    # "misuse" write() to capture a whole line and analyse its content
     def write(self, s):
+        """
+            "Misuse" write() to capture a whole line and analyse its content
+
+        :param s: output byte
+        """
         try:
 
             # receive single bytes, concert to string and
@@ -972,6 +1015,7 @@ class AnalyseProgressHook(StringIO):
             pass
 
     def read(self):
+        """Read current stream and write to __stderr"""
         self.seek(0)
         self.__stderr.write(StringIO.read(self))
 

@@ -36,7 +36,14 @@ class OpsiProductTableModel(QtGui.QStandardItemModel):
 
     Used to color QTableView lines with items with special field content
     """
-    def __init__(self, rows, columns, parent):
+    def __init__(self, rows: int, columns: int, parent: object):
+        """
+        Constructor of OpsiProductTableModel
+
+        :param rows: amount of rows
+        :param columns:  amount of columns
+        :param parent: parent
+        """
         super(QtGui.QStandardItemModel, self).__init__(rows, columns, parent)
         self._rows = rows
         self._columns = columns
@@ -45,7 +52,7 @@ class OpsiProductTableModel(QtGui.QStandardItemModel):
         self._errormarker = []
         self._errorcolumn = None
 
-    def set_error_color(self, hexcolor):
+    def set_error_color(self, hexcolor: str):
         """
         Set special marker color for row.
 
@@ -53,7 +60,7 @@ class OpsiProductTableModel(QtGui.QStandardItemModel):
         """
         self._errorcolor = QtGui.QBrush(QtGui.QColor(hexcolor))
 
-    def append_error_marker(self, marker):
+    def append_error_marker(self, marker: str):
         """
         Append ``marker`` to the list of strings, which cause a row
         to be set to special marker color, see set_error_color().
@@ -63,9 +70,9 @@ class OpsiProductTableModel(QtGui.QStandardItemModel):
         if not marker in self._errormarker:
             self._errormarker.append(marker)
 
-    def set_error_column(self, col):
+    def set_error_column(self, col: int):
         """
-        Set column to look for marker strings.
+        Set column ``col`` to look for marker strings.
 
         If not set, every column is searched for the marker strings.
 
@@ -73,13 +80,13 @@ class OpsiProductTableModel(QtGui.QStandardItemModel):
         """
         self._errorcolumn = col
 
-    def appendRow(self, rowlist):
+    def appendRow(self, rowlist: list):
         """
-        Search for the marker strings in the error_column, if set, or in the whole row,
-        then, if found, colorize every item with error_color, and finally,
+        Search for marker strings in the ``_errorcolumn``, if not none, or in the whole row,
+        then, if found, colorize every item with ``_errorcolor``, and finally,
         append list-of-items to the model
 
-        OpsiProductTableModel.appendRow(list-of-QStandardItems)
+            OpsiProductTableModel.appendRow(list-of-QStandardItems)
 
         :param rowlist: list-of-QStandardItems
         """

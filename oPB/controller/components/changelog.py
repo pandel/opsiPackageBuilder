@@ -94,7 +94,7 @@ class ChangelogEditorComponent(QObject, LogMixin):
     def generate_extended_model(self):
         self.logger.debug("Generate extended configuration model")
         self.model = QtGui.QStandardItemModel(0, 4, self)
-        self.retranslateUi()
+        self.retranslateMsg()
 
     def connect_signals(self):
         self.logger.debug("Connect signals")
@@ -191,7 +191,8 @@ class ChangelogEditorComponent(QObject, LogMixin):
         else:
             self.model.removeRow(idx)
 
-    def retranslateUi(self, *arg):
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
         """Retranslate model headers, will be called via changeEvent of self.ui """
         self.model.setHorizontalHeaderLabels([translate("changelogController", "product id"),
                                               translate("changelogController", "version"),

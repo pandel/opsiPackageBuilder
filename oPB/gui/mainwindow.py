@@ -199,7 +199,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.actionOpen.triggered.connect(self.open_project)
         self.actionClose.triggered.connect(self._parent.project_close)
         self.actionQuit.triggered.connect(self.close)
-        self.actionSave.triggered.connect(self._parent.save_project)
+        self.actionSave.triggered.connect(self._parent.project_save)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
         self.actionSaveAs.triggered.connect(self.not_working)
         self.actionStartWinst.triggered.connect(self.start_winst)
@@ -231,7 +231,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.actionDepotManager.triggered.connect(self.offline)
 
         # buttons
-        self.btnSave.clicked.connect(self._parent.save_project)
+        self.btnSave.clicked.connect(self._parent.project_save)
         self.btnChangelogEdit.clicked.connect(self._parent.show_changelogeditor)
         self.btnShowScrStruct.clicked.connect(self._parent.show_scripttree)
         self.btnHelpPacket.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPACKET))
@@ -621,6 +621,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
     def set_dev_folder(self):
         """Set special label text"""
         self.lblDevFolder.setText(ConfigHandler.cfg.dev_dir)
+        # execute process loop to assure updating of label text
+        qApp.processEvents()
 
     @pyqtSlot()
     def open_project(self):
@@ -825,3 +827,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         validator = ScriptFileValidator(self, field)
         field.setValidator(validator)
 
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")

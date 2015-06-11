@@ -111,7 +111,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.model_report = QStandardItemModel(0, 2, self)
             self.model_report.setObjectName("model_report")
 
-        self.retranslateUi()
+        self.retranslateMsg()
 
     def update_model_data(self, side, depot, dict_):
         self.logger.debug("Update model data")
@@ -394,7 +394,7 @@ class DepotManagerComponent(BaseController, QObject):
 
     @pyqtSlot()
     def generate_md5(self, depot, packs):
-        self.logger.debug("Generate MD5")
+        self.logger.info("Generate MD5")
         if not packs:
             return
         msg = "\n\n" + translate("depotmanagerController", "Selected depot:") + "\n" + depot
@@ -419,7 +419,7 @@ class DepotManagerComponent(BaseController, QObject):
 
     @pyqtSlot()
     def onlinecheck(self):
-        self.logger.debug("Online check")
+        self.logger.info("Online check")
         if self._active_side == "left":
             depot = self._ui_box_left.currentText().split()[0]
         else:
@@ -441,7 +441,7 @@ class DepotManagerComponent(BaseController, QObject):
 
     @pyqtSlot()
     def reboot_depot(self):
-        self.logger.debug("Reboot depot")
+        self.logger.info("Reboot depot")
 
         if self._active_side == "left":
             depot = self._ui_box_left.currentText().split()[0]
@@ -472,7 +472,7 @@ class DepotManagerComponent(BaseController, QObject):
 
     @pyqtSlot()
     def poweroff_depot(self):
-        self.logger.debug("Poweroff depot")
+        self.logger.info("Poweroff depot")
 
         if self._active_side == "left":
             depot = self._ui_box_left.currentText().split()[0]
@@ -536,7 +536,8 @@ class DepotManagerComponent(BaseController, QObject):
 
         self.dataAquired.emit()
 
-    def retranslateUi(self, *arg):
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
         """Retranslate model headers, will be called via changeEvent of self.ui """
         self.model_left.setHorizontalHeaderLabels([translate("depotmanagerController", "product id"),
                                         translate("depotmanagerController", "product version"),

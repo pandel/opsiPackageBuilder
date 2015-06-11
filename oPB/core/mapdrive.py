@@ -53,8 +53,7 @@ class MapDrive(object):
 
     See following link for detail and files in src folder
 
-    `MapDrive <http://www.gulon.co.uk/2014/08/10/mapping-a-network-drive-with-python/>`_
-
+    .. seealso:: `MapDrive <http://www.gulon.co.uk/2014/08/10/mapping-a-network-drive-with-python/>`_
     """
     if is_64bits:
         _handle=ctypes.cdll.LoadLibrary(get_script_dir()+"\\x64\\MapDrive.dll")

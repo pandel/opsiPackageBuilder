@@ -63,6 +63,8 @@ class SettingsController(QObject, LogMixin):
         self.datamapper = None             # QDataWidgetMapper object for field mapping
         self._modelDataChanged = False  # is connect via model_data_changed function to itemChanged Signal of QStandardItemModel, will be reset in close_project()
 
+        self._language = ConfigHandler.cfg.language
+
         self.generate_model()
 
         # create main window and logic
@@ -194,6 +196,10 @@ class SettingsController(QObject, LogMixin):
                 ignoreChanges = False
 
         if ignoreChanges:
+            # reset language to original value, if changed and NOT saved
+            if ConfigHandler.cfg.language != self.model.item(0, 34).text():
+                self.model.item(0, 34).setText(ConfigHandler.cfg.language)
+
             self.logger.debug("Close settings dialog")
             self.ui.close()
             self.logger.debug("Emit signal settingsClosed")

@@ -414,4 +414,6 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
                                    self.model_right.item(row.row(),2).text())
                 self._parent.generate_md5(depot, prodIdx)
 
-
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")

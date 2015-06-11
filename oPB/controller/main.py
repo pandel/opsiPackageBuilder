@@ -105,6 +105,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         # if --path defined, try to load project
         if not self.args.path == "":
+            self._active_project = True
             self.run_command_line()
         else:
             self.startup.show_me()
@@ -142,7 +143,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.model_properties = QtGui.QStandardItemModel(0, 7, self)
         self.model_properties.setObjectName("model_properties")
 
-        self.retranslateUi()
+        self.retranslateMsg()
 
     def connect_signals(self):
         """Connect object events to slots"""
@@ -384,8 +385,6 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.reset_backend()
 
         self._modelDataChanged = False
-        self._dataSaved = None
-        self._dataSaved = None
         self._active_project = False
 
     @pyqtSlot()
@@ -435,7 +434,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
             event.ignore()
 
     @pyqtSlot()
-    def save_project(self):
+    def project_save(self):
         """Initiate saving of backend data and set save marker accordingly."""
         self.logger.debug("Save project")
         self.update_backend_data()
@@ -456,7 +455,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
     @pyqtSlot()
     def project_build(self):
         if self._modelDataChanged is True:
-            self.save_project()
+            self.project_save()
         self.do_build()
 
     @pyqtSlot(str)
@@ -464,11 +463,15 @@ class MainWindowController(BaseController, QObject, EventMixin):
         """Load project data."""
         self.load_backend(project_name)
 
+        while self._dataLoaded is None: # _dataLoaded has to be True or False
+            pass
+
         if not self._dataLoaded:
             self.msgbox(translate("mainController", "Project could not be loaded!"), oPB.MsgEnum.MS_ERR)
             self.startup.show_me()
         else:
             self._active_project = True
+            self._dataLoaded = None
             self.msgbox(translate("mainController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
             self.startup.hide_me()
 
@@ -689,7 +692,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
         """Open depot manager dialog"""
         self.depotmanager.ui.show_()
 
-    def retranslateUi(self, *arg):
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
         """Retranslate model headers, will be called via changeEvent of self.ui """
         self.model_dependencies.setHorizontalHeaderLabels([translate("mainController", "name"),
                                                         translate("mainController", "product id"),

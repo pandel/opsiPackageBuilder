@@ -29,6 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import os
+from time import sleep
 from pathlib import PurePath, Path
 
 from PyQt5 import QtCore
@@ -114,6 +115,8 @@ class BaseController(LogMixin):
 
     def reset_backend(self):
         """Reset backend data to initial values"""
+        self._dataLoaded = None
+        self._dataSaved = None
         self.controlData.init_data()
 
     def create_backend(self, project_folder):
@@ -170,6 +173,7 @@ class BaseController(LogMixin):
             self.logger.info("Backend data loaded")
 
     def _do(self, jobtype, msg, **kwargs):
+        self.logger.debug("Dispatch job")
         """Call OpsiProcessing engine"""
 
         proc = OpsiProcessing(self.controlData)
@@ -182,6 +186,8 @@ class BaseController(LogMixin):
         self.processingEnded.emit()
 
         oPB.EXITCODE = result[0]
+        self.logger.debug("Exitcode after dispatching:" + str(oPB.EXITCODE))
+
         if result[0] == oPB.RET_OK:
             self.msgbox(translate("baseController", "Action completed successfully!"), oPB.MsgEnum.MS_INFO)
         else:
@@ -422,20 +428,49 @@ class BaseController(LogMixin):
 
     def run_command_line(self):
         """Process project action via command line"""
-        self.logger.debug("Project via command line: " + self.args.path)
-        self.load_backend(self.args.path)
+        self.logger.info("Project given via command line: " + self.args.path)
+        if os.path.isabs(self.args.path):
+            project = self.args.path
+        else:
+            project = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, self.args.path)
 
+        # load project
+        self.load_backend(project)
+
+        # stop if something happened
+        if oPB.EXITCODE != oPB.RET_OK:
+            return
+
+        # first, set rights
+        if self.args.setrights is True:
+            self.do_setrights()
+            # wait a short moment for disk flushing
+            sleep(0.5)
+
+        # stop if something happened
+        if oPB.EXITCODE != oPB.RET_OK:
+            return
+
+        # build project
         if self.args.build_mode is not None:
-            self.logger.debug("Command line: build")
+            self.logger.info("Command line: build")
             self.do_build()
+            # wait a short moment for disk flushing
+            sleep(0.5)
+
+        # stop if something happened
+        if oPB.EXITCODE != oPB.RET_OK:
+            return
+
+        # install / install+setup / uninstall
         try:
-            self.logger.debug("Command line: " + self.args.packetaction[0])
+            self.logger.info("Command line: " + self.args.packetaction[0])
             if self.args.packetaction[0] == "install":
-                self.do_install()
+                self.do_install(depot = ConfigHandler.cfg.opsi_server)
             if self.args.packetaction[0] == "instsetup":
-                self.do_installsetup()
+                self.do_installsetup(depot = ConfigHandler.cfg.opsi_server)
             if self.args.packetaction[0] == "uninstall":
-                self.do_uninstall()
+                self.do_uninstall(depot = ConfigHandler.cfg.opsi_server)
         except:
             pass
 

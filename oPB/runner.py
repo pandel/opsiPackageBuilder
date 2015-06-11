@@ -47,12 +47,15 @@ from PyQt5.QtWidgets import QApplication, QSplashScreen
 
 import oPB
 from oPB.core import confighandler
-if sys.platform == 'win32':
+
+if sys.platform.lower().startswith('win'):
     from oPB.core.mapdrive import MapDrive
+
 from oPB.controller import main, console
 import oPB.core.logging
 import oPB.gui.logging
-from oPB.core.tools import CommandLine, Helper
+from oPB.core.tools import Helper
+from oPB.core.commandline import CommandLine
 from oPB.gui.utilities import Translator
 
 translate = QtCore.QCoreApplication.translate
@@ -84,13 +87,14 @@ class Main(QObject):
         self.app = QApplication(sys.argv)
         self.install_stylesheet()
 
-        # Create and display the splash screen
-        splash_pix = QPixmap(':/images/splash.png')
-        self.splash = QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
-        self.splash.setMask(splash_pix.mask())
-        #splash.showMessage("opsi Package Builder " + oPB.PROGRAM_VERSION + " " + translate("Main", "is loading..."), QtCore.Qt.AlignCenter, QtCore.Qt.white)
-        self.splash.show()
-        self.app.processEvents()
+        # Create and display the splash screen, if in ui mode
+        if not self.args.nogui:
+            splash_pix = QPixmap(':/images/splash.png')
+            self.splash = QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
+            self.splash.setMask(splash_pix.mask())
+            #splash.showMessage("opsi Package Builder " + oPB.PROGRAM_VERSION + " " + translate("Main", "is loading..."), QtCore.Qt.AlignCenter, QtCore.Qt.white)
+            self.splash.show()
+            self.app.processEvents()
 
         # Application name
         self.app.setOrganizationName("opsi Package Builder")
@@ -148,13 +152,6 @@ class Main(QObject):
         for elem in self.app.libraryPaths():
             self.logger.debug("QT5 library path: " + elem)
 
-        # installing translators
-        self.translator = Translator(self.app, "opsipackagebuilder")
-        self.translator.install_translations(confighandler.ConfigHandler.cfg.language)
-
-        # retranslate logWindow, as it is loaded before the translations
-        self.logWindow.retranslateUi(self.logWindow)
-
         self.check_online_status()
 
         # -----------------------------------------------------------------------------------------
@@ -162,6 +159,13 @@ class Main(QObject):
 
         # startup gui variant
         if not self.args.nogui:
+
+            # installing translators
+            self.translator = Translator(self.app, "opsipackagebuilder")
+            self.translator.install_translations(confighandler.ConfigHandler.cfg.language)
+
+            # retranslate logWindow, as it is loaded before the translations
+            self.logWindow.retranslateUi(self.logWindow)
 
             # startup program window
             self.mainWindow = main.MainWindowController(self.args)
@@ -191,7 +195,7 @@ class Main(QObject):
                 self.logger.info("Network drive successfully unmounted")
 
         # exit and set return code
-        self.logger.debug("Exit code: " + str(oPB.EXITCODE))
+        self.logger.info("Exit code: " + str(oPB.EXITCODE))
 
         sys.exit(oPB.EXITCODE)
 
@@ -199,9 +203,9 @@ class Main(QObject):
         css = os.environ['OPB_BASE'] + "/ui/stylesheet.qss"
 
         try:
-            file = open(css, "r", encoding="utf-8", newline="\n")
-            style = file.readlines()
-            file.close()
+            with open(css, "r", encoding="utf-8", newline="\n") as file:
+                style = file.readlines()
+                file.close()
         except:
             return
 

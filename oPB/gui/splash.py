@@ -41,7 +41,7 @@ translate = QtCore.QCoreApplication.translate
 class Splash(LogMixin, EventMixin):
     """Splash screen class"""
 
-    def __init__(self, parent, msg):
+    def __init__(self, parent, msg = ""):
         """
         Constructor of Splash screen
 
@@ -53,13 +53,13 @@ class Splash(LogMixin, EventMixin):
         self.isHidden = True
         self._progress = 0
         self._progressBar = None
+        self.msg = msg
 
         pixmap = QtGui.QPixmap(380, 100)
         pixmap.fill(QtGui.QColor("darkgreen"))
 
         self._splash = QSplashScreen(pixmap)
         self._splash.setParent(self._parent)
-        self._splash.showMessage(msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
 
         self.add_progressbar()
 
@@ -139,7 +139,13 @@ class Splash(LogMixin, EventMixin):
         self._splash.close()
 
     @pyqtSlot()
-    def show_(self):
+    def show_(self, msg = ""):
+
+        if msg != "":
+            self._splash.showMessage(msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
+        else:
+            self._splash.showMessage(self.msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
+
         self.logger.debug("Show splash, parent: " + str(self._parent))
         try:
             parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux

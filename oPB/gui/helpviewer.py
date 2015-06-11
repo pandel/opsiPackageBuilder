@@ -139,9 +139,10 @@ class HelpDialog(QObject):
         self._se.searchingFinished.connect(self.showResults)
         self._btnReset.clicked.connect(self.resetResult)
 
-        self.retranslateUi()
+        self.retranslateMsg()
 
-    def retranslateUi(self, *args):
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
         self._btnReset.setText(translate("HelpViewer", "Reset"))
 
     def search(self):

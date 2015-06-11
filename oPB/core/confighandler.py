@@ -145,8 +145,9 @@ class ConfigHandler(ConfigParser, LogMixin):
             # read settings
             self.logger.debug("Trying to read configuration file: " + self.filename)
             try:
-                self.read_file(open(self.filename))
-                self.logger.info("Configuration file successfully loaded.")
+                with open(self.filename) as file:
+                    self.read_file(file)
+                    self.logger.info("Configuration file successfully loaded.")
             except IOError:
                 self.logger.error("Configuration file could not be loaded.")
 
@@ -176,6 +177,7 @@ class ConfigHandler(ConfigParser, LogMixin):
             ConfigHandler.cfg = self
 
     def log_config(self):
+        """Dump config to logfile"""
         self.logger.debug("Current configuration values:")
         self.passwords('encrypt')
         for sect in self.sections():
@@ -189,7 +191,7 @@ class ConfigHandler(ConfigParser, LogMixin):
         """
         (De-)obfuscate passwords
 
-        :param mode: encrypt/decrypt passwords in configuration
+        :param mode: possible values "encrypt", "decrypt"
         """
 
         func = Helper.encrypt if mode == 'encrypt' else Helper.decrypt
@@ -202,16 +204,14 @@ class ConfigHandler(ConfigParser, LogMixin):
             self.proxy_pass = func(self.proxy_pass)
 
     def save(self):
-        """
-        Write INI file
-        """
+        """Write INI file"""
         self.passwords('encrypt')
         try:
             os.makedirs(os.path.dirname(self.filename), exist_ok=True)
-            f = open(self.filename, "w")
-            self.write(f)
-            f.close()
-            self.logger.debug("Configuration successfully saved: " + self.filename)
+            with open(self.filename, "w") as file:
+                self.write(file)
+                file.close()
+                self.logger.debug("Configuration successfully saved: " + self.filename)
         except IOError as error:
             self.logger.error("Configuration could not be saved: " + self.filename)
             self.logger.error(error.name)
@@ -220,8 +220,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     def convert_old_format(self):
         """
-        Convert old INI format pre 8.0.0
-        :return:
+        Convert old INI format
         """
         self.logger.debug("Convert old config.ini format...")
         self.usenetdrive = "False" if self.usenetdrive == "4" else "True"

@@ -309,3 +309,6 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
 
         return ret
 
+    def retranslateMsg(self):
+        self.logger.debug("Retranslating further messages...")
+        self.splash.msg = translate("MainWindow", "Please wait...")

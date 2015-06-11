@@ -44,10 +44,23 @@ NOTSET 	0
 """
 
 SSH = 35
+"""Additional log level: SSH"""
 SSHINFO = 25
+"""Additional log level: SSHINFO"""
 
 class LogStreamHandler(logging.Handler):
     def __init__(self,  parent,  main):
+        """
+        Constructor of LogStreamHandler
+
+        :Example:
+
+            self.dialogHandler = LogStreamHandler(self.logWindow.editLog, self)
+
+        :param parent: QtWidget for log messages
+        :param main: Dialog parent
+        :return:
+        """
         logging.Handler.__init__(self)
         self.parent = parent
         self.main = main
@@ -91,12 +104,25 @@ class LogStreamHandler(logging.Handler):
         self.textWidget.ensureCursorVisible()
 
 class LogOutput(object):
-    def __init__(self, parent, out=None, color=None):
+    def __init__(self, parent: object, out: object=None, color: object=None):
+        """
+        Constructor of LogOutput
+
+        :Example:
+
+            # Output forwarding
+            sys.stdout = LogOutput(self.logWindow.editOutput,  sys.__stdout__,  self.logWindow.editOutput.textColor())
+            sys.stderr = LogOutput(self.logWindow.editOutput,  sys.__stderr__,  QtGui.QColor(QtCore.Qt.red))
+
+        :param parent: Log output QtWidget
+        :param out: additional output channgel (sys.__stdout__ / sys.__stdout__)
+        :param color: output color in ``parent``
+        """
         self.textWidget = parent
         self.out = out
         self.color = color
 
-    def write(self, m):
+    def write(self, m: str):
         self.textWidget.moveCursor(QTextCursor.End)
 
         if self.color:
@@ -125,6 +151,7 @@ class LogOutput(object):
         pass
 
 class SSHLogger(getLoggerClass()):
+    """Subclass current logger class and add log level SSH and SSHINFO"""
     def __init__(self, name, level=NOTSET):
         super().__init__(name, level)
 
