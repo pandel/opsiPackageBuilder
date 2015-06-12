@@ -76,7 +76,7 @@ class UninstallDialog(UninstallDialogBase, UninstallDialogUI, LogMixin, EventMix
         self.btnRefresh.clicked.connect(lambda: self.update_ui(True))
         self.btnUninstall.clicked.connect(self.uninstall)
         self.btnClose.clicked.connect(self.dialogClosed.emit)
-        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_QUINST))
+        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_QUNINST))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

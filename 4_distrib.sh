@@ -1,1 +1,1 @@
-pyinstaller --onefile --noconfirm --log-level=DEBUG pyinstaller-linux.spec
+pyinstaller --noconfirm  pyinstaller-windows.spec

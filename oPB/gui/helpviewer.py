@@ -273,22 +273,22 @@ class HelpReply(QNetworkReply):
 class Help(QObject):
     """Main Help class"""
 
-    def __init__(self, helpfile, prefix, short_url = None):
+    def __init__(self, helpfile, prefix, short_url = None, max = True):
         """
         Constructor of Help
         :param helpfile: full path to qthelp file
         :param prefix: url prefix, like qthelp://org.sphinx...
         :param short_url: shortcut url to help content, omits ``prefix``
-
+        :param max: show helpviewer maximized (True), or not (False)
         """
         super().__init__()
         self._help = HelpDialog(helpfile)
         self._helpprefix = prefix
 
-        self.showHelp(short_url)
+        self.showHelp(short_url, max)
 
-    def showHelp(self, short_url):
-        """Find short ``short_url`` in help file and open maximized viewer"""
+    def showHelp(self, short_url, max = True):
+        """Find short ``short_url`` in help file and open (maximized) viewer"""
         if type(short_url) is str:
             self._help.setUrl(self._helpprefix + short_url)
         else:
@@ -298,7 +298,10 @@ class Help(QObject):
         #self._help.ui.setGeometry(parentsize.height * (2/3),parentsize.height * (2/3))
         #self._help.ui.show()
 
-        self._help.ui.showMaximized()
+        if max:
+            self._help.ui.showMaximized()
+        else:
+            self._help.ui.show()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
