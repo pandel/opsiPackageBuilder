@@ -50,6 +50,19 @@ from oPB.core import confighandler
 
 if sys.platform.lower().startswith('win'):
     from oPB.core.mapdrive import MapDrive
+    import ctypes
+
+    def hideConsole():
+        whnd = ctypes.windll.kernel32.GetConsoleWindow()
+        if whnd != 0:
+            ctypes.windll.user32.ShowWindow(whnd, 0)
+            #ctypes.windll.kernel32.CloseHandle(whnd)
+
+    def showConsole():
+        whnd = ctypes.windll.kernel32.GetConsoleWindow()
+        if whnd != 0:
+            ctypes.windll.user32.ShowWindow(whnd, 1)
+            #ctypes.windll.kernel32.CloseHandle(whnd)
 
 from oPB.controller import main, console
 import oPB.core.logging
@@ -160,6 +173,11 @@ class Main(QObject):
         # startup gui variant
         if not self.args.nogui:
 
+            # hide console window, but only under Windows and only if app is frozen
+            if sys.platform.lower().startswith('win'):
+                if getattr(sys, 'frozen', False):
+                    hideConsole()
+
             # installing translators
             self.translator = Translator(self.app, "opsipackagebuilder")
             self.translator.install_translations(confighandler.ConfigHandler.cfg.language)
@@ -196,6 +214,12 @@ class Main(QObject):
 
         # exit and set return code
         self.logger.info("Exit code: " + str(oPB.EXITCODE))
+
+        # show console window
+        if not self.args.nogui:
+            if sys.platform.lower().startswith('win'):
+                if getattr(sys, 'frozen', False):
+                    showConsole()
 
         sys.exit(oPB.EXITCODE)
 
