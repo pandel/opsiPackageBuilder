@@ -219,6 +219,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.actionDeploy.triggered.connect(self._parent.deployagent_dialog)
             self.actionBundleCreation.triggered.connect(self._parent.bundle_dialog)
             self.actionDepotManager.triggered.connect(self._parent.depotmanager_dialog)
+            self.actionImport.triggered.connect(self.package_import)
         else:
             # connect online menu action signals
             self.actionSetRights.triggered.connect(self.offline)
@@ -228,7 +229,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.actionUninstall.triggered.connect(self.offline)
             self.actionDeploy.triggered.connect(self.offline)
             self.actionBundleCreation.triggered.connect(self.offline)
-            self.actionDepotManager.triggered.connect(self.offline)
+            self.actionImport.triggered.connect(self.offline)
 
         # buttons
         self.btnSave.clicked.connect(self._parent.project_save)
@@ -507,8 +508,29 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
             self._parent.startup.hide_me()
-            self._parent.do_upload(script[0], depot = self._parent.query_depot(parent = self))
+            self._parent.do_import(script[0], depot = self._parent.query_depot(parent = self))
             self._parent.startup.show_me()
+        else:
+            self.logger.debug("Dialog aborted.")
+
+    @pyqtSlot()
+    def package_import(self):
+        """
+        Initiate package import
+
+        See: :meth:`oPB.controller.base.BaseController.do_upload`
+
+        """
+        self.logger.debug("Import package")
+
+        ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
+
+        script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
+                                            "", ext)
+
+        if not script == ("", ""):
+            self.logger.debug("Selected package: " + script[0])
+            self._parent.package_import(script[0])
         else:
             self.logger.debug("Dialog aborted.")
 

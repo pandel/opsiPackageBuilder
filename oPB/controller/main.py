@@ -439,17 +439,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.logger.debug("Save project")
         self.update_backend_data()
         self.save_backend()
-        while self._dataSaved is None: # _dataSaved has to be True or False
-            pass
 
-        if not self._dataSaved:
-            self.logger.error("Backend data could not be saved")
-            self.msgbox(translate("mainController", "Project could not be saved successfully!"), oPB.MsgEnum.MS_ERR)
-        else:
-            #reset saving and change marker back to undefined state
-            self.logger.info("Data saved successfully")
-            self.msgbox(translate("mainController", "Project saved successfully!"), oPB.MsgEnum.MS_INFO)
-            self._dataSaved = None
+        if self._dataSaved:
             self._modelDataChanged = False
 
     @pyqtSlot()
@@ -463,24 +454,22 @@ class MainWindowController(BaseController, QObject, EventMixin):
         """Load project data."""
         self.load_backend(project_name)
 
-        while self._dataLoaded is None: # _dataLoaded has to be True or False
-            pass
-
         if not self._dataLoaded:
-            self.msgbox(translate("mainController", "Project could not be loaded!"), oPB.MsgEnum.MS_ERR)
             self.startup.show_me()
         else:
             self._active_project = True
-            self._dataLoaded = None
-            self.msgbox(translate("mainController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
             self.startup.hide_me()
 
         self.ui.set_current_project(self.controlData.projectfolder)
 
     @pyqtSlot(str)
     def project_create(self, project_name):
-        self.project_close()
+
+        if not self.project_close():
+            return
+
         self.logger.info("Create new project: " + project_name)
+
         self.reset_state()
         try:
             self.create_backend(project_name)
@@ -488,18 +477,43 @@ class MainWindowController(BaseController, QObject, EventMixin):
             self.logger.warning(translate("mainController", "Error during project creation."))
             return
 
-        while self._dataLoaded is None:
-            pass
-
-        if not self._dataLoaded:
-            #reset loading marker back to unsaved state
-            self.logger.error("Backend data could not be loaded.")
-            self._dataLoaded = None;
-            self.msgbox(translate("mainController", "Project could not be created!"), oPB.MsgEnum.MS_ERR)
-        else:
+        if self._dataLoaded:
             self._active_project = True
             self.logger.info("Backend data loaded")
             self.startup.hide_me()
+
+    def package_import(self, pack: str):
+        """
+        Import opsi package file into development folder and open it, if successful
+
+        :param pack: package file path
+        """
+        self.logger.debug("Importing package")
+
+        if self._active_project:
+            if not self.project_close():
+                return
+
+            self.reset_state()
+
+        # extract product id from package path
+        file = Helper.get_file_from_path(pack)
+        product = file[:file.rfind("_")]  # remove everything behind product name (version, file extension, etc.)
+        project = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, product)
+
+        # import
+        try:
+            self.startup.hide_me()
+            self.do_import(pack)
+        except:
+            self.logger.err("Package import unsuccessful!")
+            return
+
+        # open
+        try:
+            self.project_load(project)
+        except:
+            self.logger.err("Imported package could not be opened!")
 
     @pyqtSlot()
     def show_changelogeditor(self):
@@ -511,7 +525,6 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.chLogEditor.ui.show()
         # sometimes the window isn't activated, so...
         self.chLogEditor.ui.activateWindow()
-
 
     def msgbox(self, msgtext = "", typ = oPB.MsgEnum.MS_STAT, parent = None, preload = ""):
         """ Messagebox function

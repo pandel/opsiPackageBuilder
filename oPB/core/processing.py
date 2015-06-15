@@ -36,6 +36,7 @@ import socket
 import spur
 import shutil
 import tempfile
+import platform
 from io import StringIO
 import datetime
 from pathlib import PurePath, PurePosixPath
@@ -286,6 +287,40 @@ class OpsiProcessing(QObject, LogMixin):
                     cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
 
                 result = self._processAction(cmd, action, ret)
+
+            except Exception as error:
+                self.logger.ssh("Could not copy file to remote destination.")
+                self.logger.error(repr(error).replace("\\n"," --> "))
+                self.logger.error("Set return code to RET_SSHCONNERR")
+                self.ret = oPB.RET_SSHCONNERR
+                self.rettype = oPB.MsgEnum.MS_ERR
+                self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_IMPORT:
+            ret = oPB.RET_SSHCMDERR
+            package = kwargs.get("packagefile", "")
+
+            # get project name
+            file = Helper.get_file_from_path(package)
+            product = file[:file.rfind("_")]  # remove everything behind product name (version, file extension, etc.)
+
+            # check if temporary install folder exists and create if not
+            if platform.system() == "Windows":
+                destfolder = Helper.concat_path_and_file(oPB.DEV_BASE, ConfigHandler.cfg.dev_dir[3:]).replace("\\","/")
+                destfile = Helper.concat_path_and_file(destfolder, file).replace("\\","/").replace("\\","/")
+            else:
+                destfolder = ConfigHandler.cfg.dev_dir
+                destfile = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, file)
+
+            self.logger.ssh(20 * "-" + "ACTION: IMPORT" + 20 * "-")
+            # copy file to temporary location
+            try:
+                self.logger.ssh("Copy file: " + package + " --> " + destfile)
+                self.copyToRemote(package, destfile)
+
+                cmd = ["sh", "-c", "cd " + destfolder + "; " + oPB.OPB_EXTRACT + " " + destfile]
+                result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
             except Exception as error:
                 self.logger.ssh("Could not copy file to remote destination.")

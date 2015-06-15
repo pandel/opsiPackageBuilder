@@ -105,13 +105,21 @@ class BaseController(LogMixin):
 
             self.add_changelog_entry(" * SAVE COMMENT: " + comment)
 
+        self._dataSaved = None
+
         self.controlData.save_data()
 
         while self._dataSaved is None:  # _dataSaved has to be True or False
             pass
 
         if not self._dataSaved:
+            self.logger.error("Backend data could not be saved")
+            self.msgbox(translate("baseController", "Project could not be saved successfully!"), oPB.MsgEnum.MS_ERR)
             oPB.EXITCODE = oPB.RET_BSAVE
+        else:
+            self.logger.info("Data saved successfully")
+            self.msgbox(translate("mainController", "Project saved successfully!"), oPB.MsgEnum.MS_INFO)
+
 
     def reset_backend(self):
         """Reset backend data to initial values"""
@@ -129,9 +137,9 @@ class BaseController(LogMixin):
             self.controlData.projectfolder = project_folder
             self.add_changelog_entry("Project created with opsi Package Builder " + oPB.PROGRAM_VERSION)
             self.save_backend()
-            self._dataSaved = None
-            #self._dataSaved = True
         except Exception:
+            self.logger.error("Initial backend data could not be created/loaded.")
+            self.msgbox(translate("baseController", "Project could not be created!"), oPB.MsgEnum.MS_ERR)
             self.reset_backend()
             raise
 
@@ -159,18 +167,22 @@ class BaseController(LogMixin):
         # itemChanged signal has to be disconnected temporarily, because
         # if not, dataChanged would be set after loading
         self.logger.info("Load project: " + project_name)
+
+        self._dataLoaded = None
+
         self.controlData.load_data(Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, project_name))
+
         while self._dataLoaded is None: # _dataLoaded has to be True or False
             pass
 
         if not self._dataLoaded:
-            # reset loading marker back to unsaved state
             self.logger.error("Backend data could not be loaded.")
-            self._dataLoaded = None
             self.logger.debug("Set exitcode RET_EOPEN")
             oPB.EXITCODE = oPB.RET_EOPEN
+            self.msgbox(translate("baseController", "Project could not be loaded!"), oPB.MsgEnum.MS_ERR)
         else:
             self.logger.info("Backend data loaded")
+            self.msgbox(translate("mainController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
 
     def _do(self, jobtype, msg, **kwargs):
         self.logger.debug("Dispatch job")
@@ -391,6 +403,10 @@ class BaseController(LogMixin):
     @pyqtSlot()
     def do_deploy(self, clientlist = [], options = {}, dest = ""):
         self._do(oPB.OpEnum.DO_DEPLOY, translate("baseController", "Deploy opsi-client agent from config server..."), alt_destination = dest, clientlist = clientlist, options = options)
+
+    @pyqtSlot()
+    def do_import(self, packagefile, dest = ""):
+        self._do(oPB.OpEnum.DO_IMPORT, translate("baseController", "Installation running..."), alt_destination = dest, packagefile = packagefile)
 
     def query_depot(self, with_all = True, parent = None):
         if ConfigHandler.cfg.use_depot_funcs == "True":

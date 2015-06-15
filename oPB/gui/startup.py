@@ -70,17 +70,30 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
         self.btnStartNew.clicked.connect(self._parentUi.actionNew.triggered)
         self.btnStartOpen.clicked.connect(self._parentUi.actionOpen.triggered)
         self.btnStartSettings.clicked.connect(self._parentUi.actionSettings.triggered)
-        self.btnStartBundle.clicked.connect(self._parentUi.actionBundleCreation.triggered)
-        self.btnStartDepotMgmt.clicked.connect(self._parentUi.actionDepotManager.triggered)
-        self.btnStartJobSched.clicked.connect(self._parentUi.actionScheduler.triggered)
         self.btnStartRecent.setMenu(self.menuRecent)
-        self.btnStartInstall.clicked.connect(self._parentUi.actionInstall.triggered)
-        self.btnStartUpload.clicked.connect(self._parentUi.actionUpload.triggered)
-        self.btnStartUninstall.clicked.connect(self._parentUi.actionUninstall.triggered)
-        self.btnStartDeploy.clicked.connect(self._parentUi.actionDeploy.triggered)
         self.btnStartShowLog.clicked.connect(self._parentUi.actionShowLog.triggered)
         self.btnStartExit.clicked.connect(self._parentUi.close)
         self._parentUi.windowMoved.connect(self.set_position)
+
+        if oPB.NETMODE != "offline":
+            self.btnStartBundle.clicked.connect(self._parentUi.actionBundleCreation.triggered)
+            self.btnStartDepotMgmt.clicked.connect(self._parentUi.actionDepotManager.triggered)
+            self.btnStartJobSched.clicked.connect(self._parentUi.actionScheduler.triggered)
+            self.btnStartInstall.clicked.connect(self._parentUi.actionInstall.triggered)
+            self.btnStartUpload.clicked.connect(self._parentUi.actionUpload.triggered)
+            self.btnStartUninstall.clicked.connect(self._parentUi.actionUninstall.triggered)
+            self.btnStartDeploy.clicked.connect(self._parentUi.actionDeploy.triggered)
+            self.btnStartImport.clicked.connect(self._parentUi.actionImport.triggered)
+        else:
+            self.gBoxMiddle.setVisible(False)
+            self.btnStartBundle.setVisible(False)
+            self.btnStartDepotMgmt.setVisible(False)
+            self.btnStartJobSched.setVisible(False)
+            self.btnStartInstall.setVisible(False)
+            self.btnStartUpload.setVisible(False)
+            self.btnStartUninstall.setVisible(False)
+            self.btnStartDeploy.setVisible(False)
+            self.btnStartImport.setVisible(False)
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

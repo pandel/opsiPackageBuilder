@@ -56,7 +56,7 @@
     <number>2</number>
    </property>
    <item row="0" column="2">
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="gBoxMiddle">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -269,7 +269,7 @@ QPushButton:pressed {
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="gBoxLeft">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -459,11 +459,64 @@ QPushButton:pressed {
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="btnStartImport">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background:rgb(240, 240, 240);
+	color:rgb(89, 89, 89);
+	border-radius: 10px;
+	border: 2px solid rgb(200, 200, 200);
+}
+QPushButton:pressed {
+	border: 2px solid rgb(85, 85, 85);
+}
+</string>
+        </property>
+        <property name="text">
+         <string>Import Package</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <disabledon>:/images/resource_14.ico</disabledon>
+         </iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="shortcut">
+         <string>F2</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item row="0" column="3">
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="gBoxRight">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>

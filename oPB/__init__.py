@@ -139,6 +139,8 @@ OPB_UNINSTALL = "opsi-package-manager -r"
 """opsi basic uninstall command"""
 OPB_UPLOAD = "opsi-package-manager -u"
 """opsi basic upload command"""
+OPB_EXTRACT = "opsi-package-manager -x"
+"""opsi package extract command"""
 OPB_PROD_UPDATER = "nohup /usr/bin/opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &" # must be started with nohup
 """product updater command"""
 OPB_DEPLOY_COMMAND = "/var/lib/opsi/depot/opsi-client-agent/opsi-deploy-client-agent"
@@ -245,7 +247,8 @@ BModEnum = Enum("BModEnum", "BD_CANCEL BD_REBUILD BD_NEW BD_INTERACTIVE")
 
 OpEnum = Enum("OpEnum", "DO_BUILD DO_INSTALL DO_UNINSTALL DO_SETRIGHTS DO_GETCLIENTS DO_GETPRODUCTS DO_CREATEJOBS DO_DELETEJOBS DO_GETATJOBS "
                         "DO_DELETEALLJOBS DO_GETREPOCONTENT DO_GETDEPOTS DO_GETPRODUCTSONDEPOTS DO_QUICKINST DO_QUICKUNINST DO_INSTSETUP DO_UPLOAD "
-                        "DO_DELETEFILEFROMREPO DO_UNREGISTERDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_GENMD5 DO_GETCLIENTSONDEPOTS")
+                        "DO_DELETEFILEFROMREPO DO_UNREGISTERDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_GENMD5 DO_GETCLIENTSONDEPOTS "
+                        "DO_IMPORT")
 """Constants for opsi operations"""
 
 # return codes
