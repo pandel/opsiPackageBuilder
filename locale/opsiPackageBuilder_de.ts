@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="de_DE" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="de_DE" sourcelanguage="en">
 <context>
     <name>BaseController</name>
     <message>
@@ -8,7 +9,7 @@
         <translation type="obsolete">Diese Paketversion existiert bereits! Folgende Möglichkeiten zum Fortfahren:@@Wiederholen@TAB= Paket erneut bauen, altes überschreiben@Version erzeugen@TAB= Paketversionsnummer um Zeitstempel ergänzen und bauen@Abbrechen@TAB= Vorgang komplett abbrechen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="199"/>
+        <location filename="../oPB/controller/base.py" line="217"/>
         <source>This package version already exists! You have three possibilities:@@Rebuild@TAB@TAB= rebuild (overwrite) the existing one@Add version@TAB= auto-correct package version and build new one@Cancel@TAB= cancel build process</source>
         <translation>Diese Paketversion existiert bereits! Folgende Möglichkeiten zum Fortfahren:@@Wiederholen@TAB= Paket erneut bauen, altes überschreiben@Version erzeugen@TAB= Auto-Korrektur der Paketversion und bauen@Abbrechen@TAB= Vorgang komplett abbrechen</translation>
     </message>
@@ -100,12 +101,12 @@
 <context>
     <name>ChangelogEntry</name>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="94"/>
+        <location filename="../oPB/core/datadefinition.py" line="100"/>
         <source>Status must be testing or stable: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="104"/>
+        <location filename="../oPB/core/datadefinition.py" line="110"/>
         <source>Urgency doesn&apos;t contain block marker for extended mode: </source>
         <translation></translation>
     </message>
@@ -113,127 +114,127 @@
 <context>
     <name>ControlFileData</name>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="408"/>
+        <location filename="../oPB/core/datadefinition.py" line="423"/>
         <source>type must be netboot or localboot</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="418"/>
+        <location filename="../oPB/core/datadefinition.py" line="433"/>
         <source>id cannot be empty</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="429"/>
+        <location filename="../oPB/core/datadefinition.py" line="444"/>
         <source>name cannot be empty</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="456"/>
+        <location filename="../oPB/core/datadefinition.py" line="471"/>
         <source>product version cannot be empty</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="467"/>
+        <location filename="../oPB/core/datadefinition.py" line="482"/>
         <source>package version cannot be empty</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="492"/>
+        <location filename="../oPB/core/datadefinition.py" line="515"/>
         <source>priority must be integer between -100 and 100</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="508"/>
+        <location filename="../oPB/core/datadefinition.py" line="531"/>
         <source>licenseRequired must be True or False</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="528"/>
+        <location filename="../oPB/core/datadefinition.py" line="551"/>
         <source>setup script has invalid file extension</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="538"/>
+        <location filename="../oPB/core/datadefinition.py" line="561"/>
         <source>uninstall script has invalid file extension</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="548"/>
+        <location filename="../oPB/core/datadefinition.py" line="571"/>
         <source>update script has invalid file extension</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="558"/>
+        <location filename="../oPB/core/datadefinition.py" line="581"/>
         <source>always script has invalid file extension</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="568"/>
+        <location filename="../oPB/core/datadefinition.py" line="591"/>
         <source>once script has invalid file extension</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="578"/>
+        <location filename="../oPB/core/datadefinition.py" line="601"/>
         <source>custom script has invalid file extension</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="588"/>
+        <location filename="../oPB/core/datadefinition.py" line="611"/>
         <source>userLogin script has invalid file extension</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="629"/>
+        <location filename="../oPB/core/datadefinition.py" line="654"/>
         <source>Wrong type for property data</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="683"/>
+        <location filename="../oPB/core/datadefinition.py" line="712"/>
         <source>Wrong type for dependency data</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="710"/>
+        <location filename="../oPB/core/datadefinition.py" line="739"/>
         <source>changelog_style must be &apos;simple&apos; or &apos;extended&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="720"/>
+        <location filename="../oPB/core/datadefinition.py" line="749"/>
         <source>changelog_converted must be True or False</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="784"/>
+        <location filename="../oPB/core/datadefinition.py" line="813"/>
         <source>changelog_gettable cannot be used for simple changelog format</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="876"/>
+        <location filename="../oPB/core/datadefinition.py" line="910"/>
         <source>Parameter elements in list must be of type ChangelogEntry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="872"/>
+        <location filename="../oPB/core/datadefinition.py" line="906"/>
         <source>Parameter value must be of type list</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="802"/>
+        <location filename="../oPB/core/datadefinition.py" line="831"/>
         <source> * Initial entry</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="824"/>
+        <location filename="../oPB/core/datadefinition.py" line="853"/>
         <source>Converted</source>
         <translation>Umgewandelt</translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="836"/>
+        <location filename="../oPB/core/datadefinition.py" line="865"/>
         <source>Converted freetext changelog entries:</source>
         <translation>Umgewandelte Freitexteinträge:</translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="849"/>
+        <location filename="../oPB/core/datadefinition.py" line="878"/>
         <source>changelog_getlist cannot be used for simple changelog format</source>
         <translation></translation>
     </message>
@@ -359,7 +360,7 @@
         <translation>Depot:</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="191"/>
+        <location filename="../oPB/gui/depotmanager.py" line="192"/>
         <source>Fetch REPO content</source>
         <translation>Hole REPO Inhalt</translation>
     </message>
@@ -394,7 +395,7 @@
         <translation>Installieren</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="243"/>
+        <location filename="../oPB/gui/depotmanager.py" line="244"/>
         <source>Uninstall</source>
         <translation>Deinstallieren</translation>
     </message>
@@ -454,12 +455,12 @@
         <translation>Zeige Logbuch</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="248"/>
+        <location filename="../oPB/gui/depotmanager.py" line="249"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="188"/>
+        <location filename="../oPB/gui/depotmanager.py" line="189"/>
         <source>Fetch DEPOT content</source>
         <translation>Hole DEPOT Inhalt</translation>
     </message>
@@ -467,7 +468,7 @@
 <context>
     <name>HelpViewer</name>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="145"/>
+        <location filename="../oPB/gui/helpviewer.py" line="148"/>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
     </message>
@@ -596,12 +597,12 @@
 <context>
     <name>JobListDialog</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="136"/>
+        <location filename="../oPB/gui/scheduler.py" line="137"/>
         <source>Job list</source>
         <translation>Zeitplaner Auftragsliste</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="136"/>
+        <location filename="../oPB/gui/scheduler.py" line="137"/>
         <source> - Current server: </source>
         <translation>- Aktueller Server:</translation>
     </message>
@@ -695,22 +696,22 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="633"/>
+        <location filename="../oPB/gui/mainwindow.py" line="683"/>
         <source>Open project</source>
         <translation>Projekt öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="717"/>
+        <location filename="../oPB/gui/mainwindow.py" line="767"/>
         <source>Choose script</source>
         <translation>Script wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="757"/>
+        <location filename="../oPB/gui/mainwindow.py" line="807"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation>Das Skript muss sich innerhalb des CLIENT_DATA Ordners des Pakets befinden!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="660"/>
+        <location filename="../oPB/gui/mainwindow.py" line="710"/>
         <source>Create new project</source>
         <translation>Neues Projekt</translation>
     </message>
@@ -720,37 +721,37 @@
         <translation>Bitte warten...</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="506"/>
+        <location filename="../oPB/gui/mainwindow.py" line="536"/>
         <source>Choose package file</source>
         <translation>Paketdatei wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="361"/>
+        <location filename="../oPB/gui/mainwindow.py" line="368"/>
         <source>Sorry, this function doesn&apos;t work at the moment!</source>
         <translation>Diese Funktion steht leider derzeit noch nicht zur Verfügung!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="366"/>
+        <location filename="../oPB/gui/mainwindow.py" line="373"/>
         <source>You are working in offline mode. Functionality not available!</source>
         <translation>Offline Modus aktiv. Die Funktion ist nicht verügbar!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="376"/>
+        <location filename="../oPB/gui/mainwindow.py" line="383"/>
         <source>Local opsi-winst installation not found or client-agent not installed!</source>
         <translation>Lokale winst32.exe nicht gefunden. Client Agent nicht installiert?</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scripttree.py" line="107"/>
+        <location filename="../oPB/gui/scripttree.py" line="108"/>
         <source>Internal editor not available at the moment. Use external editor instead!</source>
         <translation>Interner Editor derzeit nicht verfügbar. Bitte externen Editor nutzen!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scripttree.py" line="103"/>
+        <location filename="../oPB/gui/scripttree.py" line="104"/>
         <source>Sorry! You cannot edit a script outside the project folder!</source>
         <translation>Aus Sicherheitsgründen können keine Script außerhalb des Projektordners bearbeitet werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/scripttree.py" line="134"/>
+        <location filename="../oPB/gui/scripttree.py" line="135"/>
         <source>Editor startup did not cleanup correctly.
 
 The following message(s) returned:</source>
@@ -758,66 +759,76 @@ The following message(s) returned:</source>
 
 Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     </message>
+    <message>
+        <location filename="../oPB/gui/mainwindow.py" line="553"/>
+        <source>Save current project as...</source>
+        <translation>Aktuelles Projekt speichern unter...</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/mainwindow.py" line="914"/>
+        <source>Downloading: {0} Bytes: {1}</source>
+        <translation>Lade herunter: {0} Bytes: {1}</translation>
+    </message>
 </context>
 <context>
     <name>OpsiProcessing</name>
     <message>
-        <location filename="../oPB/core/processing.py" line="86"/>
+        <location filename="../oPB/core/processing.py" line="88"/>
         <source>Command executed.</source>
         <translation>Befehl ausgeführt.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="148"/>
+        <location filename="../oPB/core/processing.py" line="163"/>
         <source>Package has been build before. It will not be overwritten!</source>
         <translation>Das Paket wurde bereits erstellt und wird nicht überschrieben!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="756"/>
+        <location filename="../oPB/core/processing.py" line="813"/>
         <source>Command not found. See Log for details.</source>
         <translation>Befehl nicht gefunden. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="772"/>
+        <location filename="../oPB/core/processing.py" line="829"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation>Fehler beim Verbindungsaufbau. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="185"/>
+        <location filename="../oPB/core/processing.py" line="199"/>
         <source>Package file could not be found!</source>
         <translation>Die Paketdatei konnte nicht gefunden werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="806"/>
+        <location filename="../oPB/core/processing.py" line="871"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation>Nicht verarbeitbare Umlaute gefunden, Paketbau abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="810"/>
+        <location filename="../oPB/core/processing.py" line="875"/>
         <source>Backend error: installation failed.</source>
         <translation>Fehler im Backend: Installation abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="814"/>
+        <location filename="../oPB/core/processing.py" line="879"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation>Konnte das Kommando &apos;install&apos; nicht verarbeiten.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="818"/>
+        <location filename="../oPB/core/processing.py" line="883"/>
         <source>Package file error. Check log.</source>
         <translation>Paketdatei fehlerhaft. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="822"/>
+        <location filename="../oPB/core/processing.py" line="887"/>
         <source>Undefined error occurred. Check log.</source>
         <translation>Unspezifizierter Fehler aufgetreten. Bite das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="516"/>
+        <location filename="../oPB/core/processing.py" line="566"/>
         <source>Error during command execution. Check Log for details.</source>
         <translation>Fehler während der Befehlsausführung. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="653"/>
+        <location filename="../oPB/core/processing.py" line="700"/>
         <source>opsi-product-updater is already running.</source>
         <translation>Der opsi-product-updater läuft bereits.</translation>
     </message>
@@ -825,7 +836,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>ProductDependency</name>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="254"/>
+        <location filename="../oPB/core/datadefinition.py" line="260"/>
         <source>requiredProductId cannot be empty</source>
         <translation></translation>
     </message>
@@ -833,27 +844,27 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>ProductProperty</name>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="144"/>
+        <location filename="../oPB/core/datadefinition.py" line="153"/>
         <source>Name cannot be an empty string.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="154"/>
+        <location filename="../oPB/core/datadefinition.py" line="163"/>
         <source>Type must be unicode or bool: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="168"/>
+        <location filename="../oPB/core/datadefinition.py" line="177"/>
         <source>Multivalue must be True or False: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="182"/>
+        <location filename="../oPB/core/datadefinition.py" line="191"/>
         <source>Editable must be True or False: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/datadefinition.py" line="215"/>
+        <location filename="../oPB/core/datadefinition.py" line="224"/>
         <source>Default must be True or False, if type=bool: </source>
         <translation></translation>
     </message>
@@ -861,7 +872,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>ProgressHook</name>
     <message>
-        <location filename="../oPB/core/processing.py" line="974"/>
+        <location filename="../oPB/core/processing.py" line="1052"/>
         <source>Package building in progress:</source>
         <translation>Paketbau Fortschritt:</translation>
     </message>
@@ -892,12 +903,12 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>ReportDialog</name>
     <message>
-        <location filename="../oPB/gui/utilities.py" line="214"/>
+        <location filename="../oPB/gui/utilities.py" line="213"/>
         <source>Print</source>
         <translation>Drucken</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/utilities.py" line="217"/>
+        <location filename="../oPB/gui/utilities.py" line="216"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
@@ -953,7 +964,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>ScriptTree</name>
     <message>
-        <location filename="../oPB/core/scriptscanner.py" line="92"/>
+        <location filename="../oPB/core/scriptscanner.py" line="113"/>
         <source>Script structure</source>
         <translation>Skriptstruktur Übersicht</translation>
     </message>
@@ -1440,27 +1451,27 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Paketerzeugung erfolgreich!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="266"/>
+        <location filename="../oPB/controller/base.py" line="284"/>
         <source>Build running...</source>
         <translation>Paketbau läuft...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="102"/>
+        <location filename="../oPB/controller/base.py" line="103"/>
         <source>Please enter a short comment:</source>
         <translation>Bitte einen kurzen Kommentar (Speichern) erfassen:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="223"/>
+        <location filename="../oPB/controller/base.py" line="241"/>
         <source>Could not delete old package!</source>
         <translation>Das alte Paket konnte nicht gelöscht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="247"/>
+        <location filename="../oPB/controller/base.py" line="265"/>
         <source>Please enter a short build comment:</source>
         <translation>Bitte einen kurzen Kommentar (Paketieren) erfassen:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="282"/>
+        <location filename="../oPB/controller/base.py" line="411"/>
         <source>Installation running...</source>
         <translation>Installation läuft...</translation>
     </message>
@@ -1470,12 +1481,12 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Paketinstallation erfolgreich!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="286"/>
+        <location filename="../oPB/controller/base.py" line="304"/>
         <source>Installation + setup running...</source>
         <translation>Installation und Setup läuft...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="290"/>
+        <location filename="../oPB/controller/base.py" line="308"/>
         <source>Deinstallation running...</source>
         <translation>Deinstallation läuft...</translation>
     </message>
@@ -1485,140 +1496,155 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Paket erfolgreich deinstalliert!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="187"/>
+        <location filename="../oPB/controller/base.py" line="205"/>
         <source>Action completed successfully!</source>
         <translation>Aktion erfolgreich abgeschlossen!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="299"/>
+        <location filename="../oPB/controller/base.py" line="317"/>
         <source>Setting package rights on:</source>
         <translation>Paketrechte setzen auf:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="304"/>
+        <location filename="../oPB/controller/base.py" line="322"/>
         <source>Getting opsi client list...</source>
         <translation>Hole opsi Client Liste...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="310"/>
+        <location filename="../oPB/controller/base.py" line="328"/>
         <source>Getting opsi product list...</source>
         <translation>Hole opsi Produktliste...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="322"/>
+        <location filename="../oPB/controller/base.py" line="340"/>
         <source>Getting AT job list...</source>
         <translation>Hole AT Auftragsliste...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="343"/>
+        <location filename="../oPB/controller/base.py" line="361"/>
         <source>Delete AT jobs...</source>
         <translation>Lösche AT Aufträge...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="348"/>
+        <location filename="../oPB/controller/base.py" line="366"/>
         <source>Delete every AT job...</source>
         <translation>Lösche alle AT Aufträge...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="353"/>
+        <location filename="../oPB/controller/base.py" line="371"/>
         <source>Create AT jobs...</source>
         <translation>Erzeuge AT Aufträge...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="338"/>
+        <location filename="../oPB/controller/base.py" line="356"/>
         <source>Getting client to depot association...</source>
         <translation>Hole Client/ Depot Gruppierung...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="316"/>
+        <location filename="../oPB/controller/base.py" line="334"/>
         <source>Getting opsi products on depots list...</source>
         <translation>Hole opsi Depot-Produktzuordnung...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="329"/>
+        <location filename="../oPB/controller/base.py" line="347"/>
         <source>Getting opsi depots...</source>
         <translation>Hole opsi Depots...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="359"/>
+        <location filename="../oPB/controller/base.py" line="377"/>
         <source>Get repository contents...</source>
         <translation>Hole Repository Verzeichnis...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="365"/>
+        <location filename="../oPB/controller/base.py" line="383"/>
         <source>Reboot depot...</source>
         <translation>Depot neustarten...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="369"/>
+        <location filename="../oPB/controller/base.py" line="387"/>
         <source>Poweroff depot...</source>
         <translation>Depot herunterfahren...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="373"/>
+        <location filename="../oPB/controller/base.py" line="391"/>
         <source>Run opsi-product-updater...</source>
         <translation>opsi-product-updater starten...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="377"/>
+        <location filename="../oPB/controller/base.py" line="395"/>
         <source>Remove package from repository: </source>
         <translation>Entferne Paket(e) aus dem Repository:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="381"/>
+        <location filename="../oPB/controller/base.py" line="399"/>
         <source>Generate MD5 checksums: </source>
         <translation>Generiere MD5 Checksummen für:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="385"/>
+        <location filename="../oPB/controller/base.py" line="403"/>
         <source>Remove depot registration from config server...</source>
         <translation>Entferne Depot-Registrierung vom Konfig Server...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="389"/>
+        <location filename="../oPB/controller/base.py" line="407"/>
         <source>Deploy opsi-client agent from config server...</source>
         <translation>opsi-client-agent vom Konfigserver aus verteilen...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="402"/>
+        <location filename="../oPB/controller/base.py" line="424"/>
         <source>opsi-package-manager commands only: -d ALL</source>
         <translation>Nur opsi-package-manager Befehle: -d ALL</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="411"/>
+        <location filename="../oPB/controller/base.py" line="433"/>
         <source>Selection canceled! Using default opsi server from settings.</source>
         <translation>Auswahl abgerochen! Verwende Vorgabe opsi Server aus den Einstellungen.</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/base.py" line="118"/>
+        <source>Project could not be saved successfully!</source>
+        <translation>Projekt konnte nicht gespeichert werden!</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/base.py" line="143"/>
+        <source>Project could not be created!</source>
+        <translation>Projekt konnte nicht angelegt werden!</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/base.py" line="183"/>
+        <source>Project could not be loaded!</source>
+        <translation>Projekt konnte nicht geladen werden!</translation>
     </message>
 </context>
 <context>
     <name>bundleController</name>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="70"/>
+        <location filename="../oPB/controller/components/bundle.py" line="126"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="70"/>
+        <location filename="../oPB/controller/components/bundle.py" line="126"/>
         <source>version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="70"/>
+        <location filename="../oPB/controller/components/bundle.py" line="126"/>
         <source>description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="95"/>
+        <location filename="../oPB/controller/components/bundle.py" line="92"/>
         <source>Chosen products:</source>
         <translation>Ausgewählte Produkte:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="96"/>
+        <location filename="../oPB/controller/components/bundle.py" line="93"/>
         <source>Create product bundle now?</source>
         <translation>Paketbündel jetzt erzeugen?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/bundle.py" line="103"/>
+        <location filename="../oPB/controller/components/bundle.py" line="100"/>
         <source>Please enter package name (allowed characters: a-z, A-Z, 0-9, ._-):</source>
         <translation>Bitte einen Paketnamen angeben (erlaubte Zeichen: a-z, A-Z, 0-9, ._-):</translation>
     </message>
@@ -1626,37 +1652,37 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>changelogController</name>
     <message>
-        <location filename="../oPB/controller/components/changelog.py" line="97"/>
+        <location filename="../oPB/controller/components/changelog.py" line="197"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/changelog.py" line="98"/>
+        <location filename="../oPB/controller/components/changelog.py" line="197"/>
         <source>version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/changelog.py" line="99"/>
+        <location filename="../oPB/controller/components/changelog.py" line="197"/>
         <source>status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/changelog.py" line="100"/>
+        <location filename="../oPB/controller/components/changelog.py" line="197"/>
         <source>urgency</source>
         <translation>Dringlichkeit</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/changelog.py" line="131"/>
+        <location filename="../oPB/controller/components/changelog.py" line="128"/>
         <source>Error in changelog data, check for erroneous changelog entries or use simple editor mode.</source>
         <translation>Fehler im Changelog. Bitte fehlerhafte Einträge prüfen oder einfachen Editor verwenden.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/changelog.py" line="181"/>
+        <location filename="../oPB/controller/components/changelog.py" line="178"/>
         <source>Please add a short description.</source>
         <translation>Bitte eine kurze Beschreibung erfassen.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/changelog.py" line="193"/>
+        <location filename="../oPB/controller/components/changelog.py" line="190"/>
         <source>Last entry can&apos;t be deleted!</source>
         <translation>Letzter Eintrag kann nicht entfernt werden!</translation>
     </message>
@@ -1687,122 +1713,122 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>depotmanagerController</name>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="495"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="484"/>
         <source>Selected depot:</source>
         <translation>Ausgewähltes Depot:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="395"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="384"/>
         <source>Start opsi product updater now?</source>
         <translation>opsi-product-updater jetzt starten?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="446"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="435"/>
         <source>The selected depot is ONLINE.</source>
         <translation>Das Depot ist ONLINE.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="450"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="439"/>
         <source>The selected depot is OFFLINE.</source>
         <translation>Das Depot is OFFLINE.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="463"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="452"/>
         <source>Do you really want to reboot the selected depot?</source>
         <translation>Das gewählte Depot wirklich neu starten?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="505"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="494"/>
         <source>Please enter username with sufficient priviledges:</source>
         <translation>Benutzername (mit ausreichenden Rechten) eingeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="508"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="497"/>
         <source>Please enter password:</source>
         <translation>Passwort eingeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="496"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="485"/>
         <source>Do you really want to power off the selected depot?</source>
         <translation>Das gewählte Depot wirklich herunterfahren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="308"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="297"/>
         <source>Nothing selected.</source>
         <translation>Nichts ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="412"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="401"/>
         <source>Selected packages:</source>
         <translation>Ausgewählte Pakete:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="285"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="274"/>
         <source>Remove selected packages from repository now?</source>
         <translation>Ausgewählte Pakete jetzt aus dem Repository entfernen?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="314"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="303"/>
         <source>Uninstall selected packages from depot now?</source>
         <translation>Ausgewählte Produkte jetzt am Depot deinstallieren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="341"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="330"/>
         <source>Config server:</source>
         <translation>Konfigserver:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="342"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="331"/>
         <source>Do you really want to unregister the depot from the config server? This CAN&apos;T be undone!</source>
         <translation>Das gewählte Depot wirklich am Konfigserver deregistrieren? Der Vorgang kann NICHT rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="347"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="336"/>
         <source>Are you absolutely sure?</source>
         <translation>Sind Sie absolut sicher?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="371"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="360"/>
         <source>Set rights on repository folder now?</source>
         <translation>Rechte auf dem Repository Ordner jetzt setzen?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="413"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="402"/>
         <source>Generate MD5 checksums now?</source>
         <translation>MD5 Checksummen jetzt generieren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="534"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="523"/>
         <source>Choose package file</source>
         <translation>Paketdatei wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
         <source>product version</source>
         <translation>Produktversion</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
         <source>package version</source>
         <translation>Paketversion</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="113"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
         <source>type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="123"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="556"/>
         <source>server name</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="123"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="556"/>
         <source>description</source>
         <translation>Beschreibung</translation>
     </message>
@@ -1810,7 +1836,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>infoMessages</name>
     <message>
-        <location filename="../oPB/gui/scheduler.py" line="122"/>
+        <location filename="../oPB/gui/scheduler.py" line="123"/>
         <source>infoAT</source>
         <translation>WICHTIGER HINWEIS:@@Wenn sie den Zeitplaner von opsi PackageBuilder nutzen wollen,@müssen sie UNBEDINGT folgende Dinge sicherstellen:@@- Der ATD Daemon muss auf dem Server installiert und in Betrieb sein!@@- Der opsi Benutzer, den sie in den Einstellungen hinterlegt haben, muss das Recht besitzen, AT Jobs anzulegen und zu löschen. Kontrollieren Sie hierzu die Einträge@in /etc/at.deny, bzw. wenn vorhanden, /etc/at.allow!@@- Wenn Sie selber At Jobs für eigene Aufträge am gleichen Server nutzen und dabei unterschiedliche Warteschlangen verwenden, stellen sie ABSOLUT sicher, dass Sie keine Aufträge in Warteschlange &apos;D&apos; einstellen. Diese Warteschlange wird von@opsi PackageBuilder benutzt. Wenn sie nicht darauf achten, werden ggf. Ihre@eigenen Aufträge verändert!@@Sie können das einfach prüfen: loggen Sie sich an der Serverkonsole ein und@setzen Sie das folgende Kommando ab: atq -q D@wenn sie keine Aufträge angezeigt bekommen, sollte alles ordnungsgemäß funktionieren.@@@Bitte erstellen Sie anfangs einige Testjobs um sicherzustellen, dass der Zeitplaner wie erwartet funktioniert, bevor Sie größere Aufträge in der Produktivumgebung einstellen.</translation>
     </message>
@@ -1818,132 +1844,132 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>mainController</name>
     <message>
-        <location filename="../oPB/controller/main.py" line="149"/>
+        <location filename="../oPB/controller/main.py" line="830"/>
         <source>name</source>
         <translation>Bezeichner</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="139"/>
+        <location filename="../oPB/controller/main.py" line="824"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="139"/>
+        <location filename="../oPB/controller/main.py" line="824"/>
         <source>required action</source>
         <translation>Angef. Aktion</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="139"/>
+        <location filename="../oPB/controller/main.py" line="824"/>
         <source>installation status</source>
         <translation>Installationsstatus</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="149"/>
+        <location filename="../oPB/controller/main.py" line="830"/>
         <source>type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="149"/>
+        <location filename="../oPB/controller/main.py" line="830"/>
         <source>multivalue</source>
         <translation>Mehrfachwert</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="149"/>
+        <location filename="../oPB/controller/main.py" line="830"/>
         <source>editable</source>
         <translation>Änderbar</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="149"/>
+        <location filename="../oPB/controller/main.py" line="830"/>
         <source>description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="149"/>
+        <location filename="../oPB/controller/main.py" line="830"/>
         <source>values</source>
         <translation>Werte</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="149"/>
+        <location filename="../oPB/controller/main.py" line="830"/>
         <source>default</source>
         <translation>Vorgabe</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="409"/>
+        <location filename="../oPB/controller/main.py" line="403"/>
         <source>There are possibly unsaved changes! Are you sure you want to continue?</source>
         <translation>Ungespeicherte Änderungen vorhanden! Wirklich fortfahren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="433"/>
+        <location filename="../oPB/controller/main.py" line="427"/>
         <source>Are you sure?</source>
         <translation>Sind sie sicher?</translation>
     </message>
     <message>
         <location filename="../oPB/controller/main.py" line="460"/>
         <source>Project could not be saved successfully!</source>
-        <translation>Projekt konnte nicht gespeichert werden!</translation>
+        <translation type="obsolete">Projekt konnte nicht gespeichert werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="464"/>
+        <location filename="../oPB/controller/base.py" line="122"/>
         <source>Project saved successfully!</source>
         <translation>Projekt erfolgreich gespeichert!</translation>
     </message>
     <message>
         <location filename="../oPB/controller/main.py" line="480"/>
         <source>Project could not be loaded!</source>
-        <translation>Projekt konnte nicht geladen werden!</translation>
+        <translation type="obsolete">Projekt konnte nicht geladen werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="484"/>
+        <location filename="../oPB/controller/base.py" line="186"/>
         <source>Project loaded successfully!</source>
         <translation>Projekt erfolgreich geladen!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="497"/>
+        <location filename="../oPB/controller/main.py" line="484"/>
         <source>Error during project creation.</source>
         <translation>Fehler während der Projektanlage.</translation>
     </message>
     <message>
         <location filename="../oPB/controller/main.py" line="507"/>
         <source>Project could not be created!</source>
-        <translation>Projekt konnte nicht angelegt werden!</translation>
+        <translation type="obsolete">Projekt konnte nicht angelegt werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="557"/>
+        <location filename="../oPB/controller/main.py" line="674"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="562"/>
+        <location filename="../oPB/controller/main.py" line="679"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="573"/>
+        <location filename="../oPB/controller/main.py" line="690"/>
         <source>Message</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="627"/>
+        <location filename="../oPB/controller/main.py" line="744"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="590"/>
+        <location filename="../oPB/controller/main.py" line="707"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="591"/>
+        <location filename="../oPB/controller/main.py" line="708"/>
         <source>Rebuild</source>
         <translation>Wiederholen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="592"/>
+        <location filename="../oPB/controller/main.py" line="709"/>
         <source>Add version</source>
         <translation>Version erzeugen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="617"/>
+        <location filename="../oPB/controller/main.py" line="734"/>
         <source>Additional information</source>
         <translation>Zusatzinformationen</translation>
     </message>
@@ -1958,9 +1984,19 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Die ausgewählten Produkte wirklich entfernen? Das kann nicht rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="627"/>
+        <location filename="../oPB/controller/main.py" line="744"/>
         <source>Select which depot to use (Cancel = default opsi server):</source>
         <translation>Zu verwendendes Depot wählen (Abbrechen = Vorgabe opsi Server):</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/main.py" line="550"/>
+        <source>CLIENT_DATA subdirectory in destination folder detected. This is not allowed for security reason!</source>
+        <translation>Im Zielordner wurde ein CLIENT_DATA Unterordner entdeckt. Das ist aus Sicherheitsgründen nicht erlaubt!</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/main.py" line="579"/>
+        <source>Copy files now? This can&apos;t be canceled.</source>
+        <translation>Dateien jetzt kopieren? Dieser Vorgang kann nicht abgebrochen werden.</translation>
     </message>
 </context>
 <context>
@@ -2116,11 +2152,6 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Basis Entwicklungsordner:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1866"/>
-        <source>TextLabel</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../oPB/ui/mainwindow.ui" line="1919"/>
         <source>Build</source>
         <translation>Packen</translation>
@@ -2146,47 +2177,47 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Ordner öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2125"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2126"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2073"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2074"/>
         <source>?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2099"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2100"/>
         <source>New</source>
         <translation>Neu</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2102"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2103"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2112"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2113"/>
         <source>Open</source>
         <translation>Öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2115"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2116"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2128"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2129"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2138"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2139"/>
         <source>Save as..</source>
         <translation>Speichern unter..</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2148"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2149"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
@@ -2196,32 +2227,32 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Zuletzt</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2158"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2159"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2161"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2162"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2261"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2262"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2274"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2275"/>
         <source>Search for updates</source>
         <translation>Nach Updates suchen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2284"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2285"/>
         <source>Show Changelog</source>
         <translation>Zeige Changelog</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2294"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2298"/>
         <source>About opsiPackageBuilder</source>
         <translation>Über opsiPackageBuilder</translation>
     </message>
@@ -2366,57 +2397,57 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2049"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2050"/>
         <source>&amp;Tools</source>
         <translation>&amp;Werkzeuge</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2066"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2067"/>
         <source>&amp;Extra</source>
         <translation>&amp;Extras</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2171"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2172"/>
         <source>&amp;Create package bundle</source>
         <translation>Paket&amp;bündel erzeugen (F5)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2181"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2182"/>
         <source>&amp;Scheduler</source>
         <translation>&amp;Zeitplaner</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2191"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2192"/>
         <source>&amp;Depot Manager</source>
         <translation>&amp;Depot Manager</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2201"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2202"/>
         <source>&amp;Re-read script tree</source>
         <translation>&amp;Skripte einlesen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2211"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2212"/>
         <source>&amp;Set rights</source>
         <translation>Paket&amp;rechte setzen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2221"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2222"/>
         <source>Start opsi-&amp;winst</source>
         <translation>Starte opsi-&amp;winst</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2231"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2232"/>
         <source>Script &amp;editor</source>
         <translation>Skript&amp;editor</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2241"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2242"/>
         <source>Show SSH &amp;Log</source>
         <translation>SSH &amp;Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2251"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2252"/>
         <source>&amp;Settings</source>
         <translation>Ei&amp;nstellungen</translation>
     </message>
@@ -2430,45 +2461,50 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2299"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2306"/>
         <source>Upload package</source>
         <translation>Paket hochladen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2307"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2314"/>
         <source>Install package</source>
         <translation>Paket installieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2315"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2322"/>
         <source>Uninstall package</source>
         <translation>Paket(e) entfernen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2323"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2330"/>
         <source>Deploy client agent</source>
         <translation>Client Agent installieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2264"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2265"/>
         <source>F1</source>
         <translation>F1</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/mainwindow.ui" line="2343"/>
+        <source>Import</source>
+        <translation>Importieren</translation>
     </message>
 </context>
 <context>
     <name>quickuninstallController</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="95"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="181"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="95"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="181"/>
         <source>version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="95"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="181"/>
         <source>description</source>
         <translation>Beschreibung</translation>
     </message>
@@ -2501,27 +2537,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>schedulerController</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="142"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="128"/>
         <source>Do you really want to remove the selected job id(s)? This can&apos;t be undone!</source>
         <translation>Ausgewähte Aufträge wirklich löschen? Vorgang kann nicht rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="155"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="141"/>
         <source>Do you really want to remove all job(s)? This can&apos;t be undone!</source>
         <translation>Wirklich alle Aufträge löschen? Vorgang kann nicht rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="168"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="154"/>
         <source>No opsi client selected.</source>
         <translation>Kein opsi Client ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="173"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="159"/>
         <source>No opsi product selected.</source>
         <translation>Kein opsi Produkt ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="176"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="162"/>
         <source>Create AT jobs now?</source>
         <translation>AT Aufträge jetzt erzeugen?</translation>
     </message>
@@ -2539,7 +2575,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>schedulerController_jobcreator</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="88"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="179"/>
         <source>client</source>
         <translation>Client</translation>
     </message>
@@ -2547,37 +2583,37 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>schedulerController_joblist</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="74"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="171"/>
         <source>client</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="74"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="171"/>
         <source>packet</source>
         <translation>Paket</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="74"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="171"/>
         <source>action</source>
         <translation>Aktion</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="74"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="171"/>
         <source>date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="74"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="171"/>
         <source>time</source>
         <translation>Uhrzeit</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="74"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="171"/>
         <source>AT jobid</source>
         <translation>AT JobID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="74"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="171"/>
         <source>user</source>
         <translation>Benutzer</translation>
     </message>
@@ -2590,7 +2626,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Frage</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/settings.py" line="191"/>
+        <location filename="../oPB/controller/settings.py" line="193"/>
         <source>There are unsaved changes! Do you really want to continue?</source>
         <translation>Änderungen nicht gespeichert. Wirklich fortfahren?</translation>
     </message>
@@ -2663,7 +2699,7 @@ p, li { white-space: pre-wrap; }
         <translation>Paket öffnen (F2)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="411"/>
+        <location filename="../oPB/ui/startup.ui" line="508"/>
         <source>F2</source>
         <translation></translation>
     </message>
@@ -2673,59 +2709,64 @@ p, li { white-space: pre-wrap; }
         <translation>Zuletzt... (F3)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="483"/>
+        <location filename="../oPB/ui/startup.ui" line="536"/>
         <source>Extras</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="518"/>
+        <location filename="../oPB/ui/startup.ui" line="571"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="556"/>
+        <location filename="../oPB/ui/startup.ui" line="609"/>
         <source>Exit (Q)</source>
         <translation>Beenden (Q)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="597"/>
+        <location filename="../oPB/ui/startup.ui" line="650"/>
         <source>Depot Management (F9)</source>
         <translation>Depot Manager (F9)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="611"/>
+        <location filename="../oPB/ui/startup.ui" line="664"/>
         <source>F9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="651"/>
+        <location filename="../oPB/ui/startup.ui" line="704"/>
         <source>Deploy client agent (F10)</source>
         <translation>Client Agent installieren (F10)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="706"/>
+        <location filename="../oPB/ui/startup.ui" line="759"/>
         <source>F10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="733"/>
+        <location filename="../oPB/ui/startup.ui" line="786"/>
         <source>Job Scheduler (F4)</source>
         <translation>Zeitplaner (F4)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="747"/>
+        <location filename="../oPB/ui/startup.ui" line="800"/>
         <source>F4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="570"/>
+        <location filename="../oPB/ui/startup.ui" line="623"/>
         <source>Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="692"/>
+        <location filename="../oPB/ui/startup.ui" line="745"/>
         <source>Show Log</source>
         <translation>Zeige Log</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/startup.ui" line="494"/>
+        <source>Import Package</source>
+        <translation>Paketdatei importieren</translation>
     </message>
 </context>
 </TS>

@@ -74,6 +74,9 @@ PRINTHIER = False
 PROGRAM_VERSION = "8.0.0"
 """Overall program version"""
 
+UPDATER_URL="http://dl.dropbox.com/u/5454651/opsiPackageBuilder"
+"""Updater base URL"""
+
 NETMODE="online"
 """Current network mode, offline/online"""
 
@@ -159,7 +162,7 @@ OPB_METHOD_GETPRODUCTS = "opsi-admin -r -d method product_getHashes"
 """opsi 4.0 API method: short / get all products"""
 OPB_METHOD_GETCLIENTS = "opsi-admin -d method host_getHashes '[]' '{" + '"type":"OpsiClient"}' + "'"
 """opsi 4.0 API method: get client list"""
-OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with added: '["***REMOVED***1hp.sd8106.***REMOVED***"]'
+OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with added: '["yi7xa1hp.sd8106.gad.de"]'
 """opsi 4.0 API method: get client<->depot list, filter with added: '["<hostname>"]' """
 OPB_METHOD_GETPRODUCTSONDEPOTS = "opsi-admin -d method productOnDepot_getIdents"
 """opsi 4.0 API method: long / get all products"""
@@ -284,6 +287,7 @@ HLP_LANG_DST = "de"
 HLP_FILE = get_script_dir() + "/help/opsipackagebuilder.qhc"
 HLP_PREFIX = "qthelp://org.sphinx.opsipackagebuilder.8.0/doc/"
 HLP_DST_INDEX = "index.html"
+HLP_DST_CHANGELOG = "changelog.html"
 HLP_DST_TABPACKET = HLP_LANG_DST + "/tabpacket.html"
 HLP_DST_TABDEPEND = HLP_LANG_DST + "/tabdepend.html"
 HLP_DST_TABPROP = HLP_LANG_DST + "/tabprop.html"

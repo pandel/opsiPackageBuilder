@@ -108,12 +108,14 @@ class Splash(LogMixin, EventMixin):
         :param val: value to increase by
         :return:
         """
+
         if val is not None:
             self._progressBar.show()
             self._progressBar.setTextVisible(True)
             self.progress = self.progress + val
             try:
                 self._progressBar.setValue(self.progress)
+                qApp.processEvents()
             except:
                 pass
         else:
@@ -144,9 +146,9 @@ class Splash(LogMixin, EventMixin):
         if msg != "":
             self._splash.showMessage(msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
         else:
+            self.logger.debug("Show splash, parent: " + str(self._parent))
             self._splash.showMessage(self.msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
 
-        self.logger.debug("Show splash, parent: " + str(self._parent))
         try:
             parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux
         except:

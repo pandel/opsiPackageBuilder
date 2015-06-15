@@ -29,6 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 
+from copy import copy, deepcopy
 import shutil
 import json
 import re
@@ -216,7 +217,6 @@ class ProductProperty(object):
             raise ValueError(translate("ProductProperty", "Default must be True or False, if type=bool: ") + str(value).strip())
         self._default = value
 
-
 class ProductDependency(object):
     """ProductDependency class: holds a single product dependency"""
     def __init__(self):
@@ -281,7 +281,6 @@ class ProductDependency(object):
             raise ValueError(translate("ProductDependency", "Incorrect value for requirementType: " + str(value).strip()))
         self._requirementType = str(value).strip()
 
-
 class ControlFileData(QObject, LogMixin):
     """ Defines data structure of a complete opsi control file"""
 
@@ -299,6 +298,7 @@ class ControlFileData(QObject, LogMixin):
         :param productId: Create dataset for this product id
         """
         super().__init__()
+
         self._depends = ""
         self._incremental = "False"
         self._id = ""                   # product id
@@ -1200,3 +1200,19 @@ class ControlFileData(QObject, LogMixin):
             self.logger.debug("Emit dataSaved(False)")
             self.dataSaved.emit(False)
             return
+
+    def __copy__(self):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        result.__init__(self.id)
+        result.__dict__.update(self.__dict__)
+        return result
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        result.__init__(self.id)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        return result

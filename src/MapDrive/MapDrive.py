@@ -81,14 +81,14 @@ class MapDrive2(object):
 if __name__=="__main__":
     print("MapDrive 1:", MapDrive.mapDrive(
         "Y:",
-        "\\\\***REMOVED***19z\\opsi_workbench",
+        "\\\\yi7xa19z\\opsi_workbench",
         "opsiadm",
         "vb.1383"
     ))
 
     print("MapDrive 2:", MapDrive2.mapDrive(
         "Y:",
-        "\\\\***REMOVED***19z\\opsi_workbench",
+        "\\\\yi7xa19z\\opsi_workbench",
         "opsiadm",
         "vb.1383"
     ))

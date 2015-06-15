@@ -32,6 +32,10 @@ import os.path
 import webbrowser
 import platform
 import subprocess
+import tempfile
+from urllib import request, parse
+
+from configparser import ConfigParser
 #from subprocess import Popen, PIPE, STDOUT
 from time import sleep
 
@@ -201,12 +205,13 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.actionQuit.triggered.connect(self.close)
         self.actionSave.triggered.connect(self._parent.project_save)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
-        self.actionSaveAs.triggered.connect(self.not_working)
+        self.actionSaveAs.triggered.connect(self.save_as)
         self.actionStartWinst.triggered.connect(self.start_winst)
         self.actionScriptEditor.triggered.connect(self.open_scripteditor)
         self.actionHelp.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX))
+        #self.actionSearchForUpdates.triggered.connect(self.update_check)
         self.actionSearchForUpdates.triggered.connect(self.not_working)
-        self.actionShowChangeLog.triggered.connect(self.not_working)
+        self.actionShowChangeLog.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_CHANGELOG))
         self.actionAbout.triggered.connect(self.not_working)
 
         if oPB.NETMODE != "offline":
@@ -291,6 +296,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self._parent.modelDataUpdated.connect(self.reset_datamapper_and_display)
         self._parent.msgSend.connect(self.set_statbar_text)
         self._parent.processingStarted.connect(self.splash.show_)
+        self._parent.progressChanged.connect(self.splash.incProgress)
         self._parent.processingEnded.connect(self.splash.close)
         self._parent.processingEnded.connect(self.set_button_state)
 
@@ -518,7 +524,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """
         Initiate package import
 
-        See: :meth:`oPB.controller.base.BaseController.do_upload`
+        See: :meth:`oPB.controller.base.BaseController.do_import`
 
         """
         self.logger.debug("Import package")
@@ -531,6 +537,26 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
             self._parent.package_import(script[0])
+        else:
+            self.logger.debug("Dialog aborted.")
+
+    @pyqtSlot()
+    def save_as(self):
+        """
+        Initiate SaveAs
+
+        """
+        self.logger.debug("Save package as new")
+
+        directory = QFileDialog.getExistingDirectory(self, translate("MainWindow", "Save current project as..."),
+                                                     ConfigHandler.cfg.dev_dir, QFileDialog.ShowDirsOnly)
+
+        # sometimes window disappears into background, force to front
+        self.activateWindow()
+
+        if not directory == "":
+            self.logger.info("Chosen directory for new project: " + directory)
+            self._parent.project_copy(directory)
         else:
             self.logger.debug("Dialog aborted.")
 
@@ -852,3 +878,80 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
     def retranslateMsg(self):
         self.logger.debug("Retranslating further messages...")
         self.splash.msg = translate("MainWindow", "Please wait...")
+
+    def download_file(self, url, desc=None):
+        self.logger.debug("Trying to download file: " + url)
+
+        proxystr = ConfigHandler.cfg.proxy_user + ":" + ConfigHandler.cfg.proxy_pass + "@" + ConfigHandler.cfg.proxy_server + ":" + ConfigHandler.cfg.proxy_port
+        proxy = request.ProxyHandler({'http': 'http://' + proxystr})
+        auth = request.HTTPBasicAuthHandler()
+        opener = request.build_opener(proxy, auth, request.HTTPHandler)
+        request.install_opener(opener)
+
+        u = request.urlopen(url)
+        return
+
+
+        scheme, netloc, path, query, fragment = parse.urlsplit(url)
+        filename = os.path.basename(path)
+
+        if not filename:
+            filename = 'downloaded.file'
+
+        if desc:
+            filename = os.path.join(desc, filename)
+        else:
+            filename = os.path.join(tempfile.gettempdir(), filename)
+
+        with open(filename, 'wb') as f:
+            meta = u.info()
+            meta_func = meta.getheaders if hasattr(meta, 'getheaders') else meta.get_all
+            meta_length = meta_func("Content-Length")
+            file_size = None
+            if meta_length:
+                file_size = int(meta_length[0])
+            self._parent.msgbox(translate("MainWindow", "Downloading: {0} Bytes: {1}").format(url, file_size), oPB.MsgEnum.MS_STAT, self)
+
+            file_size_dl = 0
+            block_sz = 8192
+            while True:
+                buffer = u.read(block_sz)
+                if not buffer:
+                    break
+
+                file_size_dl += len(buffer)
+                f.write(buffer)
+
+                status = "{0:16}".format(file_size_dl)
+                if file_size:
+                    status += "   [{0:6.2f}%]".format(file_size_dl * 100 / file_size)
+                status += chr(13)
+                #print(status, end="")
+                self.splash.setProgress(file_size_dl * 100 / file_size)
+            self.splash.close()
+            return filename
+
+        return None
+
+    """
+    url = "http://download.thinkbroadband.com/10MB.zip"
+    filename = download_file(url)
+    print(filename)
+    """
+
+    def update_check(self):
+        self.logger.debug("Downloading version.ini")
+
+        version_ini = self.download_file(oPB.UPDATER_URL + "/version.ini")
+
+        if version_ini is not None:
+            parser = ConfigParser()
+            try:
+                with open(version_ini) as file:
+                    parser.read_file(file)
+                    self.logger.info("Version.ini file successfully loaded.")
+            except IOError:
+                self.logger.error("Version.ini file could not be loaded.")
+                return
+
+            print(parser.get("Version", "Version"))

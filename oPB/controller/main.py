@@ -28,6 +28,11 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+import os
+import shutil
+from copy import deepcopy
+from pathlib import PurePath
+
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import *
@@ -57,6 +62,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
     # send after model or backend data has been updated
     # tab index to switch to
     modelDataUpdated = pyqtSignal(int)
+    progressChanged = pyqtSignal([float], [int])
 
     def __init__(self, cmd_line):
         super().__init__(cmd_line)
@@ -464,7 +470,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
     @pyqtSlot(str)
     def project_create(self, project_name):
-
+        """Create new project"""
         if not self.project_close():
             return
 
@@ -481,6 +487,111 @@ class MainWindowController(BaseController, QObject, EventMixin):
             self._active_project = True
             self.logger.info("Backend data loaded")
             self.startup.hide_me()
+
+    @pyqtSlot(str)
+    def project_copy(self, project_folder):
+        """
+        Copies current project data to new project destination
+
+        :param destination: destination for copied project
+        """
+
+        dest_data = ""
+        val = 0
+
+        def sizeof_fmt(num, suffix='B'):
+            for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+                if abs(num) < 1024.0:
+                    return "%3.1f%s%s" % (num, unit, suffix)
+                num /= 1024.0
+            return "%.1f%s%s" % (num, 'Yi', suffix)
+
+        def copy2_(src, dst):
+            self.logger.debug("Copying to destination file: " + str(dst))
+            self.msgbox("CLIENT_DATA: " + str(dst).replace(dest_data, ""), oPB.MsgEnum.MS_STAT)
+            self.progressChanged.emit(val)
+            shutil.copy2(src,dst)
+
+        def countFiles(directory):
+            files = []
+            total_size = 0
+            if os.path.isdir(directory):
+                for path, dirs, filenames in os.walk(directory):
+                    files.extend(filenames)
+                    for f in filenames:
+                        fp = os.path.join(path, f)
+                        total_size += os.path.getsize(fp)
+
+            return len(files), total_size
+
+        def copyDirectory(src, dest):
+            self.logger.info("Copying files")
+            self.logger.debug("Source: " + src)
+            self.logger.debug("Destination:" + dest)
+            if os.path.exists(dest):
+                shutil.rmtree(dest)
+            try:
+                shutil.copytree(src, dest, copy_function=copy2_)
+            # Directories are the same
+            except shutil.Error as e:
+                self.logger.error('Directory not copied. Error: %s' % e)
+            # Any error saying that the directory doesn't exist
+            except OSError as e:
+                self.logger.error('Directory not copied. Error: %s' % e)
+
+        self.logger.info("Create new project from current: " + project_folder)
+
+        # create new control object as copy
+
+        if os.path.exists(Helper.concat_path_and_file(project_folder, "CLIENT_DATA")):
+            self.logger.error("CLIENT_DATA subdirectory in destination folder detected. This is not allowed for security reason!")
+            self.msgbox(translate("mainController", "CLIENT_DATA subdirectory in destination folder detected. This is not allowed for security reason!"),
+                        oPB.MsgEnum.MS_ERR)
+            return
+
+        newControl = deepcopy(self.controlData)
+        self.create_project_paths(project_folder)
+        project_name = PurePath(project_folder).name.replace(" ","_")
+        newControl.id = project_name
+        newControl.projectfolder = project_folder
+
+        # add changelog entry for this copy process
+        text = "Project copied from: " + self.controlData.packagename
+        newentry = ChangelogEntry(newControl.id)
+        newentry.version = "(" + newControl.productversion + "-" + newControl.packageversion + ")"
+        newentry.status = oPB.CHLOG_STATI[0]
+        newentry.urgency = oPB.CHLOG_BLOCKMARKER + oPB.CHLOG_URGENCIES[0]
+        newentry.text = "\n" + text + changelog_footer()
+        newControl.changelog_append(newentry)
+
+        try:
+            self.processingStarted.emit()
+
+            newControl.save_data()
+            self.logger.debug("New control data saved.")
+
+            dest_data = Helper.concat_path_and_file(newControl.projectfolder, "CLIENT_DATA")
+            total, total_size = countFiles(Helper.concat_path_and_file(self.controlData.projectfolder, "CLIENT_DATA"))
+            val = 100 / total
+
+            reply = self.msgbox(translate("mainController", "Copy files now? This can't be canceled.") + "\n\nTotal: " +  str(total) + "\n" + sizeof_fmt(total_size),
+                                oPB.MsgEnum.MS_QUEST_YESNO)
+            if reply is True:
+                copyDirectory(Helper.concat_path_and_file(self.controlData.projectfolder, "CLIENT_DATA"),
+                              Helper.concat_path_and_file(newControl.projectfolder, "CLIENT_DATA")
+                              )
+                self.logger.debug("Files copied.")
+
+            self.processingEnded.emit()
+
+            # close current project an re-open clone
+            if not self.project_close():
+                return
+
+            self.project_load(project_name)
+        except:
+            self.logger.error("Project could not be copied and re-opened.")
+
 
     def package_import(self, pack: str):
         """

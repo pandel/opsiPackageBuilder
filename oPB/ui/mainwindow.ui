@@ -2286,6 +2286,9 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionAbout">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
      <disabledon>:/images/smallIcons_1491.ico</disabledon>
@@ -2293,6 +2296,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>About opsiPackageBuilder</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionUpload">

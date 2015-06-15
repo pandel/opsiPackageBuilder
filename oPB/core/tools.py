@@ -420,7 +420,6 @@ class Helper(LogMixin):
                         i += 1
                     return desc[1]
 
-
 class HTMLTools(LogMixin):
     """
     HTMLTools class provides convenient functions to create working HTML pages from simple text
