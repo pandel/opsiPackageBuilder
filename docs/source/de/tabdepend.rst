@@ -1,18 +1,15 @@
-﻿.. index:: ! Reiter "Abhängigkeit"
+.. index:: ! Reiter "Abhängigkeit"
+
+.. _tabdepend:
 
 Reiter "Abhängigkeit"
 =====================
 
 |image8|
 
-Auf diesem Reiter können Paketabhängigkeiten (product dependencies)
-definiert und bearbeitet werden.
+Auf diesem Reiter können Paketabhängigkeiten (product dependencies) definiert und bearbeitet werden.
 
-Der obere Teil des Fensters beinhaltet eine tabellarische Aufstellung
-der derzeit im Paket definierten Abhängigkeiten. Sollte in der Liste nur
-ein einziger Eintrag in der Spalte "Aktion" mit dem Inhalt "empty"
-angezeigt werden, so weißt das daraufhin, dass noch keinerlei
-Abhängigkeiten definiert worden sind.
+Der obere Teil des Fensters beinhaltet eine tabellarische Aufstellung der derzeit im Paket definierten Abhängigkeiten. Sollte in der Liste nur ein einziger Eintrag in der Spalte "Aktion" mit dem Inhalt "empty" angezeigt werden, so weißt das daraufhin, dass noch keinerlei Abhängigkeiten definiert worden sind.
 
 +-------------------------+-------------------------+-------------------------+
 | Feld / Funktion         | Beschreibung            | Hinweise                |

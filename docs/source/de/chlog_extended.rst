@@ -1,20 +1,17 @@
-﻿.. index:: ! Changelog Editor; Erweiterter Editor
+.. index:: ! Changelog Editor; Erweiterter Editor
 
 .. _changelogeditor_extended:
 
-Erweitert
-=========
+Erweiterter Editor
+==================
 
 |image29|
 
-Ist in den `Einstellungen <#Settings>`__ die Nutzung des erweiterten Changelog Editors aktiviert, erscheint beim Klick auf die Schaltfläche "Changelog" im `Reiter "Paket" <#ReiterPaket>`__ das erweiterte Editorfenster. Damit können die einzelnen Changelog Einträge komfortabel verwaltet werden.
-
-*Hinweis:*
-*Ist der erweiterte Editor ausgewählt und es tritt beim Einlesen eines Pakets ein Fehler bei der Changelog Blockerkennung auf, so wird der einfache Editor geöffnet. Der Benutzer erhält einen entsprechenden Warnhinweis.*
+Ist in den :ref:`settings` die Nutzung des erweiterten Changelog Editors aktiviert, erscheint beim Klick auf die Schaltfläche "Changelog" im :ref:`tabpacket` das erweiterte Editorfenster. Damit können die einzelnen Changelog Einträge komfortabel verwaltet werden.
 
 +-------------------------+-------------------------+-------------------------+
 | Feld / Funktion         | Beschreibung            | Hinweise                |
-+-------------------------+-------------------------+-------------------------+
++=========================+=========================+=========================+
 | Tabelle "Changelog      | Alle vorhandenen        | absteigend sortiert     |
 | Entry"                  | Changelog Einträge in   |                         |
 |                         | der Reihenfolge der     |                         |
@@ -31,17 +28,13 @@ Ist in den `Einstellungen <#Settings>`__ die Nutzung des erweiterten Changelog E
 |                         |                         | nur aktiv bei           |
 |                         |                         | Standardblockerkennung  |
 +-------------------------+-------------------------+-------------------------+
-| Feld 3                  | Dringlichkeitsmarkierun | Mögliche Werte:         |
-|                         | g                       | urgency=low /           |
-|                         | der Änderung            | urgency=middle /        |
+| Feld 3                  | Dringlichkeit der       | Mögliche Werte:         |
+|                         | Änderung                | urgency=low /           |
+|                         |                         | urgency=middle /        |
 |                         |                         | urgency=high            |
 |                         |                         |                         |
-|                         |                         | nur aktiv bei           |
-|                         |                         | Standardblockerkennung  |
 +-------------------------+-------------------------+-------------------------+
-| Feld 4                  | Individuelles Header    | nur aktiv bei           |
-|                         | Feld                    | individueller           |
-|                         |                         | Blockerkennung          |
+| Feld 4                  | (weggefallen)           |                         |
 +-------------------------+-------------------------+-------------------------+
 | unteres Editorfeld      | Langtext des Changelog  |                         |
 |                         | Eintrags                |                         |
@@ -70,28 +63,8 @@ Ist in den `Einstellungen <#Settings>`__ die Nutzung des erweiterten Changelog E
 |                         |                         | gehen verloren.         |
 +-------------------------+-------------------------+-------------------------+
 
-.. raw:: html
-
-   </div>
-
-**Unterschiede in der Darstellung zwischen Standardblockerkennung und individueller Blockerkennung**
-
-*Standardblockerkennung*
-
-Bei der Standardblockerkennung sind die erweiterten Auswahl- und Eingabefelder aktiv.
-
-|image34|
-
-*Individuelle Blockerkennung*
-
-Bei der individuellen Blockerkennung ist nur das freie Eingabefeld verfügbar.
-
-|image35|
-
 .. |image29| image:: ../img/ChLogExt-Standard.png
 .. |image30| image:: ../img/btnAnlegen.png
 .. |image31| image:: ../img/btnUebernehmen.png
 .. |image32| image:: ../img/btnEntfernen2.png
 .. |image33| image:: ../img/btnSchliessen.png
-.. |image34| image:: ../img/ChLogEdTopStandard.png
-.. |image35| image:: ../img/ChLogEdTopIndividuell.png

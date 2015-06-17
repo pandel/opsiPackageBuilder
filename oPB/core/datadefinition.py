@@ -288,8 +288,6 @@ class ControlFileData(QObject, LogMixin):
     """Signal, true, when data is successfully load from file / false, if not"""
     dataSaved = pyqtSignal(bool)
     """Signal, true, when data is successfully saved to file / false, if not"""
-    dataUpdated = pyqtSignal()
-    """Signal, send when product dependency / product property was added"""
 
     def __init__(self, productId = "new_product"):
         """
@@ -615,7 +613,6 @@ class ControlFileData(QObject, LogMixin):
         else:
             self._properties.append([prop.name, prop.type, prop.multivalue, prop.editable,
                                      prop.description, prop.values, prop.default])
-            self.dataUpdated.emit()
 
     def del_property(self, prop: ProductProperty):
         """
@@ -673,7 +670,6 @@ class ControlFileData(QObject, LogMixin):
         else:
             self._dependencies.append([dep.dependencyForAction, dep.requiredProductId, dep.requiredAction,
                                        dep.requiredInstallationStatus, dep.requirementType])
-            self.dataUpdated.emit()
 
     def del_dependency(self, dep: ProductDependency):
         """
@@ -1199,7 +1195,6 @@ class ControlFileData(QObject, LogMixin):
             self.logger.exception("Error writing control file")
             self.logger.debug("Emit dataSaved(False)")
             self.dataSaved.emit(False)
-            return
 
     def __copy__(self):
         cls = self.__class__

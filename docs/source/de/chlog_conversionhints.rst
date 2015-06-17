@@ -1,23 +1,20 @@
-﻿.. index:: ! Changelog Editor; Konvertierungshinweise
+.. index:: ! Changelog Editor; Konvertierungshinweise
 
 .. _conversionhints:
 
 Konvertierungshinweise
 ======================
 
-Konvertierung von einfacher in erweiterte Darstellung und Funktionalität
+**Konvertierung von einfacher in erweiterte Darstellung und Funktionalität**
 
 Alte Changelog Einträge, die nicht einer festen strukturierten Form entsprechen, können in die strukturierte Form überführt werden, ohne dass die Inhalte verloren gehen.
 
 Dazu ist folgende Reihenfolge in der Vorgehensweise einzuhalten:
 
-#. opsi Package Builder starten
-#. unter "Einstellungen" - "Programmeinstellungen" den Haken bei "Erweiterten Changelog Editor verwenden" entfernen (die auftretende Meldung kann ignoriert werden, solange kein Paket geladen ist)
+#. opsi PackageBuilder starten
+#. unter "Einstellungen" - "Programmeinstellungen" den Haken bei "Erweiterten Changelog Editor verwenden" entfernen
 #. das Paket mit den zu konvertierenden Changelog Einträgen öffnen
 #. unter "Einstellungen" - "Programmeinstellungen" den Haken bei "Erweiterten Changelog Editor verwenden" setzen es erfolgt folgende Meldung:
-
-|image36|
-
 #. das Paket speichern
 
 Jetzt liegt das Changelog inkl. der alten Einträge im neuen Format vor und kann mit dem erweiterten Editor bearbeitet werden.
@@ -28,59 +25,39 @@ Einträge vor der Konvertierung::
 
     [Changelog]
 
-    Das hier ist nur allgemeines Changelog blabla ohne Struktur
+    Das ist freier Changelog Text ohne besonderen Marker.
 
-    damit läßt sich nicht viel anfangen
+    Er hörte leise Schritte hinter sich.
 
-    aber gehen tuts auch
+    Das bedeutete nichts Gutes.
 
-    brabrabra
+    Wer würde ihm schon folgen, spät in der Nacht und dazu noch in dieser engen Gasse mitten im übel beleumundeten Hafenviertel?
 
-    tätäta
+    Gerade jetzt.
 
 Einträge nach der Konvertierung::
 
     [Changelog]
+    Umgewandelt (2.5-1.corr185412corr) stable; urgency=low
 
-    acroread (11.0.01-2) testing; urgency=low
+    Umgewandelte Freitexteinträge:
 
-      \* ChangeLog converted via opsi PackageBuilder editor
-
-                    ----------- ALTES CHANGELOG FORMAT -----------
-
-                    Das hier ist nur allgemeines Changelog blabla ohne Struktur
-
-
-
-                    damit läßt sich nicht viel anfangen
-
-                    aber gehen tuts auch
-
-
-
-                    brabrabra
+         --------------------------------------------------
+          > Das ist freier Changelog Text ohne besonderen Marker.
+          >
+          > Er hörte leise Schritte hinter sich.
+          >
+          > Das bedeutete nichts Gutes.
+          >
+          > Wer würde ihm schon folgen, spät in der Nacht und dazu noch in dieser engen Gasse mitten im übel beleumundeten Hafenviertel?
+          >
+          > Gerade jetzt.
+         --------------------------------------------------
 
 
-
-                    tätäta
-
-
-
-
-
-                    ----------- ALTES CHANGELOG FORMAT -----------
-
-     -- Holger Pandel <holger.pandel@....de> Tue, 02 Apr 2013 18:03:37 +0100
+     -- Holger Pandel <holger.pandel@googlemail.de>  Tue, 16 Jun 2015 16:56:48 +0000
 
 Konvertierung von erweiterter in einfache Darstellung und Funktionalität
 
 In diese Richtung findet keine Konvertierung statt. Es reicht, unter "Einstellungen" - "Programmeinstellungen" den Haken bei "Erweiterten Changelog Editor verwenden" zu entfernen.
 
-Sollte zu diesem Zeitpunkt bereits ein Paket geladen sein, erfolgt nachstehender Hinweis:
-
-|image37|
-
-Dies erfolgt aus Sicherheitsgründen, um keinen der bestehenden Einträge zu verlieren.
-
-.. |image36| image:: ../img/ChLogSiToEx.png
-.. |image37| image:: ../img/ChLogExToSi.png

@@ -1,18 +1,15 @@
-﻿.. index:: ! Reiter "Produktvariablen"
+.. index:: ! Reiter "Produktvariablen"
+
+.. _tabprop:
 
 Reiter "Produktvariablen"
 =========================
 
 |image12|
 
-Auf diesem Reiter können Produktvariablen (product properties) definiert
-und bearbeitet werden.
+Auf diesem Reiter können Produktvariablen (product properties) definiert und bearbeitet werden.
 
-Der obere Teil des Fensters beinhaltet eine tabellarische Aufstellung
-der derzeit im Paket definierten Produktvariablen. Sollte in der Liste
-nur ein einziger Eintrag in der Spalte "Bezeichner" mit dem Inhalt
-"empty" angezeigt werden, so weißt das daraufhin, dass noch keinerlei
-Produktvariablen definiert worden sind.
+Der obere Teil des Fensters beinhaltet eine tabellarische Aufstellung der derzeit im Paket definierten Produktvariablen. Sollte in der Liste nur ein einziger Eintrag in der Spalte "Bezeichner" mit dem Inhalt "empty" angezeigt werden, so weißt das daraufhin, dass noch keinerlei Produktvariablen definiert worden sind.
 
 +-------------------------+-------------------------+-------------------------+
 | Feld / Funktion         | Beschreibung            | Hinweise                |

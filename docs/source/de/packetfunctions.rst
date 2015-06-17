@@ -1,33 +1,30 @@
-﻿.. index:: ! Paketfunktionen
+.. index:: ! Paketfunktionen
 
 Paketfunktionen
 ===============
 
 |image17|
 
-Im unteren Teil des Anwendungsfensters bleiben die Onlinefunktionen, die
-zur Verfügung, stehen jederzeit sichtbar.
+Im unteren Teil des Anwendungsfensters bleiben die Onlinefunktionen, die zur Verfügung, stehen jederzeit sichtbar.
 
-Funktionsbeschreibung
+**Funktionsbeschreibung**
 
-| Hinweis zur nachfolgenden Aufstellung:
-| Es können ab Version 7.0 erweiterten Depotfunktionen aktiviert werden.
-  Dann sind alle manuell hinterlegten Befehle außer Kraft,
-| sondern werden ja nach verwendetem Depot intern autom. erzeugt.
+*Hinweis zur nachfolgenden Aufstellung:*
+Sind die erweiterten Depotfunktionen aktiv, sind alle manuell hinterlegten Befehle außer Kraft, sondern werden ja nach verwendetem Depot intern autom. erzeugt.
 
 +-------------------------+----------------------------------+-------------------------+
 | Funktion                | Beschreibung                     | Besonderheiten bei      |
 |                         |                                  | Offline Nutzung         |
-+-------------------------+----------------------------------+-------------------------+
++=========================+==================================+=========================+
 | Paketordner             | Der Ordnername des               |                         |
 |                         | aktuell geöffneten               |                         |
 |                         | Pakets.                          |                         |
 +-------------------------+----------------------------------+-------------------------+
-| Basis                   | Der in den                       | Temporärer              |
-| Entwicklungsordner      | `Einstellungen                   | Entwicklungsordner      |
-|                         | <#Allgemein>`__                  | Laufwerk C:\\ wird      |
-|                         | hinterlegte Stammordner          | automatisch             |
-|                         | für Paketentwicklung.            | eingestellt.            |
+| Basis                   | Der in den                       |                         |
+| Entwicklungsordner      | :ref:`allgemeinen Einstellungen  |                         |
+|                         | <settings_general>`              |                         |
+|                         | hinterlegte Stammordner          |                         |
+|                         | für Paketentwicklung.            |                         |
 +-------------------------+----------------------------------+-------------------------+
 | |image18|               | Onlinefunktion:                  | Die Funktion steht      |
 |                         |                                  | nicht zur Verfügung.    |
@@ -35,8 +32,8 @@ Funktionsbeschreibung
 |                         | zum opsi Server die              |                         |
 |                         | Paketerzeugung aus.              |                         |
 |                         |                                  |                         |
-|                         | `Standardeinstellung             |                         |
-|                         | <#opsiVerwaltungsbefehle>`__     |                         |
+|                         | :ref:`Standardeinstellung        |                         |
+|                         | <settings_opsi>`                 |                         |
 |                         |                                  |                         |
 |                         | des verwendeten                  |                         |
 |                         | Befehls:                         |                         |
@@ -57,14 +54,13 @@ Funktionsbeschreibung
 |                         | Installationspaket in            |                         |
 |                         | das Depot einzuspielen.          |                         |
 |                         |                                  |                         |
-|                         | `Standardeinstellung             |                         |
-|                         | <#opsiVerwaltungsbefehle>`__     |                         |
+|                         | :ref:`Standardeinstellung        |                         |
+|                         | <settings_opsi>`                 |                         |
 |                         |                                  |                         |
 |                         | des verwendeten                  |                         |
 |                         | Befehls:                         |                         |
 |                         |                                  |                         |
 |                         | opsi-package-manager -i          |                         |
-|                         | -q                               |                         |
 |                         |                                  |                         |
 |                         | Es können auch mehrere           |                         |
 |                         | Depots angesprochen              |                         |
@@ -75,7 +71,7 @@ Funktionsbeschreibung
 |                         | Befehl wie folgt ab:             |                         |
 |                         |                                  |                         |
 |                         | opsi-package-manager -i          |                         |
-|                         | -d <depot1>,<depot2> -q          |                         |
+|                         | -d <depot1>,<depot2>             |                         |
 |                         |                                  |                         |
 |                         | wobei für <depot1> und           |                         |
 |                         | <depot2> die jeweilige           |                         |
@@ -89,12 +85,7 @@ Funktionsbeschreibung
 |                         | Befehl wie folgt ab:             |                         |
 |                         |                                  |                         |
 |                         | opsi-package-manager -i          |                         |
-|                         | -d all -q                        |                         |
-|                         |                                  |                         |
-|                         | WICHTIG: "-q" muss               |                         |
-|                         | immer als letzter                |                         |
-|                         | Parameter verwendet              |                         |
-|                         | werden!                          |                         |
+|                         | -d all                           |                         |
 |                         |                                  |                         |
 |                         | Weitere Informationen            |                         |
 |                         | dazu im opsi Handbuch.           |                         |
@@ -117,19 +108,13 @@ Funktionsbeschreibung
 |                         | dem Softwaredepot zu             |                         |
 |                         | entfernen.                       |                         |
 |                         |                                  |                         |
-|                         | `Standardeinstellung             |                         |
-|                         | <#opsiVerwaltungsbefehle>`__     |                         |
+|                         | :ref:`Standardeinstellung        |                         |
+|                         | <settings_opsi>`                 |                         |
 |                         |                                  |                         |
 |                         | des verwendeten                  |                         |
 |                         | Befehls:                         |                         |
 |                         |                                  |                         |
 |                         | opsi-package-manager -r          |                         |
-|                         | -q                               |                         |
-|                         |                                  |                         |
-|                         | WICHTIG: "-q" muss               |                         |
-|                         | immer als letzter                |                         |
-|                         | Parameter verwendet              |                         |
-|                         | werden!                          |                         |
 |                         |                                  |                         |
 |                         | Weitere Informationen            |                         |
 |                         | dazu im opsi Handbuch.           |                         |

@@ -208,7 +208,7 @@ OPB_WINST_LINUX = ""
 """winst32 path on linux client"""
 
 # file extensions for selection dialogs
-SCRIPT_EXT = ["opsiscript", "opsiinc", "ins", "py", "*"]
+SCRIPT_EXT = ["opsiscript", "opsiinc", "ins", "py"]
 """opsi script file extensions"""
 KEYFILE_EXT = ["ppk"]
 """SSH keyfile extension"""

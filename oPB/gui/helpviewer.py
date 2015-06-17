@@ -30,6 +30,7 @@ __status__ = "Production"
 
 import sys
 from PyQt5 import QtCore
+from PyQt5.QtGui import QIcon
 from PyQt5.QtHelp import QHelpEngine
 from PyQt5.QtWidgets import QApplication, QSplitter, QDialog, QHBoxLayout, QVBoxLayout, QWidget, QPushButton
 from PyQt5.QtCore import QIODevice, QTimer, QObject, QUrl
@@ -60,7 +61,8 @@ class HelpDialog(QObject, LogMixin):
 
         # base dialog widget
         self.ui = QDialog(None, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint )
-
+        self.ui.setWindowTitle("HelpViewer")
+        self.ui.setWindowIcon(QIcon(":/images/smallIcons_1461.ico"))
         # webview for help information
         self._wv = QWebView()
         enam = HelpNetworkAccessManager(self, self._helpEngine)

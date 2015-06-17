@@ -1,42 +1,42 @@
-﻿.. index:: ! Client Agent verteilen
+.. index:: ! Client Agent verteilen
 
 Client Agent verteilen
 ======================
 
 |image73|
 
+Mit dieser Funktion kann der opsi-client-agent komfortabel per remote auf Clientrechner verteilt werden.
+
 **Erläuterung zur Option "Nicht warten":**
 
-Wird diese Option angewählt, so wird der Deploy Befehl auf dem Server abgesetzt und nicht auf die Beendigung der Ausführung gewartet, d. h. es gibt keine Rückmeldung über das PLINK Log. Bei größeren Deploys führt das dazu, dass der opsi PackageBuilder nicht "ewig" zu hägen scheint, sondern man kann direkt weiterarbeiten.
+Wird diese Option angewählt, so wird der Deploy Befehl auf dem Server abgesetzt und nicht auf die Beendigung der Ausführung gewartet, d. h. es gibt keine Rückmeldung über das Log. Bei größeren Deploys führt das dazu, dass der opsi PackageBuilder nicht "ewig" zu hängen scheint, sondern direkt wieder bedienbar wird.
 
 Hinweise zum Feld "Vorab-Befehl":
 
-Steht in diesem Fehle eine Anweisung, so wird sie vor dem Deploy via winexe (entspricht weitestgehend psexec für Linux) direkt auf dem Client ausgeführt.
+Steht in diesem Feld eine Anweisung, so wird sie vor dem Deploy via winexe (entspricht weitestgehend psexec für Linux) direkt auf dem Client ausgeführt.
 
 Daran sind allerdings einige Bedingungen geknüpft:
 
-    - Auf dem Server muss das Programm 'winexe' über die Pfadvariable erreichbar sein vorhanden sein (mit whereis prüfen) / hierbei wird nicht auf die im opsi-client-agent mitgelieferte Version zurückgegriffen.
-    - Er kann nur auf einen einzelnen Client abgesetzt werden. Bei Verteilung an mehrere Clients ist der Eintrag außer Kraft.
-    - Befehlsverkettung funktioniert begrenzt. && und \|\| müssen in normale Anführungszeichen (kein Apostroph) gesetzt werden, bspw. "&&" oder "\|\|"
-    - Piping und Ausgabeumlenkung sind sehr fallabhängig. Da hilft nur opsiPackageBuilder Log einschalten und ausprobieren.
+    - Auf dem Server muss das Programm ``winexe`` über die Pfadvariable erreichbar sein vorhanden sein (mit whereis prüfen) / hierbei wird nicht auf die im opsi-client-agent mitgelieferte Version zurückgegriffen.
+    - Befehlsverkettung funktioniert begrenzt, da hilft im Einzelfall nur ausprobieren
+    - Piping und Ausgabeumlenkung sind sehr fallabhängig. Da hilft es ebenfalls am ehesten, Logging einzuschalten und auszuprobieren.
 
-**Beispiel:**
+**Achtung**::
 
-- folgender Befehl soll abgesetzt werden:
-    ``cd c:\\TEMP\\RZInstall\\ETHLineSpeed && set NWDUPLEXMODE=AUTOSENS && start install.cmd``
-- gem. obiger Hinweise muss in das Feld:
-    ``cd c:\\TEMP\\RZInstall\\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd``
+    - Wird an einen einzelnen Client verteilt, so kann im Multi-Depot Betrieb der Quelldepotserver ausgewählt werden, um Leitungskapazitäten zu schonen.
+    - Wenn an mehrere Clients verteilt wird, dann kann im Multi-Depot Betrieb KEIN Depotserver ausgewählt werden, da für den Deploybefehl eine Liste in Dateiform erstellt werden muss. Dies ist momentan nur auf dem Workbench Share des zugeordneten Konfigservers zulässig. Ebenfalls führt es zu Fehlern, wenn der Entwicklungsordner nicht auf dem Workbench Share des Konfigservers liegt. Dann kann der Deploybefehl ebenfalls nicht ordnungsgemäß abgesetzt werden.
+    - In Einzelfällen kann es vorkommen, dass
 
-- opsiPackageBuilder macht daraus im Hintergrund (plink Authorisation, Port können ja nach Einstellung variieren):
-    ``winexe --debug-stderr --user "esaadm" --password "<localadminpass>" //client 'cmd /c cd c:\\TEMP\\RZInstall\\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd'``
+**Fehlerbereinigung**::
 
-Das Kommando wir natürlich ohne Zeilenumbrüche abgesetzt. Die Werte in <> sind entsprechend der eigenen Umgebung zu ersetzen.)
+    [2015-06-16 05:24:43 PM] - oPB.core.tools.OpsiProcessing       -  SSHINFO - Trying to execute command: sh -c /tmp/deploy.sh
+    [2015-06-16 05:24:43 PM] - oPB.core.tools.OpsiProcessing       -  SSHINFO - sh: 1: /tmp/deploy.sh: Permission denied
 
-Am besten ist es, den zu setzenden Befehl per Hand auf der Kommandozeile erst an einer Maschine zu prüfen und dann entsprechend im Feld zu hinterlegen. Die letzten 20 Befehle werden in der INI Datei gespeichert und bleiben somit für zukünftige Verwendung erhalten (Sollte in einem dieser Befehle das Paragraphensymbol "§" verwendet worden sein, wird die Liste beim erneuten Öffnen des Dialogs merkwürdig aussehen, da dieses Symbol intern für die Trennung der Kombobox Elemente verwendet wird.)
+Sollte im Log eine Meldung wie die beispielhaft aufgelistete erscheinen, so kann es daran liegen, dass die Rechte auf dem Verzeichnis ``/var/lib/opsi/depot/opsi-client-agent`` nicht korrekt gesetzt sind. Somit ist der opsi Benutzer nicht in der Lage, das Deployment Tool auszuführen. Um das zu beheben reicht es, sich
 
-**Achtung:**
+    - auf dem opsi Server via SSH einzuloggen und
+    - einmalig ``opsi-setup --set-rights /var/lib/opsi/depot/opsi-client-agent``
 
-- Wird an einen einzelnen Client verteilt, so kann im Multi-Depot Betrieb der Quelldepotserver ausgewählt werden, um Leitungskapazitäten zu schonen.
-- Wenn an mehrere Clients verteilt wird, dann kann im Multi-Depot Betrieb KEIN Depotserver ausgewählt werden, da für den Deploybefehl eine Liste in Dateiform erstellt werden muss. Dies ist momentan nur auf dem Workbench Share des zugeordneten Konfigservers zulässig. Ebenfalls führt es zu Fehlern, wenn der Entwicklungsordner nicht auf dem Workbench Share des Konfigservers liegt. Dann kann der Deploybefehl ebenfalls nicht ordnungsgemäß abgesetzt werden.
+auszuführen. Ggf. ist es vielleicht auch sinnvoll, einmalig den Befehl über den gesamten Ordner ``/var/lib/opsi/depot`` laufen zu lassen, wenn auch nicht nötig
 
 .. |image73| image:: ../img/DeployAgent.jpg

@@ -53,12 +53,19 @@ if sys.platform.lower().startswith('win'):
     import ctypes
 
     def hideConsole():
+        """
+        Hides the console window in GUI mode. Necessary for frozen application, because
+        this application support both, command line processing AND GUI mode and theirfor
+        cannot be run via pythonw.exe.
+        """
+
         whnd = ctypes.windll.kernel32.GetConsoleWindow()
         if whnd != 0:
             ctypes.windll.user32.ShowWindow(whnd, 0)
             #ctypes.windll.kernel32.CloseHandle(whnd)
 
     def showConsole():
+        """Unhides console window"""
         whnd = ctypes.windll.kernel32.GetConsoleWindow()
         if whnd != 0:
             ctypes.windll.user32.ShowWindow(whnd, 1)
@@ -231,9 +238,9 @@ class Main(QObject):
                 style = file.readlines()
                 file.close()
         except:
-            return
-
-        self.app.setStyleSheet(("\n").join(style))
+            self.logger.debug("Stylesheet could not be opened.")
+        else:
+            self.app.setStyleSheet(("\n").join(style))
 
     def check_online_status(self):
         self.logger.debug("Check online status")

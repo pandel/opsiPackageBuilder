@@ -1,11 +1,11 @@
-﻿.. index:: ! Deutsches Handbuch
+.. index:: ! Deutsches Handbuch
 
 opsi PackageBuilder Handbuch
 ============================
 
-|image0|\  opsi Package Builder
+|image0|\  opsi PackageBuilder
 
-opsi Package Builder ist ein Werkzeug zur Erstellung und Verwaltung von Softwarepaketen in Zusammenarbeit mit dem opsi (open pc server integration) Clientmanagementsystem der Firma uib GmbH.
+opsi PackageBuilder ist ein Werkzeug zur Erstellung und Verwaltung von Softwarepaketen. Es ist als ergänzende Anwendung zum opsi (open pc server integration) Clientmanagementsystem der Firma uib GmbH gedacht.
 
 Hauptmerkmale der Anwendung sind:
 

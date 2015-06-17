@@ -156,7 +156,7 @@ class BaseController(LogMixin):
     def create_project_paths(self, base):
         for elem in oPB.BASE_FOLDERS:
             try:
-                path = Path(Helper.concat_path_and_file(base, elem))
+                path = Path(Helper.concat_path_native(base, elem))
                 if not path.exists():
                     path.mkdir(parents=True)
             except OSError:
@@ -170,7 +170,7 @@ class BaseController(LogMixin):
 
         self._dataLoaded = None
 
-        self.controlData.load_data(Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, project_name))
+        self.controlData.load_data(Helper.concat_path_native(ConfigHandler.cfg.dev_dir, project_name))
 
         while self._dataLoaded is None: # _dataLoaded has to be True or False
             pass
@@ -306,9 +306,11 @@ class BaseController(LogMixin):
         self._do(oPB.OpEnum.DO_UNINSTALL, translate("baseController", "Deinstallation running..."), alt_destination = dest, depot = depot)
 
     @pyqtSlot()
-    def do_setrights(self, dest = ""):
+    def do_setrights(self, dest = "", package = ""):
+        if package == "":
+            self.controlData.path_on_server
         self._do(oPB.OpEnum.DO_SETRIGHTS,
-                 translate("baseController", "Setting package rights on:") + " " + self.controlData.path_on_server, alt_destination = dest)
+                 translate("baseController", "Setting package rights on:") + " " + self.controlData.path_on_server, alt_destination = dest, package=package)
 
     @pyqtSlot()
     def do_setrights_on_repo(self, dest = ""):
@@ -406,7 +408,7 @@ class BaseController(LogMixin):
 
     @pyqtSlot()
     def do_import(self, packagefile, dest = ""):
-        self._do(oPB.OpEnum.DO_IMPORT, translate("baseController", "Installation running..."), alt_destination = dest, packagefile = packagefile)
+        self._do(oPB.OpEnum.DO_IMPORT, translate("baseController", "Package import in progress..."), alt_destination = dest, packagefile = packagefile)
 
     def query_depot(self, with_all = True, parent = None):
         if ConfigHandler.cfg.use_depot_funcs == "True":
@@ -448,7 +450,7 @@ class BaseController(LogMixin):
         if os.path.isabs(self.args.path):
             project = self.args.path
         else:
-            project = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, self.args.path)
+            project = Helper.concat_path_native(ConfigHandler.cfg.dev_dir, self.args.path)
 
         # load project
         self.load_backend(project)

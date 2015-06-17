@@ -54,5 +54,5 @@ class DeployAgentComponent(BaseController, QObject):
         self.ui.dialogClosed.connect(self._parent.startup.show_)
 
     def start_deploy(self, destination: list, options: dict):
-        self._parent.do_deploy(clientlist = destination, options = options)
+        self._parent.do_deploy(clientlist = destination, options = options, dest = self._parent.query_depot(parent = self.ui, with_all=False))
 

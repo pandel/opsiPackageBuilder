@@ -159,7 +159,7 @@ class ScriptFileValidator(QtGui.QValidator):
         """
         if p_str == "":
             return ScriptFileValidator.Intermediate, p_str, p_int
-        if os.path.exists(Helper.concat_path_and_file(self._parent.lblPacketFolder.text().replace('\\','/') + "/CLIENT_DATA/", p_str)):
+        if os.path.exists(Helper.concat_path_native(self._parent.lblPacketFolder.text().replace('\\','/') + "/CLIENT_DATA/", p_str)):
             return ScriptFileValidator.Acceptable, p_str, p_int
         else:
             return ScriptFileValidator.Invalid, p_str, p_int
@@ -302,7 +302,7 @@ class Translator(QObject, LogMixin):
             pyqt_path = os.path.dirname(PyQt5.__file__)
 
             if platform.system() == "Windows":
-                Translator.cfg._qt_locale_path = Helper.concat_path_and_file(pyqt_path, "translations")
+                Translator.cfg._qt_locale_path = Helper.concat_path_native(pyqt_path, "translations")
             else:
                 Translator.cfg._qt_locale_path = "/usr/share/qt5/translations/"
 

@@ -1,16 +1,15 @@
-﻿.. index:: ! Reiter "Paket"
+.. index:: ! Reiter "Paket"
+
+.. _tabpacket:
 
 Reiter "Paket"
 ==============
 
 |image3|
 
-Dieser Reiter beinhaltet die wesentlichen Paketinformationen, wie sie
-auch durch das opsi Tool "opsi-newprod" zur Paketanlage abgefragt
-werden.
+Dieser Reiter beinhaltet die wesentlichen Paketinformationen, wie sie auch durch das opsi Tool "opsi-newprod" zur Paketanlage abgefragt werden.
 
-Die Bezeichnungen sind weitestgehend selbsterklärend, daher nur einige
-Hinweise:
+Die Bezeichnungen sind weitestgehend selbsterklärend, daher nur einige Hinweise:
 
 +--------------------------------------+---------------------------------------+
 | Feld / Funktion                      | Hinweis                               |
@@ -28,8 +27,8 @@ Hinweise:
 |                                      | den opsi Anwendungshandbüchern.       |
 +--------------------------------------+---------------------------------------+
 | |image4|                             | Öffnet das nebenstehende Skript im    |
-|                                      | in den `Einstellungen                 |
-|                                      | <#Programmeinstellungen>`__           |
+|                                      | in den :ref:`Einstellungen            |
+|                                      | <settings_program>`                   |
 |                                      | hinterlegten Editor. Standard ist     |
 |                                      | notepad.exe.                          |
 +--------------------------------------+---------------------------------------+
@@ -39,14 +38,14 @@ Hinweise:
 |                                      | innerhalb des Paketes ausgewählt      |
 |                                      | werden können.                        |
 +--------------------------------------+---------------------------------------+
-| |image6|                             | Öffnet den in den `Einstellungen      |
-|                                      | <#Programmeinstellungen>`__           |
+| |image6|                             | Öffnet den in den :ref:`Einstellungen |
+|                                      | <settings_program>`                   |
 |                                      | gewählten Changelog Editor Typ.       |
-|                                      | Näheres dazu unter "`Changelog        |
-|                                      | Editor <ChangelogEditor>`__"          |
+|                                      | Näheres dazu unter :ref:`Changelog    |
+|                                      | Editor <changelogeditor>`             |
 +--------------------------------------+---------------------------------------+
-| |image7|                             | Öffnet die `Strukturanzeige           |
-|                                      | <#Skriptbaum>`__                      |
+| |image7|                             | Öffnet die :ref:`Baumansicht          |
+|                                      | <scripttree>`                         |
 |                                      | der Installationsskripte. Von dort    |
 |                                      | können auch sämtliche per "sub" bzw.  |
 |                                      | "include" eingebundenen Skripte       |

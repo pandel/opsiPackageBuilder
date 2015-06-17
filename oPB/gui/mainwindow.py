@@ -399,7 +399,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             return
 
         if os.path.exists(ConfigHandler.cfg.scripteditor):
-            path = Helper.concat_path_and_file(self.lblPacketFolder.text(), "CLIENT_DATA")
+            path = Helper.concat_path_native(self.lblPacketFolder.text(), "CLIENT_DATA")
             if self.sender() == self.btnScrSetupEdit:
                 if self.inpScrSetup.text().strip() == "":
                     script = "setup.opsiscript"
@@ -441,7 +441,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
             # script editor from menu
             if path != "" and script != "":
-                path = Helper.concat_path_and_file(path, script)
+                path = Helper.concat_path_native(path, script)
 
             self.logger.debug("Opening script: " + path)
             # construct calling array
@@ -483,7 +483,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """
         self.logger.debug("Quick install package")
 
-        ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
+        ext = "opsi Package (*.opsi)"  # generate file extension selection string for dialog
 
         script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
                                             "", ext)
@@ -506,7 +506,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """
         self.logger.debug("Upload package")
 
-        ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
+        ext = "opsi Package (*.opsi)"  # generate file extension selection string for dialog
 
         script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
                                             "", ext)
@@ -529,9 +529,14 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """
         self.logger.debug("Import package")
 
-        ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
+        if self._parent.startup.isVisible():
+            pt = self._parent.startup
+        else:
+            pt = self
 
-        script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
+        ext = "opsi Package (*.opsi)"  # generate file extension selection string for dialog
+
+        script = QFileDialog.getOpenFileName(pt, translate("MainWindow", "Choose package file"),
                                             "", ext)
 
         if not script == ("", ""):
@@ -755,7 +760,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """
         self.logger.debug("Select script dialog")
 
-        ext = "Scripts (" + "; ".join(["*." + x for x in oPB.SCRIPT_EXT]) + ")"  # generate file extension selection string for dialog
+        ext = "Scripts (" + " ".join(["*." + x for x in oPB.SCRIPT_EXT]) + ")"  # generate file extension selection string for dialog
 
         if setvalue:
             if self.lblPacketFolder.text() == "":
@@ -763,7 +768,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
                                                      ConfigHandler.cfg.dev_dir, ext)
             else:
                 script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose script"),
-                                                     Helper.concat_path_and_file(self.lblPacketFolder.text(), "CLIENT_DATA"), ext)
+                                                     Helper.concat_path_native(self.lblPacketFolder.text(), "CLIENT_DATA"), ext)
 
             if not script == ("", ""):
                 self._parent.set_selected_script(script[0], script_type)

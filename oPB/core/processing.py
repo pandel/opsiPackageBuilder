@@ -111,6 +111,7 @@ class OpsiProcessing(QObject, LogMixin):
             - DO_UNREGISTERDEPOT: depot
             - DO_DEPLOY: clientlist, options
             - DO_GENMD5: packages
+            - DO_SETRIGHTS: package
 
         """
 
@@ -141,9 +142,10 @@ class OpsiProcessing(QObject, LogMixin):
         self._env = {"PYTHONIOENCODING" : "'utf-8'", "POSIXLY_CORRECT" : "1"}
 
         self.logger.debug("Executing action: " + str(oPB.OpEnum(action)))
-        if not self._control is None:
-            self.logger.sshinfo("Local path: " + self._control.local_package_path)
-            self.logger.sshinfo("Path on server: " + self._control.path_on_server + "/" + self._control.packagename)
+
+        #if not self._control is None:
+        #    self.logger.sshinfo("Local path: " + self._control.local_package_path)
+        #    self.logger.sshinfo("Path on server: " + self._control.path_on_server + "/" + self._control.packagename)
 
         # temporary file path for copy operations
         tmppath = oPB.UNIX_TMP_PATH
@@ -221,9 +223,10 @@ class OpsiProcessing(QObject, LogMixin):
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_SETRIGHTS:
             ret = oPB.RET_SSHCMDERR
+            package = kwargs.get("package", self._control.path_on_server)
             self.logger.ssh(20 * "-" + "ACTION: SET RIGHTS" + 20 * "-")
             if ConfigHandler.cfg.age == "True":
-                cmd = oPB.OPB_SETRIGHTS_SUDO + " '" + self._control.path_on_server + "'"
+                cmd = oPB.OPB_SETRIGHTS_SUDO + " '" + package + "'"
                 if ConfigHandler.cfg.sudo == "True":
                     cmd = "echo '" + ConfigHandler.cfg.opsi_pass + "' | sudo -S " + cmd
                 else:
@@ -231,10 +234,10 @@ class OpsiProcessing(QObject, LogMixin):
             else:
                 self._sshuser = "root"
                 self._sshpass = ConfigHandler.cfg.root_pass
-                cmd = oPB.OPB_SETRIGHTS_NOSUDO + " '" + self._control.path_on_server + "'"
+                cmd = oPB.OPB_SETRIGHTS_NOSUDO + " '" + package + "'"
 
             cmd = ["sh", "-c", cmd]
-            result = self._processAction(cmd, action, ret, split = False)
+            result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_QUICKINST:
@@ -307,21 +310,25 @@ class OpsiProcessing(QObject, LogMixin):
 
             # check if temporary install folder exists and create if not
             if platform.system() == "Windows":
-                destfolder = Helper.concat_path_and_file(oPB.DEV_BASE, ConfigHandler.cfg.dev_dir[3:]).replace("\\","/")
-                destfile = Helper.concat_path_and_file(destfolder, file).replace("\\","/").replace("\\","/")
+                destfolder = Helper.concat_path_posix(oPB.DEV_BASE, ConfigHandler.cfg.dev_dir[3:]).replace("\\","/")
+                destfile = Helper.concat_path_posix(destfolder, file)
             else:
                 destfolder = ConfigHandler.cfg.dev_dir
-                destfile = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, file)
+                destfile = Helper.concat_path_native(ConfigHandler.cfg.dev_dir, file)
+
+            self.logger.debug("Dest. folder: " + destfolder)
+            self.logger.debug("Dest. file: " + destfile)
 
             self.logger.ssh(20 * "-" + "ACTION: IMPORT" + 20 * "-")
             # copy file to temporary location
             try:
+                self.progressChanged.emit(translate("OpsiProcessing", "Copying file to:") + " " + destfile)
                 self.logger.ssh("Copy file: " + package + " --> " + destfile)
                 self.copyToRemote(package, destfile)
 
+                self.progressChanged.emit(translate("OpsiProcessing", "Extracting..."))
                 cmd = ["sh", "-c", "cd " + destfolder + "; " + oPB.OPB_EXTRACT + " " + destfile]
                 result = self._processAction(cmd, action, ret, split = False, cwd = False)
-
             except Exception as error:
                 self.logger.ssh("Could not copy file to remote destination.")
                 self.logger.error(repr(error).replace("\\n"," --> "))
@@ -329,6 +336,9 @@ class OpsiProcessing(QObject, LogMixin):
                 self.ret = oPB.RET_SSHCONNERR
                 self.rettype = oPB.MsgEnum.MS_ERR
                 self.retmsg = translate("OpsiProcessing", "Error establishing SSH connection. See Log for details.")
+            else:
+                self.logger.ssh("Setting right after decompression: " + Helper.concat_path_posix(destfolder, product))
+                self.run(oPB.OpEnum.DO_SETRIGHTS, package=Helper.concat_path_posix(destfolder, product))
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETCLIENTS:
@@ -451,6 +461,7 @@ class OpsiProcessing(QObject, LogMixin):
                     wcfg = int(ConfigHandler.cfg.wol_lead_time)
                 except:
                     wcfg = 0
+
                 woltime_full = datetime.datetime(100,1,1,int(timeVal[:2]),int(timeVal[2:])) - datetime.timedelta(minutes=wcfg)
                 woltime = (str(woltime_full.hour) if len(str(woltime_full.hour)) == 2 else '0' + str(woltime_full.hour)) + \
                           (str(woltime_full.minute) if len(str(woltime_full.minute)) == 2 else '0' + str(woltime_full.minute))
@@ -620,7 +631,7 @@ class OpsiProcessing(QObject, LogMixin):
             if result != {}:
 
                 # cd c:\TEMP\RZInstall\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd
-                destfile = str(PurePosixPath(tmppath, "deploy.sh"))
+                destfile = Helper.concat_path_posix(tmppath, "deploy.sh")
 
                 cmd = ""
                 cmd += oPB.OPB_DEPLOY_COMMAND
@@ -876,6 +887,10 @@ class OpsiProcessing(QObject, LogMixin):
             found = True
             msg = translate("OpsiProcessing", "Package file error. Check log.")
 
+        elif "ERROR: Failed to process command 'extract':".upper() in text.upper():
+            found = True
+            msg = translate("OpsiProcessing", "Error during package extraction. Check log.")
+
         elif "ERROR".upper() in text.upper():
             found = True
             msg = translate("OpsiProcessing", "Undefined error occurred. Check log.")
@@ -890,6 +905,7 @@ class OpsiProcessing(QObject, LogMixin):
         :param remotefile: destination file name
         :param localopen: specify, if local file is already opened or not
         """
+        self.reset_shell()
         self.logger.debug("Copying file: %s (local) to %s (remote)", localfile, remotefile)
         try:
             if localopen == False:
@@ -1040,7 +1056,7 @@ class AnalyseProgressHook(StringIO):
                 if m:
                     if m.group(0).strip() != "":
                         count = float(m.group(0).strip())
-                        self._parent.progressChanged.emit(translate("ProgressHook", "Package building in progress:") + " " +
+                        self._parent.progressChanged.emit(translate("ProgressHook", "In progress:") + " " +
                                                           '\r[{0}] {1}%'.format('=' * int(count/5), count))
                         #StringIO.write(self, self._line)
 

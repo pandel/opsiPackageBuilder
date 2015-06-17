@@ -44,7 +44,7 @@ if sys.platform.lower().startswith('win'):
 
 from datetime import datetime
 from binascii import hexlify, unhexlify
-from pathlib import PurePath
+from pathlib import PurePath, PurePosixPath
 
 from Crypto.Cipher import XOR
 from PyQt5 import QtCore
@@ -98,7 +98,7 @@ class Helper(LogMixin):
         return False if not ext in oPB.SCRIPT_EXT else True
 
     @classmethod
-    def concat_path_and_file(cls, path: str, file: str) -> str:
+    def concat_path_native(cls, path: str, file: str) -> str:
         """
         Help function for connecting paths and filenames/foldernames.
         Takes underlying os into account.
@@ -108,6 +108,18 @@ class Helper(LogMixin):
         """
 
         return str(PurePath(path, file))
+
+    @classmethod
+    def concat_path_posix(cls, path: str, file: str) -> str:
+        """
+        Help function for connecting paths and filenames/foldernames.
+        Only POSIX-complient paths.
+
+        :param path: base path
+        :param file: file or folder
+        """
+
+        return str(PurePosixPath(path, file))
 
     @classmethod
     def get_file_from_path(cls, complete: str) -> str:

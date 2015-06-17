@@ -28,6 +28,7 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+import os
 import re
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QFileDialog
@@ -94,27 +95,35 @@ class BundleComponent(BaseController, QObject):
             if reply is True:
                 self.logger.debug("Selected product(s): " + str(prods))
 
-                comment = ""
-                while comment == "" or accept == False:
-                    (comment, accept) = self._parent.msgbox(translate("bundleController","Please enter package name (allowed characters: a-z, A-Z, 0-9, ._-):"),
-                                                    oPB.MsgEnum.MS_QUEST_PHRASE, parent = self.ui, preload = "meta-")
-                    if ConfigHandler.cfg.age == "True":
-                        test = re.match(oPB.OPB_PRODUCT_ID_REGEX_NEW, comment)
-                    else:
-                        test = re.match(oPB.OPB_PRODUCT_ID_REGEX_OLD, comment)
-                    if not test:
-                        comment = ""
+                ok = False
+                while not ok:
+                    comment = "meta-"
+                    accept = False
+                    while comment == "" or accept == False:
+                        (comment, accept) = self._parent.msgbox(translate("bundleController","Please enter package name (allowed characters: a-z, A-Z, 0-9, ._-):"),
+                                                        oPB.MsgEnum.MS_QUEST_PHRASE, parent = self.ui, preload = comment)
+                        if ConfigHandler.cfg.age == "True":
+                            test = re.match(oPB.OPB_PRODUCT_ID_REGEX_NEW, comment)
+                        else:
+                            test = re.match(oPB.OPB_PRODUCT_ID_REGEX_OLD, comment)
+                        if not test:
+                            self._parent.msgbox(translate("bundleController", "Package name is no valid product id!"),
+                                                oPB.MsgEnum.MS_ALWAYS, parent=self.ui)
+                            accept = False
 
-                if accept:
-                    directory = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, comment)
+                    directory = Helper.concat_path_native(ConfigHandler.cfg.dev_dir, comment)
                     self.logger.info("Chosen directory for new project: " + directory)
-                    self._parent.project_create(directory)
-                    for p in prods:
-                        self._parent.add_setup_before_dependency(p)
-                    self._parent.controlData.priority = -100
-                    self._parent.save_backend()
-                else:
-                    self.logger.debug("Dialog aborted.")
+                    if os.path.exists(directory):
+                        self._parent.msgbox(translate("bundleController", "Package name already exists. Please choose another package name!"),
+                                            oPB.MsgEnum.MS_ALWAYS, parent=self.ui)
+                    else:
+                        self._parent.project_create(directory)
+                        for p in prods:
+                            self._parent.add_setup_before_dependency(p)
+                        self._parent.controlData.priority = -100
+                        self._parent.save_backend()
+                        ok = True
+
         else:
             self.logger.debug("Nothing selected.")
 

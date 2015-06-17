@@ -107,6 +107,7 @@ class OpsiProductTableModel(QtGui.QStandardItemModel):
 
         except:
             pass
+
         QtGui.QStandardItemModel.appendRow(self, rowlist)
 
 

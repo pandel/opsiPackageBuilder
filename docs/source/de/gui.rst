@@ -1,13 +1,11 @@
-﻿.. index:: ! Programmoberfläche
+.. index:: ! Programmoberfläche
 
 Programmoberfläche
 ==================
 
 |image1|
 
-Nachfolgend werden die einzelnen Oberflächenbestandteile der Anwendung
-beschrieben und, wenn vorhanden, auf Besonderheiten im Umgang damit
-eingegangen.
+Nachfolgend werden die einzelnen Oberflächenbestandteile der Anwendung beschrieben und, wenn vorhanden, auf Besonderheiten im Umgang damit eingegangen.
 
 
 .. toctree::

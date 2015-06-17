@@ -168,7 +168,6 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         self.controlData.dataLoaded.connect(self.update_model_data)
         self.controlData.dataSaved.connect(self.update_model_data)
-        self.controlData.dataUpdated.connect(self.update_model_data)
 
         self.ui.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
 
@@ -262,11 +261,9 @@ class MainWindowController(BaseController, QObject, EventMixin):
         model.insertRow(0, row)
 
     def update_backend_data(self):
-        """
-        Write data from model into backend
+        """Write data from model into backend"""
+        self.logger.debug("Updateing backend data from model")
 
-        :return:
-        """
         self.controlData.id = self.model_fields.item(0, 1).text()
         self.controlData.name = self.model_fields.item(0, 2).text()
         self.controlData.description = self.model_fields.item(0, 3).text()
@@ -288,6 +285,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.controlData.dependencies = []
         if type(self.model_dependencies.item(0, 0)) is not None:  # empty dependency list
             for i in range(0, rows, 1):
+                #self.logger.debug("Reading dependency: " + str(i))
                 dep = ProductDependency()
                 dep.dependencyForAction = self.model_dependencies.item(i, 0).text()
                 dep.requiredProductId = self.model_dependencies.item(i, 1).text()
@@ -300,6 +298,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.controlData.properties = []
         if type(self.model_properties.item(0, 0)) is not None:  # empty property list
             for i in range(0, rows, 1):
+                #self.logger.debug("Reading property: " + str(i))
                 prop = ProductProperty()
                 prop.name = self.model_properties.item(i, 0).text()
                 prop.type = self.model_properties.item(i, 1).text()
@@ -543,7 +542,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         # create new control object as copy
 
-        if os.path.exists(Helper.concat_path_and_file(project_folder, "CLIENT_DATA")):
+        if os.path.exists(Helper.concat_path_native(project_folder, "CLIENT_DATA")):
             self.logger.error("CLIENT_DATA subdirectory in destination folder detected. This is not allowed for security reason!")
             self.msgbox(translate("mainController", "CLIENT_DATA subdirectory in destination folder detected. This is not allowed for security reason!"),
                         oPB.MsgEnum.MS_ERR)
@@ -570,15 +569,15 @@ class MainWindowController(BaseController, QObject, EventMixin):
             newControl.save_data()
             self.logger.debug("New control data saved.")
 
-            dest_data = Helper.concat_path_and_file(newControl.projectfolder, "CLIENT_DATA")
-            total, total_size = countFiles(Helper.concat_path_and_file(self.controlData.projectfolder, "CLIENT_DATA"))
+            dest_data = Helper.concat_path_native(newControl.projectfolder, "CLIENT_DATA")
+            total, total_size = countFiles(Helper.concat_path_native(self.controlData.projectfolder, "CLIENT_DATA"))
             val = 100 / total
 
             reply = self.msgbox(translate("mainController", "Copy files now? This can't be canceled.") + "\n\nTotal: " +  str(total) + "\n" + sizeof_fmt(total_size),
                                 oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
-                copyDirectory(Helper.concat_path_and_file(self.controlData.projectfolder, "CLIENT_DATA"),
-                              Helper.concat_path_and_file(newControl.projectfolder, "CLIENT_DATA")
+                copyDirectory(Helper.concat_path_native(self.controlData.projectfolder, "CLIENT_DATA"),
+                              Helper.concat_path_native(newControl.projectfolder, "CLIENT_DATA")
                               )
                 self.logger.debug("Files copied.")
 
@@ -610,21 +609,20 @@ class MainWindowController(BaseController, QObject, EventMixin):
         # extract product id from package path
         file = Helper.get_file_from_path(pack)
         product = file[:file.rfind("_")]  # remove everything behind product name (version, file extension, etc.)
-        project = Helper.concat_path_and_file(ConfigHandler.cfg.dev_dir, product)
+        project = Helper.concat_path_native(ConfigHandler.cfg.dev_dir, product)
 
         # import
         try:
             self.startup.hide_me()
             self.do_import(pack)
         except:
-            self.logger.err("Package import unsuccessful!")
-            return
-
-        # open
-        try:
-            self.project_load(project)
-        except:
-            self.logger.err("Imported package could not be opened!")
+            self.logger.error("Package import unsuccessful!")
+        else:
+            # open
+            try:
+                self.project_load(project)
+            except:
+                self.logger.err("Imported package could not be opened!")
 
     @pyqtSlot()
     def show_changelogeditor(self):

@@ -1,13 +1,11 @@
-﻿.. index:: ! Start
+.. index:: ! Start
 
 Start
 =====
 
 |image2|
 
-Beim Programmstart können die meist verwendeten Funktionen aufgerufen
-werden. Für einen schnellen Arbeitsablauf lassen sich die einzelnen
-Funktionen per Funktionstasten aufrufen.
+Beim Programmstart können die einige Hauptfunktionen direkt aufgerufen werden.
 
 +-------------------------+-------------------------+-------------------------+
 | Funktion                | Hotkey                  | Beschreibung            |
@@ -21,14 +19,16 @@ Funktionen per Funktionstasten aufrufen.
 |                         |                         | Entwicklungsordner eine |
 |                         |                         | bestehende              |
 |                         |                         | Paketstruktur einlesen. |
-|                         |                         | Es können keine         |
-|                         |                         | gepackten Pakete        |
-|                         |                         | (\*.opsi) geöffnet      |
-|                         |                         | werden.                 |
++-------------------------+-------------------------+-------------------------+
+| Paketdatei importieren  |                         | Eine vorliegende        |
+|                         |                         | \*.opsi Datei in den    |
+|                         |                         | Entwicklungsordner      |
+|                         |                         | importieren, entpacken, |
+|                         |                         | und öffnen.             |
 +-------------------------+-------------------------+-------------------------+
 | Zuletzt...              | F3                      | Die letzten fünf        |
 |                         |                         | bearbeiteten            |
-|                         |                         | Paketstrukturen         |
+|                         |                         | Pakete                  |
 +-------------------------+-------------------------+-------------------------+
 | Paketbündel erzeugen    | F5                      | Hilfsfunktion zur       |
 |                         |                         | Schnellanlage von       |

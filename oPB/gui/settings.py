@@ -290,7 +290,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
 
         if not directory == "":
             self.logger.info("Chosen directory: " + directory)
-            self.inpDevFolder.setText(Helper.concat_path_and_file(directory, ""))
+            self.inpDevFolder.setText(Helper.concat_path_native(directory, ""))
             self.dataChanged.emit()
         else:
             self.logger.debug("Dialog aborted.")
@@ -300,14 +300,14 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         """SSH keyfile selector dialog"""
         self.logger.debug("Select SSH keyfile dialog")
 
-        ext = "Private key file (" + ("; ").join(["*." + x for x in oPB.KEYFILE_EXT]) + ")"  # generate file extension selection string for dialog
+        ext = "Private key file (" + (" ").join(["*." + x for x in oPB.KEYFILE_EXT]) + ")"  # generate file extension selection string for dialog
 
         script = QFileDialog.getOpenFileName(self, translate("SettingsDialog", "Choose keyfile"),
                                             ConfigHandler.cfg.dev_dir, ext)
 
         if not script == ("", ""):
             self.logger.debug("Selected SSH keyfile: " + script[0])
-            self.inpKeyFile.setText(Helper.concat_path_and_file(script[0], ""))
+            self.inpKeyFile.setText(Helper.concat_path_native(script[0], ""))
             self.dataChanged.emit()
         else:
             self.logger.debug("Dialog aborted.")
@@ -318,7 +318,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.logger.debug("Select scripteditor dialog")
 
         if platform.system() != "Windows":
-            ext = "Program (" + ("; ").join(["*." + x for x in oPB.PRG_EXT]) + ")"  # generate file extension selection string for dialog
+            ext = "Program (" + (" ").join(["*." + x for x in oPB.PRG_EXT]) + ")"  # generate file extension selection string for dialog
         else:
             ext = "Any (*)"
 
@@ -327,7 +327,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
 
         if not script == ("", ""):
             self.logger.debug("Selected Scripeditor: " + script[0])
-            self.inpExternalEditor.setText(Helper.concat_path_and_file(script[0], ""))
+            self.inpExternalEditor.setText(Helper.concat_path_native(script[0], ""))
             self.dataChanged.emit()
         else:
             self.logger.debug("Dialog aborted.")
@@ -352,7 +352,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
 
         if not directory == "":
             self.logger.info("Chosen directory: " + directory)
-            self.inpLogFile.setText(Helper.concat_path_and_file(directory, "opb-session.log"))
+            self.inpLogFile.setText(Helper.concat_path_native(directory, "opb-session.log"))
             self.dataChanged.emit()
         else:
             self.logger.debug("Dialog aborted.")

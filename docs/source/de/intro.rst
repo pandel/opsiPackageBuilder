@@ -1,12 +1,12 @@
-﻿.. index:: ! Technisches und Danke an...
+.. index:: ! Technisches und Danke an...
 
 Technisches und Danke an...
 ===========================
 
 Ein paar "Interna"...
 
--  Python3, PyQt5
--  EXE in 32Bit
+-  Basis: Python 3.4, PyQt5
+-  EXE in 64Bit
 -  Serververbindungen sind SSH-basiert und verschlüsselt
 -  Jobsteuerung per ATD Dämon direkt am Server
 -  Zugriff zu spezifischen Informationen direkt über die JSON Schnittstelle des opsi Servers

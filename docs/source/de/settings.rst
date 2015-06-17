@@ -1,13 +1,17 @@
 .. index:: ! Einstellungen
 
+.. _settings:
+
 Einstellungen
 =============
 
 Die einzelnen Bestandteile des Einstellungen Dialogs in der Übersicht.
 
-Hinweis: es kann mehr als eine Konfiguration parallel betrieben werden. Genaueres zum Vorgehen dazu unter \ `Mehrere Konfigurationen. <#MehrereKonfigurationen>`__
+Hinweis: es kann mehr als eine Konfiguration parallel betrieben werden. Genaueres zum Vorgehen dazu unter :ref:`Mehrere Konfigurationen <multiple_configs>`.
 
 .. index:: ! Einstellungen; Allgemein
+
+.. _settings_general:
 
 Allgemein
 ---------
@@ -16,12 +20,16 @@ Allgemein
 
 .. index:: ! Einstellungen; Programm
 
+.. _settings_program:
+
 Programmeinstellungen
 ---------------------
 
 |image79|
 
 .. index:: ! Einstellungen; opsi Verwaltungsbefehle
+
+.. _settings_opsi:
 
 opsi Verwaltungsbefehle
 -----------------------
@@ -30,12 +38,16 @@ opsi Verwaltungsbefehle
 
 .. index:: ! Einstellungen; Nachrichten
 
+.. _settings_messages:
+
 Nachrichten
 -----------
 
 |image81|
 
 .. index:: ! Einstellungen; Automatische Updates
+
+.. _settings_updates:
 
 Automatische Updates
 --------------------

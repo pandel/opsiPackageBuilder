@@ -514,7 +514,7 @@ class DepotManagerComponent(BaseController, QObject):
         else:
             depot = self._ui_box_right.currentText().split()[0]
 
-        ext = "opsi Package (*.opsi;)"  # generate file extension selection string for dialog
+        ext = "opsi Package (*.opsi)"  # generate file extension selection string for dialog
 
         script = QFileDialog.getOpenFileName(self.ui, translate("depotmanagerController", "Choose package file"),
                                             "", ext)

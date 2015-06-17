@@ -110,9 +110,9 @@ class ScriptTreeDialog(ScriptTreeDialogBase, ScriptTreeDialogUI, LogMixin, Event
             return
 
         if os.path.exists(ConfigHandler.cfg.scripteditor):
-            path = Helper.concat_path_and_file(self._parentUi.lblPacketFolder.text(), "CLIENT_DATA")
+            path = Helper.concat_path_native(self._parentUi.lblPacketFolder.text(), "CLIENT_DATA")
 
-            path = Helper.concat_path_and_file(path, script)
+            path = Helper.concat_path_native(path, script)
 
             self.logger.debug("Opening script: " + path)
             cmd = [ConfigHandler.cfg.scripteditor]
