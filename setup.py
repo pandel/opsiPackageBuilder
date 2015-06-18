@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
 This module is part of the opsi PackageBuilder
@@ -67,7 +67,7 @@ setup(name = "opsiPackageBuilder",
         'oPB.ui': ['*.ui', '*.qss'],
     },
     data_files=data,
-    install_requires = ["releases", "spur", "simple-crypt>=4.0.0", "pycrypto"],
+    install_requires = ["releases", "spur", "pycrypto"],
     entry_points={
           'gui_scripts': [
               'opsipackagebuilder = oPB.runner:Main'
