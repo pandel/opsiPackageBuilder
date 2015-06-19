@@ -65,3 +65,4 @@ target/
 oPB/help/.opsipackagebuilder
 
 linux/*.deb
+/opb+scripted.iss

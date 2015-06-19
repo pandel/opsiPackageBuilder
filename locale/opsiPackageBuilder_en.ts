@@ -4,7 +4,7 @@
 <context>
     <name>BaseController</name>
     <message>
-        <location filename="../oPB/controller/base.py" line="217"/>
+        <location filename="../oPB/controller/base.py" line="219"/>
         <source>This package version already exists! You have three possibilities:@@Rebuild@TAB@TAB= rebuild (overwrite) the existing one@Add version@TAB= auto-correct package version and build new one@Cancel@TAB= cancel build process</source>
         <translation></translation>
     </message>
@@ -345,7 +345,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="192"/>
+        <location filename="../oPB/gui/depotmanager.py" line="264"/>
         <source>Fetch REPO content</source>
         <translation></translation>
     </message>
@@ -380,7 +380,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="244"/>
+        <location filename="../oPB/gui/depotmanager.py" line="238"/>
         <source>Uninstall</source>
         <translation></translation>
     </message>
@@ -440,12 +440,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="249"/>
+        <location filename="../oPB/gui/depotmanager.py" line="244"/>
         <source>Delete</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/depotmanager.py" line="189"/>
+        <location filename="../oPB/gui/depotmanager.py" line="261"/>
         <source>Fetch DEPOT content</source>
         <translation></translation>
     </message>
@@ -778,7 +778,7 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="902"/>
+        <location filename="../oPB/core/processing.py" line="906"/>
         <source>Undefined error occurred. Check log.</source>
         <translation></translation>
     </message>
@@ -805,6 +805,11 @@ The following message(s) returned:</source>
     <message>
         <location filename="../oPB/core/processing.py" line="898"/>
         <source>Error during package extraction. Check log.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/core/processing.py" line="902"/>
+        <source>Permission denied. Check log.</source>
         <translation></translation>
     </message>
 </context>
@@ -847,7 +852,7 @@ The following message(s) returned:</source>
 <context>
     <name>ProgressHook</name>
     <message>
-        <location filename="../oPB/core/processing.py" line="1068"/>
+        <location filename="../oPB/core/processing.py" line="1072"/>
         <source>In progress:</source>
         <translation></translation>
     </message>
@@ -1426,72 +1431,72 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="241"/>
+        <location filename="../oPB/controller/base.py" line="243"/>
         <source>Could not delete old package!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="265"/>
+        <location filename="../oPB/controller/base.py" line="267"/>
         <source>Please enter a short build comment:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="284"/>
+        <location filename="../oPB/controller/base.py" line="286"/>
         <source>Build running...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="300"/>
+        <location filename="../oPB/controller/base.py" line="302"/>
         <source>Installation running...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="308"/>
+        <location filename="../oPB/controller/base.py" line="310"/>
         <source>Deinstallation running...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="304"/>
+        <location filename="../oPB/controller/base.py" line="306"/>
         <source>Installation + setup running...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="319"/>
+        <location filename="../oPB/controller/base.py" line="321"/>
         <source>Setting package rights on:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="324"/>
+        <location filename="../oPB/controller/base.py" line="326"/>
         <source>Getting opsi client list...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="330"/>
+        <location filename="../oPB/controller/base.py" line="331"/>
         <source>Getting opsi product list...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="342"/>
+        <location filename="../oPB/controller/base.py" line="341"/>
         <source>Getting AT job list...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="363"/>
+        <location filename="../oPB/controller/base.py" line="359"/>
         <source>Delete AT jobs...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="368"/>
+        <location filename="../oPB/controller/base.py" line="363"/>
         <source>Delete every AT job...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="373"/>
+        <location filename="../oPB/controller/base.py" line="367"/>
         <source>Create AT jobs...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="358"/>
+        <location filename="../oPB/controller/base.py" line="355"/>
         <source>Getting client to depot association...</source>
         <translation></translation>
     </message>
@@ -1501,57 +1506,57 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="349"/>
+        <location filename="../oPB/controller/base.py" line="347"/>
         <source>Getting opsi depots...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="379"/>
+        <location filename="../oPB/controller/base.py" line="372"/>
         <source>Get repository contents...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="385"/>
+        <location filename="../oPB/controller/base.py" line="377"/>
         <source>Reboot depot...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="389"/>
+        <location filename="../oPB/controller/base.py" line="381"/>
         <source>Poweroff depot...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="393"/>
+        <location filename="../oPB/controller/base.py" line="385"/>
         <source>Run opsi-product-updater...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="397"/>
+        <location filename="../oPB/controller/base.py" line="389"/>
         <source>Remove package from repository: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="401"/>
+        <location filename="../oPB/controller/base.py" line="393"/>
         <source>Generate MD5 checksums: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="405"/>
+        <location filename="../oPB/controller/base.py" line="397"/>
         <source>Remove depot registration from config server...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="409"/>
+        <location filename="../oPB/controller/base.py" line="401"/>
         <source>Deploy opsi-client agent from config server...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="426"/>
+        <location filename="../oPB/controller/base.py" line="418"/>
         <source>opsi-package-manager commands only: -d ALL</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="435"/>
+        <location filename="../oPB/controller/base.py" line="427"/>
         <source>Selection canceled! Using default opsi server from settings.</source>
         <translation></translation>
     </message>
@@ -1571,7 +1576,7 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="413"/>
+        <location filename="../oPB/controller/base.py" line="405"/>
         <source>Package import in progress...</source>
         <translation></translation>
     </message>
@@ -1683,122 +1688,122 @@ The following message(s) returned:</source>
 <context>
     <name>depotmanagerController</name>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="484"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="577"/>
         <source>Selected depot:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="384"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="472"/>
         <source>Start opsi product updater now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="435"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="527"/>
         <source>The selected depot is ONLINE.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="439"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="531"/>
         <source>The selected depot is OFFLINE.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="452"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="544"/>
         <source>Do you really want to reboot the selected depot?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="494"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="587"/>
         <source>Please enter username with sufficient priviledges:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="497"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="590"/>
         <source>Please enter password:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="485"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="578"/>
         <source>Do you really want to power off the selected depot?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="297"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="370"/>
         <source>Nothing selected.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="401"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="490"/>
         <source>Selected packages:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="274"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="343"/>
         <source>Remove selected packages from repository now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="303"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="376"/>
         <source>Uninstall selected packages from depot now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="330"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="410"/>
         <source>Config server:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="331"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="411"/>
         <source>Do you really want to unregister the depot from the config server? This CAN&apos;T be undone!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="336"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="416"/>
         <source>Are you absolutely sure?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="360"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="443"/>
         <source>Set rights on repository folder now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="402"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="491"/>
         <source>Generate MD5 checksums now?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="523"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="617"/>
         <source>Choose package file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="650"/>
         <source>product id</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="650"/>
         <source>product version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="650"/>
         <source>package version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="551"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="650"/>
         <source>type</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="556"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="655"/>
         <source>server name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/depotmanager.py" line="556"/>
+        <location filename="../oPB/controller/components/depotmanager.py" line="655"/>
         <source>description</source>
         <translation></translation>
     </message>

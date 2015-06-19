@@ -22,9 +22,9 @@ AppPublisherURL={#MyAppPublisherURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
-OutputDir=D:\Pythonprojects\opsipackgebuilder-dropbox\dist
+OutputDir=D:\Pythonprojects\opsiPackageBuilder\dist
 OutputBaseFilename=opsiPackageBuilder-v{#MyAppVersion}
-SetupIconFile=D:\Pythonprojects\opsipackgebuilder-dropbox\images\prog.ico
+SetupIconFile=D:\Pythonprojects\opsiPackageBuilder\images\prog.ico
 Compression=lzma
 SolidCompression=yes
 EnableDirDoesntExistWarning=True
@@ -50,8 +50,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "D:\Pythonprojects\opsipackgebuilder-dropbox\dist\opsipackagebuilder\opsipackagebuilder.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Pythonprojects\opsipackgebuilder-dropbox\dist\opsipackagebuilder\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\Pythonprojects\opsiPackageBuilder\dist\opsipackagebuilder\opsipackagebuilder.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Pythonprojects\opsiPackageBuilder\dist\opsipackagebuilder\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
