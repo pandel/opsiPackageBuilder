@@ -82,12 +82,11 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
     def connect_signals(self):
         self.finished.connect(self.dialogClosed.emit)
         self._parent.dataAboutToBeAquired.connect(self.splash.setProgress)
-        self._parent.dataAquired.connect(self.splash.close)
         self._parent.dataAquired.connect(self.update_ui)
+        self._parent.dataAquired.connect(self.splash.close)
 
         self._parent.modelDataUpdated.connect(self.update_fields)
         self._parent.modelDataUpdated.connect(self.update_ui)
-        self._parent.modelDataUpdated.connect(self.splash.close)
 
         self.btnRefresh.clicked.connect(self._parent.update_data)
         self.btnCompare.clicked.connect(self.compare_sides)
@@ -105,8 +104,10 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         self.btnPoweroff.clicked.connect(self._parent.poweroff_depot)
         self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_DEPOTM))
 
-        self.cmbDepotLeft.currentTextChanged.connect(self._parent.side_content) #side_content
-        self.cmbDepotRight.currentTextChanged.connect(self._parent.side_content)
+        #self.cmbDepotLeft.currentTextChanged.connect(self._parent.side_content) #side_content
+        #self.cmbDepotRight.currentTextChanged.connect(self._parent.side_content)
+        self.cmbDepotLeft.currentTextChanged.connect(self._parent.switch_content) #side_content
+        self.cmbDepotRight.currentTextChanged.connect(self._parent.switch_content)
         self.cmbDepotLeft.currentTextChanged.connect(self.set_active_side) #side_content
         self.cmbDepotRight.currentTextChanged.connect(self.set_active_side)
 
@@ -159,6 +160,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         self.resizeLeft()
         self.resizeRight()
 
+    @pyqtSlot()
     def resizeLeft(self):
         self.tblDepotLeft.resizeRowsToContents()
         self.tblDepotLeft.resizeColumnsToContents()
@@ -172,25 +174,9 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         """Update ui state"""
         self.logger.debug("Update ui")
 
-        if self._parent._compare is False:
-            self.decorate_button(self.btnCompare, "")
-        else:
-            self.decorate_button(self.btnCompare, "green")
+        self.resizeTables()
 
-        if self._parent._type_left == "repo":
-            self.decorate_button(self.btnFetchRepoLeft, "blue")
-            self.btnFetchRepoLeft.setText(translate("DepotManagerDialog", "Fetch DEPOT content"))
-        else:
-            self.decorate_button(self.btnFetchRepoLeft, "")
-            self.btnFetchRepoLeft.setText(translate("DepotManagerDialog", "Fetch REPO content"))
-
-        if self._parent._type_right == "repo":
-            self.decorate_button(self.btnFetchRepoRight, "blue")
-            self.btnFetchRepoRight.setText(translate("DepotManagerDialog", "Fetch DEPOT content"))
-        else:
-            self.decorate_button(self.btnFetchRepoRight, "")
-            self.btnFetchRepoRight.setText(translate("DepotManagerDialog", "Fetch REPO content"))
-
+        # enable / disable buttons
         if self.cmbDepotLeft.currentIndex() == -1:
             self.btnFetchRepoLeft.setEnabled(False)
         else:
@@ -218,13 +204,20 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
             self.btnPoweroff.setEnabled(False)
             self.btnReboot.setEnabled(False)
         else:
-            self.btnInstall.setEnabled(True)
-            self.btnUninstall.setEnabled(True)
-            self.btnUpload.setEnabled(True)
+            if self._parent._compare is False:
+                self.btnInstall.setEnabled(True)
+                self.btnUninstall.setEnabled(True)
+                self.btnUpload.setEnabled(True)
+            else:
+                self.btnInstall.setEnabled(False)
+                self.btnUninstall.setEnabled(False)
+                self.btnUpload.setEnabled(False)
+
             self.btnUnregister.setEnabled(True)
             self.btnOnlineCheck.setEnabled(True)
             self.btnPoweroff.setEnabled(True)
             self.btnReboot.setEnabled(True)
+
             if self._parent._active_side == "left":
                 if self._parent._type_left == "depot":
                     self.btnSetRights.setEnabled(False)
@@ -232,9 +225,10 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
                     self.btnGenMD5.setEnabled(False)
                     self.btnUninstall.setText(translate("DepotManagerDialog", "Uninstall"))
                 else:
-                    self.btnSetRights.setEnabled(True)
-                    self.btnRunProdUpdater.setEnabled(True)
-                    self.btnGenMD5.setEnabled(True)
+                    if self._parent._compare is not True:
+                        self.btnSetRights.setEnabled(True)
+                        self.btnRunProdUpdater.setEnabled(True)
+                        self.btnGenMD5.setEnabled(True)
                     self.btnUninstall.setText(translate("DepotManagerDialog", "Delete"))
             else:
                 if self._parent._type_right == "depot":
@@ -243,12 +237,31 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
                     self.btnGenMD5.setEnabled(False)
                     self.btnUninstall.setText(translate("DepotManagerDialog", "Uninstall"))
                 else:
-                    self.btnSetRights.setEnabled(True)
-                    self.btnRunProdUpdater.setEnabled(True)
-                    self.btnGenMD5.setEnabled(True)
+                    if self._parent._compare is not True:
+                        self.btnSetRights.setEnabled(True)
+                        self.btnRunProdUpdater.setEnabled(True)
+                        self.btnGenMD5.setEnabled(True)
                     self.btnUninstall.setText(translate("DepotManagerDialog", "Delete"))
 
-        self.resizeTables()
+        if self._parent._compare is False:
+            self.decorate_button(self.btnCompare, "")
+        else:
+            self.decorate_button(self.btnCompare, "green")
+
+        # set decoration and text
+        if self._parent._type_left == "repo":
+            self.decorate_button(self.btnFetchRepoLeft, "blue")
+            self.btnFetchRepoLeft.setText(translate("DepotManagerDialog", "Fetch DEPOT content"))
+        else:
+            self.decorate_button(self.btnFetchRepoLeft, "")
+            self.btnFetchRepoLeft.setText(translate("DepotManagerDialog", "Fetch REPO content"))
+
+        if self._parent._type_right == "repo":
+            self.decorate_button(self.btnFetchRepoRight, "blue")
+            self.btnFetchRepoRight.setText(translate("DepotManagerDialog", "Fetch DEPOT content"))
+        else:
+            self.decorate_button(self.btnFetchRepoRight, "")
+            self.btnFetchRepoRight.setText(translate("DepotManagerDialog", "Fetch REPO content"))
 
     @pyqtSlot()
     def update_fields(self):
@@ -260,9 +273,9 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         l.sort()
 
         # temporary disconnect events for smoother display
-        self.cmbDepotLeft.currentTextChanged.disconnect(self._parent.side_content)
-        self.cmbDepotRight.currentTextChanged.disconnect(self._parent.side_content)
-        self.cmbDepotLeft.currentTextChanged.disconnect(self.set_active_side) #side_content
+        self.cmbDepotLeft.currentTextChanged.disconnect(self._parent.switch_content)
+        self.cmbDepotRight.currentTextChanged.disconnect(self._parent.switch_content)
+        self.cmbDepotLeft.currentTextChanged.disconnect(self.set_active_side)
         self.cmbDepotRight.currentTextChanged.disconnect(self.set_active_side)
 
         self.cmbDepotLeft.clear()
@@ -270,13 +283,13 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         self.cmbDepotLeft.addItems(l)
         self.cmbDepotRight.addItems(l)
 
-        self.cmbDepotLeft.currentTextChanged.connect(self._parent.side_content)
-        self.cmbDepotRight.currentTextChanged.connect(self._parent.side_content)
+        self.cmbDepotLeft.currentTextChanged.connect(self._parent.switch_content)
+        self.cmbDepotRight.currentTextChanged.connect(self._parent.switch_content)
 
         self.cmbDepotLeft.setCurrentIndex(-1)
         self.cmbDepotRight.setCurrentIndex(-1)
 
-        self.cmbDepotLeft.currentTextChanged.connect(self.set_active_side) #side_content
+        self.cmbDepotLeft.currentTextChanged.connect(self.set_active_side)
         self.cmbDepotRight.currentTextChanged.connect(self.set_active_side)
 
     def decorate_button(self, button, state):
@@ -310,6 +323,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         self.splitter.setSizes([w*(1/2), w*(1/2)])
 
         self._parent.update_data()
+        self._parent.dataAquired.emit()
 
         self.cmbDepotLeft.setCurrentIndex(-1)
         self.cmbDepotRight.setCurrentIndex(-1)

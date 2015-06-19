@@ -63,3 +63,5 @@ target/
 /.project
 
 oPB/help/.opsipackagebuilder
+
+linux/*.deb

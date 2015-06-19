@@ -44,8 +44,6 @@ translate = QtCore.QCoreApplication.translate
 
 class DepotManagerComponent(BaseController, QObject):
 
-    dataAboutToBeAquired = pyqtSignal(object)
-    dataAquired = pyqtSignal()
     modelDataUpdated = pyqtSignal()
 
     def __init__(self, parent):
@@ -61,12 +59,16 @@ class DepotManagerComponent(BaseController, QObject):
         self.model_right = None
         self.model_report = None
 
-        self._data_left = []
-        self._data_right = []
-        self.reportlist = []
-
         self._type_left = "depot"  # depot / repo modus
         self._type_right = "depot"  # depot / repo modus
+        self._select_left = ""
+        self._select_right = ""
+        self._depot_data_left = []
+        self._depot_data_right = []
+        self._repo_data_left = []
+        self._repo_data_right = []
+        self.reportlist = []
+
 
         self._ui_box_left = QtWidgets.QComboBox  # left depot combobox selecotor
         self._ui_box_right = QtWidgets.QComboBox # right depot combobox selecotor
@@ -113,28 +115,20 @@ class DepotManagerComponent(BaseController, QObject):
 
         self.retranslateMsg()
 
-    def update_model_data(self, side, depot, dict_):
+    def update_model_data(self, side, dict_):
         self.logger.debug("Update model data")
 
         tmplist = []
-        prodlist = []
+
         if dict_:
             for elem in dict_:
                 d = elem.split(";")
-                if d[4] == depot:
-                    prodlist.append((";").join([d[0], "", d[2],d[3]]))
-                    tmplist.append([d[0], d[2], d[3], d[1]])
+                tmplist.append([d[0], d[2], d[3], d[1]])
 
         if side == 0:
             self._parent.update_table_model(self.model_left, sorted(tmplist))
-            # save abstract product list, but only if NOT in comparison mode
-            if self._compare is False:
-                self._data_left = prodlist
         else:
             self._parent.update_table_model(self.model_right, sorted(tmplist))
-            # save abstract product list, but only if NOT in comparison mode
-            if self._compare is False:
-                self._data_right = prodlist
 
     def update_reportmodel_data(self):
         self.logger.debug("Update report model data")
@@ -151,8 +145,14 @@ class DepotManagerComponent(BaseController, QObject):
         self.logger.debug("Update data")
 
         if self.sender() == self.ui.btnRefresh:
+            self._select_left = "" # depot / repo modus
+            self._select_right = ""  # depot / repo modus
             self._type_left = "depot" # depot / repo modus
             self._type_right = "depot"  # depot / repo modus
+            self._depot_data_left = []
+            self._depot_data_right = []
+            self._repo_data_left = []
+            self._repo_data_right = []
             self._compare = False
             self._active_side = None
 
@@ -169,75 +169,122 @@ class DepotManagerComponent(BaseController, QObject):
         if resetgui:
             self.modelDataUpdated.emit()
 
-    @pyqtSlot()
-    def switch_content(self):
+    @pyqtSlot(str)
+    def switch_content(self, param = ""):
         self.logger.debug("Switch content")
-
-        # if self.sender() == self._ui_box_left:
-        #     self.logger.debug("Sender is left combo box")
-        #     self.side_content(self._ui_box_left.currentText(), "left")
-        #
-        # if self.sender() == self._ui_box_right:
-        #     self.logger.debug("Sender is right combo box")
-        #     self.side_content(self._ui_box_right.currentText(), "right")
 
         if self.sender() == self._ui_repobtn_left:
             self.logger.debug("Sender is left button")
+            uiserver = self._ui_box_left.currentText().split()[0]
             if self._type_left == "depot":
                 self._type_left = "repo"
             else:
                 self._type_left = "depot"
-            self.side_content(self._ui_box_left.currentText(), "left")
+            self.side_content(uiserver, "left")
 
-        if self.sender() == self._ui_repobtn_right:
+        elif self.sender() == self._ui_repobtn_right:
             self.logger.debug("Sender is right button")
+            uiserver = self._ui_box_right.currentText().split()[0]
             if self._type_right == "depot":
                 self._type_right = "repo"
             else:
                 self._type_right = "depot"
-            self.side_content(self._ui_box_right.currentText(), "right")
+            self.side_content(uiserver, "right")
+
+        else:
+            try:
+                uiserver = param.split()[0]
+            except:
+                uiserver = ""
+
+            if self.sender() == self._ui_box_left:
+                # get server name from combobox
+                if self._select_left != uiserver:
+                    self._repo_data_left = []
+                self.side_content(uiserver, "left")
+
+            if self.sender() == self._ui_box_right:
+                # get server name from combobox
+                if self._select_right != uiserver:
+                    self._repo_data_right = []
+                self.side_content(uiserver, "right")
 
         if self._compare is True:
             self.compare_leftright()
 
-    @pyqtSlot(str)
-    def side_content(self, param, side = None):
+        self.dataAquired.emit()
 
-        if param != "":
-            if self.sender() == self._ui_box_left or side == "left":
-                self.dataAboutToBeAquired.emit(33)
+    def side_content(self, uiserver = "", side = None):
+
+        if uiserver != "":
+            if side == "left":
+
+                # depot data
+                if self._select_left != uiserver:
+
+                    self._depot_data_left = []
+                    for elem in BaseController.productsondepotslist:
+                        d = elem.split(";")
+                        if d[4] == uiserver:
+                            self._depot_data_left.append((";").join([d[0], d[1], d[2],d[3]]))
+
+                    self._select_left = uiserver
+
+                # repo data
+                if self._type_left == "repo" and not self._repo_data_left:
+                    self.dataAboutToBeAquired.emit(None)
+                    self._repo_data_left = self._parent.do_getrepocontent(dest = uiserver)
+                    self.dataAquired.emit()
+
                 if self._type_left == "repo":
                     self.logger.debug("Left pane: repo content")
-                    tmplist = self._parent.do_getrepocontent(dest = param.split()[0])
-                    self.update_model_data(0, param.split()[0], tmplist)
+                    self.update_model_data(0, self._repo_data_left)
                 else:
                     self.logger.debug("Left pane: depot content")
-                    self.update_model_data(0, param.split()[0], BaseController.productsondepotslist)
+                    self.update_model_data(0, self._depot_data_left)
 
-            if self.sender() == self._ui_box_right or side == "right":
-                self.dataAboutToBeAquired.emit(66)
+            # -------------------------------------------------------------------------------------------------
+
+            if side == "right":
+
+                # depot data
+                if self._select_right != uiserver:
+
+                    self._depot_data_right = []
+                    for elem in BaseController.productsondepotslist:
+                        d = elem.split(";")
+                        if d[4] == uiserver:
+                            self._depot_data_right.append((";").join([d[0], d[1], d[2],d[3]]))
+
+                    self._select_right = uiserver
+
+                # repo data
+                if self._type_right == "repo" and not self._repo_data_right:
+                    self.dataAboutToBeAquired.emit(None)
+                    self._repo_data_right = self._parent.do_getrepocontent(dest = uiserver)
+                    self.dataAquired.emit()
+
                 if self._type_right == "repo":
                     self.logger.debug("Right pane: repo content")
-                    tmplist = self._parent.do_getrepocontent(dest = param.split()[0])
-                    self.update_model_data(1, param.split()[0], tmplist)
+                    self.update_model_data(1, self._repo_data_right)
                 else:
                     self.logger.debug("Right pane: depot content")
-                    self.update_model_data(1, param.split()[0], BaseController.productsondepotslist)
+                    self.update_model_data(1, self._depot_data_right)
 
         else:
             if self.sender() == self._ui_box_left:
-                self.dataAboutToBeAquired.emit(33)
                 self.logger.debug("Left pane: clean selection")
-                self.update_model_data(0, "", None)
+                self.update_model_data(0, None)
                 self._type_left = "depot"
+                self._depot_data_left = []
+                self._select_left = ""
 
             if self.sender() == self._ui_box_right:
-                self.dataAboutToBeAquired.emit(66)
                 self.logger.debug("Right pane: clean selection")
-                self.update_model_data(1, "", None)
+                self.update_model_data(1, None)
                 self._type_right = "depot"
-
-        self.dataAquired.emit()
+                self._depot_data_right = []
+                self._select_right = ""
 
     @pyqtSlot()
     def compare_leftright(self):
@@ -245,21 +292,38 @@ class DepotManagerComponent(BaseController, QObject):
 
         if self._compare is True:
 
-            uniqueLeft = [item for item in self._data_left if item not in self._data_right]
-            uniqueRight = [item for item in self._data_right if item not in self._data_left]
-
             if self._type_left != self._type_right:
-                uniqueLeft = [item.replace(";;",";(repo<->depo);") for item in uniqueLeft]
-                uniqueRight = [item.replace(";;",";(repo<->depo);") for item in uniqueRight]
 
-            self.update_model_data(0, self._ui_box_left.currentText(), [item + ";" + self._ui_box_left.currentText() for item in uniqueLeft])
-            self.update_model_data(1, self._ui_box_right.currentText(), [item + ";" + self._ui_box_right.currentText() for item in uniqueRight])
+                if self._type_left == "depot":
+                    tmpLeft = [(";").join([item.split(";")[0], "(repo<->depo)", item.split(";")[2], item.split(";")[3]])  for item in self._depot_data_left]
+                else:
+                    tmpLeft = [(";").join([item.split(";")[0], "(repo<->depo)", item.split(";")[2], item.split(";")[3]])  for item in self._repo_data_left]
+
+                if self._type_right == "depot":
+                    tmpRight = [(";").join([item.split(";")[0], "(repo<->depo)", item.split(";")[2], item.split(";")[3]])  for item in self._depot_data_right]
+                else:
+                    tmpRight = [(";").join([item.split(";")[0], "(repo<->depo)", item.split(";")[2], item.split(";")[3]])  for item in self._repo_data_right]
+
+            else:
+
+                if self._type_left == "depot":
+                    tmpLeft = self._depot_data_left
+                    tmpRight = self._depot_data_right
+                else:
+                    tmpLeft = self._repo_data_left
+                    tmpRight = self._repo_data_right
+
+            uniqueLeft = [item for item in tmpLeft if item not in tmpRight]
+            uniqueRight = [item for item in tmpRight if item not in tmpLeft]
+
+            self.update_model_data(0, uniqueLeft)
+            self.update_model_data(1, uniqueRight)
+            self.dataAquired.emit()
 
         else:
-            self.side_content(self._ui_box_left.currentText(), "left")
-            self.side_content(self._ui_box_right.currentText(), "right")
-
-        self.dataAquired.emit()
+            self.side_content(self._ui_box_left.currentText().split()[0], "left")
+            self.side_content(self._ui_box_right.currentText().split()[0], "right")
+            self.dataAquired.emit()
 
     @pyqtSlot()
     def delete_from_repo(self, depot, packs):
@@ -279,13 +343,17 @@ class DepotManagerComponent(BaseController, QObject):
 
             self.dataAboutToBeAquired.emit(None)
             self._parent.do_deletefilefromrepo(packs = packs, dest = depot)
+            self.dataAquired.emit()
 
             if self._active_side == "left":
-                self.side_content(self._ui_box_left.currentText(), "left")
+                self._repo_data_left = []
+                self.side_content(self._ui_box_left.currentText().split()[0], "left")
             else:
-                self.side_content(self._ui_box_right.currentText(), "right")
+                self._repo_data_right = []
+                self.side_content(self._ui_box_right.currentText().split()[0], "right")
 
             self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -306,15 +374,20 @@ class DepotManagerComponent(BaseController, QObject):
             self.logger.debug("Selected depot: " + depot)
             self.logger.debug("Selected packages: " + (", ").join(packs))
 
+            BaseController.productsondepotslist = None
             self.dataAboutToBeAquired.emit(None)
             self._parent.do_quickuninstall(packs = packs, depot = depot)
+            self.update_data(resetgui = False)
 
             if self._active_side == "left":
-                self.side_content(self._ui_box_left.currentText(), "left")
+                self._select_left = ""
+                self.side_content(self._ui_box_left.currentText().split()[0], "left")
             else:
-                self.side_content(self._ui_box_right.currentText(), "right")
+                self._select_right = ""
+                self.side_content(self._ui_box_right.currentText().split()[0], "right")
 
             self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -339,12 +412,15 @@ class DepotManagerComponent(BaseController, QObject):
                                         parent = self.ui)
             if reply is True:
                 self.logger.debug("Selected depot: " + depot)
+
                 self.dataAboutToBeAquired.emit(None)
                 self._parent.do_unregisterdepot(depot = depot)
                 self.update_data()
                 self.dataAquired.emit()
+
             else:
                 self.logger.debug("Dialog canceled.")
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -364,11 +440,16 @@ class DepotManagerComponent(BaseController, QObject):
 
             self.dataAboutToBeAquired.emit(None)
             self._parent.do_setrights_on_repo(dest = depot)
+
             if self._active_side == "left":
-                self.side_content(self._ui_box_left.currentText(), "left")
+                self._repo_data_left = []
+                self.side_content(self._ui_box_left.currentText().split()[0], "left")
             else:
-                self.side_content(self._ui_box_right.currentText(), "right")
+                self._repo_data_right = []
+                self.side_content(self._ui_box_right.currentText().split()[0], "right")
+
             self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -389,6 +470,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.dataAboutToBeAquired.emit(None)
             self._parent.do_runproductupdater(dest = depot)
             self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -409,11 +491,14 @@ class DepotManagerComponent(BaseController, QObject):
             self._parent.do_generate_md5(packs = packs, dest = depot)
 
             if self._active_side == "left":
-                self.side_content(self._ui_box_left.currentText(), "left")
+                self._repo_data_left = []
+                self.side_content(self._ui_box_left.currentText().split()[0], "left")
             else:
-                self.side_content(self._ui_box_right.currentText(), "right")
+                self._repo_data_right = []
+                self.side_content(self._ui_box_right.currentText().split()[0], "right")
 
             self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -466,6 +551,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.dataAboutToBeAquired.emit(None)
             self._parent.do_reboot(user = user, password = password, dest = depot)
             self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -496,6 +582,7 @@ class DepotManagerComponent(BaseController, QObject):
             self.dataAboutToBeAquired.emit(None)
             self._parent.do_poweroff(user = user, password = password, dest = depot)
             self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
 
@@ -519,22 +606,25 @@ class DepotManagerComponent(BaseController, QObject):
         script = QFileDialog.getOpenFileName(self.ui, translate("depotmanagerController", "Choose package file"),
                                             "", ext)
 
-        self.dataAboutToBeAquired.emit(None)
-
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
+
+            BaseController.productsondepotslist = None
+            self.dataAboutToBeAquired.emit(None)
             self._parent.do_quickinstall(pack = script[0], depot = depot)
+            self.update_data(resetgui = False)
+
+            if self._active_side == "left":
+                self._select_left = ""
+                self.side_content(self._ui_box_left.currentText().split()[0], "left")
+            else:
+                self._select_right = ""
+                self.side_content(self._ui_box_right.currentText().split()[0], "right")
+
+            self.dataAquired.emit()
+
         else:
             self.logger.debug("Dialog canceled.")
-
-        self.update_data(resetgui = False)
-
-        if self._active_side == "left":
-            self.side_content(self._ui_box_left.currentText(), "left")
-        else:
-            self.side_content(self._ui_box_right.currentText(), "right")
-
-        self.dataAquired.emit()
 
     def retranslateMsg(self):
         self.logger.debug("Retranslating further messages...")

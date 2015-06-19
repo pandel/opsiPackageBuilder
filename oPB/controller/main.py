@@ -581,7 +581,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
                               )
                 self.logger.debug("Files copied.")
 
-            self.processingEnded.emit()
+            self.processingEnded.emit(True)
 
             # close current project an re-open clone
             if not self.project_close():

@@ -49,9 +49,9 @@ class BaseController(LogMixin):
     closeAppRequested = pyqtSignal(int)
     msgSend = pyqtSignal(str) # emit message text, params: header and text
     processingStarted = pyqtSignal()
-    processingEnded = pyqtSignal()
-    dataAboutToBeRequested = pyqtSignal()
-    dataRequested = pyqtSignal()
+    processingEnded = pyqtSignal(bool)
+    dataAboutToBeAquired = pyqtSignal(object)
+    dataAquired = pyqtSignal()
 
     clientlist_dict = None
     clientsondepotslist_dict = None
@@ -193,17 +193,19 @@ class BaseController(LogMixin):
 
         # run build job
         self.processingStarted.emit()
+
         self.msgSend.emit(msg)
         result = proc.run(jobtype, **kwargs)
-        self.processingEnded.emit()
 
         oPB.EXITCODE = result[0]
         self.logger.debug("Exitcode after dispatching:" + str(oPB.EXITCODE))
 
         if result[0] == oPB.RET_OK:
             self.msgbox(translate("baseController", "Action completed successfully!"), oPB.MsgEnum.MS_INFO)
+            self.processingEnded.emit(True)
         else:
             self.msgbox(result[2], result[1])
+            self.processingEnded.emit(False)
 
         proc.progressChanged.disconnect(self.msgSend)
         return result[3]
@@ -320,25 +322,21 @@ class BaseController(LogMixin):
     def do_getclients(self, dest = ""):
         BaseController.clientlist_dict = \
             self._do(oPB.OpEnum.DO_GETCLIENTS, translate("baseController", "Getting opsi client list..."), alt_destination = dest)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_getproducts(self, dest = ""):
         BaseController.productlist_dict = \
             self._do(oPB.OpEnum.DO_GETPRODUCTS, translate("baseController", "Getting opsi product list..."), alt_destination = dest)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_getproductsondepots(self, dest = ""):
         BaseController.productsondepotslist = \
             self._do(oPB.OpEnum.DO_GETPRODUCTSONDEPOTS, translate("baseController", "Getting opsi products on depots list..."), alt_destination = dest)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_getjobs(self, dest = ""):
         BaseController.joblist = \
             self._do(oPB.OpEnum.DO_GETATJOBS, translate("baseController", "Getting AT job list..."), alt_destination = dest)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_getdepots(self, dest = ""):
@@ -348,34 +346,28 @@ class BaseController(LogMixin):
         for elem in BaseController.depotlist_dict:
             tmpdict[elem["id"]] = elem["description"]
         ConfigHandler.cfg.depotcache = tmpdict
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_getclientsondepots(self, dest = ""):
         BaseController.clientsondepotslist_dict = \
             self._do(oPB.OpEnum.DO_GETCLIENTSONDEPOTS, translate("baseController", "Getting client to depot association..."), alt_destination = dest)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_deletejobs(self, joblist = [], dest = ""):
         self._do(oPB.OpEnum.DO_DELETEJOBS, translate("baseController", "Delete AT jobs..."), alt_destination = dest, joblist = joblist)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_deletealljobs(self, dest = ""):
         self._do(oPB.OpEnum.DO_DELETEALLJOBS, translate("baseController", "Delete every AT job..."), alt_destination = dest)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_createjobs(self, clIdx = [], prodIdx = [], ataction = "setup", dateVal = "29991230", timeVal = "2359", od_demand = False, wol = False, dest = ""):
         self._do(oPB.OpEnum.DO_CREATEJOBS, translate("baseController", "Create AT jobs..."), alt_destination = dest, clients = clIdx,
                  products = prodIdx, ataction = ataction, dateVal = dateVal, timeVal = timeVal, on_demand = od_demand, wol = wol)
-        self.dataRequested.emit()
 
     @pyqtSlot()
     def do_getrepocontent(self, dest = ""):
         tmp = self._do(oPB.OpEnum.DO_GETREPOCONTENT, translate("baseController", "Get repository contents..."), alt_destination = dest)
-        self.dataRequested.emit()
         return tmp
 
     @pyqtSlot()

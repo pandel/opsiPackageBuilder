@@ -30,6 +30,7 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+import platform
 from PyQt5 import QtCore, QtGui
 from oPB.core import *
 from oPB.core.tools import Helper, LogMixin
@@ -149,10 +150,10 @@ class Splash(LogMixin, EventMixin):
             self.logger.debug("Show splash, parent: " + str(self._parent))
             self._splash.showMessage(self.msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
 
-        try:
-            parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux
-        except:
-            parentUi = self._parent.childrenRect()  # need to use centralwidget for linux
+        if platform.system() == "Linux":
+            parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux, don't know why
+        else:
+            parentUi = self._parent.childrenRect()
 
         mysize = self._splash.geometry()
 

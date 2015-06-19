@@ -567,9 +567,9 @@ class OpsiProcessing(QObject, LogMixin):
                         pack_ver = "(unavail)"
 
                     if warn_ver or warn_md5:
-                        tmplist.append(product + ";" + errstring + ";" + prod_ver + ";" + pack_ver + ";" + self._server)
+                        tmplist.append(product + ";" + errstring + ";" + prod_ver + ";" + pack_ver)
                     else:
-                        tmplist.append(product + ";" + md5 + ";" + prod_ver + ";" + pack_ver + ";" + self._server)
+                        tmplist.append(product + ";" + md5 + ";" + prod_ver + ";" + pack_ver)
 
                     if warn_ver or warn_md5:
                         self.ret = ret
@@ -890,6 +890,10 @@ class OpsiProcessing(QObject, LogMixin):
         elif "ERROR: Failed to process command 'extract':".upper() in text.upper():
             found = True
             msg = translate("OpsiProcessing", "Error during package extraction. Check log.")
+
+        elif "Permission denied".upper() in text.upper():
+            found = True
+            msg = translate("OpsiProcessing", "Permission denied. Check log.")
 
         elif "ERROR".upper() in text.upper():
             found = True
