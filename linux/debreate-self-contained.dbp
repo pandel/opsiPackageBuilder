@@ -32,7 +32,6 @@ Description: Package building tool for opsi (open pc server integration)
 
 chmod +x "/usr/share/opsipackagebuilder/opsipackagebuilder"
 chmod +x "/usr/share/opsipackagebuilder/helpviewer"
-chmod -x "/usr/share/opsipackagebuilder/*.so*"
 chmod 777 "/usr/share/opsipackagebuilder/help"
 chmod 666 "/usr/share/opsipackagebuilder/help/opsipackagebuilder.qhc"
 
@@ -49,7 +48,7 @@ desktop-file-install /usr/share/opsipackagebuilder/opb-helpviewer.desktop
 #! /bin/bash -e
 
 rm "/usr/bin/opsipackagebuilder"
-rm "/usr/bin/helpviewer"
+rm "/usr/bin/opb-helpviewer"
 
 rm "/usr/share/opsipackagebuilder/opsipackagebuilder.desktop"
 rm "/usr/share/opsipackagebuilder/opb-helpviewer.desktop"
