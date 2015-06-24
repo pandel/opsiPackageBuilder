@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>778</width>
-    <height>502</height>
+    <height>499</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -582,13 +582,13 @@
          <property name="minimumSize">
           <size>
            <width>530</width>
-           <height>110</height>
+           <height>140</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>140</height>
+           <height>160</height>
           </size>
          </property>
          <property name="title">
@@ -619,12 +619,6 @@
           </item>
           <item row="2" column="4">
            <widget class="QPushButton" name="btnExternalEditor">
-            <property name="maximumSize">
-             <size>
-              <width>28</width>
-              <height>24</height>
-             </size>
-            </property>
             <property name="text">
              <string/>
             </property>
@@ -709,19 +703,6 @@
             </property>
            </spacer>
           </item>
-          <item row="4" column="0">
-           <spacer name="verticalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
@@ -729,14 +710,14 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
              <string>Concat filename:</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="1" colspan="2">
+          <item row="4" column="1" colspan="2">
            <widget class="QCheckBox" name="chkAttachDirect">
             <property name="text">
              <string>Attach directly to options</string>
