@@ -150,9 +150,11 @@ class Splash(LogMixin, EventMixin):
             self.logger.debug("Show splash, parent: " + str(self._parent))
             self._splash.showMessage(self.msg, QtCore.Qt.AlignCenter, QtCore.Qt.white)
 
-        if platform.system() == "Linux":
-            parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux, don't know why
-        else:
+        try:
+        #if platform.system() == "Linux":
+            parentUi = self._parent.centralwidget.geometry()  # need to use centralwidget for linux preferably, don't know why
+        except:
+        #else:
             parentUi = self._parent.childrenRect()
 
         mysize = self._splash.geometry()
