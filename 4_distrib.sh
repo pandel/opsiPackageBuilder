@@ -1,1 +1,1 @@
-pyinstaller --noconfirm  pyinstaller-windows.spec
+pyinstaller --noconfirm  pyinstaller-linux.spec
