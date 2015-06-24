@@ -1,17 +1,19 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
-Package: opsipackagebuilder
+Package: opsipackagebuilder-sc
 Version: 8.0.0
 Section: admin
 Maintainer: Holger Pandel <holger.pandel@googlemail.com>
 Homepage: https://github.com/pandel/opsiPackageBuilder
 Priority: optional
 Architecture: amd64
+Conflicts: opsipackagebuilder
 Description: Package building tool for opsi (open pc server integration)
  This tool assists you in building packages for opsi (open pc server integration) and can help managing your depot servers.
  .
  It is also possible to schedule software distribution with it by creating special AT jobs on the opsi server.
-
+ .
+ This is the self-contained package version!
 <</CTRL>>
 <<FILES>>
 1
@@ -59,7 +61,7 @@ rm "/usr/share/opsipackagebuilder/opb-helpviewer.desktop"
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>DEFAULT<</DEST>>
-opsipackagebuilder (8.0.0) trusty; urgency=low
+opsipackagebuilder-sc (8.0.0) trusty; urgency=low
 
   * Initial release
 
