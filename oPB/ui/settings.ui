@@ -646,7 +646,7 @@
           <item row="2" column="1" colspan="3">
            <widget class="QLineEdit" name="inpExternalEditor">
             <property name="text">
-             <string>notepad.exe</string>
+             <string/>
             </property>
             <property name="readOnly">
              <bool>false</bool>

@@ -48,7 +48,8 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     _initial_settings = {
         "version": {
-            "ini": oPB.PROGRAM_VERSION
+            "ini": oPB.PROGRAM_VERSION,
+            "firstrun": "True"
         },
         "server": {
             "name": "server.local.net",
@@ -82,10 +83,10 @@ class ConfigHandler(ConfigParser, LogMixin):
         },
         "tools": {
             "extchlog": "True",
-            "scripteditor": "notepad.exe",
-            "editoroptions": "",
-            "attachdirect": "False",
-            "editintern": "True",
+            "scripteditor": "C:/Program Files (x86)/opsi PackageBuilderNG/ScriptEditor.exe",
+            "editoroptions": "-x=opsi -s --path=",
+            "attachdirect": "True",
+            "editintern": "False",
             "editstyle": "True",
             "editfold": "False",
             "chLogRecognition": oPB.CHLOG_BLOCKMARKER,
@@ -99,7 +100,7 @@ class ConfigHandler(ConfigParser, LogMixin):
             "noATWarn": "False",
         },
         "language": {
-            "lang": "de",
+            "lang": "System",
         },
         "log": {
             "logalways": "False",
@@ -108,7 +109,7 @@ class ConfigHandler(ConfigParser, LogMixin):
         },
         "inet": {
             "useproxy": "False",
-            "chkupdstartup": "True",
+            "chkupdstartup": "False",
             "srv": "",
             "port": "",
             "user": "",
@@ -125,12 +126,12 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     cfg = None  # class variable to save ConfigHandler instance for later access
 
-    def __init__(self, filename, nodefaults = False):
+    def __init__(self, configfile, nodefaults = False):
         """
         Reads settings from INI file, compares with setup defaults,
         adds missing settings
 
-        :param filename: path and name of INI file
+        :param configfile: path and name of INI file
         :param nodefaults: if true, no defaults are written to the INI file,
                     also, if INI is missing, none will be created
         """
@@ -140,13 +141,13 @@ class ConfigHandler(ConfigParser, LogMixin):
         if ConfigHandler.cfg is None:
             ConfigParser.__init__(self, interpolation=None)
 
-            self.filename = filename
+            self.configfile = configfile
             self.nodefaults = nodefaults
 
             # read settings
-            self.logger.debug("Trying to read configuration file: " + self.filename)
+            self.logger.debug("Trying to read configuration file: " + self.configfile)
             try:
-                with open(self.filename) as file:
+                with open(self.configfile) as file:
                     self.read_file(file)
                     self.logger.info("Configuration file successfully loaded.")
             except IOError:
@@ -208,13 +209,13 @@ class ConfigHandler(ConfigParser, LogMixin):
         """Write INI file"""
         self.passwords('encrypt')
         try:
-            os.makedirs(os.path.dirname(self.filename), exist_ok=True)
-            with open(self.filename, "w") as file:
+            os.makedirs(os.path.dirname(self.configfile), exist_ok=True)
+            with open(self.configfile, "w") as file:
                 self.write(file)
                 file.close()
-                self.logger.debug("Configuration successfully saved: " + self.filename)
+                self.logger.debug("Configuration successfully saved: " + self.configfile)
         except IOError as error:
-            self.logger.error("Configuration could not be saved: " + self.filename)
+            self.logger.error("Configuration could not be saved: " + self.configfile)
             self.logger.error(error.name)
         finally:
             self.passwords('decrypt')
@@ -245,8 +246,9 @@ class ConfigHandler(ConfigParser, LogMixin):
         # and set parameters accordingly
         if self.editor_intern == "True":
             self.editor_intern = "False"
-            self.scripteditor = "C:\Program Files (x86)\opsi PackageBuilder\ScriptEditor.exe"
+            self.scripteditor = "C:\\Program Files (x86)\\opsi PackageBuilder\\ScriptEditor.exe"
             self.editor_options = "-x=opsi -s --path="
+            self.editor_attachdirect = "True"
 
         self.chlog_on_build = "False" if self.chlog_on_build == "0" else "True"
         self.chlog_on_save = "False" if self.chlog_on_save == "0" else "True"
@@ -285,6 +287,14 @@ class ConfigHandler(ConfigParser, LogMixin):
     @prg_version.setter
     def prg_version(self, value):
         self.set("version", "ini", value)
+
+    @property
+    def firstrun(self):
+        return self.get("version","firstrun")
+
+    @firstrun.setter
+    def firstrun(self, value):
+        self.set("version", "firstrun", value)
 
     @property
     def opsi_server(self):
@@ -726,4 +736,3 @@ class ConfigHandler(ConfigParser, LogMixin):
             self.set("package", "depotCache", "")
         else:
             self.set("package", "depotCache", json.dumps(value))
-
