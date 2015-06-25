@@ -17,8 +17,8 @@ Description: Package building tool for opsi (open pc server integration)
 <</CTRL>>
 <<FILES>>
 1
-/home/holger/Pythonprojects/opsiPackageBuilder/linux/opsipackagebuilder.desktop -> opsipackagebuilder.desktop -> /usr/share/opsipackagebuilder
-/home/holger/Pythonprojects/opsiPackageBuilder/linux/opb-helpviewer.desktop -> opb-helpviewer.desktop -> /usr/share/opsipackagebuilder
+/home/holger/Pythonprojects/opsiPackageBuilder/linux/opsipackagebuilder-sc.desktop -> opsipackagebuilder-sc.desktop -> /usr/share/opsipackagebuilder
+/home/holger/Pythonprojects/opsiPackageBuilder/linux/opb-helpviewer-sc.desktop -> opb-helpviewer-sc.desktop -> /usr/share/opsipackagebuilder
 /home/holger/Pythonprojects/opsiPackageBuilder/images/smallIcons_1461.ico -> smallIcons_1461.ico -> /usr/share/opsipackagebuilder
 /home/holger/Pythonprojects/opsiPackageBuilder/images/prog.ico -> prog.ico -> /usr/share/opsipackagebuilder
 <</FILES>>
@@ -30,18 +30,18 @@ Description: Package building tool for opsi (open pc server integration)
 1
 #! /bin/bash -e
 
-chmod +x "/usr/share/opsipackagebuilder/opsipackagebuilder"
-chmod +x "/usr/share/opsipackagebuilder/helpviewer"
-chmod 777 "/usr/share/opsipackagebuilder/help"
-chmod 666 "/usr/share/opsipackagebuilder/help/opsipackagebuilder.qhc"
+chmod +x "/usr/lib/opsipackagebuilder/opsipackagebuilder"
+chmod +x "/usr/lib/opsipackagebuilder/helpviewer"
+chmod 777 "/usr/lib/opsipackagebuilder/help"
+chmod 666 "/usr/lib/opsipackagebuilder/help/opsipackagebuilder.qhc"
 
-ln -fs "/usr/share/opsipackagebuilder/opsipackagebuilder" "/usr/bin/opsipackagebuilder"
-ln -fs "/usr/share/opsipackagebuilder/helpviewer" "/usr/bin/opb-helpviewer"
+ln -fs "/usr/lib/opsipackagebuilder/opsipackagebuilder" "/usr/bin/opsipackagebuilder"
+ln -fs "/usr/lib/opsipackagebuilder/helpviewer" "/usr/bin/opb-helpviewer"
 
-desktop-file-install /usr/share/opsipackagebuilder/opsipackagebuilder.desktop
-desktop-file-install /usr/share/opsipackagebuilder/opb-helpviewer.desktop
+desktop-file-install /usr/share/opsipackagebuilder/opsipackagebuilder-sc.desktop
+desktop-file-install /usr/share/opsipackagebuilder/opb-helpviewer-sc.desktop
 
-
+exit 0
 <</POSTINST>>
 <<PRERM>>
 1
@@ -50,8 +50,12 @@ desktop-file-install /usr/share/opsipackagebuilder/opb-helpviewer.desktop
 rm "/usr/bin/opsipackagebuilder"
 rm "/usr/bin/opb-helpviewer"
 
-rm "/usr/share/opsipackagebuilder/opsipackagebuilder.desktop"
-rm "/usr/share/opsipackagebuilder/opb-helpviewer.desktop"
+rm "/usr/share/applications/opsipackagebuilder-sc.desktop"
+rm "/usr/share/applications/opb-helpviewer-sc.desktop"
+
+rm -R -f "/usr/lib/opsipackagebuilder/help/.o*"
+
+exit 0
 
 <</PRERM>>
 <<POSTRM>>
