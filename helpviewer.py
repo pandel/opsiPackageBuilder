@@ -28,32 +28,7 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import sys
-import oPB
-from oPB.core import confighandler
-from oPB.gui.helpviewer import Help
-from oPB.gui.utilities import Translator
-import oPB.ui.opsipackagebuilder_rc
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication
-
-translate = QtCore.QCoreApplication.translate
+from oPB.runner import *
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-
-    # instantiate configuration class
-    confighandler.ConfigHandler(oPB.CONFIG_INI)
-
-    # installing translators
-    translator = Translator(app, "opsipackagebuilder")
-    translator.install_translations(confighandler.ConfigHandler.cfg.language)
-
-    # instantiate help viewer and translate it, if necessary
-    helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_INDEX, False)
-    event = QtCore.QEvent(QtCore.QEvent.LanguageChange)
-    helpviewer._help.ui.changeEvent(event)
-
-    # run main loop
-    app.exec_()
-
+    main = HelpViewerMain()

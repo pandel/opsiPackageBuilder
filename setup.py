@@ -70,7 +70,8 @@ setup(name = "opsiPackageBuilder",
     install_requires = ["releases", "spur", "pycrypto"],
     entry_points={
           'gui_scripts': [
-              'opsipackagebuilder = oPB.runner:Main'
+              'opsipackagebuilder = oPB.runner:Main',
+              'opb-helpviewer = oPB.runner:HelpViewerMain'
           ]
     },
 )

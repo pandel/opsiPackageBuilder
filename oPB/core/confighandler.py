@@ -68,6 +68,7 @@ class ConfigHandler(ConfigParser, LogMixin):
         },
         "package": {
             "dev_dir": "",
+            "local_share_base": "/mnt/opsi_dev_share",
             "build": "opsi-makeproductfile -vv",
             "install": "opsi-package-manager -i",
             "instsetup": "opsi-package-manager -i -S",
@@ -387,7 +388,19 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @dev_dir.setter
     def dev_dir(self, value):
+        if value[-1:] == "/" or value[-1:] == '\\':
+            value = value[:-1]
         self.set("package", "dev_dir", value)
+
+    @property
+    def local_share_base(self):
+        return self.get("package", "local_share_base")
+
+    @local_share_base.setter
+    def local_share_base(self, value):
+        if value[-1:] == "/" or value[-1:] == '\\':
+            value = value[:-1]
+        self.set("package", "local_share_base", value)
 
     @property
     def buildcommand(self):

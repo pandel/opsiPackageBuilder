@@ -77,6 +77,7 @@ import oPB.gui.logging
 from oPB.core.tools import Helper
 from oPB.core.commandline import CommandLine
 from oPB.gui.utilities import Translator
+from oPB.gui.helpviewer import Help
 
 translate = QtCore.QCoreApplication.translate
 
@@ -419,3 +420,32 @@ class Main(QObject):
             errorbox.exec_()
         else:
             print(str(notice) + str(msg) + str(versionInfo))
+
+class HelpViewerMain(QObject):
+    def __init__(self, parent = None):
+        """Create a wizard or the mainwindow"""
+        self._parent = parent
+
+        super().__init__(self._parent)
+
+        print("runner/HelperTool parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
+
+        self.app = QApplication(sys.argv)
+
+        # instantiate configuration class
+        confighandler.ConfigHandler(oPB.CONFIG_INI)
+
+        # installing translators
+        self.translator = Translator(self.app, "opsipackagebuilder")
+        self.translator.install_translations(confighandler.ConfigHandler.cfg.language)
+
+        # instantiate help viewer and translate it, if necessary
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_INDEX, False)
+        event = QtCore.QEvent(QtCore.QEvent.LanguageChange)
+        self.helpviewer._help.ui.changeEvent(event)
+
+        # run main loop
+        self.app.exec_()
+
+        # return to os
+        sys.exit()

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>778</width>
-    <height>499</height>
+    <height>503</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -35,7 +35,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -567,12 +567,12 @@
           <item row="7" column="0">
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Local folder base:</string>
+             <string>Local share base:</string>
             </property>
            </widget>
           </item>
           <item row="7" column="2">
-           <widget class="QLineEdit" name="inpLocalBase"/>
+           <widget class="QLineEdit" name="inpLocalShareBase"/>
           </item>
          </layout>
         </widget>
@@ -1342,18 +1342,22 @@
   <tabstop>chkUseNetworkDrive</tabstop>
   <tabstop>inpDevFolder</tabstop>
   <tabstop>btnSetDevFolder</tabstop>
+  <tabstop>inpLocalShareBase</tabstop>
   <tabstop>rdEditorInternal</tabstop>
   <tabstop>rdEditorExternal</tabstop>
   <tabstop>chkSyntaxHighlight</tabstop>
   <tabstop>chkCodeFolding</tabstop>
   <tabstop>inpExternalEditor</tabstop>
   <tabstop>btnExternalEditor</tabstop>
+  <tabstop>inpEditorOptions</tabstop>
+  <tabstop>chkAttachDirect</tabstop>
   <tabstop>inpBuildCommand</tabstop>
   <tabstop>inpInstallCommand</tabstop>
   <tabstop>inpInstSetupCommand</tabstop>
   <tabstop>inpUninstallCommand</tabstop>
   <tabstop>inpUploadCommand</tabstop>
   <tabstop>chkUseDepotFunctions</tabstop>
+  <tabstop>btnRefreshDepotCache</tabstop>
   <tabstop>inpWOLLeadTime</tabstop>
   <tabstop>chkAlwaysReload</tabstop>
   <tabstop>chkShowOutput</tabstop>

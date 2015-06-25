@@ -72,6 +72,8 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         # take care of sys.platform
         if sys.platform.startswith("linux"):
             self.chkUseNetworkDrive.setEnabled(False)
+        if sys.platform.startswith("win32"):
+            self.inpLocalShareBase.setEnabled(False)
 
         self.datamapper = None
         self.model = self._parent.model
@@ -169,6 +171,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.datamapper.addMapping(self.cmbLogLevel, 43)
         self.datamapper.addMapping(self.inpEditorOptions, 44)
         self.datamapper.addMapping(self.chkAttachDirect, 45, "checked")
+        self.datamapper.addMapping(self.inpLocalShareBase, 46)
         self.datamapper.toFirst()
 
     def create_optionbuttongroups(self):
@@ -290,7 +293,11 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
 
         if not directory == "":
             self.logger.info("Chosen directory: " + directory)
-            self.inpDevFolder.setText(Helper.concat_path_native(directory, ""))
+            value = Helper.concat_path_native(directory, "")
+            if value[-1:] == "/" or value[-1:] == '\\':
+                value = value[:-1]
+            self.inpDevFolder.setText(value)
+            self.inpLocalShareBase.setText(value)
             self.dataChanged.emit()
         else:
             self.logger.debug("Dialog aborted.")

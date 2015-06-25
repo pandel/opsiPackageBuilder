@@ -446,14 +446,14 @@ class ControlFileData(QObject, LogMixin):
 
     @property
     def packageversion(self):
-        return str(self._packageversion)
+        return str(self._packageversion).lower()
 
     @packageversion.setter
     def packageversion(self, value):
         # create new exception handling vor properties
         if str(value).strip() == "":
             raise ValueError(translate("ControlFileData","package version cannot be empty"))
-        self._packageversion = str(value).strip()
+        self._packageversion = str(value).strip().lower()
 
     def inc_packageversion(self):
         """
@@ -466,16 +466,19 @@ class ControlFileData(QObject, LogMixin):
         """
         match = re.compile(r"^(\d*)\.?((\d*)|(corr\d*corr))$")
         m = match.search(self.packageversion)
-        print(m.group(0))
-        print(m.group(1)[4:-4])
-        print(m.group(2))
-        if "corr" in m.group(2):
-            pre_inc = int(m.group(2)[4:-4]) + 1
-        elif m.group(2) == "":
-            pre_inc = 1
+        #print(m.group(0))
+        #print(m.group(1)[4:-4])
+        #print(m.group(2))
+        if m:
+            if "corr" in m.group(2):
+                pre_inc = int(m.group(2)[4:-4]) + 1
+            elif m.group(2) == "":
+                pre_inc = 1
+            else:
+                pre_inc = int(m.group(2)) + 1
+            self.packageversion = m.group(1) + ".corr" + str(pre_inc) + "corr"
         else:
-            pre_inc = int(m.group(2)) + 1
-        self._packageversion = m.group(1) + ".corr" + str(pre_inc) + "corr"
+            self.packageversion = "99999error"
 
     @property
     def priority(self):
@@ -893,14 +896,34 @@ class ControlFileData(QObject, LogMixin):
 
         :return: project path on server
         """
-        repo_base = oPB.DEV_BASE
-        if platform.system() == "Windows":
-            return repo_base + self.projectfolder[2:].replace("\\","/")
+
+        # if on Linux, we have to subtract local share base from development folder
+        # -> the local share base acts like the drive letter on windows
+        if platform.system() == 'Linux':
+            tmp = self.projectfolder.replace(ConfigHandler.cfg.local_share_base, "")
         else:
-            if self.projectfolder.startswith(repo_base):
-                return self.projectfolder
+            tmp = self.projectfolder
+
+        if platform.system() == "Windows":
+            # remove drive letter
+            return oPB.DEV_BASE + tmp[2:].replace("\\", "/")
+        else:
+            # replace possible double '/' with single '/'
+            return (oPB.DEV_BASE + "/" + tmp).replace("//", "/")
+
+            """
+            if tmp.startswith(repo_base):
+                return tmp
             else:
-                return repo_base + "/" + self.id
+                if tmp.strip() != "":
+                    ret = (repo_base + "/" + tmp + "/" + self.id).replace("//", "/")
+                    print("a", ret)
+                    return ret
+                else:
+                    ret = (repo_base + "/" + self.id).replace("//", "/")
+                    print("b", ret)
+                    return ret
+            """
 
     def load_data(self, projectfolder):
         """
