@@ -309,8 +309,9 @@ class BaseController(LogMixin):
 
     @pyqtSlot()
     def do_setrights(self, dest = "", package = ""):
+        print(package)
         if package == "":
-            self.controlData.path_on_server
+            package = self.controlData.path_on_server
         self._do(oPB.OpEnum.DO_SETRIGHTS,
                  translate("baseController", "Setting package rights on:") + " " + self.controlData.path_on_server, alt_destination = dest, package=package)
 
