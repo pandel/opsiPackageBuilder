@@ -44,7 +44,7 @@ if sys.platform.lower().startswith('win'):
 
 from datetime import datetime
 from binascii import hexlify, unhexlify
-from pathlib import PurePath, PurePosixPath
+from pathlib import PurePath, PurePosixPath, WindowsPath
 
 from Crypto.Cipher import XOR
 from PyQt5 import QtCore
@@ -394,6 +394,18 @@ class Helper(LogMixin):
         #s = re.sub(r'\x1b\[([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K]?', '', s)
         #s = re.sub(r'\x1b\[(>\?)([0-9,A-Z]{1,2})?(;[0-9]{1,2})?(;[0-9]{1,3})?[m|l|H|K|S|u]?', '', s)
         #return s
+
+    #subdirs = get_subdirlist(r'\\file01.acme.local\home$')
+    @classmethod
+    def get_subdirlist(cls, path: str):
+        """
+        Return list of subdirectories
+
+        :param path: base pathname as r'string'
+        :return: list of subdirectories
+        """
+        wpath = WindowsPath(path)
+        return [f.name for f in wpath.iterdir() if f.is_dir()]
 
     # WINDOWS ONLY
     if sys.platform.lower().startswith('win'):

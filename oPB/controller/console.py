@@ -49,7 +49,7 @@ class ConsoleController(BaseController, QObject):
         if not self.args.path.strip() == "":
             self.run_command_line()
         else:
-            self.logger.error("No projectname given")
+            self.logger.error("No project name given")
             oPB.EXITCODE = oPB.RET_CMDLINE
 
         self.finished()

@@ -90,7 +90,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.connect_signals()
         self.connect_validators()
 
-        self.reset_datamapper_and_display()
+        self.reset_datamapper_and_display(0)
+        self.fill_cmbDepProdID()
 
     def init_recent(self):
         """Init recent files menu items"""
@@ -362,6 +363,21 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.cmbDepInstState.currentIndexChanged.connect(self.check_combobox_selection)
         self.cmbPropType.currentIndexChanged.connect(self.check_combobox_selection)
 
+    def fill_cmbDepProdID(self):
+        """Fill combobox with values from opsi_depot share"""
+        self.cmbDepProdID.clear()
+
+        if oPB.NETMODE != "offline":
+            try:
+                subpath = "\\\\" + ConfigHandler.cfg.opsi_server + "\\" + oPB.DEPOTSHARE_BASE
+                subdirs = Helper.get_subdirlist(subpath)
+                subdirs.sort()
+
+                for elem in subdirs:
+                    self.cmbDepProdID.addItem(elem)
+            except:
+                pass
+
     @pyqtSlot()
     def not_working(self):
         """Show a short "Not working" message"""
@@ -436,8 +452,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
                 else:
                     script = self.inpScrUserLogin.text()
             elif self.sender() == self.actionScriptEditor:
-                path = ""
-                script = ""
+                script = "new.opsiscript"
 
             # script editor from menu
             if path != "" and script != "":
@@ -465,10 +480,11 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             outs, errs = proc.communicate()
             self.logger.info(outs)
             self.logger.error(errs)
-            if proc.returncode != 0:
+            if proc.returncode != 0 and proc.returncode != 555:
                 self._parent.msgbox(translate("MainWindow", "Editor startup did not cleanup correctly.\n\nThe following message(s) returned:") +
                                     "\n\nStandard Out:\n" + outs +
-                                    "\n\nStandard Err:\n" + errs,
+                                    "\nStandard Err:\n" + errs +
+                                    "\n\nReturn code: " + str(proc.returncode),
                                     oPB.MsgEnum.MS_WARN, self)
         else:
             self._parent.msgbox(translate("MainWindow", "Editor not found:" + " " + ConfigHandler.cfg.scripteditor), oPB.MsgEnum.MS_ERR, self)
@@ -595,9 +611,11 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         return os.path.isfile(pack)
 
     @pyqtSlot(int)
-    def reset_datamapper_and_display(self, tabIdx = 0):
+    def reset_datamapper_and_display(self, tabIdx = -1):
         """Reset tables and fields"""
         self.logger.debug("Reset datamapper and display")
+
+        tab = self.tabWidget.currentIndex() if tabIdx == -1 else tabIdx
 
         # select first row in mapped model
         self.datamapper.toFirst()
@@ -607,7 +625,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.tblDependencies.resizeRowsToContents()
         self.tblProperties.resizeRowsToContents()
 
-        self.tabWidget.setCurrentIndex(tabIdx)
+        self.tabWidget.setCurrentIndex(tab)
         self.set_dev_folder()
 
     @pyqtSlot(QtCore.QItemSelection)

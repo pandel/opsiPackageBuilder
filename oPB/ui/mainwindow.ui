@@ -2383,6 +2383,10 @@ p, li { white-space: pre-wrap; }
   <tabstop>btnScrUserLoginDel</tabstop>
   <tabstop>btnScrUserLoginEdit</tabstop>
   <tabstop>btnScrUserLogin</tabstop>
+  <tabstop>btnChangelogEdit</tabstop>
+  <tabstop>btnShowScrStruct</tabstop>
+  <tabstop>btnHelpPacket</tabstop>
+  <tabstop>tblDependencies</tabstop>
   <tabstop>cmbDepAction</tabstop>
   <tabstop>cmbDepProdID</tabstop>
   <tabstop>cmbDepReqAction</tabstop>
@@ -2391,9 +2395,13 @@ p, li { white-space: pre-wrap; }
   <tabstop>btnDepAdd</tabstop>
   <tabstop>btnDepModify</tabstop>
   <tabstop>btnDepDelete</tabstop>
+  <tabstop>btnHelpDependencies</tabstop>
+  <tabstop>tblProperties</tabstop>
   <tabstop>inpPropName</tabstop>
+  <tabstop>inpPropDesc</tabstop>
   <tabstop>cmbPropType</tabstop>
   <tabstop>cmbPropMulti</tabstop>
+  <tabstop>inpPropVal</tabstop>
   <tabstop>cmbPropEdit</tabstop>
   <tabstop>inpPropDef</tabstop>
   <tabstop>cmbPropDef</tabstop>

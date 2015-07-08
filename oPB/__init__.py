@@ -97,6 +97,7 @@ CONFIG_INI = str(PurePath(CONFIG_PATH,"config-new.ini"))
 # base folders
 DEV_BASE = "/home/opsiproducts"
 REPO_PATH = "/var/lib/opsi/repository"
+DEPOTSHARE_BASE = "opsi_depot"
 WIN_TMP_PATH = tempfile.gettempdir()
 UNIX_TMP_PATH = "/tmp"
 
@@ -271,12 +272,12 @@ RET_PINSTSETUP = 33   # Err 33: SSH - Error while installing package on server o
 RET_PUNINSTALL = 34   # Err 34: SSH - Error while uninstalling package on server
 RET_PUPLOAD = 35   # Err 34: SSH - Error while uploading package on server
 
-RET_SINGLETON = 51    # Err 51: Program already running
-RET_NOINI = 52        # Err 52: No INI file available
-RET_QICOMB = 53       # Err 53: Mode incompatibility: --quiet and interactive mode combined on command line
+RET_SINGLETON = 51    # Err 51: Program already running * NOT USED *
+RET_NOINI = 52        # Err 52: No INI file available * NOT USED *
+RET_QICOMB = 53       # Err 53: Mode incompatibility: --quiet and interactive mode combined on command line * NOT USED *
 RET_CMDLINE = 54      # Err 54: Incorrect commandline parameters
 RET_NOWINEXE = 57     # Err 57: Winexe not found
-RET_PRODUPDRUN = 58   # Err 58: opsi-product-updater already running
+RET_PRODUPDRUN = 58   # Err 58: opsi-product-updater already running * NOT USED *
 RET_NOREPO = 59       # Err 59: could not get repo content
 
 EXITCODE = RET_OK

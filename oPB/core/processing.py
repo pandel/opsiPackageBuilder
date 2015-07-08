@@ -58,7 +58,7 @@ class OpsiProcessing(QObject, LogMixin):
 
 
     # def __init__(self, project, project_folder, server="127.0.0.1", port=22, username = None, password = None, keyfile = None, cfg = None):
-    def __init__(self, control = None):
+    def __init__(self, control = None, hostkey_policy = spur.ssh.MissingHostKey.warn):
         """
         Constructor of OpsiProcessing
 
@@ -67,6 +67,9 @@ class OpsiProcessing(QObject, LogMixin):
         :param control: backend controlData object
         """
         super().__init__()
+        self._control = control
+        self._hostkey_policy = hostkey_policy
+
         self._shell = None
         self._server = None
         self._ip = None
@@ -76,7 +79,6 @@ class OpsiProcessing(QObject, LogMixin):
         self._sshkey = None
 
         self._hook = None
-        self._control = control
         self._server = ConfigHandler.cfg.opsi_server
 
         self._sshuser = ConfigHandler.cfg.opsi_user
@@ -517,7 +519,7 @@ class OpsiProcessing(QObject, LogMixin):
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETREPOCONTENT:
-            ret = oPB.RET_SSHCMDERR
+            ret = oPB.RET_NOREPO
             self.logger.ssh(20 * "-" + "ACTION: GET REPOSITORY CONTENT" + 20 * "-")
 
             cmd = ["sh", "-c", oPB.OPB_GETREPOCONTENT]
@@ -622,14 +624,14 @@ class OpsiProcessing(QObject, LogMixin):
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DEPLOY:
-            ret = oPB.RET_SSHCMDERR
+            ret = oPB.oPB.RET_NOWINEXE
             clientlist = kwargs.get("clientlist", [])
             options = kwargs.get("options", {})
             self.logger.ssh(20 * "-" + "ACTION: DEPLOY OPSI-CLIENT-AGENT" + 20 * "-")
 
             result = self._processAction(oPB.OPB_PRECHECK_WINEXE, action, ret, cwd = False)
             if result != {}:
-
+                ret = oPB.RET_SSHCMDERR
                 # cd c:\TEMP\RZInstall\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd
                 destfile = Helper.concat_path_posix(tmppath, "deploy.sh")
 
@@ -992,7 +994,7 @@ class OpsiProcessing(QObject, LogMixin):
         self.logger.debug("Server IP: " + self.ip)
         self.logger.debug("Username: " + self._sshuser)
         shell = spur.SshShell(hostname=self.ip, username=self._sshuser, private_key_file=self._sshkey, connect_timeout=15,
-                              missing_host_key=spur.ssh.MissingHostKey.warn, look_for_private_keys= False)
+                              missing_host_key=self._hostkey_policy, look_for_private_keys= False)
         return shell
 
     def _shell_remote_with_password(self):
@@ -1005,7 +1007,7 @@ class OpsiProcessing(QObject, LogMixin):
         self.logger.debug("Server IP: " + self.ip)
         self.logger.debug("Username: " + self._sshuser)
         shell = spur.SshShell(hostname=self.ip, username=self._sshuser, password=self._sshpass, connect_timeout=15,
-                              missing_host_key=spur.ssh.MissingHostKey.warn, look_for_private_keys= False)
+                              missing_host_key=self._hostkey_policy, look_for_private_keys= False)
         return shell
 
     def _shell_local(self):

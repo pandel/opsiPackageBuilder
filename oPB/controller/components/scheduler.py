@@ -86,7 +86,7 @@ class SchedulerComponent(BaseController, QObject):
         self.logger.debug("Update model data: clients")
 
         # first time opened after program start?
-        if BaseController.clientlist_dict == None or force == True:
+        if BaseController.clientlist_dict == None or force == True or ConfigHandler.cfg.reload_for_at == "True":
             self._parent.do_getclients(dest = self.at_server)
 
         if BaseController.clientlist_dict:
@@ -99,7 +99,7 @@ class SchedulerComponent(BaseController, QObject):
     def update_model_data_products(self, force = False):
         self.logger.debug("Update model data: products")
 
-        if BaseController.productlist_dict == None or force == True:
+        if BaseController.productlist_dict == None or force == True or ConfigHandler.cfg.reload_for_at == "True":
             self._parent.do_getproducts(dest = self.at_server)
 
         if BaseController.productlist_dict:

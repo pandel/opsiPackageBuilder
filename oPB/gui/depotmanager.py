@@ -88,7 +88,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         self._parent.modelDataUpdated.connect(self.update_fields)
         self._parent.modelDataUpdated.connect(self.update_ui)
 
-        self.btnRefresh.clicked.connect(self._parent.update_data)
+        self.btnRefresh.clicked.connect(lambda: self._parent.update_data(True))
         self.btnCompare.clicked.connect(self.compare_sides)
         self.btnShowLog.clicked.connect(self._parentUi.showLogRequested)
         self.btnReport.clicked.connect(self._parent.ui_report.show_)

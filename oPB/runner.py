@@ -98,6 +98,10 @@ class Main(QObject):
         self._log_file = None
         self.translator = None
 
+        # make it really quiet, part 1
+        if self.args.quiet:
+            self.args.nogui = True
+
         # instantiate configuration class
         confighandler.ConfigHandler(oPB.CONFIG_INI)
 
@@ -315,55 +319,60 @@ class Main(QObject):
         # log level for logger(!) - we filter on handler-based log level later
         self.set_log_level("DEBUG", logger)
 
-        if long:
-            format = logging.Formatter(oPB.LOG_LONG, oPB.LOG_DATETIME)
+        # make it really quiet, part 2
+        if self.args.quiet:
+            self.noop = logging.NullHandler()
+            logger.addHandler(self.noop)
         else:
-            format = logging.Formatter(oPB.LOG_SHORT, oPB.LOG_DATETIME)
+            if long:
+                format = logging.Formatter(oPB.LOG_LONG, oPB.LOG_DATETIME)
+            else:
+                format = logging.Formatter(oPB.LOG_SHORT, oPB.LOG_DATETIME)
 
-        # redirect stdout / stdin if gui
-        if not self.args.nogui:
-            # Output forwarding
-            sys.stdout = oPB.core.logging.LogOutput(self.logWindow.editOutput,  sys.__stdout__,  self.logWindow.editOutput.textColor())
-            sys.stderr = oPB.core.logging.LogOutput(self.logWindow.editOutput,  sys.__stderr__,  QtGui.QColor(QtCore.Qt.red))
+            # redirect stdout / stdin if gui
+            if not self.args.nogui:
+                # Output forwarding
+                sys.stdout = oPB.core.logging.LogOutput(self.logWindow.editOutput,  sys.__stdout__,  self.logWindow.editOutput.textColor())
+                sys.stderr = oPB.core.logging.LogOutput(self.logWindow.editOutput,  sys.__stderr__,  QtGui.QColor(QtCore.Qt.red))
 
-        # Create standart output handler
-        self.stdout = logging.StreamHandler(sys.__stderr__)
-        self.set_log_level(self._log_level, self.stdout)
-        self.stdout.setFormatter(format)
+            # Create standart output handler
+            self.stdout = logging.StreamHandler(sys.__stderr__)
+            self.set_log_level(self._log_level, self.stdout)
+            self.stdout.setFormatter(format)
 
-        # Add handlers to logger
-        logger.addHandler(self.stdout)
+            # Add handlers to logger
+            logger.addHandler(self.stdout)
 
-        # Create different log window handler
-        if not self.args.nogui:
-            # output standard msg into dialog tab "Logging"
-            self.dialogHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editLog, self)
-            self.dialogHandler.colors = oPB.OPB_LOG_COLORS
-            self.dialogHandler.colorize = True
-            self.set_log_level(self._log_level, self.dialogHandler)
-            self.dialogHandler.setFormatter(format)
+            # Create different log window handler
+            if not self.args.nogui:
+                # output standard msg into dialog tab "Logging"
+                self.dialogHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editLog, self)
+                self.dialogHandler.colors = oPB.OPB_LOG_COLORS
+                self.dialogHandler.colorize = True
+                self.set_log_level(self._log_level, self.dialogHandler)
+                self.dialogHandler.setFormatter(format)
 
-            logger.addHandler(self.dialogHandler)
+                logger.addHandler(self.dialogHandler)
 
-            # Create special SSH output log facility, put this into tab "SSH Output"
-            self.sshHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editSSH, self)
-            self.set_log_level("SSHINFO", self.sshHandler)
-            sshformat = logging.Formatter(oPB.LOG_SSH, oPB.LOG_DATETIME)
-            self.sshHandler.setFormatter(sshformat)
+                # Create special SSH output log facility, put this into tab "SSH Output"
+                self.sshHandler = oPB.core.logging.LogStreamHandler(self.logWindow.editSSH, self)
+                self.set_log_level("SSHINFO", self.sshHandler)
+                sshformat = logging.Formatter(oPB.LOG_SSH, oPB.LOG_DATETIME)
+                self.sshHandler.setFormatter(sshformat)
 
-            logger.addHandler(self.sshHandler)
+                logger.addHandler(self.sshHandler)
 
-        # Create log file handler, possible
-        try:
-            if self._log_file is not None:
-                self.fileHandler = logging.FileHandler(self._log_file)
-                self.set_log_level(self._log_level, self.fileHandler)
-                self.fileHandler.setFormatter(format)
+            # Create log file handler, possible
+            try:
+                if self._log_file is not None:
+                    self.fileHandler = logging.FileHandler(self._log_file)
+                    self.set_log_level(self._log_level, self.fileHandler)
+                    self.fileHandler.setFormatter(format)
 
-                logger.addHandler(self.fileHandler)
-        except IOError as error:
-            logger.error("Log file could not be opened: " + self._log_file)
-            logger.error(error)
+                    logger.addHandler(self.fileHandler)
+            except IOError as error:
+                logger.error("Log file could not be opened: " + self._log_file)
+                logger.error(error)
 
         self.logger = logger
 

@@ -204,7 +204,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         # emit signal
         self.logger.debug("Emit signal modelDataUpdated")
-        self.modelDataUpdated.emit(0)
+        self.modelDataUpdated.emit(-1)
 
     def update_table_model(self, model, data, itemclass = QtGui.QStandardItem, checkable = False):
         """

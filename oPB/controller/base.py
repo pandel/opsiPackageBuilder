@@ -29,6 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import os
+from spur.ssh import MissingHostKey
 from time import sleep
 from pathlib import PurePath, Path
 
@@ -188,7 +189,11 @@ class BaseController(LogMixin):
         self.logger.debug("Dispatch job")
         """Call OpsiProcessing engine"""
 
-        proc = OpsiProcessing(self.controlData)
+        if self.args.quiet:
+            proc = OpsiProcessing(self.controlData, MissingHostKey.accept)
+        else:
+            proc = OpsiProcessing(self.controlData, MissingHostKey.warn)
+
         proc.progressChanged.connect(self.msgSend)
 
         # run build job
