@@ -20,7 +20,7 @@ Description: Package building tool for opsi (open pc server integration)
 /home/holger/Pythonprojects/opsiPackageBuilder/linux/opsipackagebuilder-sc.desktop -> opsipackagebuilder-sc.desktop -> /usr/share/opsipackagebuilder
 /home/holger/Pythonprojects/opsiPackageBuilder/linux/opb-helpviewer-sc.desktop -> opb-helpviewer-sc.desktop -> /usr/share/opsipackagebuilder
 /home/holger/Pythonprojects/opsiPackageBuilder/images/smallIcons_1461.ico -> smallIcons_1461.ico -> /usr/share/opsipackagebuilder
-/home/holger/Pythonprojects/opsiPackageBuilder/images/prog.ico -> prog.ico -> /usr/share/opsipackagebuilder
+/home/holger/Pythonprojects/opsiPackageBuilder/images/new_ico/package_256x256.ico -> prog.ico -> /usr/share/opsipackagebuilder
 <</FILES>>
 <<SCRIPTS>>
 <<PREINST>>

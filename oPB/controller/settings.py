@@ -202,10 +202,10 @@ class SettingsController(QObject, LogMixin):
             if ConfigHandler.cfg.language != self.model.item(0, 34).text():
                 self.model.item(0, 34).setText(ConfigHandler.cfg.language)
 
-            self.logger.debug("Close settings dialog")
-            self.ui.close()
             self.logger.debug("Emit signal settingsClosed")
             self.settingsClosed.emit()
+            self.logger.debug("Close settings dialog")
+            self.ui.close()
 
     @pyqtSlot()
     def save_config(self):

@@ -19,7 +19,7 @@ Description: Package building tool for opsi (open pc server integration)
 /home/holger/Pythonprojects/opsiPackageBuilder/linux/opsipackagebuilder.desktop -> opsipackagebuilder.desktop -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0
 /home/holger/Pythonprojects/opsiPackageBuilder/linux/opb-helpviewer.desktop -> opb-helpviewer.desktop -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0
 /home/holger/Pythonprojects/opsiPackageBuilder/images/smallIcons_1461.ico -> smallIcons_1461.ico -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0
-/home/holger/Pythonprojects/opsiPackageBuilder/images/prog.ico -> prog.ico -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0
+/home/holger/Pythonprojects/opsiPackageBuilder/images/package_256x256.ico -> prog.ico -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0
 /home/holger/Pythonprojects/opsiPackageBuilder/opsipackagebuilder.py -> opsipackagebuilder.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0
 /home/holger/Pythonprojects/opsiPackageBuilder/helpviewer.py -> helpviewer.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0
 /home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/changelog.py -> changelog.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.0/oPB/controller/components

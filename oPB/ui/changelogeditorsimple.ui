@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Small Changelog Editor</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <disabledon>:/images/new_ico/package_64x64.png</disabledon>
+   </iconset>
+  </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>

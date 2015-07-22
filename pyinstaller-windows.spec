@@ -30,7 +30,7 @@ opsipackagebuilder_exe = EXE( opsipackagebuilder_pyz,
           strip=False,
           upx=False,
           console=True,
-          icon='images/prog.ico')
+          icon='images/prog_icons/opb/package_256x256.ico')
 
 helpviewer_pyz = PYZ(helpviewer_a.pure)
 helpviewer_exe = EXE(helpviewer_pyz,
@@ -42,7 +42,7 @@ helpviewer_exe = EXE(helpviewer_pyz,
           strip=False,
           upx=False,
           console=False,
-          icon='images/smallIcons_1461.ico')
+          icon='images/prog_icons/help/help.ico')
 
 opsipackagebuilder_coll = COLLECT(opsipackagebuilder_exe,
                 opsipackagebuilder_a.binaries,

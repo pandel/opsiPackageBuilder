@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "opsi PackageBuilder"
-#define MyAppVersion "8.0.0"
+#define MyAppVersion "8.0.1"
 #define MyAppPublisher "opsi community project"
 #define MyAppPublisherURL "https://forum.opsi.org/viewforum.php?f=22"
 #define MyAppExeName "opsiPackageBuilder.exe"
@@ -24,7 +24,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=D:\Pythonprojects\opsiPackageBuilder\dist
 OutputBaseFilename=opsiPackageBuilder-v{#MyAppVersion}
-SetupIconFile=D:\Pythonprojects\opsiPackageBuilder\images\prog.ico
+SetupIconFile=D:\Pythonprojects\opsiPackageBuilder\images\prog_icons\opb\package_256x256.ico
 Compression=lzma
 SolidCompression=yes
 EnableDirDoesntExistWarning=True

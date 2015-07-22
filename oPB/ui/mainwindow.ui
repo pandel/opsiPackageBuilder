@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <disabledon>:/images/prog.ico</disabledon>
+    <disabledon>:/images/new_ico/package_64x64.png</disabledon>
    </iconset>
   </property>
   <property name="locale">

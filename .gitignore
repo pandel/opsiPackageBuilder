@@ -66,3 +66,5 @@ oPB/help/.opsipackagebuilder
 
 linux/*.deb
 /opb+scripted.iss
+
+.DS_Store

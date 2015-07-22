@@ -55,13 +55,42 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
         self._parent = parent
         self._parentUi = parent.ui
 
-        StartupDialogBase.__init__(self, self._parentUi, QtCore.Qt.ApplicationModal | QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
+        StartupDialogBase.__init__(self, self._parentUi, QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
         self.setupUi(self)
 
         print("\tgui/StartupWin parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/StartupWin parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None
 
         self.menuRecent = QMenu()
+
+        btnGrp = [self.btnStartNew,
+        self.btnStartOpen,
+        self.btnStartSettings,
+        self.btnStartRecent,
+        self.btnStartShowLog,
+        self.btnStartExit,
+        self.btnStartBundle,
+        self.btnStartDepotMgmt,
+        self.btnStartJobSched,
+        self.btnStartInstall,
+        self.btnStartUpload,
+        self.btnStartUninstall,
+        self.btnStartDeploy,
+        self.btnStartImport,
+        self.btnStartBundle,
+        self.btnStartDepotMgmt,
+        self.btnStartJobSched,
+        self.btnStartInstall,
+        self.btnStartUpload,
+        self.btnStartUninstall,
+        self.btnStartDeploy,
+        self.btnStartImport]
+        
+        for btn in btnGrp:
+            btn.setProperty("startbtn", "set")
+            btn.style().unpolish(btn)
+            btn.style().polish(btn)
+            btn.update()
 
         self.connect_signals()
 
@@ -117,12 +146,13 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
     def hide_(self):
         """Overrides standard hide() method, check for active_project state before"""
         if not self._parent._active_project:
+            self.logger.debug("Temporarily hide startup window")
             self.hide()
 
     @pyqtSlot()
     def hide_me(self):
         """Hides startup window and reactivates main window functionality."""
-        self.logger.debug("Hide startup window")
+        self.logger.debug("Hide startup window and activate main")
         self.close()
         self._parentUi.centralWidget().setEnabled(True)
         self._parentUi.oPB_menu.setEnabled(True)
@@ -132,12 +162,13 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
     def show_(self):
         """Overrides standard show() method, check for active_project state before"""
         if not self._parent._active_project:
+            self.logger.debug("Show temporarily hidden startup window")
             self.show()
 
     @pyqtSlot()
     def show_me(self):
         """Showes startup window and deactivates main window functionality."""
-        self.logger.debug("Show startup window")
+        self.logger.debug("Show startup window and deactivate main")
         self.set_position()
         self._parentUi.centralWidget().setEnabled(False)
         self._parentUi.oPB_menu.setEnabled(False)

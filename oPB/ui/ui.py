@@ -31,27 +31,39 @@ __status__ = "Production"
 """Pre-define every UI component to be used in oPB.gui classes"""
 
 import os
+import sys
+import platform
 from PyQt5 import QtCore, uic
 
 translate = QtCore.QCoreApplication.translate
 
-# get the directory of this script
-path = os.path.dirname(os.path.abspath(__file__))
+if platform.system() =="Darwin" and getattr(sys, 'frozen', False):
+    path = __file__
+    while not path.endswith('.app'):
+        path = os.path.dirname(path)
+    path = os.path.join(path,"Contents/Resources/oPB/ui")
+    #base = os.environ['RESOURCEPATH']
+    #path = os.path.join(base, 'oPB/ui')
+    sys.path.append(path)
+    #from oPB.ui import opsipackagebuilder_rc as opsipackagebuilder_rc
+else:
+    # get the directory of this script
+    path = os.path.dirname(os.path.abspath(__file__))
 
-MainWindowUI, MainWindowBase = uic.loadUiType(os.path.join(path, 'mainwindow.ui'))
-ChangelogEditorDialogExtendedUI, ChangelogEditorDialogExtendedBase = uic.loadUiType(os.path.join(path, 'changelogeditorextended.ui'))
-ChangelogEditorDialogSimpleUI, ChangelogEditorDialogSimpleBase = uic.loadUiType(os.path.join(path, 'changelogeditorsimple.ui'))
-SettingsDialogUI, SettingsDialogBase = uic.loadUiType(os.path.join(path, 'settings.ui'))
-ScriptTreeDialogUI, ScriptTreeDialogBase = uic.loadUiType(os.path.join(path, 'scripttree.ui'))
-StartupDialogUI, StartupDialogBase = uic.loadUiType(os.path.join(path, 'startup.ui'))
-LogDialogUI, LogDialogBase = uic.loadUiType(os.path.join(path, 'log.ui'))
-UninstallDialogUI, UninstallDialogBase = uic.loadUiType(os.path.join(path, 'quickuninstall.ui'))
-JobListDialogUI, JobListDialogBase = uic.loadUiType(os.path.join(path, 'joblist.ui'))
-JobCreatorDialogUI, JobCreatorDialogBase = uic.loadUiType(os.path.join(path, 'jobcreator.ui'))
-BundleDialogUI, BundleDialogBase = uic.loadUiType(os.path.join(path, 'bundle.ui'))
-DeployAgentDialogUI, DeployAgentDialogBase = uic.loadUiType(os.path.join(path, 'deployagent.ui'))
-DepotManagerDialogUI, DepotManagerDialogBase = uic.loadUiType(os.path.join(path, 'depotmanager.ui'))
-ReportSelectorDialogUI, ReportSelectorDialogBase = uic.loadUiType(os.path.join(path, 'reportselector.ui'))
+    MainWindowUI, MainWindowBase = uic.loadUiType(os.path.join(path, 'mainwindow.ui'))
+    ChangelogEditorDialogExtendedUI, ChangelogEditorDialogExtendedBase = uic.loadUiType(os.path.join(path, 'changelogeditorextended.ui'))
+    ChangelogEditorDialogSimpleUI, ChangelogEditorDialogSimpleBase = uic.loadUiType(os.path.join(path, 'changelogeditorsimple.ui'))
+    SettingsDialogUI, SettingsDialogBase = uic.loadUiType(os.path.join(path, 'settings.ui'))
+    ScriptTreeDialogUI, ScriptTreeDialogBase = uic.loadUiType(os.path.join(path, 'scripttree.ui'))
+    StartupDialogUI, StartupDialogBase = uic.loadUiType(os.path.join(path, 'startup.ui'))
+    LogDialogUI, LogDialogBase = uic.loadUiType(os.path.join(path, 'log.ui'))
+    UninstallDialogUI, UninstallDialogBase = uic.loadUiType(os.path.join(path, 'quickuninstall.ui'))
+    JobListDialogUI, JobListDialogBase = uic.loadUiType(os.path.join(path, 'joblist.ui'))
+    JobCreatorDialogUI, JobCreatorDialogBase = uic.loadUiType(os.path.join(path, 'jobcreator.ui'))
+    BundleDialogUI, BundleDialogBase = uic.loadUiType(os.path.join(path, 'bundle.ui'))
+    DeployAgentDialogUI, DeployAgentDialogBase = uic.loadUiType(os.path.join(path, 'deployagent.ui'))
+    DepotManagerDialogUI, DepotManagerDialogBase = uic.loadUiType(os.path.join(path, 'depotmanager.ui'))
+    ReportSelectorDialogUI, ReportSelectorDialogBase = uic.loadUiType(os.path.join(path, 'reportselector.ui'))
 
 """
 Example:

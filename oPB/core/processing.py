@@ -371,7 +371,7 @@ class OpsiProcessing(QObject, LogMixin):
 
             # filter example:
             # for row in result:
-            #     print(row["clientId"]) if row["depotId"] == "yi7xa19z.sd8106.gad.de" else None
+            #     print(row["clientId"]) if row["depotId"] == "yi7xa19z.host.domain.de" else None
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_QUICKUNINST:
             ret = oPB.RET_PUNINSTALL
@@ -405,8 +405,8 @@ class OpsiProcessing(QObject, LogMixin):
 
                 if jobids:
                     # the following block result in a jobaction list like so:
-                    # ['yi7xa102.sd8106.gad.de', '', 'on_demand']
-                    # ['yi7xa101.sd8106.gad.de', '7zip', 'setup']
+                    # ['yi7xa102.host.domain.de', '', 'on_demand']
+                    # ['yi7xa101.host.domain.de', '7zip', 'setup']
                     # ....
                     jobactions = []
                     result = self._processAction(cmd_detail_all, action, ret, split = False, cwd = False)
@@ -454,9 +454,9 @@ class OpsiProcessing(QObject, LogMixin):
             destfile = str(PurePosixPath(tmppath, "atjob.lst"))
 
             # File content:
-            # echo "opsi-admin -d method powerOnHost yi7xa100.sd8106.gad.de" | at -q D -t 201505231710
-            # echo opsi-admin -d method setProductActionRequestWithDependencies 7zip yi7xa100.sd8106.gad.de setup | at -q D -t 201505231725
-            # echo "opsi-admin -d method hostControl_fireEvent 'on_demand' yi7xa100.sd8106.gad.de" | at -q D -t 201505231725
+            # echo "opsi-admin -d method powerOnHost yi7xa100.host.domain.de" | at -q D -t 201505231710
+            # echo opsi-admin -d method setProductActionRequestWithDependencies 7zip yi7xa100.host.domain.de setup | at -q D -t 201505231725
+            # echo "opsi-admin -d method hostControl_fireEvent 'on_demand' yi7xa100.host.domain.de" | at -q D -t 201505231725
 
             if wol is True:
                 try:

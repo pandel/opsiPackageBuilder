@@ -61,8 +61,13 @@ class HelpDialog(QObject, LogMixin):
 
         # base dialog widget
         self.ui = QDialog(None, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint )
+
+        # we must deregister the helpEngine before closing the dialog
+        # because somehow it segfaults otherwise
+        self.ui.rejected.connect(self.removeHelpEngine)
+
         self.ui.setWindowTitle("HelpViewer")
-        self.ui.setWindowIcon(QIcon(":/images/smallIcons_1461.ico"))
+        self.ui.setWindowIcon(QIcon(":/images/prog_icons/help/help.ico"))
         # webview for help information
         self._wv = QWebView()
         enam = HelpNetworkAccessManager(self, self._helpEngine)
@@ -145,6 +150,9 @@ class HelpDialog(QObject, LogMixin):
 
         self.retranslateMsg()
 
+    def removeHelpEngine(self):
+        self._helpEngine.deleteLater()
+
     def retranslateMsg(self):
         self.logger.debug("Retranslating further messages...")
         self._btnReset.setText(translate("HelpViewer", "Reset"))
@@ -178,6 +186,7 @@ class HelpDialog(QObject, LogMixin):
         self._helpIndex.show()
         h = self._splitterMain.geometry().height()
         self._splitterMain.setSizes([h*(1/9), h*(7/9), h*(1/9)])
+
 
 class HelpNetworkAccessManager(QNetworkAccessManager):
     """Subclass standard QNetworkAccessManager to redirect url requests
@@ -309,6 +318,8 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     #help = Help("de/tabPacket.html")
+
     Help("D:/Pythonprojects/opsipackgebuilder-dropbox/oPB/help/opsiPackageBuilder.qhc", "qthelp://org.sphinx.opsipackagebuilder.8.0/doc/")
 
-    app.exec_()
+    sys.exit(app.exec_())
+

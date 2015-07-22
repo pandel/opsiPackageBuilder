@@ -2,6 +2,7 @@ md docs
 sphinx-apidoc -M -f -e -o "docs/source" "oPB"
 cd docs
 call make.bat clean
+call make.bat epub
 call make.bat html
 call make.bat qthelp
 
@@ -13,3 +14,4 @@ move build\qthelp\opsipackagebuilder.qhc ..\oPB\help
 cd ..
 
 assistant -collectionFile oPB\help\opsipackagebuilder.qhc
+

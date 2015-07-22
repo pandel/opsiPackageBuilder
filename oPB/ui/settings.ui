@@ -19,6 +19,11 @@
   <property name="windowTitle">
    <string>Settings</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <disabledon>:/images/new_ico/package_64x64.png</disabledon>
+   </iconset>
+  </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>

@@ -28,7 +28,7 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-from oPB.runner import *
+from oPB.runner import HelpViewerMain
 
 if __name__ == '__main__':
     main = HelpViewerMain()

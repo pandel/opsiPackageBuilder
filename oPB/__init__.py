@@ -163,7 +163,7 @@ OPB_METHOD_GETPRODUCTS = "opsi-admin -r -d method product_getHashes"
 """opsi 4.0 API method: short / get all products"""
 OPB_METHOD_GETCLIENTS = "opsi-admin -d method host_getHashes '[]' '{" + '"type":"OpsiClient"}' + "'"
 """opsi 4.0 API method: get client list"""
-OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with added: '["yi7xa1hp.sd8106.gad.de"]'
+OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with added: '["yi7xa1hp.host.domain.de"]'
 """opsi 4.0 API method: get client<->depot list, filter with added: '["<hostname>"]' """
 OPB_METHOD_GETPRODUCTSONDEPOTS = "opsi-admin -d method productOnDepot_getIdents"
 """opsi 4.0 API method: long / get all products"""

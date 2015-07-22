@@ -236,7 +236,10 @@ class Main(QObject):
         sys.exit(oPB.EXITCODE)
 
     def install_stylesheet(self):
-        css = os.environ['OPB_BASE'] + "/ui/stylesheet.qss"
+        if platform.system() == "Darwin":
+            css = os.environ['OPB_BASE'] + "/ui/stylesheet-mac.qss"
+        else:
+            css = os.environ['OPB_BASE'] + "/ui/stylesheet.qss"
 
         try:
             with open(css, "r", encoding="utf-8", newline="\n") as file:
@@ -454,7 +457,5 @@ class HelpViewerMain(QObject):
         self.helpviewer._help.ui.changeEvent(event)
 
         # run main loop
-        self.app.exec_()
-
         # return to os
-        sys.exit()
+        sys.exit(self.app.exec_())

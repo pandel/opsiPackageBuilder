@@ -169,8 +169,16 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.controlData.dataLoaded.connect(self.update_model_data)
         self.controlData.dataSaved.connect(self.update_model_data)
 
-        self.ui.actionSettings.triggered.connect(self.settingsCtr.ui.exec)
+        self.ui.actionSettings.triggered.connect(self.showSettings)
 
+    def showSettings(self):
+        if not self._active_project:
+            self.startup.hide_()
+            self.settingsCtr.ui.exec()
+            self.startup.show_()
+        else:
+            self.settingsCtr.ui.exec()
+            
     def update_model_data(self):
         """
         Updates model whenever backend data has changed.
@@ -422,9 +430,9 @@ class MainWindowController(BaseController, QObject, EventMixin):
         """
         ret = self.project_close()
         if ret:
+            self.startup.hide_()
             reply = self.msgbox(translate("mainController", "Are you sure?"), oPB.MsgEnum.MS_QUEST_YESNO, self.startup)
             if reply is True:
-                self.startup.hide_me()
                 ConfigHandler.cfg.posX = self.ui.geometry().x()
                 ConfigHandler.cfg.posY = self.ui.geometry().y()
                 ConfigHandler.cfg.width = self.ui.width()
@@ -434,6 +442,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
                 self.closeAppRequested.emit(0)
                 event.accept()
             else:
+                self.startup.show_()
                 event.ignore()
         else:
             event.ignore()

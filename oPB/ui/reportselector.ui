@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Report selector</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <disabledon>:/images/new_ico/package_64x64.png</disabledon>
+   </iconset>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <property name="spacing">
     <number>5</number>
@@ -232,7 +237,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../opsipackagebuilder.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btnClose</sender>

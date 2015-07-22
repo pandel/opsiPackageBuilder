@@ -34,7 +34,7 @@ import platform
 import PyQt5
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtProperty, QUrl, QObject, QSortFilterProxyModel, QDir
-from PyQt5.QtWidgets import QWidget, QDialog, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton
+from PyQt5.QtWidgets import QWidget, QDialog, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, qApp
 from PyQt5.QtPrintSupport import QPrintPreviewDialog, QPrinter
 from PyQt5.QtWebKitWidgets import QWebView
 import oPB
@@ -304,7 +304,19 @@ class Translator(QObject, LogMixin):
             if platform.system() == "Windows":
                 Translator.cfg._qt_locale_path = Helper.concat_path_native(pyqt_path, "translations")
             else:
-                Translator.cfg._qt_locale_path = "/usr/share/qt5/translations/"
+                if os.path.isdir("/usr/share/qt5/translations/"):
+                    Translator.cfg._qt_locale_path = "/usr/share/qt5/translations/"
+
+                else:
+                    # we assume, that library plugin path is sibling to translations path
+                    # so let's find the plugins and construct translations path
+                    lib_dirs = qApp.libraryPaths()
+
+                    for d in lib_dirs:
+                        l = os.path.join(d, "../translations")
+                        if os.path.isdir(l):
+                            Translator.cfg._qt_locale_path = l
+                            break
 
             Translator.cfg._app_locale_path = ":locale/"
             Translator.cfg._syslocale = QtCore.QLocale().system().name()[:2]

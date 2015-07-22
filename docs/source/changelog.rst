@@ -2,6 +2,9 @@
 Changelog
 =========
 
+* :release:`8.0.1b <2015-07-16>`
+* :bug:`-` Different problems under OS X resolved
+* :support:`- backported` New program icon ;-)
 * :bug:`-` Parameter --quiet had no effect, corrected
 * :bug:`-` Return code corrections
 * :bug:`-` Refreshing DepotManager content did not finish correctly

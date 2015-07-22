@@ -16,6 +16,11 @@
   <property name="windowTitle">
    <string>Uninstall package(s)</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <disabledon>:/images/new_ico/package_64x64.png</disabledon>
+   </iconset>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <property name="leftMargin">
     <number>5</number>

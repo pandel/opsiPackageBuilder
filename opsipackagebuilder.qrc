@@ -4,6 +4,11 @@
     <file>locale/opsipackagebuilder_en.qm</file>
     <file>locale/qtbase_de.qm</file>
     <file>images/prog.ico</file>
+    <file>images/prog_icons/help/help.ico</file>
+    <file>images/prog_icons/opb/package_64x64.ico</file>
+    <file>images/prog_icons/opb/package_64x64.png</file>
+    <file>images/prog_icons/opb/package_128x128.png</file>
+    <file>images/prog_icons/opb/package_256x256.png</file>
     <file>images/winst32_MAINICON.ico</file>
     <file>images/resource_1.ico</file>
     <file>images/resource_2.ico</file>
