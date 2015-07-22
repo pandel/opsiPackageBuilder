@@ -46,9 +46,9 @@ You need to install VC++ 2010 Express and, additionally, Microsoft Windows SDK v
     Get DVD named: GRMSDKX_EN_DVD.iso (64bit)
 - If you can't install the SDK, then it is perhaps because VC++ Studio installed an older VC++ 2010 Redistributable Package on you computer before. Go to Software and uninstall it first, then install the SDK.
 - IMPORTANT: install `this MS hotfix <https://support.microsoft.com/de-de/kb/2519277>`_, because it can happen that a Windows update removes your VC++ compilers ;-)
-- Create file **vcvars64.bat** under **C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64** with following content:
+- Create file **vcvars64.bat** under **C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\bin\\amd64** with following content:
 
-    call "C:\Program Files\Microsoft SDKs\Windows\v7.1\bin\setenv.cmd" /x64
+    call "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\bin\\setenv.cmd" /x64
 
 
 Running oPB under Mac OSX
