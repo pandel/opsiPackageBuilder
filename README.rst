@@ -9,11 +9,12 @@ opsi PackageBuilder is only tested with Python 3.4 and PyQt5.
 
 Requirements
 ============
-- PyQt5
-- spur
-- sphinx_rtd_theme
-- PyCrypto
-- simple-crypt>=4.0.0
+- Python (3.4.3 tested)
+- PyQt5 (5.4.2 tested
+- spur (0.3.14 tested)
+- PyCrypto (2.6.1 tested)
+- Sphinx (current)
+- Releases (current)
 
 Included scripts and files
 ==========================

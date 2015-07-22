@@ -1,3 +1,4 @@
-releases
 spur
 pycrypto
+sphinx
+releases
