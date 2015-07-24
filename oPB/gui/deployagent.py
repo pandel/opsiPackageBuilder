@@ -28,6 +28,7 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+from collections import deque
 import re
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal
@@ -35,6 +36,7 @@ from PyQt5.Qt import QKeyEvent
 import oPB
 import oPB.gui.helpviewer
 from oPB.core.tools import LogMixin
+from oPB.core.confighandler import ConfigHandler
 from oPB.gui.utilities import SpecialOptionButtonGroup, EventMixin
 from oPB.ui.ui import DeployAgentDialogUI, DeployAgentDialogBase
 from oPB.gui.splash import Splash
@@ -94,12 +96,36 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin, Ev
         pass
 
     def show_(self):
-        self.logger.debug("Open product bundle creation dialog")
+        self.logger.debug("Open deploy agent dialog")
 
         self.dialogOpened.emit()
 
+        self.cmbPreExec.clear()
+        self.cmbPreExec.addItems([""])
+        self.cmbPreExec.addItems(ConfigHandler.cfg.predeploycmds)
+
         self.show()
         self.activateWindow()
+
+    def closeEvent(self, event):
+        self.logger.debug("Closing dialog")
+        # Save the 10 last used pre deployment commands
+
+        c = deque('', 10)
+
+        for i in range(self.cmbPreExec.count()):
+            if self.cmbPreExec.itemText(i) != "":
+                if not self.cmbPreExec.itemText(i) in c:
+                    c.append(self.cmbPreExec.itemText(i))
+
+        if self.cmbPreExec.currentText() != "":
+            if not self.cmbPreExec.currentText() in c:
+                c.append(self.cmbPreExec.currentText())
+
+        ConfigHandler.cfg.predeploycmds = list(c)
+
+        event.accept()
+        self.finished.emit(0) # we have to emit this manually, because of subclassing closeEvent
 
     def create_optionsgroups(self):
         """
@@ -112,7 +138,6 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin, Ev
         self.optionGroupDeploy = SpecialOptionButtonGroup(self.chkDeployToMulti, None,
                                                               [self.inpDestMulti],
                                                               [self.inpDestSingle])
-
 
     def deploy(self):
         """

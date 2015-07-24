@@ -2,6 +2,9 @@
 Changelog
 =========
 
+* :release:`8.0.2b <2015-07-24>`
+* :support:`- backported` Control file field ``licenseRequired`` can be empty, defaults to ``False`` then
+* :bug:`-` Client agent deploy not working
 * :release:`8.0.1b <2015-07-16>`
 * :bug:`-` Different problems under OS X resolved
 * :support:`- backported` New program icon ;-)

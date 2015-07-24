@@ -92,6 +92,7 @@ class ConfigHandler(ConfigParser, LogMixin):
             "chLogRecognition": oPB.CHLOG_BLOCKMARKER,
             "chLogOnBuild": "False",
             "chLogOnSave": "False",
+            "predeploycmds": ""
         },
         "messages": {
             "noError": "False",
@@ -736,3 +737,18 @@ class ConfigHandler(ConfigParser, LogMixin):
             self.set("package", "depotCache", "")
         else:
             self.set("package", "depotCache", json.dumps(value))
+
+    @property
+    def predeploycmds(self):
+        val = self.get("tools", "predeploycmds")
+        if val.strip() == "":
+            return {}
+        else:
+            return json.loads(val)
+
+    @predeploycmds.setter
+    def predeploycmds(self, value):
+        if value == "":
+            self.set("tools", "predeploycmds", "")
+        else:
+            self.set("tools", "predeploycmds", json.dumps(value))

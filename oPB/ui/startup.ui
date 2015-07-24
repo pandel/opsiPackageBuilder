@@ -328,7 +328,7 @@ QToolButton:pressed {
 </string>
         </property>
         <property name="text">
-         <string>Recent files (F3)</string>
+         <string>Recent files</string>
         </property>
         <property name="icon">
          <iconset>
@@ -491,12 +491,11 @@ QPushButton:pressed {
 </string>
         </property>
         <property name="text">
-         <string>Import Package</string>
+         <string>Import Package (F3)</string>
         </property>
         <property name="icon">
-         <iconset>
-          <disabledon>:/images/resource_14.ico</disabledon>
-         </iconset>
+         <iconset resource="../../opsipackagebuilder.qrc">
+          <normaloff>:/images/resource_14.ico</normaloff>:/images/resource_14.ico</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -505,7 +504,7 @@ QPushButton:pressed {
          </size>
         </property>
         <property name="shortcut">
-         <string>F2</string>
+         <string>F3</string>
         </property>
         <property name="flat">
          <bool>false</bool>
@@ -754,9 +753,6 @@ QPushButton:pressed {
           <width>24</width>
           <height>24</height>
          </size>
-        </property>
-        <property name="shortcut">
-         <string>F10</string>
         </property>
         <property name="flat">
          <bool>false</bool>

@@ -624,7 +624,7 @@ class OpsiProcessing(QObject, LogMixin):
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DEPLOY:
-            ret = oPB.oPB.RET_NOWINEXE
+            ret = oPB.RET_NOWINEXE
             clientlist = kwargs.get("clientlist", [])
             options = kwargs.get("options", {})
             self.logger.ssh(20 * "-" + "ACTION: DEPLOY OPSI-CLIENT-AGENT" + 20 * "-")
@@ -632,17 +632,18 @@ class OpsiProcessing(QObject, LogMixin):
             result = self._processAction(oPB.OPB_PRECHECK_WINEXE, action, ret, cwd = False)
             if result != {}:
                 ret = oPB.RET_SSHCMDERR
-                # cd c:\TEMP\RZInstall\ETHLineSpeed "&&" set NWDUPLEXMODE=AUTOSENS "&&" start install.cmd
+
                 destfile = Helper.concat_path_posix(tmppath, "deploy.sh")
 
                 cmd = ""
                 cmd += oPB.OPB_DEPLOY_COMMAND
-                cmd += " -u " + options["user"]
-                cmd += " -p " + options["pass"]
+                cmd += " -u " + "'" + options["user"] + "'"
+                cmd += " -p " + "'" + options["pass"] + "'"
                 cmd += " -c " if options["usefqdn"] else ""
                 cmd += " -x " if options["ignoreping"] else ""
                 cmd += " -S " if options["skipexisting"] else ""
-                cmd += " -v " if not options["proceed"] else ""
+                #cmd += " -v " if not options["proceed"] else ""
+                cmd += " -v "
 
                 if options["post_action"] == "":
                     pass
@@ -654,23 +655,41 @@ class OpsiProcessing(QObject, LogMixin):
                     cmd += " -s "
 
                 if clientlist:
+                    self.logger.ssh("Create mass deploy script under /tmp/deploy.sh")
                     f = None
                     with tempfile.TemporaryFile(mode = "w+", encoding='UTF-8') as f:
+
                         for client in clientlist:
-                                if options["pre_action"] != "":
-                                    f.write('winexe --debug-stderr --user "' + options["user"] + '" --password "' +
-                                            options["pass"] + '" //' + client + " 'cmd /c " + options["pre_action"] + "'" + "\n")
-                                f.write(cmd + " " + client + "\n")
+                            # optionally, execute command on client before deploying the client
+                            if options["pre_action"] != "":
+                                f.write("\n")
+                                tmp = "cat </dev/null | winexe --debug-stderr --user '" + options["user"] + "' --password '" + \
+                                        options["pass"] + "' //" + client + " 'cmd /c " + options["pre_action"] + "'"
+                                f.write(tmp + "\n")
+                                f.write("sleep 5\n")
+                            f.write(cmd + " " + client + "\n")
                         f.flush()
                         f.seek(0)
                         self.copyToRemote(f, destfile, True)
 
-                if options["proceed"]:
-                    cmd = ["nohup", "sh -c " + destfile + " &>/dev/null & sleep 2 ; exit 0"]
-                else:
-                    cmd = ["sh", "-c", destfile]
+                    # chmod script executable
+                    self.logger.ssh("Set executable bit")
+                    cmd = ["sh", "-c", "chmod +x " + destfile]
+                    result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
-                result = self._processAction(cmd, action, ret, split = False, cwd = False)
+                    # execute /tmp/deploy.sh script
+                    if options["proceed"]:
+                        cmd = ["sh", "-c", "nohup " + destfile + " >/tmp/opb-deploy.log & sleep 2 ; exit 0"]
+                        result = self._processAction(cmd, action, ret, split=False, cwd = False)
+                        if self.ret == oPB.RET_OK:
+                            self.logger.sshinfo("Deploy initiated, see /tmp folder of opsi server for detailed deployment logs")
+                    else:
+                        cmd = ["sh", "-c", "chmod +x " + destfile + "; " + destfile]
+                        result = self._processAction(cmd, action, ret, split = False, cwd = False)
+                        if self.ret == oPB.RET_OK:
+                            self.logger.sshinfo("opsi-client-agent successfully deployed.")
+
+                # cd c:\TEMP\RZInstall\ETHLineSpeed & set NWDUPLEXMODE=AUTOSENS & start install.cmd
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_SETRIGHTS_REPO:
@@ -774,6 +793,7 @@ class OpsiProcessing(QObject, LogMixin):
 
                         if action in [oPB.OpEnum.DO_INSTALL, oPB.OpEnum.DO_QUICKINST, oPB.OpEnum.DO_INSTSETUP,
                                       oPB.OpEnum.DO_UPLOAD, oPB.OpEnum.DO_UNINSTALL, oPB.OpEnum.DO_QUICKUNINST]:
+                            self.logger.sshinfo("Start SSH shell with full environment update / pseudo TTY")
                             result = self.shell.run(cmd,
                                 cwd = cwdstr,
                                 update_env = self._env,
@@ -781,7 +801,16 @@ class OpsiProcessing(QObject, LogMixin):
                                 stderr = self._hook,
                                 use_pty = True
                             )
+                        elif action in [oPB.OpEnum.DO_DEPLOY]:
+                            self.logger.sshinfo("Start SSH shell with no environment update / pseudo TTY")
+                            result = self.shell.run(cmd,
+                                cwd = cwdstr,
+                                allow_error = True,
+                                stderr = self._hook,
+                                use_pty = True
+                            )
                         else:
+                            self.logger.sshinfo("Start SSH shell with full environment update / no pseudo TTY")
                             result = self.shell.run(cmd,
                                 cwd = cwdstr,
                                 update_env = self._env,
@@ -790,13 +819,27 @@ class OpsiProcessing(QObject, LogMixin):
                             )
 
                         # Log standard out / but not for clients and products, too much!!!
+                        # and not for client agent deploy, sometimes there are errors in stdout, too
                         if action not in [oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS, oPB.OpEnum.DO_GETDEPOTS,
                                           oPB.OpEnum.DO_GETCLIENTSONDEPOTS, oPB.OpEnum.DO_GETPRODUCTSONDEPOTS,
-                                          oPB.OpEnum.DO_CREATEJOBS, oPB.OpEnum.DO_GETATJOBS, oPB.OpEnum.DO_GETREPOCONTENT]:
+                                          oPB.OpEnum.DO_CREATEJOBS, oPB.OpEnum.DO_GETATJOBS, oPB.OpEnum.DO_GETREPOCONTENT, oPB.OpEnum.DO_DEPLOY]:
                             out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
                             for line in out:
                                 line = self._obscurepass(line)
                                 self.logger.ssh(line)
+
+                        if action in [oPB.OpEnum.DO_DEPLOY]:
+                            out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
+                            for line in out:
+                                line = self._obscurepass(line)
+                                isErr = self.hasErrors(line)
+                                if isErr[0]:
+                                    self.logger.error(line)
+                                    self.ret = retval
+                                    self.rettype = oPB.MsgEnum.MS_ERR
+                                    self.retmsg = isErr[1]
+                                else:
+                                    self.logger.ssh(line)
 
                         # Log standard error
                         out = Helper.strip_ansi_codes(result.stderr_output.decode(encoding='UTF-8')).splitlines()
@@ -896,6 +939,18 @@ class OpsiProcessing(QObject, LogMixin):
         elif "Permission denied".upper() in text.upper():
             found = True
             msg = translate("OpsiProcessing", "Permission denied. Check log.")
+
+        elif "NT_STATUS_LOGON_FAILURE".upper() in text.upper():
+            found = True
+            msg = translate("OpsiProcessing", "Network logon failed. Check log.")
+
+        elif "not found".upper() in text.upper():
+            found = True
+            msg = translate("OpsiProcessing", "Possible error: command or file not found. Check log.")
+
+        elif "Failed to get ip address for host".upper() in text.upper():
+            found = True
+            msg = translate("OpsiProcessing", "Failed to get ip address for host. Check log.")
 
         elif "ERROR".upper() in text.upper():
             found = True

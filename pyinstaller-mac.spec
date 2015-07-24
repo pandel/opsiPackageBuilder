@@ -4,7 +4,7 @@
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss'])
 help_tree = Tree('oPB/help', prefix='help')
 lang_tree = Tree('/usr/local/opt/qt5/translations', 'translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
-
+bundle_version = '8.0.2'
 
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],
@@ -74,10 +74,10 @@ helpviewer_coll = COLLECT(helpviewer_exe,
 app1 = BUNDLE(opsipackagebuilder_coll,
                 name=os.path.join('dist', 'opsiPackageBuilder.app'),
                 appname="opsiPackageBuilder",
-                version = '0.1')
+                version = bundle_version)
 
 app2 = BUNDLE(helpviewer_coll,
                 name=os.path.join('dist', 'opbHelpViewer.app'),
                 appname="oPB HelpViewer",
-                version = '0.1')
+                version = bundle_version)
                 

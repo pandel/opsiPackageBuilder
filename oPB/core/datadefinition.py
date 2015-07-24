@@ -501,6 +501,8 @@ class ControlFileData(QObject, LogMixin):
 
     @licenseRequired.setter
     def licenseRequired(self, value):
+        if str(value).strip() == "":
+            value = "False"
         # create new exception handling vor properties
         if str(value).strip() not in ["True", "False"]:
             raise ValueError(translate("ControlFileData", "licenseRequired must be True or False"))

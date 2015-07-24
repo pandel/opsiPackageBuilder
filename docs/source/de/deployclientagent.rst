@@ -9,23 +9,17 @@ Mit dieser Funktion kann der opsi-client-agent komfortabel per remote auf Client
 
 **Erläuterung zur Option "Nicht warten":**
 
-Wird diese Option angewählt, so wird der Deploy Befehl auf dem Server abgesetzt und nicht auf die Beendigung der Ausführung gewartet, d. h. es gibt keine Rückmeldung über das Log. Bei größeren Deploys führt das dazu, dass der opsi PackageBuilder nicht "ewig" zu hängen scheint, sondern direkt wieder bedienbar wird.
+Wird diese Option angewählt, so wird der Deploy Befehl auf dem Server abgesetzt und nicht auf die Beendigung der Ausführung gewartet, d. h. es gibt keine Rückmeldung über das Programm Logbuch. Stattdessen wird auf dem Server im Verzeichnis /tmp eine Logdatei ``opb-deploy.log`` angelegt. Bei größeren Deploys führt das dazu, dass der opsi PackageBuilder nicht "ewig" zu hängen scheint, sondern direkt wieder bedienbar wird.
 
 Hinweise zum Feld "Vorab-Befehl":
 
-Steht in diesem Feld eine Anweisung, so wird sie vor dem Deploy via winexe (entspricht weitestgehend psexec für Linux) direkt auf dem Client ausgeführt.
+Steht in diesem Feld eine Anweisung, so wird sie vor dem Deploy via winexe (entspricht weitestgehend ``psexec`` für Linux) direkt auf dem Client ausgeführt.
 
 Daran sind allerdings einige Bedingungen geknüpft:
 
-    - Auf dem Server muss das Programm ``winexe`` über die Pfadvariable erreichbar sein vorhanden sein (mit whereis prüfen) / hierbei wird nicht auf die im opsi-client-agent mitgelieferte Version zurückgegriffen.
-    - Befehlsverkettung funktioniert begrenzt, da hilft im Einzelfall nur ausprobieren
+    - Auf dem opsi Server muss das Programm ``winexe`` in Version 1.0 über die Pfadvariable erreichbar sein vorhanden sein (mit whereis prüfen) / hierbei wird nicht auf die im opsi-client-agent mitgelieferte Version zurückgegriffen. Ggf. muss es über den Paketmanager nachinstalliert werden (bspw. ``sudo apt-get install winexe``)
+    - Befehlsverkettung funktioniert generell, bei komplizierten Konstruktionen hilft im Einzelfall nur ausprobieren
     - Piping und Ausgabeumlenkung sind sehr fallabhängig. Da hilft es ebenfalls am ehesten, Logging einzuschalten und auszuprobieren.
-
-**Achtung**::
-
-    - Wird an einen einzelnen Client verteilt, so kann im Multi-Depot Betrieb der Quelldepotserver ausgewählt werden, um Leitungskapazitäten zu schonen.
-    - Wenn an mehrere Clients verteilt wird, dann kann im Multi-Depot Betrieb KEIN Depotserver ausgewählt werden, da für den Deploybefehl eine Liste in Dateiform erstellt werden muss. Dies ist momentan nur auf dem Workbench Share des zugeordneten Konfigservers zulässig. Ebenfalls führt es zu Fehlern, wenn der Entwicklungsordner nicht auf dem Workbench Share des Konfigservers liegt. Dann kann der Deploybefehl ebenfalls nicht ordnungsgemäß abgesetzt werden.
-    - In Einzelfällen kann es vorkommen, dass
 
 **Fehlerbereinigung**::
 

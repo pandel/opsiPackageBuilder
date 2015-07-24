@@ -54,5 +54,24 @@ class DeployAgentComponent(BaseController, QObject):
         self.ui.dialogClosed.connect(self._parent.startup.show_)
 
     def start_deploy(self, destination: list, options: dict):
+        """
+        Starts deployment via backend routine.
+
+        The ``option`` parameter is a dictionary, especially for parameters regarding
+        the *opsi-deploy-client-agent* script.
+
+            options = {
+                "pre_action": <command string to execute beofre deployment>,
+                "user": <(domain) username>,
+                "pass": <password>,
+                "usefqdn": <true/false: use FQDN as client address>,
+                "ignoreping": <true/false: ignore ping check>,
+                "skipexisting": <true/false: ignore existing clients>,
+                "post_action": <post install action string: (do nothing), "startclient", "reboot", "shutdown">
+                "proceed": <true/false: (don't) wait for process to return, start via nohup>}
+
+        :param destination: list of client fqdn/ip addresses
+        :param options: see description
+        """
         self._parent.do_deploy(clientlist = destination, options = options, dest = self._parent.query_depot(parent = self.ui, with_all=False))
 

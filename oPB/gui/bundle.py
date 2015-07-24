@@ -103,7 +103,7 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin, EventMixin):
         self.tblProducts.resizeColumnsToContents()
 
     def show_(self):
-        self.logger.debug("Open deploy agent dialog")
+        self.logger.debug("Open bundle creation dialog")
 
         self.show()
         self.activateWindow()
