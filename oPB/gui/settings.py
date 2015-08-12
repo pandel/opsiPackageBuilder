@@ -109,6 +109,8 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.dataChanged.connect(self.datamapper.submit)
         self.settingsAboutToBeClosed.connect(self._parent.close_dialog)
 
+        self.rdBaseOSOther.clicked.connect(self.set_model_data)
+        self.rdBaseOSSLES.clicked.connect(self.set_model_data)
         self.rdOpsiSrvNew.clicked.connect(self.set_model_data)
         self.rdOpsiSrvOld.clicked.connect(self.set_model_data)
         self.rdSUDOWithPass.clicked.connect(self.set_model_data)
@@ -172,6 +174,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.datamapper.addMapping(self.inpEditorOptions, 44)
         self.datamapper.addMapping(self.chkAttachDirect, 45, "checked")
         self.datamapper.addMapping(self.inpLocalShareBase, 46)
+        self.datamapper.addMapping(self.optionGroupBaseOS, 47, "checked")
         self.datamapper.toFirst()
 
     def create_optionbuttongroups(self):
@@ -180,6 +183,8 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.optionGroupSrvVersion = SpecialOptionButtonGroup(self.rdOpsiSrvNew, self.rdOpsiSrvOld,
                                                               [self.rdSUDOWithPass, self.rdSUDOWithoutPass],
                                                               [self.inpRootPass])
+
+        self.optionGroupBaseOS = SpecialOptionButtonGroup(self.rdBaseOSSLES, self.rdBaseOSOther)
 
         self.optionGroupSUDO = SpecialOptionButtonGroup(self.rdSUDOWithPass, self.rdSUDOWithoutPass)
 
@@ -263,6 +268,14 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
                 self.model.item(0, 41).setText("True")
             else:
                 self.model.item(0, 41).setText("False")
+
+        if self.sender().objectName() == "rdBaseOSSLES":
+            if self.rdBaseOSSLES.isChecked():
+                self.model.item(0, 47).setText("True")
+
+        if self.sender().objectName() == "rdBaseOSOther":
+            if self.rdBaseOSOther.isChecked():
+                self.model.item(0, 47).setText("False")
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

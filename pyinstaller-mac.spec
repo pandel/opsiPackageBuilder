@@ -4,18 +4,18 @@
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss'])
 help_tree = Tree('oPB/help', prefix='help')
 lang_tree = Tree('/usr/local/opt/qt5/translations', 'translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
-bundle_version = '8.0.2'
+bundle_version = '8.0.3'
 
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],
              pathex=['.'],
-             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
              hookspath=None,
              runtime_hooks=None)
 
 helpviewer_a = Analysis(['helpviewer.py'],
              pathex=['.'],
-             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
              hookspath=None,
              runtime_hooks=None)
 

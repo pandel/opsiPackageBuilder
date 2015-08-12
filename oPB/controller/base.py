@@ -75,6 +75,7 @@ class BaseController(LogMixin):
         self._dataLoaded = None            # True = success, False = failure, None = unset
 
         self.args = args
+
         self.controlData = ControlFileData()
 
         self.controlData.dataLoaded.connect(self.check_backend_data_loaded)

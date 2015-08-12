@@ -7,17 +7,15 @@ lang_tree = Tree('/usr/share/qt5/translations', 'translations', excludes=['assis
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],
              pathex=['.'],
-             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
              hookspath=None,
              runtime_hooks=None)
 
 helpviewer_a = Analysis(['helpviewer.py'],
              pathex=['.'],
-             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
              hookspath=None,
              runtime_hooks=None)
-
-
 
 
 opsipackagebuilder_pyz = PYZ(opsipackagebuilder_a.pure)

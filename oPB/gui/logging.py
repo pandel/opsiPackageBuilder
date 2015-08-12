@@ -98,68 +98,36 @@ class LogDialog(LogDialogBase, LogDialogUI, LogMixin, EventMixin):
         self.cmbLogLevel.setCurrentIndex(index)
         if index == 6:
             self.logger.debug("Set dialog log level to: DEBUG")
-            self.main.dialogHandler.setLevel(logging.DEBUG)
-            self.main.stdout.setLevel(logging.DEBUG)
-            try:
-                self.main.fileHandler.setLevel(logging.DEBUG)
-            except:
-                pass
+            self.setLevel(logging.DEBUG)
         elif index == 5:
             self.logger.debug("Set dialog log level to: INFO")
-            self.main.dialogHandler.setLevel(logging.INFO)
-            self.main.stdout.setLevel(logging.INFO)
-            try:
-                self.main.fileHandler.setLevel(logging.INFO)
-            except:
-                pass
+            self.setLevel(logging.INFO)
         elif index == 4:
             self.logger.debug("Set dialog log level to: SSHINFO")
-            self.main.dialogHandler.setLevel(oPB.core.logging.SSHINFO)
-            self.main.stdout.setLevel(oPB.core.logging.SSHINFO)
-            try:
-                self.main.fileHandler.setLevel(oPB.core.logging.SSHINFO)
-            except:
-                pass
+            self.setLevel(oPB.core.logging.SSHINFO)
         elif index == 3:
             self.logger.debug("Set dialog log level to: WARNING")
-            self.main.dialogHandler.setLevel(logging.WARNING)
-            self.main.stdout.setLevel(logging.WARNING)
-            try:
-                self.main.fileHandler.setLevel(logging.WARNING)
-            except:
-                pass
+            self.setLevel(logging.WARNING)
         elif index == 2:
             self.logger.debug("Set dialog log level to: SSH")
-            self.main.dialogHandler.setLevel(oPB.core.logging.SSH)
-            self.main.stdout.setLevel(oPB.core.logging.SSH)
-            try:
-                self.main.fileHandler.setLevel(oPB.core.logging.SSH)
-            except:
-                pass
+            self.setLevel(oPB.core.logging.SSH)
         elif index == 1:
             self.logger.debug("Set dialog log level to: ERROR")
-            self.main.dialogHandler.setLevel(logging.ERROR)
-            self.main.stdout.setLevel(logging.ERROR)
-            try:
-                self.main.fileHandler.setLevel(logging.ERROR)
-            except:
-                pass
+            self.setLevel(logging.ERROR)
         elif index == 0:
             self.logger.debug("Set dialog log level to: CRITICAL")
-            self.main.dialogHandler.setLevel(logging.CRITICAL)
-            self.main.stdout.setLevel(logging.CRITICAL)
-            try:
-                self.main.fileHandler.setLevel(logging.CRITICAL)
-            except:
-                pass
+            self.setLevel(logging.CRITICAL)
         else:
             self.logger.debug("Set dialog log level to: ERROR")
-            self.main.dialogHandler.setLevel(logging.ERROR)
-            self.main.stdout.setLevel(logging.ERROR)
-            try:
-                self.main.fileHandler.setLevel(logging.ERROR)
-            except:
-                pass
+            self.setLevel(logging.ERROR)
+
+    def setLevel(self, level):
+        self.main.dialogHandler.setLevel(level)
+        self.main.stdout.setLevel(level)
+        try:
+            self.main.fileHandler.setLevel(level)
+        except:
+            pass
 
     def changeFormat(self,  state):
         """

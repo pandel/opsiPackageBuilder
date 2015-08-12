@@ -62,6 +62,7 @@ class ConfigHandler(ConfigParser, LogMixin):
             "sshport": "22",
             "usekeyfile": "False",
             "keyfilename": "",
+            "is_sles": "False"
         },
         "maintainer": {
             "name": "Package Maintainer",
@@ -376,6 +377,14 @@ class ConfigHandler(ConfigParser, LogMixin):
     @keyfilename.setter
     def keyfilename(self, value):
         self.set("server", "keyfilename", value)
+
+    @property
+    def is_sles(self):
+        return self.get("server", "is_sles")
+
+    @is_sles.setter
+    def is_sles(self, value):
+        self.set("server", "is_sles", value)
 
     @property
     def packagemaintainer(self):

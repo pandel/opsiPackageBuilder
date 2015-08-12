@@ -152,6 +152,12 @@ class OpsiProcessing(QObject, LogMixin):
         # temporary file path for copy operations
         tmppath = oPB.UNIX_TMP_PATH
 
+        # change dev_base if necessary
+        if ConfigHandler.cfg.is_sles == "True":
+            oPB.DEV_BASE = oPB.DEV_BASE_SLES
+        else:
+            oPB.DEV_BASE = oPB.DEV_BASE_NORM
+
         # define empty result as default
         result = []
 

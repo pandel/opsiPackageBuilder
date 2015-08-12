@@ -62,9 +62,17 @@ target/
 # GitEye files
 /.project
 
+# qthelp index directory
 oPB/help/.opsipackagebuilder
 
+# compiled Debian packages
 linux/*.deb
+
+# innosetup script with old scripteditor
 /opb+scripted.iss
 
+# mac finder
 .DS_Store
+
+# sed copies
+*.sedcopy

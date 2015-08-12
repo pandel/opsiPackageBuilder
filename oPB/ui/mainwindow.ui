@@ -2302,11 +2302,19 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionUpload">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <disabledon>:/images/smallIcons_254.ico</disabledon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Upload package</string>
    </property>
    <property name="visible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionInstall">

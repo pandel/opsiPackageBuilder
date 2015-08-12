@@ -56,7 +56,6 @@ from oPB.controller.components.bundle import BundleComponent
 
 translate = QtCore.QCoreApplication.translate
 
-
 class MainWindowController(BaseController, QObject, EventMixin):
 
     # send after model or backend data has been updated

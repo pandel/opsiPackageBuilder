@@ -71,7 +71,7 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.0.2"
+PROGRAM_VERSION = "8.0.3"
 """Overall program version"""
 
 UPDATER_URL="http://dl.dropbox.com/u/5454651/opsiPackageBuilder"
@@ -95,9 +95,17 @@ CONFIG_INI = str(PurePath(CONFIG_PATH,"config-new.ini"))
 """Standard INI file full path"""
 
 # base folders
-DEV_BASE = "/home/opsiproducts"
+DEV_BASE_NORM = "/home/opsiproducts"
+"""Development base folder under most os"""
+DEV_BASE_SLES = "/var/lib/opsi/workbench"
+"""Development base folder under SLES"""
+DEV_BASE = DEV_BASE_NORM
 REPO_PATH = "/var/lib/opsi/repository"
+"""Standard repository folder"""
 DEPOTSHARE_BASE = "opsi_depot"
+"""Standard share name for depot"""
+
+# temp folders
 WIN_TMP_PATH = tempfile.gettempdir()
 UNIX_TMP_PATH = "/tmp"
 
@@ -219,9 +227,9 @@ PRG_EXT = ["exe"]
 # log formats
 LOG_DATETIME = "%Y-%m-%d %I:%M:%S %p"
 """Log entry: datetime format"""
-LOG_LONG =  "[%(asctime)s] - %(name)-35s - %(levelname)8s - %(message)s (%(module)s: %(funcName)s - line %(lineno)s, process %(process)s)"
+LOG_LONG =  "[%(asctime)s] - %(name)-45s - %(levelname)8s - %(message)s (%(module)s: %(funcName)s - line %(lineno)s, process %(process)s)"
 """Log entry: long format"""
-LOG_SHORT = "[%(asctime)s] - %(name)-35s - %(levelname)8s - %(message)s"
+LOG_SHORT = "[%(asctime)s] - %(name)-45s - %(levelname)8s - %(message)s"
 """Log entry: short format"""
 LOG_SSH = "[%(asctime)s] - %(message)s"
 """Log entry (only SSH): format"""

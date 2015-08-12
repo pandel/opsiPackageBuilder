@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "opsi PackageBuilder"
-#define MyAppVersion "8.0.2"
+#define MyAppVersion "8.0.3"
 #define MyAppPublisher "opsi community project"
 #define MyAppPublisherURL "https://forum.opsi.org/viewforum.php?f=22"
 #define MyAppExeName "opsiPackageBuilder.exe"

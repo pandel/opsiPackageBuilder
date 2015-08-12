@@ -2,6 +2,11 @@
 Changelog
 =========
 
+* :release:`8.0.3b <2015-08-12>`
+* :support:`- backported` Upload function in main menu
+* :bug:`3` Error in package upload
+* :bug:`2` File not found -> /home/opsiproducts is /var/lib/opsi/workbench on SLES
+* :bug:`-` Error in log output - class names refer to wrong package
 * :release:`8.0.2b <2015-07-24>`
 * :support:`- backported` Control file field ``licenseRequired`` can be empty, defaults to ``False`` then
 * :bug:`-` Client agent deploy not working

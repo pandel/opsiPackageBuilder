@@ -7,13 +7,13 @@ dll86_tree = Tree('oPB/core/x86', prefix='x86')
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],
              pathex=['.'],
-             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
              hookspath=None,
              runtime_hooks=None)
 
 helpviewer_a = Analysis(['helpviewer.py'],
              pathex=['.'],
-             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
              hookspath=None,
              runtime_hooks=None)
 

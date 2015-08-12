@@ -899,6 +899,12 @@ class ControlFileData(QObject, LogMixin):
         :return: project path on server
         """
 
+        # change dev_base if necessary
+        if ConfigHandler.cfg.is_sles == "True":
+            oPB.DEV_BASE = oPB.DEV_BASE_SLES
+        else:
+            oPB.DEV_BASE = oPB.DEV_BASE_NORM
+
         # if on Linux, we have to subtract local share base from development folder
         # -> the local share base acts like the drive letter on windows
         if platform.system() == 'Linux':

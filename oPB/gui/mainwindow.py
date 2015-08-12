@@ -77,7 +77,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.recentFileActions = []
 
         if oPB.NETMODE == "offline":
-            self.setWindowTitle("opsiPackageBuilder ( OFFLINE MODE )")
+            self.setWindowTitle("opsiPackageBuilder v" + oPB.PROGRAM_VERSION + " ( OFFLINE MODE )")
+        else:
+            self.setWindowTitle("opsiPackageBuilder v" + oPB.PROGRAM_VERSION)
 
         self.datamapper = None             # QDataWidgetMapper object for field mapping
         self.datamapper_dependencies = None
@@ -369,6 +371,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
         if oPB.NETMODE != "offline":
             try:
+                self.logger.debug("Retrieve active package list from depot")
                 subpath = "\\\\" + ConfigHandler.cfg.opsi_server + "\\" + oPB.DEPOTSHARE_BASE
                 subdirs = Helper.get_subdirlist(subpath)
                 subdirs.sort()
@@ -522,16 +525,24 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """
         self.logger.debug("Upload package")
 
+        if self._parent.startup.isVisible():
+            pt = self._parent.startup
+        else:
+            pt = self
+
         ext = "opsi Package (*.opsi)"  # generate file extension selection string for dialog
 
-        script = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
+        script = QFileDialog.getOpenFileName(pt, translate("MainWindow", "Choose package file"),
                                             "", ext)
 
         if not script == ("", ""):
             self.logger.debug("Selected package: " + script[0])
-            self._parent.startup.hide_me()
-            self._parent.do_import(script[0], depot = self._parent.query_depot(parent = self))
-            self._parent.startup.show_me()
+            if self._parent.startup.isVisible():
+                self._parent.startup.hide_me()
+                self._parent.do_upload(script[0], depot = self._parent.query_depot(parent = self))
+                self._parent.startup.show_me()
+            else:
+                self._parent.do_upload(script[0], depot = self._parent.query_depot(parent = self))
         else:
             self.logger.debug("Dialog aborted.")
 

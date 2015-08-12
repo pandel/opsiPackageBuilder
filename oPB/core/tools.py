@@ -66,11 +66,12 @@ class LogMixin(object):
 
     @property
     def logger(self):
-        name = '.'.join([__name__, self.__class__.__name__])
+        #name = '.'.join([__name__, self.__class__.__name__])
+        name = '.'.join([self.__module__, self.__class__.__name__])
         return logging.getLogger(name)
 
 
-class Helper(LogMixin):
+class Helper():
     """
     Simple tool functions
 
@@ -338,7 +339,6 @@ class Helper(LogMixin):
         :param timeout: connection timeout
         :return: True or error
         """
-
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(timeout)
