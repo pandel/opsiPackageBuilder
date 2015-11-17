@@ -1,7 +1,7 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
 Package: opsipackagebuilder
-Version: 8.0.3
+Version: 8.0.4
 Section: admin
 Maintainer: Holger Pandel <holger.pandel@googlemail.com>
 Homepage: https://github.com/pandel/opsiPackageBuilder
@@ -18,72 +18,72 @@ Description: Package building tool for opsi (open pc server integration)
 <</CTRL>>
 <<FILES>>
 1
-/home/holger/Pythonprojects/opsiPackageBuilder/linux/opsipackagebuilder.desktop -> opsipackagebuilder.desktop -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3
-/home/holger/Pythonprojects/opsiPackageBuilder/linux/opb-helpviewer.desktop -> opb-helpviewer.desktop -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3
-/home/holger/Pythonprojects/opsiPackageBuilder/images/prog_icons/help/help.ico -> help.ico -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3
-/home/holger/Pythonprojects/opsiPackageBuilder/images/prog_icons/opb/package_256x256.ico -> package_256x256.ico -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3
-/home/holger/Pythonprojects/opsiPackageBuilder/opsipackagebuilder.py -> opsipackagebuilder.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3
-/home/holger/Pythonprojects/opsiPackageBuilder/helpviewer.py -> helpviewer.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/changelog.py -> changelog.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller/components
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/bundle.py -> bundle.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller/components
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller/components
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/deployagent.py -> deployagent.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller/components
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/depotmanager.py -> depotmanager.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller/components
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/scheduler.py -> scheduler.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller/components
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/quickuninstall.py -> quickuninstall.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller/components
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/base.py -> base.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/main.py -> main.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/console.py -> console.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/settings.py -> settings.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/controller
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/settings.ui -> settings.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/mainwindow.ui -> mainwindow.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/depotmanager.ui -> depotmanager.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/scripttree.ui -> scripttree.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/joblist.ui -> joblist.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/stylesheet.qss -> stylesheet.qss -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/deployagent.ui -> deployagent.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/jobcreator.ui -> jobcreator.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/changelogeditorextended.ui -> changelogeditorextended.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/opsipackagebuilder_rc.py -> opsipackagebuilder_rc.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/ui.py -> ui.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/log.ui -> log.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/bundle.ui -> bundle.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/quickuninstall.ui -> quickuninstall.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/reportselector.ui -> reportselector.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/startup.ui -> startup.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/changelogeditorsimple.ui -> changelogeditorsimple.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/ui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/confighandler.py -> confighandler.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/tools.py -> tools.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/mapdrive.py -> mapdrive.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/logging.py -> logging.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/commandline.py -> commandline.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/datadefinition.py -> datadefinition.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/scriptscanner.py -> scriptscanner.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/models.py -> models.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/processing.py -> processing.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/core
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/changelog.py -> changelog.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/mainwindow.py -> mainwindow.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/report.py -> report.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/bundle.py -> bundle.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/logging.py -> logging.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/utilities.py -> utilities.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/startup.py -> startup.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/helpviewer.py -> helpviewer.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/scripttree.py -> scripttree.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/deployagent.py -> deployagent.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/splash.py -> splash.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/depotmanager.py -> depotmanager.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/scheduler.py -> scheduler.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/settings.py -> settings.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/quickuninstall.py -> quickuninstall.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/gui
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/help/opsiPackageBuilder.qch -> opsiPackageBuilder.qch -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/help
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/help/opsipackagebuilder.qhc -> opsipackagebuilder.qhc -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB/help
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB
-/home/holger/Pythonprojects/opsiPackageBuilder/oPB/runner.py -> runner.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/oPB
+/home/holger/Pythonprojects/opsiPackageBuilder/linux/opsipackagebuilder.desktop -> opsipackagebuilder.desktop -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4
+/home/holger/Pythonprojects/opsiPackageBuilder/linux/opb-helpviewer.desktop -> opb-helpviewer.desktop -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4
+/home/holger/Pythonprojects/opsiPackageBuilder/images/prog_icons/help/help.ico -> help.ico -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4
+/home/holger/Pythonprojects/opsiPackageBuilder/images/prog_icons/opb/package_256x256.ico -> package_256x256.ico -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4
+/home/holger/Pythonprojects/opsiPackageBuilder/opsipackagebuilder.py -> opsipackagebuilder.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4
+/home/holger/Pythonprojects/opsiPackageBuilder/helpviewer.py -> helpviewer.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/changelog.py -> changelog.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller/components
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/bundle.py -> bundle.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller/components
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller/components
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/deployagent.py -> deployagent.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller/components
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/depotmanager.py -> depotmanager.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller/components
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/scheduler.py -> scheduler.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller/components
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/components/quickuninstall.py -> quickuninstall.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller/components
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/base.py -> base.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/main.py -> main.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/console.py -> console.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/controller/settings.py -> settings.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/controller
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/settings.ui -> settings.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/mainwindow.ui -> mainwindow.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/depotmanager.ui -> depotmanager.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/scripttree.ui -> scripttree.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/joblist.ui -> joblist.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/stylesheet.qss -> stylesheet.qss -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/deployagent.ui -> deployagent.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/jobcreator.ui -> jobcreator.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/changelogeditorextended.ui -> changelogeditorextended.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/opsipackagebuilder_rc.py -> opsipackagebuilder_rc.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/ui.py -> ui.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/log.ui -> log.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/bundle.ui -> bundle.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/quickuninstall.ui -> quickuninstall.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/reportselector.ui -> reportselector.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/startup.ui -> startup.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/ui/changelogeditorsimple.ui -> changelogeditorsimple.ui -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/ui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/confighandler.py -> confighandler.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/tools.py -> tools.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/mapdrive.py -> mapdrive.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/logging.py -> logging.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/commandline.py -> commandline.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/datadefinition.py -> datadefinition.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/scriptscanner.py -> scriptscanner.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/models.py -> models.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/core/processing.py -> processing.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/core
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/changelog.py -> changelog.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/mainwindow.py -> mainwindow.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/report.py -> report.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/bundle.py -> bundle.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/logging.py -> logging.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/utilities.py -> utilities.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/startup.py -> startup.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/helpviewer.py -> helpviewer.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/scripttree.py -> scripttree.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/deployagent.py -> deployagent.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/splash.py -> splash.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/depotmanager.py -> depotmanager.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/scheduler.py -> scheduler.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/settings.py -> settings.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/gui/quickuninstall.py -> quickuninstall.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/gui
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/help/opsiPackageBuilder.qch -> opsiPackageBuilder.qch -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/help
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/help/opsipackagebuilder.qhc -> opsipackagebuilder.qhc -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB/help
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/__init__.py -> __init__.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB
+/home/holger/Pythonprojects/opsiPackageBuilder/oPB/runner.py -> runner.py -> /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/oPB
 /home/holger/Pythonprojects/opsiPackageBuilder/requirements.txt -> requirements.txt -> /usr/share/doc/opsipackagebuilder
 /home/holger/Pythonprojects/opsiPackageBuilder/README.rst -> README.rst -> /usr/share/doc/opsipackagebuilder
 /home/holger/Pythonprojects/opsiPackageBuilder/LICENSE_EN -> LICENSE_EN -> /usr/share/doc/opsipackagebuilder
@@ -255,14 +255,14 @@ pip3 install spur
 1
 #! /bin/bash -e
 
-chmod +x "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/opsipackagebuilder.py"
-chmod +x "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/helpviewer.py"
+chmod +x "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/opsipackagebuilder.py"
+chmod +x "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/helpviewer.py"
 
-ln -fs "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/opsipackagebuilder.py" "/usr/bin/opsipackagebuilder"
-ln -fs "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/helpviewer.py" "/usr/bin/opb-helpviewer"
+ln -fs "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/opsipackagebuilder.py" "/usr/bin/opsipackagebuilder"
+ln -fs "/usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/helpviewer.py" "/usr/bin/opb-helpviewer"
 
-desktop-file-install /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/opsipackagebuilder.desktop
-desktop-file-install /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.3/opb-helpviewer.desktop
+desktop-file-install /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/opsipackagebuilder.desktop
+desktop-file-install /usr/lib/python3/dist-packages/opsiPackageBuilder-8.0.4/opb-helpviewer.desktop
 
 
 <</POSTINST>>
@@ -283,7 +283,7 @@ rm "/usr/share/applications/opb-helpviewer.desktop"
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>/usr/share/doc/opsipackagebuilder<</DEST>>
-opsipackagebuilder (8.0.3) vivid; urgency=low
+opsipackagebuilder (8.0.4) vivid; urgency=low
 
   * Initial release
 

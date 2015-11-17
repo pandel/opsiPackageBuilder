@@ -9,8 +9,9 @@ opsi PackageBuilder is only tested with Python 3.4 and PyQt5.
 
 Requirements
 ============
+
 - Python (3.4.3 tested)
-- PyQt5 (5.4.2 tested
+- PyQt5 (5.5.0 tested
 - spur (0.3.14 tested)
 - PyCrypto (2.6.1 tested)
 - Sphinx (current)
@@ -53,7 +54,7 @@ You need to install VC++ 2010 Express and, additionally, Microsoft Windows SDK v
 
 
 Running oPB under Mac OSX
-===================================
+=========================
 
 I have successfully run oPB under OSX Yosemite. Python3, PyQt5 and mostly anything else installed via howmebrew package manager.
 
@@ -64,10 +65,12 @@ Using PyInstaller
 You need to download a Python 3 compatible version of PyInstaller from www.pyinstaller.org and install it from the source package. 
 
 On Linux:
+
     - clone python3 branch: git clone -b python3 https://github.com/pyinstaller/pyinstaller.git
     - install from PyInstaller directory via setup.py
 
 On Windows:
+
     - follow the instruction on http://pythonhosted.org/PyInstaller/#installing-in-windows and install from archive
 
 Infos regarding reST

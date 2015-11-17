@@ -2,6 +2,19 @@
 Changelog
 =========
 
+* :support:`- backported` Mac OS X DMG install image
+* :support:`- backported` Better table handling, edit properties/dependencies via F2 or button
+* :bug:`-` Errors in package bundle creation
+* :bug:`5` Sometimes old project data was not correctly reset when loading a new one
+* :bug:`4` After package file creation the ui wasn't updated correctly sometimes
+* :bug:`-` Exception in depot manager when generating repository reports
+* :bug:`-` Exception in depot manager, when SSH connection error occurred while fetching depot server list
+* :release:`8.0.4b <2015-11-11>`
+* :support:`- backported` Code is now compatible with PyQt 5.5
+* :support:`- backported` Show project logo, if exists under %ScriptPath% with name <project id>.(png|gif|jpg|jpeg), refresh with F6
+* :bug:`-` No setup script set in package bundle ("meta" package)
+* :bug:`-` Backend data should have been updated before opening changelog editor
+* :support:`- backported` Sortable description column in scheduler/job creator/client list
 * :release:`8.0.3b <2015-08-12>`
 * :support:`- backported` Upload function in main menu
 * :bug:`3` Error in package upload

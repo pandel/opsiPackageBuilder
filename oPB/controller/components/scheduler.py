@@ -73,7 +73,7 @@ class SchedulerComponent(BaseController, QObject):
         # create model from data and assign, if not done before
         if self.model_clients == None:
             self.logger.debug("Generate client table model")
-            self.model_clients = QtGui.QStandardItemModel(0, 1, self)
+            self.model_clients = QtGui.QStandardItemModel(0, 2, self)
             self.model_clients.setObjectName("model_clients")
         if self.model_products == None:
             self.logger.debug("Generate product table model")
@@ -92,7 +92,7 @@ class SchedulerComponent(BaseController, QObject):
         if BaseController.clientlist_dict:
             tmplist = []
             for elem in BaseController.clientlist_dict:
-                tmplist.append([elem["id"] + " (" + elem["description"] + ")"])
+                tmplist.append([elem["id"], elem["description"]])
 
             self._parent.update_table_model(self.model_clients, sorted(tmplist))
 
@@ -175,7 +175,8 @@ class SchedulerComponent(BaseController, QObject):
                                         translate("schedulerController_joblist", "AT jobid"),
                                         translate("schedulerController_joblist", "user")]
                                         )
-        self.model_clients.setHorizontalHeaderLabels([translate("schedulerController_jobcreator", "client")]
+        self.model_clients.setHorizontalHeaderLabels([translate("schedulerController_jobcreator", "client"),
+                                        translate("schedulerController_jobcreator", "desc")]
                                         )
         self.model_products.setHorizontalHeaderLabels([translate("quickuninstallController", "product id"),
                                         translate("quickuninstallController", "version"),

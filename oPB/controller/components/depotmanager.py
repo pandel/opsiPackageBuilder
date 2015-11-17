@@ -47,7 +47,7 @@ class DepotManagerComponent(BaseController, QObject):
     modelDataUpdated = pyqtSignal()
 
     def __init__(self, parent):
-        super().__init__(self)
+        super().__init__(parent.args)
 
         self._parent = parent
         print("controller/DepotManagerComponent parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None

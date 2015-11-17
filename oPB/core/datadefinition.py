@@ -1227,6 +1227,34 @@ class ControlFileData(QObject, LogMixin):
             self.logger.debug("Emit dataSaved(False)")
             self.dataSaved.emit(False)
 
+    def create_script_stub(self, scriptname):
+        """Create script file stub in current project folder"""
+        scriptfile = self._projectfolder + "/CLIENT_DATA/" + scriptname
+
+        if Path(scriptfile).exists():
+            self.logger.warn("Script already exists.")
+            return
+
+        try:
+            with open(scriptfile, "x", encoding="utf-8", newline="\n") as file:
+                self.logger.debug("Script stub opened: " + scriptfile)
+
+                file.write("; ----------------------------------------------------------------\n")
+                file.write(";    Script stub created via opsi PackageBuilder\n")
+                file.write("; ----------------------------------------------------------------\n")
+                file.write("\n")
+                file.write("[Actions]\n")
+                file.write("\n")
+                file.write('comment "Script stub: ' + scriptname + '"\n')
+                file.write("\n")
+                file.close()
+                self.logger.debug("Script stub created.")
+
+        except:
+            self.logger.error("Error creating script stub")
+            self.logger.exception("Error creating script stub")
+
+
     def __copy__(self):
         cls = self.__class__
         result = cls.__new__(cls)

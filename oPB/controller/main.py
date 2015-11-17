@@ -61,6 +61,9 @@ class MainWindowController(BaseController, QObject, EventMixin):
     # send after model or backend data has been updated
     # tab index to switch to
     modelDataUpdated = pyqtSignal(int)
+    # send after project image has been found under base project directory
+    projectImageLoaded = pyqtSignal(list)
+    # for certain progress information
     progressChanged = pyqtSignal([float], [int])
 
     def __init__(self, cmd_line):
@@ -290,7 +293,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         rows = self.model_dependencies.rowCount()
         self.controlData.dependencies = []
-        if type(self.model_dependencies.item(0, 0)) is not None:  # empty dependency list
+        if self.model_dependencies.item(0, 0) is not None:  # empty dependency list
             for i in range(0, rows, 1):
                 #self.logger.debug("Reading dependency: " + str(i))
                 dep = ProductDependency()
@@ -303,7 +306,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         rows = self.model_properties.rowCount()
         self.controlData.properties = []
-        if type(self.model_properties.item(0, 0)) is not None:  # empty property list
+        if self.model_properties.item(0, 0) is not None:  # empty property list
             for i in range(0, rows, 1):
                 #self.logger.debug("Reading property: " + str(i))
                 prop = ProductProperty()
@@ -400,8 +403,12 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self._active_project = False
 
     @pyqtSlot()
-    def project_close(self):
-        """Initiate project closing and reset backend, model and window states ."""
+    def project_close(self, startup = True):
+        """
+        Initiate project closing and reset backend, model and window states .
+
+        :param startup: show/don't show startup dialog after closing, see i.e. oPB.gui.mainwindow.MainWindow.open_project()
+        """
         self.logger.debug("Close project")
         ignoreChanges = True
         if self._modelDataChanged is True:
@@ -418,7 +425,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
                 pass
             self.ui.set_current_project(self.controlData.projectfolder)
             self.reset_state()
-            self.startup.show_me()
+            if startup is True:
+                self.startup.show_me()
 
         return ignoreChanges
 
@@ -471,6 +479,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
             self.startup.show_me()
         else:
             self._active_project = True
+            self.get_package_logos()
             self.startup.hide_me()
 
         self.ui.set_current_project(self.controlData.projectfolder)
@@ -634,6 +643,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
     @pyqtSlot()
     def show_changelogeditor(self):
+        self.update_backend_data()
         # changelog editor
         self.chLogEditor = ChangelogEditorComponent(self)
         self.chLogEditor.model.itemChanged.connect(self.model_data_changed)
@@ -776,6 +786,14 @@ class MainWindowController(BaseController, QObject, EventMixin):
         for p in found_props:
             if p not in used_props:
                 self.add_property(p)
+
+    def get_package_logos(self):
+        self.logger.debug("Trying to find project logos...")
+
+        extensions = ['.png', '.gif', '.jpg', '.jpeg']
+        files = os.listdir(self.controlData.projectfolder.replace('\\', '/') + "/CLIENT_DATA/")
+        pics_list = [self.controlData.projectfolder.replace('\\', '/') + "/CLIENT_DATA/" + i for i in files if (i.startswith(self.controlData.id) and i.endswith(tuple(extensions)))]
+        self.projectImageLoaded.emit(list(set(pics_list)))
 
     @pyqtSlot()
     def show_scripttree(self):

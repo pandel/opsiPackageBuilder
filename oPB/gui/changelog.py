@@ -114,7 +114,7 @@ class ChangelogEditorDialogExtended(ChangelogEditorDialog, ChangelogEditorDialog
         self.datamapper = QDataWidgetMapper(self)
         # self.datamapper.setSubmitPolicy(QDataWidgetMapper.ManualSubmit)
         self.datamapper.setModel(self._parent.model)
-        #self.datamapper.addMapping(self.ui.lblHeader, 0, "text")
+        #self.datamapper.addMapping(self.ui.lblHeader, 0, b"text")
         self.datamapper.addMapping(self.cmbStatus, 2)
         self.datamapper.addMapping(self.cmbUrgency, 3)
         self.datamapper.addMapping(self.editDetail, 4)

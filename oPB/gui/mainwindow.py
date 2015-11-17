@@ -41,7 +41,7 @@ from time import sleep
 
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, QEvent, pyqtSignal, pyqtSlot
 
 import oPB
 import oPB.gui.helpviewer
@@ -156,7 +156,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.logger.debug("Create data widget mapper for fields")
         self.datamapper = QDataWidgetMapper(self)
         self.datamapper.setModel(self._parent.model_fields)
-        self.datamapper.addMapping(self.lblPacketFolder, 0, "text")  # "text" property name must be added for QLabel to work with QDataWidgetmapper
+        self.datamapper.addMapping(self.lblPacketFolder, 0, b"text")  # "text" property name must be added for QLabel to work with QDataWidgetmapper
         self.datamapper.addMapping(self.inpProductId, 1)
         self.datamapper.addMapping(self.inpProductName, 2)
         self.datamapper.addMapping(self.editDesc, 3)
@@ -216,6 +216,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.actionSearchForUpdates.triggered.connect(self.not_working)
         self.actionShowChangeLog.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_CHANGELOG))
         self.actionAbout.triggered.connect(self.not_working)
+        self.actionRefreshLogo.triggered.connect(self._parent.get_package_logos)
 
         if oPB.NETMODE != "offline":
             # connect online menu action signals
@@ -282,11 +283,13 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
         self.btnDevFolder.clicked.connect(self.open_project_folder)
 
-        self.btnDepAdd.clicked.connect(self._parent.add_dependency)
+        self.btnDepAdd.clicked.connect(self.add_dependency)
+        self.btnDepEdit.clicked.connect(self.edit_dependency)
         self.btnDepModify.clicked.connect(self.submit_dependencies)
         self.btnDepDelete.clicked.connect(lambda a: self._parent.remove_dependency(self.tblDependencies.selectionModel().currentIndex().row()))
 
-        self.btnPropAdd.clicked.connect(self._parent.add_property)
+        self.btnPropAdd.clicked.connect(self.add_property)
+        self.btnPropEdit.clicked.connect(self.edit_property)
         self.btnPropModify.clicked.connect(self.submit_properties)
         self.btnPropDelete.clicked.connect(lambda a: self._parent.remove_property(self.tblProperties.selectionModel().currentIndex().row()))
         self.btnPropRead.clicked.connect(self._parent.get_properties_from_scripts)
@@ -302,6 +305,16 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self._parent.progressChanged.connect(self.splash.incProgress)
         self._parent.processingEnded.connect(self.splash.close)
         self._parent.processingEnded.connect(self.set_button_state)
+        self._parent.projectImageLoaded.connect(self.set_project_logo)
+
+        # connect event filter to tables
+        self.tblFilter = TableKeyEventFilter()
+        self.tblDependencies.installEventFilter(self.tblFilter)
+        self.tblProperties.installEventFilter(self.tblFilter)
+
+        TableKeyEventFilter.actiondict[(self.tblDependencies, QtCore.Qt.Key_F2)] = self.edit_dependency
+        TableKeyEventFilter.actiondict[(self.tblProperties, QtCore.Qt.Key_F2)] = self.edit_property
+
 
     def connect_validators(self):
         self.logger.debug("Connect validators to fields")
@@ -360,10 +373,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.set_scriptfile_validator(self.inpScrUserLogin)
         self.inpScrUserLogin.textChanged.connect(self.check_state)
         self.inpScrUserLogin.textChanged.emit(self.inpScrUserLogin.text())
-        # special combobox checker
-        self.cmbDepReqAction.currentIndexChanged.connect(self.check_combobox_selection)
-        self.cmbDepInstState.currentIndexChanged.connect(self.check_combobox_selection)
-        self.cmbPropType.currentIndexChanged.connect(self.check_combobox_selection)
 
     def fill_cmbDepProdID(self):
         """Fill combobox with values from opsi_depot share"""
@@ -484,7 +493,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.logger.info(outs)
             self.logger.error(errs)
             if proc.returncode != 0 and proc.returncode != 555:
-                self._parent.msgbox(translate("MainWindow", "Editor startup did not cleanup correctly.\n\nThe following message(s) returned:") +
+                self._parent.msgbox(translate("MainWindow", "Editor did not exit as expected.\n\nThe following message(s) returned:") +
                                     "\n\nStandard Out:\n" + outs +
                                     "\nStandard Err:\n" + errs +
                                     "\n\nReturn code: " + str(proc.returncode),
@@ -596,28 +605,33 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
     def set_button_state(self):
         """Set state of online install/instsetup buttons"""
 
-        # if sender is _parent, then signal is processingEnded from BaseController
-        # this is too fast for os.path.isfile (because of disk flushing), so we need
-        # to wait a short moment
-        if self.sender() == self._parent:
-            sleep(0.5)
-
         self.logger.debug("Set button state")
-        if self.is_file_available():
+        if self._parent._active_project and self.is_file_available(self.sender()):
             self.btnInstall.setEnabled(True)
             self.btnInstSetup.setEnabled(True)
         else:
             self.btnInstall.setEnabled(False)
             self.btnInstSetup.setEnabled(False)
 
-    def is_file_available(self):
+    def is_file_available(self, sender = None):
         """
         Check if opsi package file is available
 
+        :param: wait x * 0.5 seconds for package file to be created, defaults to 4
         :return: True/False
         """
+        ctr = 0
         pack = self.lblPacketFolder.text().replace("\\","/") + "/" + self.inpProductId.text() + \
                "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
+
+        # sometimes file creation, especially on network shares
+        # is too fast for os.path.isfile (because of disk flushing), so we need
+        # to wait a short moment
+        # only, if sender is main GUI, because THEN it comes via signal progressEnded from self._do()
+        if sender == self._parent:
+            while (not os.path.isfile(pack)) and (ctr <= 4):
+                ctr += 1
+                sleep(0.5)
 
         return os.path.isfile(pack)
 
@@ -636,46 +650,153 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.tblDependencies.resizeRowsToContents()
         self.tblProperties.resizeRowsToContents()
 
+        selection = self.tblProperties.selectionModel().selection()
+        self.update_property_fields(selection)
+        selection = self.tblDependencies.selectionModel().selection()
+        self.update_dependency_fields(selection)
+
         self.tabWidget.setCurrentIndex(tab)
         self.set_dev_folder()
+        # self.lblImage.setPixmap(QtGui.QPixmap())
+        # self.lblImage.setText(translate("MainWindow", "NO IMAGE (F6)"))
 
     @pyqtSlot(QtCore.QItemSelection)
     def update_dependency_fields(self, idx:QtCore.QItemSelection):
         # indexes() returns list of selected items
         # as we only have 1 at a time, return first item and get corresponding row number
         self.logger.debug("Update dependency fields")
-        if not idx.indexes() == []:
-            row = idx.indexes()[0].row()
-            self.datamapper_dependencies.setCurrentIndex(row)
+
+        self.cmbDepAction.setEnabled(False)
+        self.cmbDepProdID.setEnabled(False)
+        self.cmbDepReqAction.setEnabled(False)
+        self.cmbDepInstState.setEnabled(False)
+        self.cmbDepRequirement.setEnabled(False)
+        self.btnDepModify.setEnabled(False)
+        self.btnDepAdd.setEnabled(True)
+
+        # disconnect if there has been an editing event before
+        try:
+            self.cmbDepReqAction.currentIndexChanged.disconnect()
+            self.cmbDepInstState.currentIndexChanged.disconnect()
+        except:
+            pass
+
+        if self.datamapper_dependencies.model().item(0, 0) is not None:
+            self.btnDepDelete.setEnabled(True)
+            self.btnDepEdit.setEnabled(True)
+            if not idx.indexes() == []:
+                row = idx.indexes()[0].row()
+                self.datamapper_dependencies.setCurrentIndex(row)
+            else:
+                self.datamapper_dependencies.toFirst()
+
         else:
-            self.datamapper_dependencies.toFirst()
+            self.btnDepDelete.setEnabled(False)
+            self.btnDepEdit.setEnabled(False)
 
     @pyqtSlot(QtCore.QItemSelection)
     def update_property_fields(self, idx:QtCore.QItemSelection):
         # indexes() returns list of selected items
         # as we only have 1 at a time, return first item and get corresponding row number
         self.logger.debug("Update property fields")
-        if not idx.indexes() == []:
-            row = idx.indexes()[0].row()
-            if self._parent.model_properties.item(row, 1).text() == 'bool':
-                self.datamapper_properties.removeMapping(self.inpPropDef)
-                self.datamapper_properties.addMapping(self.cmbPropDef, 6)
-                self.inpPropVal.setEnabled(False)
-                self.inpPropDef.setEnabled(False)
-                self.cmbPropMulti.setEnabled(False)
-                self.cmbPropEdit.setEnabled(False)
-                self.cmbPropDef.setEnabled(True)
+
+        self.inpPropName.setEnabled(False)
+        self.cmbPropType.setEnabled(False)
+        self.cmbPropMulti.setEnabled(False)
+        self.cmbPropEdit.setEnabled(False)
+        self.inpPropDesc.setEnabled(False)
+        self.inpPropVal.setEnabled(False)
+        self.inpPropDef.setEnabled(False)
+        self.cmbPropDef.setEnabled(False)
+        self.btnPropModify.setEnabled(False)
+        self.btnPropAdd.setEnabled(True)
+
+        # disconnect if there has been an editing event before
+        try:
+            self.cmbPropType.currentIndexChanged.disconnect()
+        except:
+            pass
+
+        if self.datamapper_properties.model().item(0, 0) is not None:
+            self.btnPropDelete.setEnabled(True)
+            self.btnPropEdit.setEnabled(True)
+
+            if not idx.indexes() == []:
+                row = idx.indexes()[0].row()
+                self.datamapper_properties.setCurrentIndex(row)
             else:
-                self.datamapper_properties.addMapping(self.inpPropDef, 6)
-                self.datamapper_properties.removeMapping(self.cmbPropDef)
-                self.inpPropVal.setEnabled(True)
-                self.inpPropDef.setEnabled(True)
-                self.cmbPropMulti.setEnabled(True)
-                self.cmbPropEdit.setEnabled(True)
-                self.cmbPropDef.setEnabled(False)
-            self.datamapper_properties.setCurrentIndex(row)
+                self.datamapper_properties.toFirst()
         else:
-            self.datamapper_properties.toFirst()
+            self.btnPropDelete.setEnabled(False)
+            self.btnPropEdit.setEnabled(False)
+
+    @pyqtSlot()
+    def add_dependency(self):
+        """Add new empty dependency and activate editing"""
+
+        self.logger.debug("Add dependency")
+        self._parent.add_dependency()
+        self.edit_dependency()
+        self.datamapper_dependencies.toFirst()
+
+    @pyqtSlot()
+    def add_property(self):
+        """Add new empty property and activate editing"""
+
+        self.logger.debug("Add property")
+        self._parent.add_property()
+        self.edit_property()
+        self.datamapper_properties.toFirst()
+
+    def edit_dependency(self):
+        """Change field and button state for dependency editing"""
+
+        self.logger.debug("Edit dependency")
+        self.cmbDepAction.setEnabled(True)
+        self.cmbDepProdID.setEnabled(True)
+        self.cmbDepReqAction.setEnabled(True)
+        self.cmbDepInstState.setEnabled(True)
+        self.cmbDepRequirement.setEnabled(True)
+        self.btnDepModify.setEnabled(True)
+        self.btnDepAdd.setEnabled(False)
+        self.btnDepDelete.setEnabled(False)
+        self.btnDepEdit.setEnabled(False)
+
+        # special combobox checker, connect only on edit
+        self.cmbDepReqAction.currentIndexChanged.connect(self.check_combobox_selection)
+        self.cmbDepInstState.currentIndexChanged.connect(self.check_combobox_selection)
+
+    def edit_property(self):
+        """Change field and button state for property editing"""
+
+        self.logger.debug("Edit property")
+        self.inpPropName.setEnabled(True)
+        self.cmbPropType.setEnabled(True)
+        self.inpPropDesc.setEnabled(True)
+        self.btnPropModify.setEnabled(True)
+        self.btnPropAdd.setEnabled(False)
+        self.btnPropDelete.setEnabled(False)
+        self.btnPropEdit.setEnabled(False)
+
+        if self._parent.model_properties.item(self.datamapper_properties.currentIndex(), 1).text() == 'bool':
+            self.datamapper_properties.removeMapping(self.inpPropDef)
+            self.datamapper_properties.addMapping(self.cmbPropDef, 6)
+            self.inpPropVal.setEnabled(False)
+            self.inpPropDef.setEnabled(False)
+            self.cmbPropMulti.setEnabled(False)
+            self.cmbPropEdit.setEnabled(False)
+            self.cmbPropDef.setEnabled(True)
+        else:
+            self.datamapper_properties.addMapping(self.inpPropDef, 6)
+            self.datamapper_properties.removeMapping(self.cmbPropDef)
+            self.inpPropVal.setEnabled(True)
+            self.inpPropDef.setEnabled(True)
+            self.cmbPropMulti.setEnabled(True)
+            self.cmbPropEdit.setEnabled(True)
+            self.cmbPropDef.setEnabled(False)
+
+        # special combobox checker, connect only on edit
+        self.cmbPropType.currentIndexChanged.connect(self.check_combobox_selection)
 
     @pyqtSlot()
     def submit_properties(self):
@@ -706,6 +827,26 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         # execute process loop to assure updating of label text
         qApp.processEvents()
 
+    @pyqtSlot(list)
+    def set_project_logo(self, logo):
+        """
+        Show project logo if found.
+
+        Only logos with <projectid>.<png|gif|jpg> will be shown.
+
+        :param logo: full logo path
+        :return:
+        """
+        self.logger.debug("Set logo")
+        try:
+            pixmap = QtGui.QPixmap(logo[0])
+            pixmap = pixmap.scaledToHeight(160)
+            pixmap = pixmap.scaledToWidth(160)
+            self.lblImage.setPixmap(pixmap)
+        except:
+            self.lblImage.setPixmap(QtGui.QPixmap())
+            self.lblImage.setText(translate("MainWindow", "NO IMAGE (F6)"))
+
     @pyqtSlot()
     def open_project(self):
         """
@@ -719,6 +860,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.activateWindow()
 
         if not directory == "":
+            self._parent.project_close(False)
             self.logger.info("Chosen existing project directory: " + directory)
             self._parent.project_load(directory)
         else:
@@ -729,8 +871,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """Open project via recent files menu entry"""
         action = self.sender()
         if action:
+            self._parent.project_close(False)
             self.logger.debug("Chosen recent project: " + action.data())
-            self._parent.project_close()
             self._parent.project_load(action.data())
 
     @pyqtSlot()
@@ -883,6 +1025,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             else:
                 self.datamapper_properties.addMapping(self.inpPropDef, 6)
                 self.datamapper_properties.removeMapping(self.cmbPropDef)
+                self.datamapper_properties.addMapping(self.inpPropDef, 6)
+                self.datamapper_properties.removeMapping(self.cmbPropDef)
                 self.inpPropVal.setEnabled(True)
                 self.inpPropDef.setEnabled(True)
                 self.cmbPropMulti.setEnabled(True)
@@ -989,3 +1133,32 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
                 return
 
             print(parser.get("Version", "Version"))
+
+class TableKeyEventFilter(QObject):
+    """
+    Filter key press events inside tableviews and intercepts F2 as edit key
+
+    To use this, create object and install it as eventFilter to another object
+
+        self.tblFilter = TableKeyEventFilter()
+        self.tblDependencies.installEventFilter(self.tblFilter)
+        self.tblProperties.installEventFilter(self.tblFilter)
+
+    Then add key/value pair to the TableKeyEventFilter "actionlist" dictionary:
+        key = list(event receiver object, qt key)
+        value = function object
+
+        TableKeyEventFilter.actiondict[(self.tblDependencies, QtCore.Qt.Key_F2)] = self.editDependencies
+        TableKeyEventFilter.actiondict[(self.tblProperties, QtCore.Qt.Key_F2)] = self.editProperties
+
+    """
+
+    actiondict = {}
+
+    def eventFilter(self, receiver, event):
+        if(event.type() == QEvent.KeyPress):
+            if (receiver, event.key()) in TableKeyEventFilter.actiondict:
+                    TableKeyEventFilter.actiondict[(receiver, event.key())]()
+
+        # call Base Class Method to Continue Normal Event Processing
+        return super(TableKeyEventFilter, self).eventFilter(receiver, event)

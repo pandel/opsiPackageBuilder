@@ -102,10 +102,20 @@ class BundleComponent(BaseController, QObject):
                     while comment == "" or accept == False:
                         (comment, accept) = self._parent.msgbox(translate("bundleController","Please enter package name (allowed characters: a-z, A-Z, 0-9, ._-):"),
                                                         oPB.MsgEnum.MS_QUEST_PHRASE, parent = self.ui, preload = comment)
+
+                        # first test if cancel button was pressed
+                        if not accept:
+                            self._parent.msgbox(translate("bundleController", "Package creation canceled!"),
+                                                oPB.MsgEnum.MS_ALWAYS, parent=self.ui)
+                            self.logger.debug("Package bundle creation canceled by the user.")
+                            self._parent.startup.show_()
+                            return None
+
                         if ConfigHandler.cfg.age == "True":
                             test = re.match(oPB.OPB_PRODUCT_ID_REGEX_NEW, comment)
                         else:
                             test = re.match(oPB.OPB_PRODUCT_ID_REGEX_OLD, comment)
+
                         if not test:
                             self._parent.msgbox(translate("bundleController", "Package name is no valid product id!"),
                                                 oPB.MsgEnum.MS_ALWAYS, parent=self.ui)
@@ -121,15 +131,17 @@ class BundleComponent(BaseController, QObject):
                         for p in prods:
                             self._parent.add_setup_before_dependency(p)
                         self._parent.controlData.priority = -100
+                        self._parent.controlData.setupScript = "dummy.opsiscript"
+                        self._parent.controlData.create_script_stub(self._parent.controlData.setupScript)
                         self._parent.save_backend()
                         ok = True
-
+                        self.logger.debug("Package bundle creation finished.")
         else:
             self.logger.debug("Nothing selected.")
 
     def retranslateMsg(self):
         self.logger.debug("Retranslating further messages...")
-        """Retranslate model headers, will be called via changeEvent of self.ui """
+        # Retranslate model headers, will be called via changeEvent of self.ui
         self.model_products.setHorizontalHeaderLabels([translate("bundleController", "product id"),
                                         translate("bundleController", "version"),
                                         translate("bundleController", "description")]

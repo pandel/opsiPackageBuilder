@@ -4,7 +4,7 @@
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss'])
 help_tree = Tree('oPB/help', prefix='help')
 lang_tree = Tree('/usr/local/opt/qt5/translations', 'translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
-bundle_version = '8.0.3'
+bundle_version = '8.0.4'
 
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],

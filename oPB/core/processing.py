@@ -595,7 +595,10 @@ class OpsiProcessing(QObject, LogMixin):
 
             result = self._processAction(oPB.OPB_METHOD_GETDEPOTS, action, ret, cwd = False)
 
-            result = json.loads(result)
+            if not result == {}:
+                result = json.loads(result)
+            else:
+                result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETPRODUCTSONDEPOTS:
@@ -605,7 +608,10 @@ class OpsiProcessing(QObject, LogMixin):
             #result list: "productid;type;prod_ver;pack_ver;server"
             result = self._processAction(oPB.OPB_METHOD_GETPRODUCTSONDEPOTS, action, ret, cwd = False)
 
-            result = json.loads(result)
+            if not result == {}:
+                result = json.loads(result)
+            else:
+                result = []
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_DELETEFILEFROMREPO:
