@@ -16,6 +16,7 @@ Submodules
    oPB.gui.deployagent
    oPB.gui.depotmanager
    oPB.gui.helpviewer
+   oPB.gui.lockedproducts
    oPB.gui.logging
    oPB.gui.mainwindow
    oPB.gui.quickuninstall

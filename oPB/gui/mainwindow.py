@@ -32,10 +32,7 @@ import os.path
 import webbrowser
 import platform
 import subprocess
-import tempfile
-from urllib import request, parse
 
-from configparser import ConfigParser
 #from subprocess import Popen, PIPE, STDOUT
 from time import sleep
 
@@ -212,11 +209,16 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.actionStartWinst.triggered.connect(self.start_winst)
         self.actionScriptEditor.triggered.connect(self.open_scripteditor)
         self.actionHelp.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX))
-        #self.actionSearchForUpdates.triggered.connect(self.update_check)
-        self.actionSearchForUpdates.triggered.connect(self.not_working)
+
+        if self._parent.args.noupdate == True:
+            self.actionSearchForUpdates.setEnabled(False)
+        else:
+            self.actionSearchForUpdates.triggered.connect(self._parent.update_check)
+
         self.actionShowChangeLog.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_CHANGELOG))
         self.actionAbout.triggered.connect(self.not_working)
         self.actionRefreshLogo.triggered.connect(self._parent.get_package_logos)
+        self.actionMSIProductCode.triggered.connect(self.get_msiproductcode)
 
         if oPB.NETMODE != "offline":
             # connect online menu action signals
@@ -225,6 +227,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.actionUpload.triggered.connect(self.upload)
             self.actionScheduler.triggered.connect(self._parent.scheduler_dialog)
             self.actionUninstall.triggered.connect(self._parent.quickuninstall_dialog)
+            self.actionLockedProducts.triggered.connect(self._parent.lockedproducts_dialog)
             self.actionDeploy.triggered.connect(self._parent.deployagent_dialog)
             self.actionBundleCreation.triggered.connect(self._parent.bundle_dialog)
             self.actionDepotManager.triggered.connect(self._parent.depotmanager_dialog)
@@ -236,6 +239,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.actionUpload.triggered.connect(self.offline)
             self.actionScheduler.triggered.connect(self.offline)
             self.actionUninstall.triggered.connect(self.offline)
+            self.actionLockedProducts.triggered.connect(self.offline)
             self.actionDeploy.triggered.connect(self.offline)
             self.actionBundleCreation.triggered.connect(self.offline)
             self.actionImport.triggered.connect(self.offline)
@@ -306,6 +310,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self._parent.processingEnded.connect(self.splash.close)
         self._parent.processingEnded.connect(self.set_button_state)
         self._parent.projectImageLoaded.connect(self.set_project_logo)
+        self._parent.projectLoaded.connect(self.set_current_project)
+        self._parent.projectLoaded.connect(self.set_button_state)
 
         # connect event filter to tables
         self.tblFilter = TableKeyEventFilter()
@@ -399,6 +405,26 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
     def offline(self):
         """Show offline message"""
         self._parent.msgbox(translate("MainWindow", "You are working in offline mode. Functionality not available!"), oPB.MsgEnum.MS_ALWAYS, self)
+
+    @pyqtSlot()
+    def get_msiproductcode(self):
+        """Show MSI product code of individual MSI file"""
+        self.logger.debug("Show MSI product code " + platform.system())
+        if platform.system() in ["Windows"]:
+
+            ext = "MSI Package (*.msi)"
+
+            msi = QFileDialog.getOpenFileName(self, translate("MainWindow", "Choose package file"),
+                                                "", ext)
+
+            if not msi == ("", ""):
+                self.logger.debug("Selected package: " + msi[0])
+                prodcode = Helper.get_msi_property(msi[0])
+                self._parent.msgbox(translate("MainWindow", "Selected MSI: " + Helper.get_file_from_path(msi[0]) + "\n\n" + "Product Code: " + " " + prodcode), oPB.MsgEnum.MS_ALWAYS, self)
+            else:
+                self.logger.debug("Dialog aborted.")
+        else:
+            self._parent.msgbox(translate("MainWindow", "Function not available at the moment for system:" + " " + platform.system()), oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def start_winst(self):
@@ -631,7 +657,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         if sender == self._parent:
             while (not os.path.isfile(pack)) and (ctr <= 4):
                 ctr += 1
-                sleep(0.5)
+                sleep(0.1)
 
         return os.path.isfile(pack)
 
@@ -1056,83 +1082,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
     def retranslateMsg(self):
         self.logger.debug("Retranslating further messages...")
         self.splash.msg = translate("MainWindow", "Please wait...")
-
-    def download_file(self, url, desc=None):
-        self.logger.debug("Trying to download file: " + url)
-
-        proxystr = ConfigHandler.cfg.proxy_user + ":" + ConfigHandler.cfg.proxy_pass + "@" + ConfigHandler.cfg.proxy_server + ":" + ConfigHandler.cfg.proxy_port
-        proxy = request.ProxyHandler({'http': 'http://' + proxystr})
-        auth = request.HTTPBasicAuthHandler()
-        opener = request.build_opener(proxy, auth, request.HTTPHandler)
-        request.install_opener(opener)
-
-        u = request.urlopen(url)
-        return
-
-
-        scheme, netloc, path, query, fragment = parse.urlsplit(url)
-        filename = os.path.basename(path)
-
-        if not filename:
-            filename = 'downloaded.file'
-
-        if desc:
-            filename = os.path.join(desc, filename)
-        else:
-            filename = os.path.join(tempfile.gettempdir(), filename)
-
-        with open(filename, 'wb') as f:
-            meta = u.info()
-            meta_func = meta.getheaders if hasattr(meta, 'getheaders') else meta.get_all
-            meta_length = meta_func("Content-Length")
-            file_size = None
-            if meta_length:
-                file_size = int(meta_length[0])
-            self._parent.msgbox(translate("MainWindow", "Downloading: {0} Bytes: {1}").format(url, file_size), oPB.MsgEnum.MS_STAT, self)
-
-            file_size_dl = 0
-            block_sz = 8192
-            while True:
-                buffer = u.read(block_sz)
-                if not buffer:
-                    break
-
-                file_size_dl += len(buffer)
-                f.write(buffer)
-
-                status = "{0:16}".format(file_size_dl)
-                if file_size:
-                    status += "   [{0:6.2f}%]".format(file_size_dl * 100 / file_size)
-                status += chr(13)
-                #print(status, end="")
-                self.splash.setProgress(file_size_dl * 100 / file_size)
-            self.splash.close()
-            return filename
-
-        return None
-
-    """
-    url = "http://download.thinkbroadband.com/10MB.zip"
-    filename = download_file(url)
-    print(filename)
-    """
-
-    def update_check(self):
-        self.logger.debug("Downloading version.ini")
-
-        version_ini = self.download_file(oPB.UPDATER_URL + "/version.ini")
-
-        if version_ini is not None:
-            parser = ConfigParser()
-            try:
-                with open(version_ini) as file:
-                    parser.read_file(file)
-                    self.logger.info("Version.ini file successfully loaded.")
-            except IOError:
-                self.logger.error("Version.ini file could not be loaded.")
-                return
-
-            print(parser.get("Version", "Version"))
 
 class TableKeyEventFilter(QObject):
     """

@@ -71,10 +71,10 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.0.4"
+PROGRAM_VERSION = "8.0.5"
 """Overall program version"""
 
-UPDATER_URL="http://dl.dropbox.com/u/5454651/opsiPackageBuilder"
+UPDATER_URL="https://dl.dropboxusercontent.com/u/5454651/OPSIPackageBuilder"
 """Updater base URL"""
 
 NETMODE="online"
@@ -153,7 +153,7 @@ OPB_UPLOAD = "opsi-package-manager -u"
 """opsi basic upload command"""
 OPB_EXTRACT = "opsi-package-manager -x"
 """opsi package extract command"""
-OPB_PROD_UPDATER = "nohup /usr/bin/opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &" # must be started with nohup
+OPB_PROD_UPDATER = "nohup /usr/bin/opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &"  # must be started with nohup
 """product updater command"""
 OPB_DEPLOY_COMMAND = "/var/lib/opsi/depot/opsi-client-agent/opsi-deploy-client-agent"
 """opsi client agent deploy command"""
@@ -171,12 +171,20 @@ OPB_METHOD_GETPRODUCTS = "opsi-admin -r -d method product_getHashes"
 """opsi 4.0 API method: short / get all products"""
 OPB_METHOD_GETCLIENTS = "opsi-admin -d method host_getHashes '[]' '{" + '"type":"OpsiClient"}' + "'"
 """opsi 4.0 API method: get client list"""
-OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with added: '["yi7xa1hp.host.domain.de"]'
+OPB_METHOD_GETCLIENTSONDEPOTS = "opsi-admin -d method configState_getClientToDepotserver" # filter with added: '["host.domain.de"]'
 """opsi 4.0 API method: get client<->depot list, filter with added: '["<hostname>"]' """
 OPB_METHOD_GETPRODUCTSONDEPOTS = "opsi-admin -d method productOnDepot_getIdents"
 """opsi 4.0 API method: long / get all products"""
 OPB_METHOD_UNREGISTERDEPOT = "opsi-admin -d method host_delete"
 """opsi 4.0 API method: unregister depot server host"""
+OPB_METHOD_GETLOCKEDPRODUCTS = "opsi-admin -d method  productOnDepot_getObjects '[]'" # filter for all with added: '{"depotId":"host.domain.de", "locked":true}' /  # filter for single with added: '{"depotId":"host.domain.de", "productId":"testdummy"}'
+"""opsi 4.0 API method: get locked products on depot"""
+# full command like so: opsi-admin -d method  productOnDepot_getObjects '[]' '{"depotId":"host.domain.de", "locked":true}'
+OPB_METHOD_UNLOCKPRODUCTS = " | sed  -e 's/\"locked\"\s:\strue/\"locked\" : false/' > /tmp/update_objects.json"
+# full method: opsi-admin -d method productOnDepot_getObjects '[]' '{"productId":"testdummy", "depotId":"host.domain.de"}' | sed  -e 's/"locked"\s:\strue/"locked" : false/' > /tmp/update_objects.json
+"""opsi 4.0 API method: unlock specified product"""
+OPB_METHOD_UPDATEOBJECTS = "cat /tmp/update_objects.json | opsi-admin -d method productOnDepot_updateObjects"
+"""opsi 4.0 API method: update object(s) properties via json import"""
 OPB_SETRIGHTS_NOSUDO = "opsi-setup --set-rights"
 """opsi set rights without sudo command"""
 OPB_SETRIGHTS_SUDO = "opsi-set-rights"
@@ -260,7 +268,7 @@ BModEnum = Enum("BModEnum", "BD_CANCEL BD_REBUILD BD_NEW BD_INTERACTIVE")
 OpEnum = Enum("OpEnum", "DO_BUILD DO_INSTALL DO_UNINSTALL DO_SETRIGHTS DO_GETCLIENTS DO_GETPRODUCTS DO_CREATEJOBS DO_DELETEJOBS DO_GETATJOBS "
                         "DO_DELETEALLJOBS DO_GETREPOCONTENT DO_GETDEPOTS DO_GETPRODUCTSONDEPOTS DO_QUICKINST DO_QUICKUNINST DO_INSTSETUP DO_UPLOAD "
                         "DO_DELETEFILEFROMREPO DO_UNREGISTERDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_GENMD5 DO_GETCLIENTSONDEPOTS "
-                        "DO_IMPORT")
+                        "DO_IMPORT DO_UNLOCKPRODUCTS DO_GETLOCKEDPRODUCTS")
 """Constants for opsi operations"""
 
 # return codes
@@ -278,7 +286,8 @@ RET_PBUILD = 31       # Err 31: SSH - Error while building package on server
 RET_PINSTALL = 32     # Err 32: SSH - Error while installing package on server
 RET_PINSTSETUP = 33   # Err 33: SSH - Error while installing package on server or activating for setup
 RET_PUNINSTALL = 34   # Err 34: SSH - Error while uninstalling package on server
-RET_PUPLOAD = 35   # Err 34: SSH - Error while uploading package on server
+RET_PUPLOAD = 35      # Err 34: SSH - Error while uploading package on server
+RET_PUNLOCK = 36      # Err 34: SSH - Error while unlocking product on server
 
 RET_SINGLETON = 51    # Err 51: Program already running * NOT USED *
 RET_NOINI = 52        # Err 52: No INI file available * NOT USED *
@@ -306,6 +315,7 @@ HLP_DST_CHLOGSIMPLE = HLP_LANG_DST + "/chlog_simple.html"
 HLP_DST_DEPLOY = HLP_LANG_DST + "/deployclientagent.html"
 HLP_DST_DEPOTM = HLP_LANG_DST + "/depotmanager.html"
 HLP_DST_QUNINST = HLP_LANG_DST + "/start.html"
+HLP_DST_UNLOCK = HLP_LANG_DST + "/lockedproducts.html"
 HLP_DST_JOBCREATOR = HLP_LANG_DST + "/scheduler.html#auftrage-anlegen"
 HLP_DST_JOBLIST = HLP_LANG_DST + "/scheduler.html"
 HLP_DST_SETTINGS = HLP_LANG_DST + "/settings.html"

@@ -117,7 +117,7 @@ class Main(QObject):
             splash_pix = QPixmap(':/images/splash.png')
             self.splash = QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
             self.splash.setMask(splash_pix.mask())
-            #splash.showMessage("opsi Package Builder " + oPB.PROGRAM_VERSION + " " + translate("Main", "is loading..."), QtCore.Qt.AlignCenter, QtCore.Qt.white)
+            # splash.showMessage("opsi Package Builder " + oPB.PROGRAM_VERSION + " " + translate("Main", "is loading..."), QtCore.Qt.AlignCenter, QtCore.Qt.white)
             self.splash.show()
             self.app.processEvents()
 
@@ -203,6 +203,10 @@ class Main(QObject):
             self.mainWindow.closeAppRequested.connect(self.logWindow.close)
 
             self.splash.finish(self.mainWindow.ui)
+
+            # check for updates if configured
+            if confighandler.ConfigHandler.cfg.updatecheck == "True":
+                self.mainWindow.update_check()
 
             # run main app loop
             self.app.exec_()

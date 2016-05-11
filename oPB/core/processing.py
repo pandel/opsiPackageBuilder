@@ -50,12 +50,12 @@ from oPB.core.tools import Helper, LogMixin
 
 translate = QtCore.QCoreApplication.translate
 
+
 class OpsiProcessing(QObject, LogMixin):
     """Opsi server job online processing class"""
 
     progressChanged = pyqtSignal(str)
     """Signal, emitted on change in job processing"""
-
 
     # def __init__(self, project, project_folder, server="127.0.0.1", port=22, username = None, password = None, keyfile = None, cfg = None):
     def __init__(self, control = None, hostkey_policy = spur.ssh.MissingHostKey.warn):
@@ -114,6 +114,8 @@ class OpsiProcessing(QObject, LogMixin):
             - DO_DEPLOY: clientlist, options
             - DO_GENMD5: packages
             - DO_SETRIGHTS: package
+            - DO_GETLOCKEDPRODUCTS: depot
+            - DO_UNLOCKPRODUCTS: depot, productlist
 
         """
 
@@ -393,6 +395,46 @@ class OpsiProcessing(QObject, LogMixin):
                     cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + p
 
                 result = self._processAction(cmd, action, ret)
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETLOCKEDPRODUCTS:
+            ret = oPB.RET_SSHCMDERR
+            depot = kwargs.get("depot", self._server)
+            self.logger.ssh(20 * "-" + "ACTION: GET LOCKED PRODUCTS" + 20 * "-")
+            # OPB_METHOD_GETLOCKEDPRODUCTS + '{"depotId":"host.domain.de", "locked":true}'
+
+            try:
+                cmd = oPB.OPB_METHOD_GETLOCKEDPRODUCTS + " '{" + '"locked": true, "depotId":"' + depot + '"}' + "'"
+                result = self._processAction(cmd, action, ret, cwd=False)
+
+                result = json.loads(result)
+            except:
+                result = []
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_UNLOCKPRODUCTS:
+            ret = oPB.RET_PUNLOCK
+            productlist = kwargs.get("productlist", [])
+            depot = kwargs.get("depot", self._server)
+
+            self.logger.ssh(20 * "-" + "ACTION: UNLOCK PRODUCT(S)" + 20 * "-")
+            for p in productlist:
+                self.logger.sshinfo("Current selection: " + p)
+                # opsi-admin -d method productOnDepot_getObjects '[]' '{"productId":"testdummy", "depotId":"host.domain.de"}' | sed  -e 's/"locked"\s:\strue/"locked" : false/' > /tmp/update_objects.json
+                cmd = oPB.OPB_METHOD_GETLOCKEDPRODUCTS + " '{" + '"productId":' + '"' + p + '"' + ', "depotId":"' + depot + '"}' + "'" + oPB.OPB_METHOD_UNLOCKPRODUCTS
+                # first, create json file with updated information
+                try:
+                    result = self._processAction(cmd, action, ret, cwd=False)
+                except:
+                    result = []
+                    break
+                # second initiate update of object properties
+                try:
+                    cmd = ["sh", "-c", oPB.OPB_METHOD_UPDATEOBJECTS]
+                    result = self._processAction(cmd, action, ret, split = False, cwd = False)
+                except:
+                    result = []
+                    break
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_GETATJOBS:
@@ -765,7 +807,7 @@ class OpsiProcessing(QObject, LogMixin):
                     cmd = ["sh", "-c", "PACKETS=\"" + packstring + "\"; " + oPB.OPB_CALC_MD5]
                     result = self._processAction(cmd, action, ret, split = False, cwd = False)
 
-        # return
+        # global return
         return self.ret, self.rettype, self.retmsg, result
 
     def _processAction(self, cmd, action, retval, split = True, cwd = True):
@@ -786,9 +828,11 @@ class OpsiProcessing(QObject, LogMixin):
         if self.ret == oPB.RET_OK:
 
             if self._hook is None:
-                # hook into stderr for progress analysing
+                # hook into stderr and stdout for progress analysis
                 old_stderr = sys.stderr
-                self._hook = AnalyseProgressHook(self, old_stderr)
+                old_stdout = sys.stdout
+                self._hook_stderr = AnalyseProgressHook(self, old_stderr)
+                self._hook_stdout = AnalyseProgressHook(self, old_stdout)
                 # sys.stdout = s
 
             try:
@@ -806,28 +850,38 @@ class OpsiProcessing(QObject, LogMixin):
                         if action in [oPB.OpEnum.DO_INSTALL, oPB.OpEnum.DO_QUICKINST, oPB.OpEnum.DO_INSTSETUP,
                                       oPB.OpEnum.DO_UPLOAD, oPB.OpEnum.DO_UNINSTALL, oPB.OpEnum.DO_QUICKUNINST]:
                             self.logger.sshinfo("Start SSH shell with full environment update / pseudo TTY")
-                            result = self.shell.run(cmd,
+                            result = self.shell.run(
+                                cmd,
                                 cwd = cwdstr,
                                 update_env = self._env,
                                 allow_error = True,
-                                stderr = self._hook,
-                                use_pty = True
+                                stderr = self._hook_stderr,
+                                stdout = self._hook_stdout,
+                                use_pty = True,
+                                encoding = 'UTF-8'
                             )
+
                         elif action in [oPB.OpEnum.DO_DEPLOY]:
                             self.logger.sshinfo("Start SSH shell with no environment update / pseudo TTY")
-                            result = self.shell.run(cmd,
+                            result = self.shell.run(
+                                cmd,
                                 cwd = cwdstr,
                                 allow_error = True,
-                                stderr = self._hook,
-                                use_pty = True
+                                stderr = self._hook_stderr,
+                                stdout = self._hook_stdout,
+                                use_pty = True,
+                                encoding = 'UTF-8'
                             )
                         else:
                             self.logger.sshinfo("Start SSH shell with full environment update / no pseudo TTY")
-                            result = self.shell.run(cmd,
+                            result = self.shell.run(
+                                cmd,
                                 cwd = cwdstr,
                                 update_env = self._env,
                                 allow_error = True,
-                                stderr = self._hook
+                                stderr = self._hook_stderr,
+                                stdout = self._hook_stdout,
+                                encoding = 'UTF-8'
                             )
 
                         # Log standard out / but not for clients and products, too much!!!
@@ -835,38 +889,49 @@ class OpsiProcessing(QObject, LogMixin):
                         if action not in [oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS, oPB.OpEnum.DO_GETDEPOTS,
                                           oPB.OpEnum.DO_GETCLIENTSONDEPOTS, oPB.OpEnum.DO_GETPRODUCTSONDEPOTS,
                                           oPB.OpEnum.DO_CREATEJOBS, oPB.OpEnum.DO_GETATJOBS, oPB.OpEnum.DO_GETREPOCONTENT, oPB.OpEnum.DO_DEPLOY]:
-                            out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
+                            out = Helper.strip_ansi_codes(result.output).splitlines()
                             for line in out:
                                 line = self._obscurepass(line)
                                 self.logger.ssh(line)
 
-                        if action in [oPB.OpEnum.DO_DEPLOY]:
-                            out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
-                            for line in out:
-                                line = self._obscurepass(line)
-                                isErr = self.hasErrors(line)
-                                if isErr[0]:
-                                    self.logger.error(line)
-                                    self.ret = retval
-                                    self.rettype = oPB.MsgEnum.MS_ERR
-                                    self.retmsg = isErr[1]
-                                else:
-                                    self.logger.ssh(line)
+                        #if action in [oPB.OpEnum.DO_DEPLOY]:
+                        #    out = Helper.strip_ansi_codes(result.output.decode(encoding='UTF-8')).splitlines()
+                        #    isErr = self.hasErrors(out, self.logger.ssh)
+                        #    if isErr[0]:
+                        #        self.ret = retval
+                        #        self.rettype = oPB.MsgEnum.MS_ERR
+                        #        self.retmsg = isErr[1]
 
                         # Log standard error
-                        out = Helper.strip_ansi_codes(result.stderr_output.decode(encoding='UTF-8')).splitlines()
-                        for line in out:
-                            if line.strip() == '':
-                                continue
-                            line = self._obscurepass(line)
-                            isErr = self.hasErrors(line)
-                            if isErr[0]:
-                                self.logger.error(line)
-                                self.ret = retval
-                                self.rettype = oPB.MsgEnum.MS_ERR
-                                self.retmsg = isErr[1]
-                            else:
-                                self.logger.sshinfo(line)
+
+                        # ONLY FOR DEBUGGING stdout: self.logger.info(Helper.strip_ansi_codes(result.output.decode(encoding = 'UTF-8')).splitlines())
+                        # ONLY FOR DEBUGGING stderr: self.logger.info(Helper.strip_ansi_codes(result.stderr_output.decode(encoding = 'UTF-8')).splitlines())
+
+                        self.logger.sshinfo("Return code from external command: " + str(result.return_code))
+
+                        # sometimes the commands don't return anything via stderr, but the error msg is printed out via
+                        # stdout, so first check, if we have anything in stderr, if not, analyse stdout
+                        #
+                        # first: see, if external command was ok (retcode = 0) or not (retcode != 0)
+                        # if it is not, then search everywhere for any error message
+                        if Helper.strip_ansi_codes(result.stderr_output).splitlines() == []:
+                            out = Helper.strip_ansi_codes(result.output).splitlines()
+                            # don't log stdout twice during error checking
+                            logger = None
+                        else:
+                            out = Helper.strip_ansi_codes(result.stderr_output).splitlines()
+                            # write stderr to log
+                            logger = self.logger.ssh
+
+                        # now actually, check for errors
+                        # CAUTION: THERE MIGHT BE FALSE POSITTIVES BECAUSE OF FAULTY ERROR MESSAGE AND RETCODE HANDLING
+                        # IN opsi-package-manager and opsi-makeproductfile
+                        # ie. a package name like "Error management tool" could lead to a false positive
+                        isErr = self.hasErrors(out, logger)
+                        if isErr[0]:
+                            self.ret = retval
+                            self.rettype = oPB.MsgEnum.MS_ERR
+                            self.retmsg = isErr[1]
 
                     except spur.NoSuchCommandError:
                         self.logger.error("Set return code to RET_SSHCMDERR")
@@ -895,7 +960,7 @@ class OpsiProcessing(QObject, LogMixin):
             # reset hook state
             #sys.stdout = old_stderr
 
-            return result.output.decode(encoding='UTF-8')
+            return result.output
         else:
             return {}
 
@@ -917,7 +982,7 @@ class OpsiProcessing(QObject, LogMixin):
         else:
             return line
 
-    def hasErrors(self, text: str) -> bool:
+    def hasErrors(self, text: list, info_logger) -> bool:
         """
         Check ``text`` for some common error messages in output after SSH command execution
 
@@ -926,49 +991,83 @@ class OpsiProcessing(QObject, LogMixin):
         :param text: text to scan
         :return: errors found (True) or not (False)
         """
+
         found = False
-        msg = ""
-        if "ERROR: 'ascii' codec can't encode character".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "There are umlauts in some fields which can't be processed: build failed.")
+        msg = []
 
-        elif "Backend error: Failed to install package".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Backend error: installation failed.")
+        for line in text:
+            if line.strip() == '':
+                continue
 
-        elif "ERROR: Failed to process command 'install'".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Could not process 'install' command.")
+            line = self._obscurepass(line)
 
-        elif "ERROR: Package file".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Package file error. Check log.")
+            if "ERROR: 'ascii' codec can't encode character".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "There are umlauts in some fields which can't be processed: build failed."))
 
-        elif "ERROR: Failed to process command 'extract':".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Error during package extraction. Check log.")
+            if "Backend error: Failed to install package".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Backend error: installation failed."))
 
-        elif "Permission denied".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Permission denied. Check log.")
+            if "ERROR: Failed to process command 'install'".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Could not process 'install' command."))
 
-        elif "NT_STATUS_LOGON_FAILURE".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Network logon failed. Check log.")
+            if "ERROR: Package file".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Package file error. Check log."))
 
-        elif "not found".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Possible error: command or file not found. Check log.")
+            if "ERROR: Failed to process command 'extract':".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Error during package extraction. Check log."))
 
-        elif "Failed to get ip address for host".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Failed to get ip address for host. Check log.")
+            if "Permission denied:".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Permission denied. Check log."))
 
-        elif "ERROR".upper() in text.upper():
-            found = True
-            msg = translate("OpsiProcessing", "Undefined error occurred. Check log.")
+            if "NT_STATUS_LOGON_FAILURE".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Network logon failed. Check log."))
 
-        return (found, msg)
+            if "not found".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Possible error: command or file not found. Check log."))
+
+            if "Failed to get ip address for host".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Failed to get ip address for host. Check log."))
+
+            if "Failed to execute".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Failed to execute opsi command. Check log."))
+
+            if "currently locked on depot".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "The requested product action is not possible, because it is currently locked on the server. Check log."))
+
+            if ("ERROR".upper() in line.upper()) and found == False:
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Undefined error occurred. Check log."))
+
+            if not found and not info_logger is None:
+                info_logger(line)
+
+        ret = []
+        [ret.append(i) for i in msg if not i in ret]
+
+        return (found, '\n'.join(ret))
 
     def copyToRemote(self, localfile: object, remotefile: str, localopen: bool = False):
         """
@@ -1094,15 +1193,16 @@ class AnalyseProgressHook(StringIO):
 
     based on this idea: http://bulkan-evcimen.com/redirecting-stdout-to-stringio-object.html
     """
-    def __init__(self, parent, stderr):
+    def __init__(self, parent, channel):
         """
         Constructor of AnalyseProgressHook
 
         :param parent: parent object
-        :param stderr: stderr to analyse
+        :param channel: stderr or stdout to analyse
+        :param mode: 1 = stderr, 2 = stdout
         """
         self._match = re.compile('\s*(\d*\.?\d*)')
-        self.__stderr = stderr
+        self.__channel = channel
         self._parent = parent
         self._line = ""
         StringIO.__init__(self)
@@ -1131,7 +1231,7 @@ class AnalyseProgressHook(StringIO):
                         count = float(m.group(0).strip())
                         self._parent.progressChanged.emit(translate("ProgressHook", "In progress:") + " " +
                                                           '\r[{0}] {1}%'.format('=' * int(count/5), count))
-                        #StringIO.write(self, self._line)
+                        # StringIO.write(self, self._line)
 
 
         # eol throws a unicode decode error, so simply ignore it
@@ -1139,7 +1239,7 @@ class AnalyseProgressHook(StringIO):
             pass
 
     def read(self):
-        """Read current stream and write to __stderr"""
+        """Read current stream and write to __channel"""
         self.seek(0)
-        self.__stderr.write(StringIO.read(self))
+        self.__channel.write(StringIO.read(self))
 

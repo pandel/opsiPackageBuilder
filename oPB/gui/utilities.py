@@ -415,8 +415,10 @@ class Translator(QObject, LogMixin):
         cls.cfg._current_lang = use_local.name()[:2]
 
     @classmethod
-    def setup_language_combobox(cls, dialog: PyQt5.QtWidgets, combobox: PyQt5.QtWidgets.QComboBox):
+    def setup_language_combobox(cls, dialog, combobox):
         """
+        #def setup_language_combobox(cls, dialog: PyQt5.QtWidgets, combobox: PyQt5.QtWidgets.QComboBox):
+
         Setup language chooser ``combobox`` in ``dialog``
         Makes it very easy to setup a language changer with on-the-fly setup of ui language
 

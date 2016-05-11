@@ -37,9 +37,6 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press F2 to edit row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
@@ -2156,15 +2153,17 @@ selection-background-color: rgb(51, 153, 255);
     <addaction name="actionScheduler"/>
     <addaction name="actionBundleCreation"/>
     <addaction name="actionDepotManager"/>
+    <addaction name="actionLockedProducts"/>
     <addaction name="separator"/>
     <addaction name="actionInstall"/>
     <addaction name="actionUninstall"/>
     <addaction name="actionUpload"/>
-    <addaction name="separator"/>
     <addaction name="actionSetRights"/>
+    <addaction name="separator"/>
     <addaction name="actionDeploy"/>
     <addaction name="actionStartWinst"/>
     <addaction name="actionScriptEditor"/>
+    <addaction name="actionMSIProductCode"/>
    </widget>
    <widget class="QMenu" name="menuExtras">
     <property name="title">
@@ -2468,6 +2467,26 @@ selection-background-color: rgb(51, 153, 255);
    </property>
    <property name="shortcut">
     <string>F6</string>
+   </property>
+  </action>
+  <action name="actionMSIProductCode">
+   <property name="icon">
+    <iconset>
+     <disabledon>:/images/msi_203.ico</disabledon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Get MSI ProductCode</string>
+   </property>
+  </action>
+  <action name="actionLockedProducts">
+   <property name="icon">
+    <iconset>
+     <disabledon>:/images/smallIcons_1165.ico</disabledon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Locked products</string>
    </property>
   </action>
  </widget>

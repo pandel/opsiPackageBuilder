@@ -30,8 +30,13 @@ __status__ = "Production"
 
 import os
 import shutil
+import tempfile
+import subprocess, sys
 from copy import deepcopy
 from pathlib import PurePath
+from urllib import request, parse, error as urlerror
+from distutils.version import LooseVersion
+from configparser import ConfigParser
 
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot
@@ -53,6 +58,7 @@ from oPB.controller.components.quickuninstall import QuickUninstallComponent
 from oPB.controller.components.deployagent import DeployAgentComponent
 from oPB.controller.components.depotmanager import DepotManagerComponent
 from oPB.controller.components.bundle import BundleComponent
+from oPB.controller.components.lockedproducts import LockedProductsComponent
 
 translate = QtCore.QCoreApplication.translate
 
@@ -63,6 +69,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
     modelDataUpdated = pyqtSignal(int)
     # send after project image has been found under base project directory
     projectImageLoaded = pyqtSignal(list)
+    # send after loading of new project has been finished, regardless if loading was successful
+    projectLoaded = pyqtSignal([str])
     # for certain progress information
     progressChanged = pyqtSignal([float], [int])
 
@@ -78,6 +86,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         self._modelDataChanged = False  # see self.model_data_changed()
         self._active_project = False
+        self._download_in_progress = False # stop leaving program if download is in progress
+        self._run_updater = "" # if this has a value (=path to updater exe), run it after application quits
 
         # we have to generate the model first
         # because it is needed for creating the correct
@@ -94,6 +104,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.deployagent = DeployAgentComponent(self)
         self.depotmanager = DepotManagerComponent(self)
         self.bundle = BundleComponent(self)
+        self.lockedproducts = LockedProductsComponent(self)
 
         self.ui.init_recent()
 
@@ -435,11 +446,23 @@ class MainWindowController(BaseController, QObject, EventMixin):
         """
         Main window exit handler
         """
-        ret = self.project_close()
+        ret = self.project_close(False)
+
+        if self._download_in_progress:
+            self.msgbox(translate("mainController", "There is an active download. Please wait until the download is complete."), oPB.MsgEnum.MS_ALWAYS, self.startup)
+            event.ignore()
+            return
+
         if ret:
             self.startup.hide_()
-            reply = self.msgbox(translate("mainController", "Are you sure?"), oPB.MsgEnum.MS_QUEST_YESNO, self.startup)
+
+            if self._run_updater != "":
+                reply = self.msgbox(translate("mainController", "Are you sure (update pending)?"), oPB.MsgEnum.MS_QUEST_YESNO, self.startup)
+            else:
+                reply = self.msgbox(translate("mainController", "Are you sure?"), oPB.MsgEnum.MS_QUEST_YESNO, self.startup)
+
             if reply is True:
+                self._cancel_download = True
                 ConfigHandler.cfg.posX = self.ui.geometry().x()
                 ConfigHandler.cfg.posY = self.ui.geometry().y()
                 ConfigHandler.cfg.width = self.ui.width()
@@ -447,6 +470,10 @@ class MainWindowController(BaseController, QObject, EventMixin):
                 ConfigHandler.cfg.save()
                 self.logger.debug("Emit closeAppRequested")
                 self.closeAppRequested.emit(0)
+                if self._run_updater != "":
+                    DETACHED_PROCESS = 0x00000008
+                    self.logger.info("Running product updater: " + self._run_updater)
+                    subprocess.Popen([self._run_updater], creationflags = DETACHED_PROCESS)
                 event.accept()
             else:
                 self.startup.show_()
@@ -482,7 +509,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
             self.get_package_logos()
             self.startup.hide_me()
 
-        self.ui.set_current_project(self.controlData.projectfolder)
+        self.projectLoaded.emit(self.controlData.projectfolder)
 
     @pyqtSlot(str)
     def project_create(self, project_name):
@@ -821,6 +848,11 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.quickuninstall.ui.show_()
 
     @pyqtSlot()
+    def lockedproducts_dialog(self):
+        """Open quickuninstall dialog"""
+        self.lockedproducts.ui.show_()
+
+    @pyqtSlot()
     def bundle_dialog(self):
         """Open bundle creation dialog"""
         self.bundle.ui.show_()
@@ -841,8 +873,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.depotmanager.ui.show_()
 
     def retranslateMsg(self):
-        self.logger.debug("Retranslating further messages...")
         """Retranslate model headers, will be called via changeEvent of self.ui """
+        self.logger.debug("Retranslating further messages...")
         self.model_dependencies.setHorizontalHeaderLabels([translate("mainController", "name"),
                                                         translate("mainController", "product id"),
                                                         translate("mainController", "required action"),
@@ -857,3 +889,148 @@ class MainWindowController(BaseController, QObject, EventMixin):
                                                         translate("mainController", "values"),
                                                         translate("mainController", "default")]
                                                         )
+
+    def download_file(self, url, desc = ""):
+        """
+        File downloader
+
+        :param url: Full URL of file to download
+        :param desc: Destination for file download
+        :return:
+        """
+        self.logger.debug("Trying to download file: " + url)
+
+        if ConfigHandler.cfg.useproxy:
+            proxystr = ConfigHandler.cfg.proxy_user + ":" + ConfigHandler.cfg.proxy_pass + "@" + ConfigHandler.cfg.proxy_server + ":" + ConfigHandler.cfg.proxy_port
+            pdict = {'http': 'http://' + proxystr, 'https': 'http://' + proxystr}
+            proxy = request.ProxyHandler(pdict)
+            auth = request.HTTPBasicAuthHandler()
+            opener = request.build_opener(proxy, auth, request.HTTPHandler, request.HTTPSHandler)
+            self.logger.info("Proxy handler installed.")
+        else:
+            opener = request.build_opener(request.HTTPHandler, request.HTTPHandler)
+
+        request.install_opener(opener)
+
+        try:
+            u = request.urlopen(url)
+        except urlerror.URLError as err:
+            self.logger.warning("Error while opening download URL: " + repr(err))
+            return None
+        except urlerror.HTTPError as err:
+            self.logger.warning("Error while opening HTTP connection: " + repr(err))
+            return None
+
+        scheme, netloc, path, query, fragment = parse.urlsplit(url)
+        filename = os.path.basename(path)
+
+        if not filename:
+            filename = 'downloaded.file'
+
+        if desc != "":
+            filename = os.path.join(desc, filename)
+        else:
+            filename = os.path.join(tempfile.gettempdir(), filename)
+
+        with open(filename, 'wb') as f:
+            meta = u.info()
+            meta_func = meta.getheaders if hasattr(meta, 'getheaders') else meta.get_all
+            meta_length = meta_func("Content-Length")
+            file_size = None
+            if meta_length:
+                file_size = int(meta_length[0])
+            self.msgbox(translate("MainWindow", "Downloading: {0} Bytes: {1}").format(url, file_size), oPB.MsgEnum.MS_STAT)
+
+            file_size_dl = 0
+            block_sz = 8192
+
+            self._download_in_progress = True
+
+            while True:
+                buffer = u.read(block_sz)
+                if not buffer:
+                    break
+
+                file_size_dl += len(buffer)
+                f.write(buffer)
+
+                status = "{0:16}".format(file_size_dl)
+                if file_size:
+                    status += "   [{0:6.2f}%]".format(file_size_dl * 100 / file_size)
+                status += chr(13)
+
+                self.progressChanged.emit(len(buffer) * 100 / file_size) # progressChanged is connected to splash.incProgress ;-)
+                self.msgbox(translate("MainWindow", "Downloading: {0} - Bytes: {1} of {2}").format(url, file_size_dl, file_size), oPB.MsgEnum.MS_STAT)
+
+            self._download_in_progress = False
+            return filename
+
+        return None
+
+    """
+    url = "http://download.thinkbroadband.com/10MB.zip"
+    filename = download_file(url)
+    print(filename)
+    """
+
+    def update_check(self):
+
+        if self.args.noupdate == True:
+            self.logger.info("Update check disabled via command line")
+            return
+
+        self.logger.debug("Downloading version.ini")
+
+        self.msgbox(translate("MainWindow", "Update check in progress..."), oPB.MsgEnum.MS_STAT)
+
+        version_ini = self.download_file(oPB.UPDATER_URL + "/version.ini")
+
+        if version_ini is not None:
+            parser = ConfigParser()
+            try:
+                with open(version_ini) as file:
+                    parser.read_file(file)
+                    self.logger.info("version.ini file successfully loaded.")
+            except IOError:
+                self.logger.warning("version.ini file could not be loaded.")
+                self.processingEnded.emit(False)
+                return
+
+            if LooseVersion(parser.get("Version", "Version")) > LooseVersion(oPB.PROGRAM_VERSION):
+                self.msgbox(translate("MainWindow", "New program version available! Update possible!"), oPB.MsgEnum.MS_STAT)
+                self.logger.info("New program version available! Update possible!")
+                self.logger.info("Current program version is: " + oPB.PROGRAM_VERSION)
+                self.logger.info("version.ini file contains version: " + parser.get("Version", "Version"))
+
+                msg = translate("MainWindow", "New program version available:") + " " + parser.get("Version", "Version") + "\n\n"
+                msg += translate("MainWindow", "Do you want to download and install the new version?")
+
+                # ask, if updater should be downloaded and run after program end
+                ret = self.msgbox(msg, oPB.MsgEnum.MS_QUEST_YESNO, self.startup)
+                if ret:
+
+                    directory = QFileDialog.getExistingDirectory(self.ui, translate("MainWindow", "Choose download directory"),
+                                                                 os.environ['USERPROFILE'] + "/Desktop", QFileDialog.ShowDirsOnly)
+
+                    upd_executable = self.download_file(parser.get("Version", "download"), directory)
+
+                    if upd_executable is not None:
+                        self.processingEnded.emit(False)
+
+                        self.logger.info("Updater executable retrieved successfully.")
+                        msg = translate("MainWindow", "File successfully saved to:") + "\n" + '\\'.join(upd_executable.split('/'))
+                        self.msgbox(translate("MainWindow", "File successfully saved to:") + " " + '\\'.join(upd_executable.split('/')), oPB.MsgEnum.MS_STAT)
+                        msg += "\n\n" + translate("MainWindow", "Quit application to start the update process.")
+                        self.msgbox(msg, oPB.MsgEnum.MS_ALWAYS)
+
+                        self._run_updater = '/'.join(upd_executable.split('\\'))
+
+                    else:
+                        self.processingEnded.emit(False)
+                        self.logger.warning("Updater executable could not be retrieved or has been canceled manually.")
+                else:
+                    self.processingEnded.emit(True)
+                    self.logger.info("Program update canceled.")
+            else:
+                self.processingEnded.emit(False)
+                self.msgbox(translate("MainWindow", "No new program version available!"), oPB.MsgEnum.MS_STAT)

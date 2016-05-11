@@ -41,6 +41,7 @@ import platform
 
 if sys.platform.lower().startswith('win'):
     import winreg
+    from msilib import *
 
 from datetime import datetime
 from binascii import hexlify, unhexlify
@@ -444,6 +445,24 @@ class Helper():
                         i += 1
                     return desc[1]
 
+        @classmethod
+        def get_msi_property(cls, path: str, property="ProductCode"):
+            """
+            Return the MSI property for a given MSI package file
+            Standard: return ProductCode
+
+            :param path: full path of MSI file
+            :return:  MSI ProductCode String
+            """
+
+            db = OpenDatabase(path, MSIDBOPEN_READONLY)
+            view = db.OpenView ("SELECT Value FROM Property WHERE Property='" + property + "'")
+            view.Execute(None)
+            result = view.Fetch()
+
+            return result.GetString(1)
+
+
 class HTMLTools(LogMixin):
     """
     HTMLTools class provides convenient functions to create working HTML pages from simple text
@@ -605,3 +624,4 @@ class HTMLTools(LogMixin):
                     '</table>\n'
 
         return html
+

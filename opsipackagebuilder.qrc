@@ -10,6 +10,7 @@
     <file>images/prog_icons/opb/package_128x128.png</file>
     <file>images/prog_icons/opb/package_256x256.png</file>
     <file>images/winst32_MAINICON.ico</file>
+    <file>images/msi_203.ico</file>
     <file>images/resource_1.ico</file>
     <file>images/resource_2.ico</file>
     <file>images/resource_3.ico</file>
@@ -39,6 +40,7 @@
     <file>images/smallIcons_1083.ico</file>
     <file>images/smallIcons_1095.ico</file>
     <file>images/smallIcons_1127.ico</file>
+    <file>images/smallIcons_1165.ico</file>
     <file>images/smallIcons_1185.ico</file>
     <file>images/smallIcons_1259.ico</file>
     <file>images/smallIcons_1263.ico</file>

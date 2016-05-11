@@ -22,6 +22,7 @@ Nachfolgend werden die einzelnen Oberflächenbestandteile der Anwendung beschrie
    bundle
    depotmanager
    deployclientagent
+   lockedproducts
    menu
 
 .. |image1| image:: ../img/ProgTop3D.png

@@ -1,4 +1,4 @@
-.. index:: ! Kommandozeilenparameter
+﻿.. index:: ! Kommandozeilenparameter
 
 Kommandozeilenparameter
 =======================
@@ -368,4 +368,4 @@ Jegliche Form von sachlicher Kritik, Verbesserungsvorschlägen und Anregung sind
 
 Zum Community Bereich geht es `hier lang <https://forum.opsi.org/viewforum.php?f=22>`__.
 
-Copyright © 2013-2015 by Holger Pandel. All Rights Reserved.
+Copyright © 2013-2016 by Holger Pandel. All Rights Reserved.

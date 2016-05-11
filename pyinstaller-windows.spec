@@ -1,19 +1,28 @@
 # -*- mode: python -*-
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss', '*.py'])
-lang_tree = Tree('c:/Python34/Lib/site-packages/PyQt5/translations', 'PyQt5/translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
+
+#lang_tree = Tree('c:/Python34/Lib/site-packages/PyQt5/translations', 'PyQt5/translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
+
+lang_tree = [('PyQt5/translations/qt_de.qm', 'c:/Python34/Lib/site-packages/PyQt5/translations/qt_de.qm', 'DATA'),
+	   ('PyQt5/translations/qt_en.qm', 'c:/Python34/Lib/site-packages/PyQt5/translations/qt_en.qm', 'DATA'),
+	   ('PyQt5/translations/qthelp_de.qm', 'c:/Python34/Lib/site-packages/PyQt5/translations/qthelp_de.qm', 'DATA'),
+	   ('PyQt5/translations/qthelp_en.qm', 'c:/Python34/Lib/site-packages/PyQt5/translations/qthelp_en.qm', 'DATA'),
+	   ('PyQt5/translations/qtbase_de.qm', 'c:/Python34/Lib/site-packages/PyQt5/translations/qtbase_de.qm', 'DATA'),
+	   ('PyQt5/translations/qtbase_en.qm', 'c:/Python34/Lib/site-packages/PyQt5/translations/qtbase_en.qm', 'DATA')]
+
 help_tree = Tree('oPB/help', prefix='help')
 dll64_tree = Tree('oPB/core/x64', prefix='x64')
 dll86_tree = Tree('oPB/core/x86', prefix='x86')
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],
              pathex=['.'],
-#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['spur', 'spur.ssh'],
              hookspath=None,
              runtime_hooks=None)
 
 helpviewer_a = Analysis(['helpviewer.py'],
              pathex=['.'],
-#             hiddenimports=['sip', 'PyQt5.QtPrintSupport', 'PyQt5.QtSql'],
+#             hiddenimports=['spur', 'spur.ssh'],
              hookspath=None,
              runtime_hooks=None)
 

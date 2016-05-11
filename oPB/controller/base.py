@@ -58,6 +58,7 @@ class BaseController(LogMixin):
     clientsondepotslist_dict = None
     depotlist_dict = None
     productlist_dict = None
+    lockedproductlist_dict = None
     productsondepotslist = None
     joblist = []
 
@@ -204,7 +205,7 @@ class BaseController(LogMixin):
         result = proc.run(jobtype, **kwargs)
 
         oPB.EXITCODE = result[0]
-        self.logger.debug("Exitcode after dispatching:" + str(oPB.EXITCODE))
+        self.logger.debug("Exitcode after job processing: " + str(oPB.EXITCODE))
 
         if result[0] == oPB.RET_OK:
             self.msgbox(translate("baseController", "Action completed successfully!"), oPB.MsgEnum.MS_INFO)
@@ -302,6 +303,11 @@ class BaseController(LogMixin):
         self._do(oPB.OpEnum.DO_QUICKUNINST, translate("baseController", "Deinstallation running..."), alt_destination = dest, productlist = packs, depot = depot)
 
     @pyqtSlot()
+    def do_getlockedproducts(self, dest = "", packs = [], depot = ""):
+        self._do(oPB.OpEnum.DO_GETLOCKEDPRODUCTS, translate("baseController", "Get locked products running..."), alt_destination = dest, productlist = packs,
+                 depot = depot)
+
+    @pyqtSlot()
     def do_upload(self, packagefile, dest = "", depot = ""):
         self._do(oPB.OpEnum.DO_UPLOAD, translate("baseController", "Installation running..."), alt_destination = dest, packagefile = packagefile, depot = depot)
 
@@ -338,6 +344,15 @@ class BaseController(LogMixin):
     def do_getproductsondepots(self, dest = ""):
         BaseController.productsondepotslist = \
             self._do(oPB.OpEnum.DO_GETPRODUCTSONDEPOTS, translate("baseController", "Getting opsi products on depots list..."), alt_destination = dest)
+
+    @pyqtSlot()
+    def do_getlockedproducts(self, dest = "", depot = ""):
+        BaseController.lockedproductlist_dict = \
+        self._do(oPB.OpEnum.DO_GETLOCKEDPRODUCTS, translate("baseController", "Get locked products on depot..."), alt_destination = dest, depot = depot)
+
+    @pyqtSlot()
+    def do_unlockproducts(self, dest = "", packs = [], depot = ""):
+        self._do(oPB.OpEnum.DO_UNLOCKPRODUCTS, translate("baseController", "Unlock products running..."), alt_destination = dest, productlist = packs, depot = depot)
 
     @pyqtSlot()
     def do_getjobs(self, dest = ""):

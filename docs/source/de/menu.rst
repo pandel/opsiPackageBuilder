@@ -19,8 +19,8 @@ Werkzeuge
 
 |image75|
 
-   -  Skripte neu scannen
-      Wenn Änderungen an den Installationsskripten durchgeführt und insbesondere weitere Include- oder Sub-Anweisungen eingebaut wurden, so kann die Paketstruktur hiermit für eine korrekte Darstellung im Skriptbaum neu eingelesen werden.
+Einige Menüpunkte sind selbsterklärend, hier nur Erklärungen zu den übrigen:
+
    -  Paketrechte setzen
       Die Linux-seitig bestehenden Verzeichnisrechte auf den opsi Standard korrigieren. Dazu ist ggf. in den :ref:`allgemeinen Einstellungen <settings_general>` die Hinterlegung des root Kennworts des opsi Servers notwendig.
    -  Start opsi-winst
@@ -28,6 +28,8 @@ Werkzeuge
       %ProgramFiles%\\opsi.org\\opsi-client-agent\\opsi-winst\\winst32.exe
    -  Skripteditor
       Startet den in den Einstellungen hinterlegten Editor.
+   -  MSI ProductCode auslesen
+      Zur Vereinfachung kann hiermit der Microsoft Produktcode direkt aus einer MSI Datei ausgelesen werden, ohne sie vorher zu entpacken oder zusätzliche Tools zu verwenden.
 
 .. index:: ! Menü; Extras
 

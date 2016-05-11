@@ -3,8 +3,18 @@
 # -*- mode: python -*-
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss'])
 help_tree = Tree('oPB/help', prefix='help')
-lang_tree = Tree('/usr/local/opt/qt5/translations', 'translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
-bundle_version = '8.0.4'
+#lang_tree = Tree('/usr/local/opt/qt5/translations', 'translations', excludes=['assistant*.*', 'designer*.*', 'linguist*.*', 'qscintilla*.*'])
+
+
+lang_tree = [('translations/qt_de.qm', '/usr/local/opt/qt5/translations/qt_de.qm', 'DATA'),
+	   ('translations/qt_en.qm', '/usr/local/opt/qt5/translations/qt_en.qm', 'DATA'),
+	   ('translations/qthelp_de.qm', '/usr/local/opt/qt5/translations/qthelp_de.qm', 'DATA'),
+	   ('translations/qthelp_en.qm', '/usr/local/opt/qt5/translations/qthelp_en.qm', 'DATA'),
+	   ('translations/qtbase_de.qm', '/usr/local/opt/qt5/translations/qtbase_de.qm', 'DATA'),
+	   ('translations/qtbase_en.qm', '/usr/local/opt/qt5/translations/qtbase_en.qm', 'DATA')]
+
+
+bundle_version = '8.0.5'
 
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],
