@@ -406,11 +406,16 @@ class Main(QObject):
         separator = '-' * 80
         logFile = tempfile.NamedTemporaryFile(mode = "w+", suffix = ".log", prefix = "opb-error-", delete = False)
 
+        # """If you have any additional, confidential information you can\n""" \
+        # """use this mail address: <%s>\n\n""" \
+
         notice = \
             """An unhandled exception occurred. Please report the problem\n"""\
-            """using an error reporting email to <%s>.\n\n"""\
+            """via the official opsi PackageBuilder forum:\n\n"""\
+            """https://forum.opsi.org/viewforum.php?f=22\n\n"""\
+            """Thank you!\n\n"""\
             """A log has been written to "%s".\n\nError information:\n""" % \
-            (oPB.__email__, logFile.name)
+            (logFile.name)
 
         versionInfo="0.0.1"
         timeString = datetime.datetime.now().strftime("%Y-%m-%d, %H:%M:%S")

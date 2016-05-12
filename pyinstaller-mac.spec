@@ -14,7 +14,7 @@ lang_tree = [('translations/qt_de.qm', '/usr/local/opt/qt5/translations/qt_de.qm
 	   ('translations/qtbase_en.qm', '/usr/local/opt/qt5/translations/qtbase_en.qm', 'DATA')]
 
 
-bundle_version = '8.0.5'
+bundle_version = '8.0.6'
 
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],

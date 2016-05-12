@@ -726,42 +726,42 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="597"/>
+        <location filename="../oPB/gui/mainwindow.py" line="601"/>
         <source>Choose package file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="878"/>
+        <location filename="../oPB/gui/mainwindow.py" line="882"/>
         <source>Open project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="906"/>
+        <location filename="../oPB/gui/mainwindow.py" line="910"/>
         <source>Create new project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="963"/>
+        <location filename="../oPB/gui/mainwindow.py" line="967"/>
         <source>Choose script</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="1003"/>
+        <location filename="../oPB/gui/mainwindow.py" line="1007"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="398"/>
+        <location filename="../oPB/gui/mainwindow.py" line="402"/>
         <source>Sorry, this function doesn&apos;t work at the moment!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="403"/>
+        <location filename="../oPB/gui/mainwindow.py" line="407"/>
         <source>You are working in offline mode. Functionality not available!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="433"/>
+        <location filename="../oPB/gui/mainwindow.py" line="437"/>
         <source>Local opsi-winst installation not found or client-agent not installed!</source>
         <translation></translation>
     </message>
@@ -783,7 +783,7 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="614"/>
+        <location filename="../oPB/gui/mainwindow.py" line="618"/>
         <source>Save current project as...</source>
         <translation></translation>
     </message>
@@ -793,12 +793,12 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="870"/>
+        <location filename="../oPB/gui/mainwindow.py" line="874"/>
         <source>NO IMAGE (F6)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="518"/>
+        <location filename="../oPB/gui/mainwindow.py" line="522"/>
         <source>Editor did not exit as expected.
 
 The following message(s) returned:</source>
@@ -810,42 +810,42 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="982"/>
+        <location filename="../oPB/controller/main.py" line="987"/>
         <source>Update check in progress...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="997"/>
+        <location filename="../oPB/controller/main.py" line="1003"/>
         <source>New program version available! Update possible!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1002"/>
+        <location filename="../oPB/controller/main.py" line="1008"/>
         <source>New program version available:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1003"/>
+        <location filename="../oPB/controller/main.py" line="1009"/>
         <source>Do you want to download and install the new version?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1009"/>
+        <location filename="../oPB/controller/main.py" line="1015"/>
         <source>Choose download directory</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1019"/>
+        <location filename="../oPB/controller/main.py" line="1025"/>
         <source>File successfully saved to:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1020"/>
+        <location filename="../oPB/controller/main.py" line="1026"/>
         <source>Quit application to start the update process.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1032"/>
+        <location filename="../oPB/controller/main.py" line="1039"/>
         <source>No new program version available!</source>
         <translation></translation>
     </message>
@@ -868,37 +868,37 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="961"/>
+        <location filename="../oPB/core/processing.py" line="966"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="945"/>
+        <location filename="../oPB/core/processing.py" line="950"/>
         <source>Command not found. See Log for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1011"/>
+        <location filename="../oPB/core/processing.py" line="1016"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1016"/>
+        <location filename="../oPB/core/processing.py" line="1021"/>
         <source>Backend error: installation failed.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1021"/>
+        <location filename="../oPB/core/processing.py" line="1026"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1026"/>
+        <location filename="../oPB/core/processing.py" line="1031"/>
         <source>Package file error. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1066"/>
+        <location filename="../oPB/core/processing.py" line="1071"/>
         <source>Undefined error occurred. Check log.</source>
         <translation></translation>
     </message>
@@ -923,37 +923,37 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1031"/>
+        <location filename="../oPB/core/processing.py" line="1036"/>
         <source>Error during package extraction. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1036"/>
+        <location filename="../oPB/core/processing.py" line="1041"/>
         <source>Permission denied. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1041"/>
+        <location filename="../oPB/core/processing.py" line="1046"/>
         <source>Network logon failed. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1046"/>
+        <location filename="../oPB/core/processing.py" line="1051"/>
         <source>Possible error: command or file not found. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1051"/>
+        <location filename="../oPB/core/processing.py" line="1056"/>
         <source>Failed to get ip address for host. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1061"/>
+        <location filename="../oPB/core/processing.py" line="1066"/>
         <source>The requested product action is not possible, because it is currently locked on the server. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1056"/>
+        <location filename="../oPB/core/processing.py" line="1061"/>
         <source>Failed to execute opsi command. Check log.</source>
         <translation></translation>
     </message>
@@ -997,7 +997,7 @@ The following message(s) returned:</source>
 <context>
     <name>ProgressHook</name>
     <message>
-        <location filename="../oPB/core/processing.py" line="1239"/>
+        <location filename="../oPB/core/processing.py" line="1244"/>
         <source>In progress:</source>
         <translation></translation>
     </message>

@@ -71,7 +71,7 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.0.5"
+PROGRAM_VERSION = "8.0.6"
 """Overall program version"""
 
 UPDATER_URL="https://dl.dropboxusercontent.com/u/5454651/OPSIPackageBuilder"

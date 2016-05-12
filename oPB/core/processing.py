@@ -927,11 +927,16 @@ class OpsiProcessing(QObject, LogMixin):
                         # CAUTION: THERE MIGHT BE FALSE POSITTIVES BECAUSE OF FAULTY ERROR MESSAGE AND RETCODE HANDLING
                         # IN opsi-package-manager and opsi-makeproductfile
                         # ie. a package name like "Error management tool" could lead to a false positive
-                        isErr = self.hasErrors(out, logger)
-                        if isErr[0]:
-                            self.ret = retval
-                            self.rettype = oPB.MsgEnum.MS_ERR
-                            self.retmsg = isErr[1]
+
+                        # DISABLE ERROR CHECKING FOR SPECIAL COMMANDS
+                        # for now, disable error checking for some special commands, which will definitely lead into
+                        # false positives
+                        if not action in [oPB.OpEnum.DO_GETPRODUCTS]:
+                            isErr = self.hasErrors(out, logger)
+                            if isErr[0]:
+                                self.ret = retval
+                                self.rettype = oPB.MsgEnum.MS_ERR
+                                self.retmsg = isErr[1]
 
                     except spur.NoSuchCommandError:
                         self.logger.error("Set return code to RET_SSHCMDERR")

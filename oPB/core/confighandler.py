@@ -241,6 +241,11 @@ class ConfigHandler(ConfigParser, LogMixin):
         self.editor_use_styling = "False" if self.editor_use_styling == "0" else "True"
         self.editor_use_folding = "False" if self.editor_use_folding == "0" else "True"
 
+        try:
+            a = int(self.sshport)
+        except ValueError:
+            self.sshport = "22"
+
         # reset changelog block reconition / individual not needed at the moment
         self.chlog_block_marker = oPB.CHLOG_BLOCKMARKER
 

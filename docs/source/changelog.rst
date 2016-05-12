@@ -2,6 +2,8 @@
 Changelog
 =========
 
+* :release:`8.0.6b <2016-05-12>`
+* :bug:`-` Error checking: false positives while fetching product list, corrected
 * :support:`- backported` Online updater can be disabled again via command line
 * :support:`- backported` Too many Qt translation files included, corrected
 * :release:`8.0.5b <2016-05-11>`
