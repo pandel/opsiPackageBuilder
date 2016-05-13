@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="de_DE" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="de_DE" sourcelanguage="en">
 <context>
     <name>BaseController</name>
     <message>
@@ -915,12 +916,12 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Das Paket wurde bereits erstellt und wird nicht überschrieben!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="950"/>
+        <location filename="../oPB/core/processing.py" line="962"/>
         <source>Command not found. See Log for details.</source>
         <translation>Befehl nicht gefunden. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="966"/>
+        <location filename="../oPB/core/processing.py" line="978"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation>Fehler beim Verbindungsaufbau. Siehe Logbuch für Details.</translation>
     </message>
@@ -930,27 +931,27 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Die Paketdatei konnte nicht gefunden werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1016"/>
+        <location filename="../oPB/core/processing.py" line="1028"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation>Nicht verarbeitbare Umlaute gefunden, Paketbau abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1021"/>
+        <location filename="../oPB/core/processing.py" line="1033"/>
         <source>Backend error: installation failed.</source>
         <translation>Fehler im Backend: Installation abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1026"/>
+        <location filename="../oPB/core/processing.py" line="1038"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation>Konnte das Kommando &apos;install&apos; nicht verarbeiten.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1031"/>
+        <location filename="../oPB/core/processing.py" line="1043"/>
         <source>Package file error. Check log.</source>
         <translation>Paketdatei fehlerhaft. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1071"/>
+        <location filename="../oPB/core/processing.py" line="1083"/>
         <source>Undefined error occurred. Check log.</source>
         <translation>Unspezifizierter Fehler aufgetreten. Bitte das Logbuch prüfen.</translation>
     </message>
@@ -975,37 +976,37 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Extrahieren...</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1036"/>
+        <location filename="../oPB/core/processing.py" line="1048"/>
         <source>Error during package extraction. Check log.</source>
         <translation>Fehler beim Entpacken des Pakets. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1041"/>
+        <location filename="../oPB/core/processing.py" line="1053"/>
         <source>Permission denied. Check log.</source>
         <translation>Erlaubnis für Schreibzugriff verweigert. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1046"/>
+        <location filename="../oPB/core/processing.py" line="1058"/>
         <source>Network logon failed. Check log.</source>
         <translation>Netzwerk Logon nicht möglich. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1051"/>
+        <location filename="../oPB/core/processing.py" line="1063"/>
         <source>Possible error: command or file not found. Check log.</source>
         <translation>Möglicher Fehler: Befehl oder Datei nicht gefunden. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1056"/>
+        <location filename="../oPB/core/processing.py" line="1068"/>
         <source>Failed to get ip address for host. Check log.</source>
         <translation>Konnte IP Adresse des Hosts nicht ermitteln. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1066"/>
+        <location filename="../oPB/core/processing.py" line="1078"/>
         <source>The requested product action is not possible, because it is currently locked on the server. Check log.</source>
         <translation>Die angeforderte Produktaktion ist nicht möglich, da das Produkt derzeit auf dem Server gesperrt ist. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1061"/>
+        <location filename="../oPB/core/processing.py" line="1073"/>
         <source>Failed to execute opsi command. Check log.</source>
         <translation>opsi Befehl konnte nicht ausgegürt werden.  Für Details Logbuch prüfen.</translation>
     </message>
@@ -1054,7 +1055,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Paketbau Fortschritt:</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1244"/>
+        <location filename="../oPB/core/processing.py" line="1256"/>
         <source>In progress:</source>
         <translation>In Bearbeitung:</translation>
     </message>
@@ -1845,7 +1846,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     <message>
         <location filename="../oPB/controller/base.py" line="357"/>
         <source>Unlock products running...</source>
-        <translation type="unfinished">Produktentsperrung läuft...</translation>
+        <translation>Produktentsperrung läuft...</translation>
     </message>
 </context>
 <context>

@@ -872,6 +872,18 @@ class OpsiProcessing(QObject, LogMixin):
                                 use_pty = True,
                                 encoding = 'UTF-8'
                             )
+
+                        elif action in [oPB.OpEnum.DO_GETREPOCONTENT]:
+                            self.logger.sshinfo("Start SSH shell with full environment update / no pseudo TTY / no stdout hook")
+                            result = self.shell.run(
+                                cmd,
+                                cwd=cwdstr,
+                                update_env=self._env,
+                                allow_error=True,
+                                stderr=self._hook_stderr,
+                                encoding='UTF-8'
+                            )
+
                         else:
                             self.logger.sshinfo("Start SSH shell with full environment update / no pseudo TTY")
                             result = self.shell.run(

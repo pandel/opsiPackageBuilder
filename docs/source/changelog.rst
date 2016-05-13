@@ -2,6 +2,10 @@
 Changelog
 =========
 
+* :release:`8.1.0 <2016-05-13>`
+* :support:`-` Update to spur 0.3.17
+* :release:`8.0.7b <2016-05-13>`
+* :bug:`-` Error introduced in 8.0.5b regarding SSH processing, rendering depot manager unusable, corrected
 * :release:`8.0.6b <2016-05-12>`
 * :bug:`-` Error checking: false positives while fetching product list, corrected
 * :support:`- backported` Online updater can be disabled again via command line

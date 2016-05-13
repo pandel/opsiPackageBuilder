@@ -868,37 +868,37 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="966"/>
+        <location filename="../oPB/core/processing.py" line="978"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="950"/>
+        <location filename="../oPB/core/processing.py" line="962"/>
         <source>Command not found. See Log for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1016"/>
+        <location filename="../oPB/core/processing.py" line="1028"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1021"/>
+        <location filename="../oPB/core/processing.py" line="1033"/>
         <source>Backend error: installation failed.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1026"/>
+        <location filename="../oPB/core/processing.py" line="1038"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1031"/>
+        <location filename="../oPB/core/processing.py" line="1043"/>
         <source>Package file error. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1071"/>
+        <location filename="../oPB/core/processing.py" line="1083"/>
         <source>Undefined error occurred. Check log.</source>
         <translation></translation>
     </message>
@@ -923,37 +923,37 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1036"/>
+        <location filename="../oPB/core/processing.py" line="1048"/>
         <source>Error during package extraction. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1041"/>
+        <location filename="../oPB/core/processing.py" line="1053"/>
         <source>Permission denied. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1046"/>
+        <location filename="../oPB/core/processing.py" line="1058"/>
         <source>Network logon failed. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1051"/>
+        <location filename="../oPB/core/processing.py" line="1063"/>
         <source>Possible error: command or file not found. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1056"/>
+        <location filename="../oPB/core/processing.py" line="1068"/>
         <source>Failed to get ip address for host. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1066"/>
+        <location filename="../oPB/core/processing.py" line="1078"/>
         <source>The requested product action is not possible, because it is currently locked on the server. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1061"/>
+        <location filename="../oPB/core/processing.py" line="1073"/>
         <source>Failed to execute opsi command. Check log.</source>
         <translation></translation>
     </message>
@@ -997,7 +997,7 @@ The following message(s) returned:</source>
 <context>
     <name>ProgressHook</name>
     <message>
-        <location filename="../oPB/core/processing.py" line="1244"/>
+        <location filename="../oPB/core/processing.py" line="1256"/>
         <source>In progress:</source>
         <translation></translation>
     </message>
