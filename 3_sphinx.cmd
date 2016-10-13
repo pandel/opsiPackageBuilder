@@ -2,8 +2,8 @@ md docs
 sphinx-apidoc -M -f -e -o "docs/source" "oPB"
 cd docs
 call make.bat clean
-call make.bat epub
-call make.bat html
+rem call make.bat epub
+rem call make.bat html
 call make.bat qthelp
 
 qcollectiongenerator build\qthelp\opsipackagebuilder.qhcp

@@ -76,6 +76,11 @@ Beim Programmstart können die einige Hauptfunktionen direkt aufgerufen werden.
 |                         |                         | i-client-agent/opsi-dep |
 |                         |                         | loy-client-agent        |
 +-------------------------+-------------------------+-------------------------+
+| Paket entsperren        | F11                     | Ermöglicht das          |
+|                         |                         | Ensperren von Paketen   |
+|                         |                         | auf einzelnen Depot-    |
+|                         |                         | Servern                 |
++-------------------------+-------------------------+-------------------------+
 | Zeige Log               |                         | Öffnet den LogViewer    |
 +-------------------------+-------------------------+-------------------------+
 | Einstellungen           |                         | Öffnet den              |

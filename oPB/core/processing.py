@@ -84,6 +84,7 @@ class OpsiProcessing(QObject, LogMixin):
         self._sshuser = ConfigHandler.cfg.opsi_user
         self._sshpass = ConfigHandler.cfg.opsi_pass
         self._sshkey = ConfigHandler.cfg.keyfilename
+        self._sshport = ConfigHandler.cfg.sshport
 
         self.ret = oPB.RET_OK
         self.rettype = oPB.MsgEnum.MS_INFO
@@ -873,7 +874,7 @@ class OpsiProcessing(QObject, LogMixin):
                                 encoding = 'UTF-8'
                             )
 
-                        elif action in [oPB.OpEnum.DO_GETREPOCONTENT]:
+                        elif action in [oPB.OpEnum.DO_GETREPOCONTENT, oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS]:
                             self.logger.sshinfo("Start SSH shell with full environment update / no pseudo TTY / no stdout hook")
                             result = self.shell.run(
                                 cmd,
@@ -1175,8 +1176,9 @@ class OpsiProcessing(QObject, LogMixin):
         """
         self.logger.debug("Establishing ssh shell via private keyfile authorization")
         self.logger.debug("Server IP: " + self.ip)
+        self.logger.debug("Port no: " + self._sshport)
         self.logger.debug("Username: " + self._sshuser)
-        shell = spur.SshShell(hostname=self.ip, username=self._sshuser, private_key_file=self._sshkey, connect_timeout=15,
+        shell = spur.SshShell(hostname=self.ip, port=int(self._sshport), username=self._sshuser, private_key_file=self._sshkey, connect_timeout=15,
                               missing_host_key=self._hostkey_policy, look_for_private_keys= False)
         return shell
 
@@ -1188,8 +1190,9 @@ class OpsiProcessing(QObject, LogMixin):
         """
         self.logger.debug("Establishing ssh shell via user/password authorization")
         self.logger.debug("Server IP: " + self.ip)
+        self.logger.debug("Port no: " + self._sshport)
         self.logger.debug("Username: " + self._sshuser)
-        shell = spur.SshShell(hostname=self.ip, username=self._sshuser, password=self._sshpass, connect_timeout=15,
+        shell = spur.SshShell(hostname=self.ip, port=int(self._sshport), username=self._sshuser, password=self._sshpass, connect_timeout=15,
                               missing_host_key=self._hostkey_policy, look_for_private_keys= False)
         return shell
 

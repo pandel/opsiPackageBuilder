@@ -29,6 +29,7 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import os.path
+import pathlib
 import webbrowser
 import platform
 import subprocess
@@ -650,16 +651,17 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         pack = self.lblPacketFolder.text().replace("\\","/") + "/" + self.inpProductId.text() + \
                "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
 
-        # sometimes file creation, especially on network shares
-        # is too fast for os.path.isfile (because of disk flushing), so we need
-        # to wait a short moment
+        p = pathlib.Path(pack)
+
+        # sometimes file creation, especially on network shares, is very fast
+        # so wait a short moment
         # only, if sender is main GUI, because THEN it comes via signal progressEnded from self._do()
         if sender == self._parent:
-            while (not os.path.isfile(pack)) and (ctr <= 4):
+            while (not p.is_file()) and (ctr <= 4):
                 ctr += 1
                 sleep(0.1)
 
-        return os.path.isfile(pack)
+        return p.is_file()
 
     @pyqtSlot(int)
     def reset_datamapper_and_display(self, tabIdx = -1):

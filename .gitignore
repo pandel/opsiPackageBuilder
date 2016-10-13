@@ -76,3 +76,6 @@ linux/*.deb
 
 # sed copies
 *.sedcopy
+
+# version patch exe, see: http://www.codeproject.com/Articles/37133/Simple-Version-Resource-Tool-for-Windows
+verpatch/

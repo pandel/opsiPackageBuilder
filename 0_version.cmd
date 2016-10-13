@@ -1,7 +1,9 @@
 set SPATH="C:\Program Files (x86)\Git\bin"
 
-set OLDVERSION=8.0.6
-set NEWVERSION=8.1.0
+set OLDVERSION=8.1.1
+set NEWVERSION=8.1.2
+set OLDSHORTVERSION=8.1
+set NEWSHORTVERSION=8.1
 
 REM Ersetze "foo" mit "bar" NUR in Zeilen die "baz" enthalten
 
@@ -15,3 +17,6 @@ REM Ersetze "foo" mit "bar" NUR in Zeilen die "baz" enthalten
 %SPATH%\sed -b --in-place=.sedcopy "s/%OLDVERSION%/%NEWVERSION%/g" linux\opb-helpviewer.desktop
 %SPATH%\sed -b --in-place=.sedcopy "s/%OLDVERSION%/%NEWVERSION%/g" linux\opsipackagebuilder.desktop
 %SPATH%\sed -b --in-place=.sedcopy "/release/s/%OLDVERSION%/%NEWVERSION%/g" docs\source\conf.py
+%SPATH%\sed -b --in-place=.sedcopy "/version/s/%OLDSHORTVERSION%/%NEWSHORTVERSION%/g" docs\source\conf.py
+%SPATH%\sed -b --in-place=.sedcopy "/opsipackagebuilder.exe/s/%OLDVERSION%.0/%NEWVERSION%.0/g" 4_distrib.cmd
+%SPATH%\sed -b --in-place=.sedcopy "/helpviewer.exe/s/%OLDVERSION%.0/%NEWVERSION%.0/g" 4_distrib.cmd

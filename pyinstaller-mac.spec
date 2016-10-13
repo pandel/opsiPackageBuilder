@@ -7,14 +7,11 @@ help_tree = Tree('oPB/help', prefix='help')
 
 
 lang_tree = [('translations/qt_de.qm', '/usr/local/opt/qt5/translations/qt_de.qm', 'DATA'),
-	   ('translations/qt_en.qm', '/usr/local/opt/qt5/translations/qt_en.qm', 'DATA'),
-	   ('translations/qthelp_de.qm', '/usr/local/opt/qt5/translations/qthelp_de.qm', 'DATA'),
-	   ('translations/qthelp_en.qm', '/usr/local/opt/qt5/translations/qthelp_en.qm', 'DATA'),
-	   ('translations/qtbase_de.qm', '/usr/local/opt/qt5/translations/qtbase_de.qm', 'DATA'),
-	   ('translations/qtbase_en.qm', '/usr/local/opt/qt5/translations/qtbase_en.qm', 'DATA')]
+	   ('translations/qt_help_de.qm', '/usr/local/opt/qt5/translations/qt_help_de.qm', 'DATA'),
+	   ('translations/qtbase_de.qm', '/usr/local/opt/qt5/translations/qtbase_de.qm', 'DATA')]
 
 
-bundle_version = '8.1.0'
+bundle_version = '8.1.2'
 
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],

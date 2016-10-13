@@ -208,6 +208,18 @@ class Main(QObject):
             if confighandler.ConfigHandler.cfg.updatecheck == "True":
                 self.mainWindow.update_check()
 
+            # set app icon
+            app_icon = QtGui.QIcon()
+            app_icon.addFile(':images/prog_icons/opb/package_16x16.png', QtCore.QSize(16, 16))
+            app_icon.addFile(':images/prog_icons/opb/package_24x24.png', QtCore.QSize(24, 24))
+            app_icon.addFile(':images/prog_icons/opb/package_32x32.png', QtCore.QSize(32, 32))
+            app_icon.addFile(':images/prog_icons/opb/package_48x48.png', QtCore.QSize(48, 48))
+            app_icon.addFile(':images/prog_icons/opb/package_64x64.png', QtCore.QSize(64, 64))
+            app_icon.addFile(':images/prog_icons/opb/package_92x92.png', QtCore.QSize(92, 92))
+            app_icon.addFile(':images/prog_icons/opb/package_128x128.png', QtCore.QSize(128, 128))
+            app_icon.addFile(':images/prog_icons/opb/package_256x256.png', QtCore.QSize(256, 256))
+            self.app.setWindowIcon(app_icon)
+
             # run main app loop
             self.app.exec_()
 

@@ -52,7 +52,7 @@ else:
                 ('oPB/help', ['oPB/help/opsipackagebuilder.qhc'])]
 
 setup(name = "opsiPackageBuilder",
-    version = "8.1.0",
+    version = "8.1.2",
     description = "opsiPackageBuilder - software distribution packaging tool",
     author = "Holger Pandel",
     author_email = "holger.pandel@googlemail.com",

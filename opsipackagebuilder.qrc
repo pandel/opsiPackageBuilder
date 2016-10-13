@@ -5,8 +5,13 @@
     <file>locale/qtbase_de.qm</file>
     <file>images/prog.ico</file>
     <file>images/prog_icons/help/help.ico</file>
+    <file>images/prog_icons/opb/package_16x16.png</file>
+    <file>images/prog_icons/opb/package_24x24.png</file>
+    <file>images/prog_icons/opb/package_32x32.png</file>
+    <file>images/prog_icons/opb/package_48x48.png</file>
     <file>images/prog_icons/opb/package_64x64.ico</file>
     <file>images/prog_icons/opb/package_64x64.png</file>
+    <file>images/prog_icons/opb/package_96x96.png</file>
     <file>images/prog_icons/opb/package_128x128.png</file>
     <file>images/prog_icons/opb/package_256x256.png</file>
     <file>images/winst32_MAINICON.ico</file>
@@ -25,6 +30,7 @@
     <file>images/resource_12.ico</file>
     <file>images/resource_13.ico</file>
     <file>images/resource_14.ico</file>
+    <file>images/resource_15.ico</file>
     <file>images/smallIcons_243.ico</file>
     <file>images/smallIcons_254.ico</file>
     <file>images/smallIcons_299.ico</file>

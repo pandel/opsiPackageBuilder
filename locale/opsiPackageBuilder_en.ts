@@ -726,42 +726,42 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="601"/>
+        <location filename="../oPB/gui/mainwindow.py" line="602"/>
         <source>Choose package file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="882"/>
+        <location filename="../oPB/gui/mainwindow.py" line="884"/>
         <source>Open project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="910"/>
+        <location filename="../oPB/gui/mainwindow.py" line="912"/>
         <source>Create new project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="967"/>
+        <location filename="../oPB/gui/mainwindow.py" line="969"/>
         <source>Choose script</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="1007"/>
+        <location filename="../oPB/gui/mainwindow.py" line="1009"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="402"/>
+        <location filename="../oPB/gui/mainwindow.py" line="403"/>
         <source>Sorry, this function doesn&apos;t work at the moment!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="407"/>
+        <location filename="../oPB/gui/mainwindow.py" line="408"/>
         <source>You are working in offline mode. Functionality not available!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="437"/>
+        <location filename="../oPB/gui/mainwindow.py" line="438"/>
         <source>Local opsi-winst installation not found or client-agent not installed!</source>
         <translation></translation>
     </message>
@@ -783,7 +783,7 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="618"/>
+        <location filename="../oPB/gui/mainwindow.py" line="619"/>
         <source>Save current project as...</source>
         <translation></translation>
     </message>
@@ -793,12 +793,12 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="874"/>
+        <location filename="../oPB/gui/mainwindow.py" line="876"/>
         <source>NO IMAGE (F6)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="522"/>
+        <location filename="../oPB/gui/mainwindow.py" line="523"/>
         <source>Editor did not exit as expected.
 
 The following message(s) returned:</source>
@@ -853,107 +853,107 @@ The following message(s) returned:</source>
 <context>
     <name>OpsiProcessing</name>
     <message>
-        <location filename="../oPB/core/processing.py" line="90"/>
+        <location filename="../oPB/core/processing.py" line="91"/>
         <source>Command executed.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="175"/>
+        <location filename="../oPB/core/processing.py" line="176"/>
         <source>Package has been build before. It will not be overwritten!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="211"/>
+        <location filename="../oPB/core/processing.py" line="212"/>
         <source>Package file could not be found!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="978"/>
+        <location filename="../oPB/core/processing.py" line="979"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="962"/>
+        <location filename="../oPB/core/processing.py" line="963"/>
         <source>Command not found. See Log for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1028"/>
+        <location filename="../oPB/core/processing.py" line="1029"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1033"/>
+        <location filename="../oPB/core/processing.py" line="1034"/>
         <source>Backend error: installation failed.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1038"/>
+        <location filename="../oPB/core/processing.py" line="1039"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1043"/>
+        <location filename="../oPB/core/processing.py" line="1044"/>
         <source>Package file error. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1083"/>
+        <location filename="../oPB/core/processing.py" line="1084"/>
         <source>Undefined error occurred. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="627"/>
+        <location filename="../oPB/core/processing.py" line="628"/>
         <source>Error during command execution. Check Log for details.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="785"/>
+        <location filename="../oPB/core/processing.py" line="786"/>
         <source>opsi-product-updater is already running.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="335"/>
+        <location filename="../oPB/core/processing.py" line="336"/>
         <source>Copying file to:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="339"/>
+        <location filename="../oPB/core/processing.py" line="340"/>
         <source>Extracting...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1048"/>
+        <location filename="../oPB/core/processing.py" line="1049"/>
         <source>Error during package extraction. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1053"/>
+        <location filename="../oPB/core/processing.py" line="1054"/>
         <source>Permission denied. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1058"/>
+        <location filename="../oPB/core/processing.py" line="1059"/>
         <source>Network logon failed. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1063"/>
+        <location filename="../oPB/core/processing.py" line="1064"/>
         <source>Possible error: command or file not found. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1068"/>
+        <location filename="../oPB/core/processing.py" line="1069"/>
         <source>Failed to get ip address for host. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1078"/>
+        <location filename="../oPB/core/processing.py" line="1079"/>
         <source>The requested product action is not possible, because it is currently locked on the server. Check log.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1073"/>
+        <location filename="../oPB/core/processing.py" line="1074"/>
         <source>Failed to execute opsi command. Check log.</source>
         <translation></translation>
     </message>
@@ -997,7 +997,7 @@ The following message(s) returned:</source>
 <context>
     <name>ProgressHook</name>
     <message>
-        <location filename="../oPB/core/processing.py" line="1256"/>
+        <location filename="../oPB/core/processing.py" line="1259"/>
         <source>In progress:</source>
         <translation></translation>
     </message>
@@ -2845,98 +2845,108 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="290"/>
+        <location filename="../oPB/ui/startup.ui" line="331"/>
         <source>Package creation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="441"/>
+        <location filename="../oPB/ui/startup.ui" line="482"/>
         <source>New Package (F1)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="455"/>
+        <location filename="../oPB/ui/startup.ui" line="496"/>
         <source>F1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="397"/>
+        <location filename="../oPB/ui/startup.ui" line="438"/>
         <source>Open Package (F2)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="411"/>
+        <location filename="../oPB/ui/startup.ui" line="452"/>
         <source>F2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="535"/>
+        <location filename="../oPB/ui/startup.ui" line="576"/>
         <source>Extras</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="570"/>
+        <location filename="../oPB/ui/startup.ui" line="611"/>
         <source>Settings</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="608"/>
+        <location filename="../oPB/ui/startup.ui" line="649"/>
         <source>Exit (Q)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="622"/>
+        <location filename="../oPB/ui/startup.ui" line="663"/>
         <source>Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="649"/>
+        <location filename="../oPB/ui/startup.ui" line="690"/>
         <source>Depot Management (F9)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="663"/>
+        <location filename="../oPB/ui/startup.ui" line="704"/>
         <source>F9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="703"/>
+        <location filename="../oPB/ui/startup.ui" line="744"/>
         <source>Deploy client agent (F10)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="717"/>
+        <location filename="../oPB/ui/startup.ui" line="758"/>
         <source>F10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="744"/>
+        <location filename="../oPB/ui/startup.ui" line="785"/>
         <source>Show Log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="782"/>
+        <location filename="../oPB/ui/startup.ui" line="823"/>
         <source>Job Scheduler (F4)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="796"/>
+        <location filename="../oPB/ui/startup.ui" line="837"/>
         <source>F4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="331"/>
+        <location filename="../oPB/ui/startup.ui" line="372"/>
         <source>Recent files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="494"/>
+        <location filename="../oPB/ui/startup.ui" line="535"/>
         <source>Import Package (F3)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/startup.ui" line="507"/>
+        <location filename="../oPB/ui/startup.ui" line="548"/>
         <source>F3</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/startup.ui" line="288"/>
+        <source>Unlock package(s) (F11)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/startup.ui" line="302"/>
+        <source>F11</source>
         <translation></translation>
     </message>
 </context>

@@ -392,7 +392,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
             if self._parent._type_right == "depot":
                 for row in selection:
                     prodIdx.append(self.model_right.item(row.row(), 0).text())
-                self._parentUi.remove_from_depot(depot, prodIdx)
+                self._parent.remove_from_depot(depot, prodIdx)
 
             else:
                 for row in selection:

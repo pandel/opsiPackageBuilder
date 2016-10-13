@@ -111,6 +111,7 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
             self.btnStartInstall.clicked.connect(self._parentUi.actionInstall.triggered)
             self.btnStartUpload.clicked.connect(self._parentUi.actionUpload.triggered)
             self.btnStartUninstall.clicked.connect(self._parentUi.actionUninstall.triggered)
+            self.btnStartUnlock.clicked.connect(self._parentUi.actionLockedProducts.triggered)
             self.btnStartDeploy.clicked.connect(self._parentUi.actionDeploy.triggered)
             self.btnStartImport.clicked.connect(self._parentUi.actionImport.triggered)
         else:
@@ -121,6 +122,7 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
             self.btnStartInstall.setVisible(False)
             self.btnStartUpload.setVisible(False)
             self.btnStartUninstall.setVisible(False)
+            self.btnStartUnlock.setVisible(False)
             self.btnStartDeploy.setVisible(False)
             self.btnStartImport.setVisible(False)
 
