@@ -2,6 +2,8 @@
 Changelog
 =========
 
+* :release:`8.1.3 <2016-10-19>`
+* :bug:`-` Some file names produce false positive error messages (i.e. Windows 10 setup: setuperror.exe.mui)
 * :release:`8.1.2 <2016-09-06>`
 * :support:`- backported` Update to spur 0.3.19
 * :bug:`-` Individual SSH port wasn't used

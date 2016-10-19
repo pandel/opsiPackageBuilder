@@ -12,7 +12,7 @@ Requirements
 
 - Python (3.4.3/3.4.4rc1 tested)
 - PyQt5 (5.5.0 tested
-- spur (0.3.15 tested)
+- spur (0.3.19 tested)
 - PyCrypto (2.6.1 tested)
 - Sphinx (current)
 - Releases (current)
@@ -62,7 +62,7 @@ I have successfully run oPB under OSX Yosemite. Python3, PyQt5 and mostly anythi
 Using PyInstaller
 =================
 
-You need to download a Python 3.4 compatible version of PyInstaller from www.pyinstaller.org and install it from the source package. 
+You need to download a Python 3.4 compatible version of PyInstaller from www.pyinstaller.org and install it a) via pip or b) from the source package as follows
 
 On Linux:
 

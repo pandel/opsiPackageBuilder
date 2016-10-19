@@ -1074,7 +1074,12 @@ class OpsiProcessing(QObject, LogMixin):
                 found = True
                 msg.append(translate("OpsiProcessing", "The requested product action is not possible, because it is currently locked on the server. Check log."))
 
-            if ("ERROR".upper() in line.upper()) and found == False:
+            # search for the word "ERROR", but only, if there is no previous error
+            # and not, if line contains:
+            # "INFO: ADDING FILE" <- opsi-makeproductfile output
+            if ("ERROR".upper() in line.upper()) and \
+                    not ("INFO: ADDING FILE".upper() in line.upper()) and \
+                    (found == False):
                 self.logger.error(line)
                 found = True
                 msg.append(translate("OpsiProcessing", "Undefined error occurred. Check log."))
