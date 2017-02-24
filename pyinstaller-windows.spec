@@ -1,3 +1,6 @@
+import sys
+sys.modules['FixTk'] = None
+
 # -*- mode: python -*-
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss', '*.py'])
 
@@ -16,12 +19,14 @@ dll86_tree = Tree('oPB/core/x86', prefix='x86')
 
 opsipackagebuilder_a = Analysis(['opsipackagebuilder.py'],
              pathex=['.'],
+             excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter'],
 #             hiddenimports=['spur', 'spur.ssh'],
              hookspath=None,
              runtime_hooks=None)
 
 helpviewer_a = Analysis(['helpviewer.py'],
              pathex=['.'],
+             excludes=['FixTk', 'tcl', 'tk', '_tkinter', 'tkinter', 'Tkinter'],
 #             hiddenimports=['spur', 'spur.ssh'],
              hookspath=None,
              runtime_hooks=None)

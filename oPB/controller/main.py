@@ -785,6 +785,9 @@ class MainWindowController(BaseController, QObject, EventMixin):
             item = QInputDialog.getItem(parent, translate("mainController", "Question"), translate("mainController", "Select which depot to use (Cancel = default opsi server):"), msgtext, preselect, False)
             return item
 
+        elif typ == oPB.MsgEnum.MS_ABOUTQT:
+            QMessageBox.aboutQt(parent, translate("mainController", "About Qt"))
+
     def get_properties_from_scripts(self):
         found_props = set()
         self.logger.debug("Get properties from scripts")

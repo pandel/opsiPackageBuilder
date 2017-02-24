@@ -1004,7 +1004,7 @@ class ControlFileData(QObject, LogMixin):
                         if param == "DESCRIPTION":
                             self.description = value + "\n"  # re-add first stripped newline char
                         if param == "ADVICE":
-                            self.advice = value
+                            self.advice = value + "\n"  # re-add first stripped newline char
                         if param == "PRIORITY":
                             self.priority = int(value)
                         if param == "LICENSEREQUIRED":
@@ -1028,6 +1028,8 @@ class ControlFileData(QObject, LogMixin):
                     else:
                         if lastparam == "DESCRIPTION":
                             self.description += lines[currentline]
+                        if lastparam == "ADVICE":
+                            self.advice += lines[currentline]
 
                     currentline += 1
                     if currentline > lines_count: break

@@ -20,8 +20,6 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QSplashScreen, QProgressBar, qApp
 
 __author__ = 'Holger Pandel'
 __copyright__ = "Copyright 2013-2015, Holger Pandel"
@@ -35,6 +33,8 @@ from PyQt5 import QtCore, QtGui
 from oPB.core import *
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.utilities import EventMixin
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QSplashScreen, QProgressBar, qApp
 
 translate = QtCore.QCoreApplication.translate
 

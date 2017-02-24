@@ -33,6 +33,7 @@ import pathlib
 import webbrowser
 import platform
 import subprocess
+import datetime
 
 #from subprocess import Popen, PIPE, STDOUT
 from time import sleep
@@ -204,7 +205,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.actionOpen.triggered.connect(self.open_project)
         self.actionClose.triggered.connect(self._parent.project_close)
         self.actionQuit.triggered.connect(self.close)
-        self.actionSave.triggered.connect(self._parent.project_save)
+        # self.actionSave.triggered.connect(self._parent.project_save)
+        self.actionSave.triggered.connect(self.submit_main_and_save)
         self.actionShowLog.triggered.connect(self.showLogRequested.emit)
         self.actionSaveAs.triggered.connect(self.save_as)
         self.actionStartWinst.triggered.connect(self.start_winst)
@@ -220,6 +222,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.actionAbout.triggered.connect(self.not_working)
         self.actionRefreshLogo.triggered.connect(self._parent.get_package_logos)
         self.actionMSIProductCode.triggered.connect(self.get_msiproductcode)
+        self.actionAbout_Qt.triggered.connect(self.aboutqt)
 
         if oPB.NETMODE != "offline":
             # connect online menu action signals
@@ -246,7 +249,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.actionImport.triggered.connect(self.offline)
 
         # buttons
-        self.btnSave.clicked.connect(self._parent.project_save)
+        # self.btnSave.clicked.connect(self._parent.project_save)
+        self.btnSave.clicked.connect(self.submit_main_and_save)
         self.btnChangelogEdit.clicked.connect(self._parent.show_changelogeditor)
         self.btnShowScrStruct.clicked.connect(self._parent.show_scripttree)
         self.btnHelpPacket.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPACKET))
@@ -305,9 +309,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.tblProperties.selectionModel().selectionChanged.connect(self.update_property_fields)
 
         self._parent.modelDataUpdated.connect(self.reset_datamapper_and_display)
-        self._parent.msgSend.connect(self.set_statbar_text)
+        self._parent.msgSend.connect(self.set_statbar_text, type=QtCore.Qt.DirectConnection)
         self._parent.processingStarted.connect(self.splash.show_)
-        self._parent.progressChanged.connect(self.splash.incProgress)
+        self._parent.progressChanged.connect(self.splash.incProgress, type=QtCore.Qt.DirectConnection)
         self._parent.processingEnded.connect(self.splash.close)
         self._parent.processingEnded.connect(self.set_button_state)
         self._parent.projectImageLoaded.connect(self.set_project_logo)
@@ -398,14 +402,21 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
                 pass
 
     @pyqtSlot()
+    def aboutqt(self):
+        """Show Qt's About dialog"""
+        self._parent.msgbox("", oPB.MsgEnum.MS_ABOUTQT, self)
+
+    @pyqtSlot()
     def not_working(self):
         """Show a short "Not working" message"""
-        self._parent.msgbox(translate("MainWindow", "Sorry, this function doesn't work at the moment!"), oPB.MsgEnum.MS_ALWAYS, self)
+        self._parent.msgbox(translate("MainWindow", "Sorry, this function doesn't work at the moment!"),
+                            oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def offline(self):
         """Show offline message"""
-        self._parent.msgbox(translate("MainWindow", "You are working in offline mode. Functionality not available!"), oPB.MsgEnum.MS_ALWAYS, self)
+        self._parent.msgbox(translate("MainWindow", "You are working in offline mode. Functionality not available!"),
+                            oPB.MsgEnum.MS_ALWAYS, self)
 
     @pyqtSlot()
     def get_msiproductcode(self):
@@ -758,6 +769,11 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.btnPropDelete.setEnabled(False)
             self.btnPropEdit.setEnabled(False)
 
+            self.inpPropName.setText("")
+            self.inpPropDesc.setText("")
+            self.inpPropVal.setText("")
+            self.inpPropDef.setText("")
+
     @pyqtSlot()
     def add_dependency(self):
         """Add new empty dependency and activate editing"""
@@ -836,6 +852,15 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.datamapper_properties.submit()
         selection = self.tblProperties.selectionModel().selection()
         self.update_property_fields(selection)
+
+    @pyqtSlot()
+    def submit_main_and_save(self):
+        """
+        Submits all dialog fields and calls backend save
+        """
+        self.logger.debug("Submit main and save")
+        self.datamapper.submit()
+        self._parent.project_save()
 
     @pyqtSlot()
     def submit_dependencies(self):
@@ -1023,7 +1048,10 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
         :param msg: message text
         """
-        self.oPB_statBar.showMessage(msg.replace("<br>", " ").strip(), 0)
+        stamp = datetime.datetime.now().strftime("%H:%M:%S")
+        #print("STAT BAR: [" + stamp + "] " + msg.replace("<br>", " ").strip())
+        self.oPB_statBar.showMessage("[" + stamp + "] " + msg.replace("<br>", " ").strip(), 0)
+
 
     @pyqtSlot(int)
     def check_combobox_selection(self, value):

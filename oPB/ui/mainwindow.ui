@@ -2184,6 +2184,7 @@ selection-background-color: rgb(51, 153, 255);
     <addaction name="separator"/>
     <addaction name="actionShowChangeLog"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionAbout_Qt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -2487,6 +2488,16 @@ selection-background-color: rgb(51, 153, 255);
    </property>
    <property name="text">
     <string>Locked products</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="icon">
+    <iconset>
+     <disabledon>:/images/qt.ico</disabledon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>

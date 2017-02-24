@@ -28,11 +28,8 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import qApp
 from oPB.core.datadefinition import *
 from oPB.core.confighandler import ConfigHandler
-from oPB.core.tools import Helper
 from oPB.controller.base import BaseController
 
 translate = QtCore.QCoreApplication.translate

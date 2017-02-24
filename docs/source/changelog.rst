@@ -2,6 +2,13 @@
 Changelog
 =========
 
+* :release:`8.1.4 <2017-02-24>`
+* :feature:`- backported` Qt About dialog
+* :support:`- backported` More messages for the status bar
+* :bug:`-` Internal changes regarding message signaling
+* :bug:`-` Multiline text in Advice field wasn't handled correctly during load of control file
+* :bug:`-` Ctrl-S didn't update fields in backend before saving
+* :bug:`-` Product property input fields not reset properly when loading a new product
 * :release:`8.1.3 <2016-10-19>`
 * :bug:`-` Some file names produce false positive error messages (i.e. Windows 10 setup: setuperror.exe.mui)
 * :release:`8.1.2 <2016-09-06>`

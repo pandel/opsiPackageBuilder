@@ -74,6 +74,7 @@ class BaseController(LogMixin):
         self.controlData = None
         self._dataSaved = None            # True = success, False = failure, None = unset
         self._dataLoaded = None            # True = success, False = failure, None = unset
+        self._actionDesc = ""               # action description for status bar
 
         self.args = args
 
@@ -196,7 +197,7 @@ class BaseController(LogMixin):
         else:
             proc = OpsiProcessing(self.controlData, MissingHostKey.warn)
 
-        proc.progressChanged.connect(self.msgSend)
+        proc.progressChanged.connect(self.msgSend, type=QtCore.Qt.DirectConnection)
 
         # run build job
         self.processingStarted.emit()
@@ -207,11 +208,14 @@ class BaseController(LogMixin):
         oPB.EXITCODE = result[0]
         self.logger.debug("Exitcode after job processing: " + str(oPB.EXITCODE))
 
+        # remove "..." at end
+        msg = msg.rstrip("...")
+
         if result[0] == oPB.RET_OK:
-            self.msgbox(translate("baseController", "Action completed successfully!"), oPB.MsgEnum.MS_INFO)
+            self.msgbox(msg + ": " + translate("baseController", "Action completed successfully!"), oPB.MsgEnum.MS_INFO)
             self.processingEnded.emit(True)
         else:
-            self.msgbox(result[2], result[1])
+            self.msgbox(msg + ": " + result[2], result[1])
             self.processingEnded.emit(False)
 
         proc.progressChanged.disconnect(self.msgSend)
@@ -309,7 +313,7 @@ class BaseController(LogMixin):
 
     @pyqtSlot()
     def do_upload(self, packagefile, dest = "", depot = ""):
-        self._do(oPB.OpEnum.DO_UPLOAD, translate("baseController", "Installation running..."), alt_destination = dest, packagefile = packagefile, depot = depot)
+        self._do(oPB.OpEnum.DO_UPLOAD, translate("baseController", "Upload in progress..."), alt_destination = dest, packagefile = packagefile, depot = depot)
 
     @pyqtSlot()
     def do_installsetup(self, dest = "", depot = ""):

@@ -832,8 +832,8 @@ class OpsiProcessing(QObject, LogMixin):
                 # hook into stderr and stdout for progress analysis
                 old_stderr = sys.stderr
                 old_stdout = sys.stdout
-                self._hook_stderr = AnalyseProgressHook(self, old_stderr)
-                self._hook_stdout = AnalyseProgressHook(self, old_stdout)
+                self._hook_stderr = AnalyseProgressHook(self, old_stderr, self.progressChanged)
+                self._hook_stdout = AnalyseProgressHook(self, old_stdout, self.progressChanged)
                 # sys.stdout = s
 
             try:
@@ -1218,17 +1218,18 @@ class AnalyseProgressHook(StringIO):
 
     based on this idea: http://bulkan-evcimen.com/redirecting-stdout-to-stringio-object.html
     """
-    def __init__(self, parent, channel):
+    def __init__(self, parent, channel, signal):
         """
         Constructor of AnalyseProgressHook
 
         :param parent: parent object
         :param channel: stderr or stdout to analyse
-        :param mode: 1 = stderr, 2 = stdout
+        :param signal: signal with which the message is dispatched
         """
         self._match = re.compile('\s*(\d*\.?\d*)')
         self.__channel = channel
         self._parent = parent
+        self._signal = signal
         self._line = ""
         StringIO.__init__(self)
 
@@ -1238,6 +1239,7 @@ class AnalyseProgressHook(StringIO):
 
         :param s: output byte
         """
+
         try:
 
             # receive single bytes, concert to string and
@@ -1254,9 +1256,9 @@ class AnalyseProgressHook(StringIO):
                 if m:
                     if m.group(0).strip() != "":
                         count = float(m.group(0).strip())
-                        self._parent.progressChanged.emit(translate("ProgressHook", "In progress:") + " " +
-                                                          '\r[{0}] {1}%'.format('=' * int(count/5), count))
-                        # StringIO.write(self, self._line)
+                        progress = translate("ProgressHook", "In progress:") + " " + '\r[{0}] {1}%'.format('=' * int(count/5), count)
+                        self._signal.emit(progress)
+                        self.__channel.write(progress)
 
 
         # eol throws a unicode decode error, so simply ignore it

@@ -71,7 +71,7 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.1.3"
+PROGRAM_VERSION = "8.1.4"
 """Overall program version"""
 
 UPDATER_URL="https://dl.dropboxusercontent.com/u/5454651/OPSIPackageBuilder"
@@ -256,7 +256,7 @@ BASE_FOLDERS = ["OPSI", "CLIENT_DATA"]
 """Base folders inside project directory"""
 
 MsgEnum = Enum("MsgEnum", "MS_ERR MS_WARN MS_INFO MS_STAT MS_ALWAYS MS_PARSE MS_QUEST_YESNO MS_QUEST_CTC MS_QUEST_OKCANCEL "
-                          "MS_QUEST_PHRASE MS_QUEST_PASS MS_QUEST_DEPOT")
+                          "MS_QUEST_PHRASE MS_QUEST_PASS MS_QUEST_DEPOT MS_ABOUTQT")
 """Constants for _msg() - message type"""
 
 UpdEnum = Enum("UpdEnum", "UP_MANU UP_AUTO")
