@@ -958,6 +958,7 @@ class MainWindowController(BaseController, QObject, EventMixin):
                 f.write(buffer)
 
                 status = "{0:16}".format(file_size_dl)
+
                 if file_size:
                     status += "   [{0:6.2f}%]".format(file_size_dl * 100 / file_size)
                 status += chr(13)

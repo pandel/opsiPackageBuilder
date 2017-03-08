@@ -418,7 +418,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
                 self._parent.generate_md5(depot, prodIdx)
 
         if self._parent._active_side == "right":
-            depot = self.cmbDepotLeft.currentText().split()[0]
+            depot = self.cmbDepotRight.currentText().split()[0]
             selection = self.tblDepotRight.selectionModel().selectedRows()
             prodIdx = []
 

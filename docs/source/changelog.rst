@@ -2,6 +2,10 @@
 Changelog
 =========
 
+* :release:`8.1.5 <2017-03-02>`
+* :support:`-` Change download/ update check to Amazon AWS S3
+* :support:`-` Update to spur 0.3.20
+* :bug:`-` Error in depot manager when generating MD5 only for the right side of the dialog
 * :release:`8.1.4 <2017-02-24>`
 * :feature:`- backported` Qt About dialog
 * :support:`- backported` More messages for the status bar
