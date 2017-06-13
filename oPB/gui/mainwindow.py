@@ -913,7 +913,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.activateWindow()
 
         if not directory == "":
-            self._parent.project_close(False)
+            if not self._parent.project_close(False):
+                return
             self.logger.info("Chosen existing project directory: " + directory)
             self._parent.project_load(directory)
         else:
@@ -924,7 +925,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """Open project via recent files menu entry"""
         action = self.sender()
         if action:
-            self._parent.project_close(False)
+            if not self._parent.project_close(False):
+                return
             self.logger.debug("Chosen recent project: " + action.data())
             self._parent.project_load(action.data())
 

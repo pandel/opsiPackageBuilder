@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de_DE" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="de_DE" sourcelanguage="en">
 <context>
     <name>BaseController</name>
     <message>
@@ -770,17 +769,17 @@
         <translation>Projekt öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="994"/>
+        <location filename="../oPB/gui/mainwindow.py" line="996"/>
         <source>Choose script</source>
         <translation>Script wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="1034"/>
+        <location filename="../oPB/gui/mainwindow.py" line="1036"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation>Das Skript muss sich innerhalb des CLIENT_DATA Ordners des Pakets befinden!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="937"/>
+        <location filename="../oPB/gui/mainwindow.py" line="939"/>
         <source>Create new project</source>
         <translation>Neues Projekt</translation>
     </message>
@@ -834,7 +833,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Aktuelles Projekt speichern unter...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="947"/>
+        <location filename="../oPB/controller/main.py" line="948"/>
         <source>Downloading: {0} Bytes: {1}</source>
         <translation>Lade herunter: {0} Bytes: {1}</translation>
     </message>
@@ -858,47 +857,47 @@ The following message(s) returned:</source>
 Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="968"/>
+        <location filename="../oPB/controller/main.py" line="970"/>
         <source>Downloading: {0} - Bytes: {1} of {2}</source>
         <translation>Downloading: {0} - Bytes: {1} von {2}</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="990"/>
+        <location filename="../oPB/controller/main.py" line="992"/>
         <source>Update check in progress...</source>
         <translation>Prüfung auf neuere Version läuft...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1006"/>
+        <location filename="../oPB/controller/main.py" line="1008"/>
         <source>New program version available! Update possible!</source>
         <translation>Neu Programmversion verfügbar! Update möglich!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1011"/>
+        <location filename="../oPB/controller/main.py" line="1013"/>
         <source>New program version available:</source>
         <translation>Neue Programmversion verfügbar:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1012"/>
+        <location filename="../oPB/controller/main.py" line="1014"/>
         <source>Do you want to download and install the new version?</source>
         <translation>Neue Version herunterladen und installieren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1018"/>
+        <location filename="../oPB/controller/main.py" line="1020"/>
         <source>Choose download directory</source>
         <translation>Downloadverzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1028"/>
+        <location filename="../oPB/controller/main.py" line="1030"/>
         <source>File successfully saved to:</source>
         <translation>Datei erfolgreich gespeichert nach:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1029"/>
+        <location filename="../oPB/controller/main.py" line="1031"/>
         <source>Quit application to start the update process.</source>
         <translation>Das Programm beenden, um den Updatevorgang zu starten.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1042"/>
+        <location filename="../oPB/controller/main.py" line="1044"/>
         <source>No new program version available!</source>
         <translation>Keine neuere Programmversion verfügbar!</translation>
     </message>
@@ -2097,52 +2096,52 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>mainController</name>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>name</source>
         <translation>Bezeichner</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="883"/>
+        <location filename="../oPB/controller/main.py" line="884"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="883"/>
+        <location filename="../oPB/controller/main.py" line="884"/>
         <source>required action</source>
         <translation>Angef. Aktion</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="883"/>
+        <location filename="../oPB/controller/main.py" line="884"/>
         <source>installation status</source>
         <translation>Installationsstatus</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>multivalue</source>
         <translation>Mehrfachwert</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>editable</source>
         <translation>Änderbar</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>values</source>
         <translation>Werte</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>default</source>
         <translation>Vorgabe</translation>
     </message>
@@ -2152,7 +2151,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Ungespeicherte Änderungen vorhanden! Wirklich fortfahren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="463"/>
+        <location filename="../oPB/controller/main.py" line="464"/>
         <source>Are you sure?</source>
         <translation>Sind sie sicher?</translation>
     </message>
@@ -2177,7 +2176,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Projekt erfolgreich geladen!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="527"/>
+        <location filename="../oPB/controller/main.py" line="528"/>
         <source>Error during project creation.</source>
         <translation>Fehler während der Projektanlage.</translation>
     </message>
@@ -2187,42 +2186,42 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Projekt konnte nicht angelegt werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="717"/>
+        <location filename="../oPB/controller/main.py" line="718"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="722"/>
+        <location filename="../oPB/controller/main.py" line="723"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="733"/>
+        <location filename="../oPB/controller/main.py" line="734"/>
         <source>Message</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="787"/>
+        <location filename="../oPB/controller/main.py" line="788"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="750"/>
+        <location filename="../oPB/controller/main.py" line="751"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="751"/>
+        <location filename="../oPB/controller/main.py" line="752"/>
         <source>Rebuild</source>
         <translation>Wiederholen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="752"/>
+        <location filename="../oPB/controller/main.py" line="753"/>
         <source>Add version</source>
         <translation>Version erzeugen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="777"/>
+        <location filename="../oPB/controller/main.py" line="778"/>
         <source>Additional information</source>
         <translation>Zusatzinformationen</translation>
     </message>
@@ -2237,32 +2236,32 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Die ausgewählten Produkte wirklich entfernen? Das kann nicht rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="787"/>
+        <location filename="../oPB/controller/main.py" line="788"/>
         <source>Select which depot to use (Cancel = default opsi server):</source>
         <translation>Zu verwendendes Depot wählen (Abbrechen = Vorgabe opsi Server):</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="593"/>
+        <location filename="../oPB/controller/main.py" line="594"/>
         <source>CLIENT_DATA subdirectory in destination folder detected. This is not allowed for security reason!</source>
         <translation>Im Zielordner wurde ein CLIENT_DATA Unterordner entdeckt. Das ist aus Sicherheitsgründen nicht erlaubt!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="622"/>
+        <location filename="../oPB/controller/main.py" line="623"/>
         <source>Copy files now? This can&apos;t be canceled.</source>
         <translation>Dateien jetzt kopieren? Dieser Vorgang kann nicht abgebrochen werden.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="453"/>
+        <location filename="../oPB/controller/main.py" line="454"/>
         <source>There is an active download. Please wait until the download is complete.</source>
         <translation>Aktiver Downloadvorgang festgestellt. Bitte warten, bis der Download beendet ist.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="461"/>
+        <location filename="../oPB/controller/main.py" line="462"/>
         <source>Are you sure (update pending)?</source>
         <translation>Sind Sie sicher (Programmupdate nach Beendigung)?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="791"/>
+        <location filename="../oPB/controller/main.py" line="792"/>
         <source>About Qt</source>
         <translation>Über Qt</translation>
     </message>

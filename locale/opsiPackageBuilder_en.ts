@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="en">
+<!DOCTYPE TS><TS version="2.0" language="en" sourcelanguage="">
 <context>
     <name>BaseController</name>
     <message>
@@ -737,17 +736,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="937"/>
+        <location filename="../oPB/gui/mainwindow.py" line="939"/>
         <source>Create new project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="994"/>
+        <location filename="../oPB/gui/mainwindow.py" line="996"/>
         <source>Choose script</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="1034"/>
+        <location filename="../oPB/gui/mainwindow.py" line="1036"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation></translation>
     </message>
@@ -789,7 +788,7 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="947"/>
+        <location filename="../oPB/controller/main.py" line="948"/>
         <source>Downloading: {0} Bytes: {1}</source>
         <translation></translation>
     </message>
@@ -806,47 +805,47 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="968"/>
+        <location filename="../oPB/controller/main.py" line="970"/>
         <source>Downloading: {0} - Bytes: {1} of {2}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="990"/>
+        <location filename="../oPB/controller/main.py" line="992"/>
         <source>Update check in progress...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1006"/>
+        <location filename="../oPB/controller/main.py" line="1008"/>
         <source>New program version available! Update possible!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1011"/>
+        <location filename="../oPB/controller/main.py" line="1013"/>
         <source>New program version available:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1012"/>
+        <location filename="../oPB/controller/main.py" line="1014"/>
         <source>Do you want to download and install the new version?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1018"/>
+        <location filename="../oPB/controller/main.py" line="1020"/>
         <source>Choose download directory</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1028"/>
+        <location filename="../oPB/controller/main.py" line="1030"/>
         <source>File successfully saved to:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1029"/>
+        <location filename="../oPB/controller/main.py" line="1031"/>
         <source>Quit application to start the update process.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1042"/>
+        <location filename="../oPB/controller/main.py" line="1044"/>
         <source>No new program version available!</source>
         <translation></translation>
     </message>
@@ -2015,52 +2014,52 @@ The following message(s) returned:</source>
 <context>
     <name>mainController</name>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="883"/>
+        <location filename="../oPB/controller/main.py" line="884"/>
         <source>product id</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="883"/>
+        <location filename="../oPB/controller/main.py" line="884"/>
         <source>required action</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="883"/>
+        <location filename="../oPB/controller/main.py" line="884"/>
         <source>installation status</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>type</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>multivalue</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>editable</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>description</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>values</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="889"/>
+        <location filename="../oPB/controller/main.py" line="890"/>
         <source>default</source>
         <translation></translation>
     </message>
@@ -2070,7 +2069,7 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="463"/>
+        <location filename="../oPB/controller/main.py" line="464"/>
         <source>Are you sure?</source>
         <translation></translation>
     </message>
@@ -2085,77 +2084,77 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="527"/>
+        <location filename="../oPB/controller/main.py" line="528"/>
         <source>Error during project creation.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="717"/>
+        <location filename="../oPB/controller/main.py" line="718"/>
         <source>Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="722"/>
+        <location filename="../oPB/controller/main.py" line="723"/>
         <source>Warning</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="733"/>
+        <location filename="../oPB/controller/main.py" line="734"/>
         <source>Message</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="787"/>
+        <location filename="../oPB/controller/main.py" line="788"/>
         <source>Question</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="750"/>
+        <location filename="../oPB/controller/main.py" line="751"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="751"/>
+        <location filename="../oPB/controller/main.py" line="752"/>
         <source>Rebuild</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="752"/>
+        <location filename="../oPB/controller/main.py" line="753"/>
         <source>Add version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="777"/>
+        <location filename="../oPB/controller/main.py" line="778"/>
         <source>Additional information</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="787"/>
+        <location filename="../oPB/controller/main.py" line="788"/>
         <source>Select which depot to use (Cancel = default opsi server):</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="593"/>
+        <location filename="../oPB/controller/main.py" line="594"/>
         <source>CLIENT_DATA subdirectory in destination folder detected. This is not allowed for security reason!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="622"/>
+        <location filename="../oPB/controller/main.py" line="623"/>
         <source>Copy files now? This can&apos;t be canceled.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="453"/>
+        <location filename="../oPB/controller/main.py" line="454"/>
         <source>There is an active download. Please wait until the download is complete.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="461"/>
+        <location filename="../oPB/controller/main.py" line="462"/>
         <source>Are you sure (update pending)?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="791"/>
+        <location filename="../oPB/controller/main.py" line="792"/>
         <source>About Qt</source>
         <translation></translation>
     </message>

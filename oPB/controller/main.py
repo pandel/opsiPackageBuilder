@@ -424,11 +424,12 @@ class MainWindowController(BaseController, QObject, EventMixin):
         ignoreChanges = True
         if self._modelDataChanged is True:
             reply = self.msgbox(translate("mainController", "There are possibly unsaved changes! Are you sure you want to continue?" ), oPB.MsgEnum.MS_QUEST_YESNO)
+            print(reply)
             if reply is False:
-                self.logger.debug("Unsaved changed have been ignored.")
+                self.logger.debug("Unsaved changed have not been ignored.")
                 ignoreChanges = False
 
-        if ignoreChanges:
+        if ignoreChanges is True:
             [self.treedlg.close(), None][self.treedlg.isVisible()] # instance is always there, since __init__
             try:
                 [self.chLogEditor.ui.close(), None][self.chLogEditor.ui.isVisible()] # instance only conditional available (when user has ever openend the dialog

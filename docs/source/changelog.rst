@@ -2,6 +2,7 @@
 Changelog
 =========
 
+* :support:`- backported` Accept additional changelog entry status "experimental"
 * :release:`8.1.5 <2017-03-02>`
 * :support:`-` Change download/ update check to Amazon AWS S3
 * :support:`-` Update to spur 0.3.20

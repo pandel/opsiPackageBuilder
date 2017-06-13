@@ -71,7 +71,7 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.1.5"
+PROGRAM_VERSION = "8.1.6"
 """Overall program version"""
 
 UPDATER_URL="https://s3.eu-central-1.amazonaws.com/opsipackagebuilder/opsiPackageBuilder"
@@ -249,7 +249,7 @@ CHLOG_BLOCKMARKER = "urgency="
 """Changelog block marker"""
 CHLOG_URGENCIES = ["low", "middle", "high"]
 """Changelog urgencies"""
-CHLOG_STATI = ["stable", "testing"]
+CHLOG_STATI = ["stable", "testing", "experimental"]
 """Changelog status"""
 
 BASE_FOLDERS = ["OPSI", "CLIENT_DATA"]
