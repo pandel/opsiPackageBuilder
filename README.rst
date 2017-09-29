@@ -24,7 +24,7 @@ To freeze the script and build the installer:
 - PyInstaller 3.3.dev0+gb201331.mod (at least for me, because of Python 3.6 support)
 - Inno Setup 5
 
-For my personal convenience, I'm using a virtualenv environment from now on. This is important, because the pyinstaller *.spec files refer to the new env location. I set up my virtualenv under ``os.getenv("USERPROFILE") + '/Envs/oPB/``. If your virtualenv is in another location, you have to edit rhe corresponding pyinstaller*.spec file. accordingly.
+For my personal convenience, I'm using a virtualenv environment from now on. This is important, because the pyinstaller \*.spec files refer to the new env location. I set up my virtualenv under ``os.getenv("USERPROFILE") + '/Envs/oPB/``. If your virtualenv is in another location, you have to edit the corresponding pyinstaller \*.spec file. accordingly.
 
 Included scripts and files
 ==========================
