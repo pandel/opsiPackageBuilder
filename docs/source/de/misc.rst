@@ -28,6 +28,11 @@ WICHTIG: siehe auch die Hinweise bei Verwendung :ref:`mehrerer Konfigurationen <
 |                    |                    |                    | ist nicht                  |
 |                    |                    |                    | zulässig.                  |
 +--------------------+--------------------+--------------------+----------------------------+
+|                    | --dev_dir          | Entwicklungsordner | Hiermit kann der           |
+|                    |                    | überschreiben      | Entwicklungsordner aus     |
+|                    |                    |                    | der Konfigurationsdatei    |
+|                    |                    |                    | überschrieben werden.      |
++--------------------+--------------------+--------------------+----------------------------+
 | -w                 | --no-netdrv        | Entwicklungsordner | Falls das Programm         |
 |                    |                    | nicht mounten      | so eingestellt             |
 |                    |                    |                    | ist, dass es beim          |
@@ -68,7 +73,7 @@ WICHTIG: siehe auch die Hinweise bei Verwendung :ref:`mehrerer Konfigurationen <
 |                    |                    |                    |   Versionierung            |
 |                    |                    |                    |   überschrieben.           |
 |                    |                    |                    |                            |
-|                    |                    |                    |   c) --build=new           |
+|                    |                    |                    |   c) --build=add           |
 |                    |                    |                    |   Die                      |
 |                    |                    |                    |   Paketversionsnummer um   |
 |                    |                    |                    |   eine incrementierte      |

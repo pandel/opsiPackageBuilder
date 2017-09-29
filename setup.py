@@ -22,7 +22,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
 __author__ = 'Holger Pandel'
-__copyright__ = "Copyright 2013-2015, Holger Pandel"
+__copyright__ = "Copyright 2013-2017, Holger Pandel"
 __license__ = "MIT"
 __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
@@ -52,8 +52,8 @@ else:
                 ('oPB/help', ['oPB/help/opsipackagebuilder.qhc'])]
 
 setup(name = "opsiPackageBuilder",
-    version = "8.1.6",
-    description = "opsiPackageBuilder - software distribution packaging tool",
+    version = "8.2.1",
+    description = "opsi PackageBuilder - software distribution packaging tool",
     author = "Holger Pandel",
     author_email = "holger.pandel@googlemail.com",
     url = "https://forum.opsi.org/viewforum.php?f=22",
@@ -67,7 +67,10 @@ setup(name = "opsiPackageBuilder",
         'oPB.ui': ['*.ui', '*.qss'],
     },
     data_files=data,
-    install_requires = ["releases", "spur", "pycrypto"],
+    install_requires = ["pyqt5>=5.6",
+                        "spur",
+                        "pycryptodome"
+                        ],
     entry_points={
           'gui_scripts': [
               'opsipackagebuilder = oPB.runner:Main',

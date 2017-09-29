@@ -1,4 +1,4 @@
-spur
-pycrypto
-sphinx
-releases
+pycryptodome>=3.4.6
+PyQt5>=5.9.0
+pyqt5-tools>=5.8.2.1.0
+spur>=0.3.20

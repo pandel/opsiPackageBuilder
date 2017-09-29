@@ -30,6 +30,7 @@ __status__ = "Production"
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import QObject
+from PyQt5.QtGui import QStandardItem
 
 import oPB
 from oPB.core.confighandler import ConfigHandler
@@ -37,6 +38,90 @@ from oPB.controller.base import BaseController
 from oPB.gui.scheduler import JobListDialog, JobCreatorDialog
 
 translate = QtCore.QCoreApplication.translate
+
+import collections
+
+def dict_merge(dct, merge_dct):
+    """ Recursive dict merge. Inspired by :meth:`dict.update()`, instead of
+    updating only top-level keys, dict_merge recurses down into dicts nested
+    to an arbitrary depth, updating keys. The `merge_dct` is merged into
+    `dct`.
+
+    https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
+
+    :param dct: dict onto which the merge is executed
+    :param merge_dct: dct merged into dct
+    :return: None
+    """
+    for k, v in merge_dct.items():
+        if (k in dct and isinstance(dct[k], dict)
+                and isinstance(merge_dct[k], collections.Mapping)):
+            dict_merge(dct[k], merge_dct[k])
+        else:
+            dct[k] = merge_dct[k]
+
+def build_tree(elems, root, currentkey, parentkey):
+    """ Constructs a hierarchic tree from a flat dictionary.
+
+    https://stackoverflow.com/questions/35452512/construct-hierarchy-tree-from-python-flat-parent-children-dict-list
+
+    :param elems: flat dictionary
+    :param root: root node of current recursion
+    :param currentkey: key of current element
+    :param parentkey: key parent element
+    """
+    elem_with_children = {}
+
+    def _build_children_sub_tree(parent):
+        cur_dict = {
+          'id': parent,
+          # put whatever attributes here
+        }
+        if parent in elem_with_children.keys():
+            cur_dict["children"] = [_build_children_sub_tree(cid) for cid in elem_with_children[parent]]
+        return cur_dict
+
+    for item in elems:
+        cid = item[currentkey]
+        pid = item[parentkey]
+        elem_with_children.setdefault(pid, []).append(cid)
+
+    res = _build_children_sub_tree(root)
+    return res
+
+
+def merge_clientlist(node, dict):
+    """ Merge flat client list dict into previously build group tree.
+    see :meth:`build_tree` for details
+
+    :param node: node (dictionary tree entry point) to insert ``dict`` at
+    :param dict: dictionary to insert
+    """
+
+    # build temporary children dictionary tree based on the current `node['id']`
+    clist = build_tree(dict, node['id'], 'objectId', 'groupId')
+
+    # if we found any children, merge both dicts
+    if not clist == "":
+        dict_merge(node, clist)
+
+    # dive into, if there are more limbs in the tree
+    if "children" in node.keys():
+        for child in node['children']:
+            merge_clientlist(child, dict)
+
+
+def display_node(node, indent = 0):
+    if node['id'] == None:
+        indent -= 3
+    else:
+        desc = ''.join([x["description"] if x['id'] == node['id'] else "" for x in BaseController.clientlist_dict])
+        print(' ' * indent, node['id'], (' (' + desc + ')') if not desc == "" else "")
+
+    if "children" in node.keys():
+        indent += 3
+        for child in node['children']:
+            display_node(child, indent)
 
 class SchedulerComponent(BaseController, QObject):
 
@@ -70,11 +155,14 @@ class SchedulerComponent(BaseController, QObject):
             self.logger.debug("Generate job table model")
             self.model_jobs = QtGui.QStandardItemModel(0, 7, self)
             self.model_jobs.setObjectName("model_jobs")
+
         # create model from data and assign, if not done before
         if self.model_clients == None:
             self.logger.debug("Generate client table model")
-            self.model_clients = QtGui.QStandardItemModel(0, 2, self)
+            #self.model_clients = QtGui.QStandardItemModel(0, 2, self)
+            self.model_clients = QtGui.QStandardItemModel(self)
             self.model_clients.setObjectName("model_clients")
+
         if self.model_products == None:
             self.logger.debug("Generate product table model")
             self.model_products = QtGui.QStandardItemModel(0, 3, self)
@@ -82,19 +170,75 @@ class SchedulerComponent(BaseController, QObject):
 
         self.retranslateMsg()
 
+    def update_treeview_model(self, root, node):
+        self.logger.debug("Create client treeview model")
+
+        # is root node for everything?
+        if node['id'] == None:
+            node['id'] = "Root"
+
+        # get client desciption
+        desc = ''.join([x["description"] if x['id'] == node['id'] else "" for x in BaseController.clientlist_dict])
+
+        # create items and append to model
+        # first item: actual client entry or parent node
+        item = QStandardItem(node['id'])
+        item.setEditable(False)
+        # description
+        item2 = QStandardItem(desc)
+        item2.setEditable(False)
+        item2.setSelectable(False)
+
+        root.appendRow([item, item2])
+
+        # dive into tree, if children are available
+        if "children" in node.keys():
+            # make parent nodes unselectable
+            item.setSelectable(False)
+
+            for child in node['children']:
+                self.update_treeview_model(item, child)
+
     def update_model_data_clients(self, force = False):
         self.logger.debug("Update model data: clients")
+
+        try:
+            self.model_clients.itemChanged.disconnect(self._parent.model_data_changed)
+            self.model_clients.disconnect(self._parent.model_data_changed)
+            self.model_clients.disconnect(self._parent.model_data_changed)
+        except:
+            pass
 
         # first time opened after program start?
         if BaseController.clientlist_dict == None or force == True or ConfigHandler.cfg.reload_for_at == "True":
             self._parent.do_getclients(dest = self.at_server)
+            self.ui_jobcreator.splash.incProgress(10) # dirty, but works ;)
+
+            self._parent.do_getgroups(dest = self.at_server)
+            self.ui_jobcreator.splash.incProgress(10) # dirty, but works ;)
+
+            self._parent.do_getclientgroups(dest = self.at_server)
+            self.ui_jobcreator.splash.incProgress(10) # dirty, but works ;)
 
         if BaseController.clientlist_dict:
-            tmplist = []
-            for elem in BaseController.clientlist_dict:
-                tmplist.append([elem["id"], elem["description"]])
+            # build client tree from flat JSON data
+            client_tree = build_tree(BaseController.groups_dict, None, 'id', 'parentGroupId')
+            merge_clientlist(client_tree, BaseController.clientgroups_dict)
 
-            self._parent.update_table_model(self.model_clients, sorted(tmplist))
+            # cleanup model
+            items = self.model_clients.rowCount()
+            for i in range(items, -1, -1):
+                self.model_clients.removeRow(i)
+
+            # create item model tree
+            self.update_treeview_model(self.model_clients, client_tree)
+
+        try:
+            self.model_clients.itemChanged.connect(self._parent.model_data_changed)
+            self.model_clients.rowsRemoved.connect(self._parent.model_data_changed)
+            self.model_clients.rowsInserted.connect(self._parent.model_data_changed)
+        except:
+            pass
 
     def update_model_data_products(self, force = False):
         self.logger.debug("Update model data: products")
@@ -182,3 +326,4 @@ class SchedulerComponent(BaseController, QObject):
                                         translate("quickuninstallController", "version"),
                                         translate("quickuninstallController", "description")]
                                         )
+

@@ -48,6 +48,7 @@ SSH = 35
 SSHINFO = 25
 """Additional log level: SSHINFO"""
 
+
 class LogStreamHandler(logging.Handler):
     def __init__(self,  parent,  main):
         """

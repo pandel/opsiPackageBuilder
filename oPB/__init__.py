@@ -29,8 +29,10 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import sys
-if sys.version_info[0] != 3 and sys.version_info[0] != 4:
+
+if sys.version_info.major != 3 and sys.version_info.minor < 4:
     print("Current Python interpreter version is not supported. You need at least Python 3.4. Exiting...")
+    print("Installed Version: " + sys.version_info.major + "." + sys.version_info.major)
     sys.exit(1)
 
 import os
@@ -44,6 +46,11 @@ try:
     from PyQt5.QtCore import Qt
 except:
     print("PyQt5 language bindings could not be loaded. Are they installed? Existing...")
+    sys.exit(1)
+
+if int(QtCore.qVersion().split('.')[0]) < 5 or int(QtCore.qVersion().split('.')[1]) < 6:
+    print("This version of PyQt5 ist not supported! Please upgrade to a PyQt5 version based on Qt 5.6 or newer!")
+    print("Current Qt version: " + QtCore.qVersion())
     sys.exit(1)
 
 def get_script_dir(follow_symlinks=True):
@@ -71,7 +78,7 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.1.6"
+PROGRAM_VERSION = "8.2.1"
 """Overall program version"""
 
 UPDATER_URL="https://s3.eu-central-1.amazonaws.com/opsipackagebuilder/opsiPackageBuilder"
@@ -185,6 +192,10 @@ OPB_METHOD_UNLOCKPRODUCTS = " | sed  -e 's/\"locked\"\s:\strue/\"locked\" : fals
 """opsi 4.0 API method: unlock specified product"""
 OPB_METHOD_UPDATEOBJECTS = "cat /tmp/update_objects.json | opsi-admin -d method productOnDepot_updateObjects"
 """opsi 4.0 API method: update object(s) properties via json import"""
+OPB_METHOD_GETGROUPS = "opsi-admin -r -d method group_getHashes"
+"""opsi 4.0 API method: get group tree"""
+OPB_METHOD_GETCLIENTGROUPS = "opsi-admin -r -d method objectToGroup_getHashes '[]' '{" + '"groupType":"HostGroup"}' + "'"
+"""opsi 4.0 API method: get client <-> group association"""
 OPB_SETRIGHTS_NOSUDO = "opsi-setup --set-rights"
 """opsi set rights without sudo command"""
 OPB_SETRIGHTS_SUDO = "opsi-set-rights"
@@ -203,11 +214,11 @@ OPB_AT_REMOVE = "atrm"
 """AT command: remove single AT job"""
 OPB_AT_REMOVE_ALL = "atrm $(atq -q D | cut -f 1)"
 """AT command: remove all AT jobs at once"""
-OPB_PRECHECK_MD5 = "md5deep -h"
+OPB_PRECHECK_MD5 = "md5sum -h"
 """md5deep command accessibility check"""
 OPB_PRECHECK_WINEXE = "winexe --help"
 """winexe command accessibility check"""
-OPB_CALC_MD5 = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do MD5=\"`md5deep $PACKETPATH/$p.opsi 2>/dev/null | cut -d \" \" -f 1`\"; echo -n $MD5 >$PACKETPATH/$p.opsi.md5; done'
+OPB_CALC_MD5 = 'PACKETPATH="' + REPO_PATH + '"; for p in $PACKETS; do MD5=\"`md5sum $PACKETPATH/$p.opsi 2>/dev/null | cut -d \" \" -f 1`\"; echo -n $MD5 >$PACKETPATH/$p.opsi.md5; done'
 """Create MD5 file for packet; add in front: 'PACKETS=\"xca_0.9.3-1.opsi\";'"""
 OPB_GETREPOCONTENT = 'PACKETPATH="' + REPO_PATH + '"; PACKETS=\"`ls $PACKETPATH/*.opsi 2>/dev/null | cut -d "/" -f 6`\"; ' \
                        'for p in $PACKETS; do MD5=\"`cat $PACKETPATH/$p.md5 2>/dev/null`\"; echo $MD5-@MD5@-$p; done'
@@ -268,7 +279,7 @@ BModEnum = Enum("BModEnum", "BD_CANCEL BD_REBUILD BD_NEW BD_INTERACTIVE")
 OpEnum = Enum("OpEnum", "DO_BUILD DO_INSTALL DO_UNINSTALL DO_SETRIGHTS DO_GETCLIENTS DO_GETPRODUCTS DO_CREATEJOBS DO_DELETEJOBS DO_GETATJOBS "
                         "DO_DELETEALLJOBS DO_GETREPOCONTENT DO_GETDEPOTS DO_GETPRODUCTSONDEPOTS DO_QUICKINST DO_QUICKUNINST DO_INSTSETUP DO_UPLOAD "
                         "DO_DELETEFILEFROMREPO DO_UNREGISTERDEPOT DO_DEPLOY DO_SETRIGHTS_REPO DO_PRODUPDATER DO_REBOOT DO_POWEROFF DO_GENMD5 DO_GETCLIENTSONDEPOTS "
-                        "DO_IMPORT DO_UNLOCKPRODUCTS DO_GETLOCKEDPRODUCTS")
+                        "DO_IMPORT DO_UNLOCKPRODUCTS DO_GETLOCKEDPRODUCTS DO_GETCLIENTGROUPS DO_GETGROUPS")
 """Constants for opsi operations"""
 
 # return codes

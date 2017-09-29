@@ -5,7 +5,7 @@ Technisches und Danke an...
 
 Ein paar "Interna"...
 
--  Basis: Python 3.4, PyQt5
+-  Basis: Python 3.6, PyQt5
 -  EXE in 64Bit
 -  Serververbindungen sind SSH-basiert und verschlüsselt
 -  Jobsteuerung per ATD Dämon direkt am Server

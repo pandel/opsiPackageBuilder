@@ -35,7 +35,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
-import oPB.gui.helpviewer
+from oPB.gui.helpviewer import Help
 from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.utilities import SpecialOptionButtonGroup, Translator, EventMixin
@@ -68,6 +68,8 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
 
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
         self.splash.close()  # only for linux
+
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, self)
 
         # take care of sys.platform
         if sys.platform.startswith("linux"):
@@ -102,7 +104,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.btnSetKeyFile.clicked.connect(self.select_keyfile)
         self.btnExternalEditor.clicked.connect(self.select_externaleditor)
         self.btnLogFile.clicked.connect(self.select_logfile)
-        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_SETTINGS))
+        self.btnHelp.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_SETTINGS, False))
 
         self.btnSave.clicked.connect(self._parent.save_config)
         self.btnRefreshDepotCache.clicked.connect(self._parent.refresh_depot_cache)

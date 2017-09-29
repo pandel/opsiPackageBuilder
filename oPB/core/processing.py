@@ -39,7 +39,7 @@ import tempfile
 import platform
 from io import StringIO
 import datetime
-from pathlib import PurePath, PurePosixPath
+from pathlib import PurePath, PurePosixPath, Path
 
 from PyQt5 import QtCore
 from PyQt5.QtCore import QObject, pyqtSignal
@@ -168,15 +168,17 @@ class OpsiProcessing(QObject, LogMixin):
         if action == oPB.OpEnum.DO_BUILD:
             ret = oPB.RET_PEXISTS
             self.logger.ssh(20 * "-" + "ACTION: BUILD" + 20 * "-")
-            if os.path.isfile(self._control.local_package_path):
+            if (self._control.packagename in os.listdir(self._control.projectfolder)):
                 self.logger.ssh("Package already build.")
                 self.logger.warning("Set return code to RET_PEXISTS")
                 self.ret = ret
                 self.rettype = oPB.MsgEnum.MS_WARN
                 self.retmsg = translate("OpsiProcessing", "Package has been build before. It will not be overwritten!")
             else:
-                cmd = ConfigHandler.cfg.buildcommand
-                result = self._processAction(cmd, action, ret)
+                # cmd = ConfigHandler.cfg.buildcommand + " & sync & sleep 1"
+                cmd = ["sh", "-c", ConfigHandler.cfg.buildcommand]
+
+                result = self._processAction(cmd, action, ret, split = False)
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_INSTALL:
@@ -184,8 +186,9 @@ class OpsiProcessing(QObject, LogMixin):
             depot = kwargs.get("depot", self._server)
 
             self.logger.ssh(20 * "-" + "ACTION: INSTALL" + 20 * "-")
-            if not os.path.isfile(self._control.local_package_path):
-                self.logger.ssh("Package not available: " + self._control.packagename)
+
+            if not (self._control.packagename in os.listdir(self._control.projectfolder)):
+                self.logger.ssh("Package not available: " + self._control.local_package_path)
                 self.logger.warning("Set return code to RET_PINSTALL")
                 self.ret = ret
                 self.rettype = oPB.MsgEnum.MS_ERR
@@ -204,7 +207,7 @@ class OpsiProcessing(QObject, LogMixin):
             depot = kwargs.get("depot", self._server)
 
             self.logger.ssh(20 * "-" + "ACTION: INSTALLSETUP" + 20 * "-")
-            if not os.path.isfile(self._control.local_package_path):
+            if not (self._control.packagename in os.listdir(self._control.projectfolder)):
                 self.logger.ssh("Package not available.")
                 self.logger.warning("Set return code to RET_PINSTSETUP")
                 self.ret = ret
@@ -357,6 +360,24 @@ class OpsiProcessing(QObject, LogMixin):
             self.logger.ssh(20 * "-" + "ACTION: GET CLIENTS" + 20 * "-")
 
             result = self._processAction(oPB.OPB_METHOD_GETCLIENTS, action, ret, cwd = False)
+
+            result = json.loads(result)
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETCLIENTGROUPS:
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: GET CLIENTGROUPS" + 20 * "-")
+
+            result = self._processAction(oPB.OPB_METHOD_GETCLIENTGROUPS, action, ret, cwd = False)
+
+            result = json.loads(result)
+
+        # ------------------------------------------------------------------------------------------------------------------------
+        if action == oPB.OpEnum.DO_GETGROUPS:
+            ret = oPB.RET_SSHCMDERR
+            self.logger.ssh(20 * "-" + "ACTION: GET GROUPS" + 20 * "-")
+
+            result = self._processAction(oPB.OPB_METHOD_GETGROUPS, action, ret, cwd = False)
 
             result = json.loads(result)
 
@@ -836,6 +857,11 @@ class OpsiProcessing(QObject, LogMixin):
                 self._hook_stdout = AnalyseProgressHook(self, old_stdout, self.progressChanged)
                 # sys.stdout = s
 
+            # create a running marker in project directory
+            self.logger.sshinfo("Create process running marker file in project directory")
+            f = tempfile.NamedTemporaryFile(prefix='process_', suffix=".run", dir=self._control.projectfolder)
+            self.logger.sshinfo("File created: " + f.name)
+
             try:
                 with self.shell:
                     try:
@@ -901,7 +927,8 @@ class OpsiProcessing(QObject, LogMixin):
                         # and not for client agent deploy, sometimes there are errors in stdout, too
                         if action not in [oPB.OpEnum.DO_GETCLIENTS, oPB.OpEnum.DO_GETPRODUCTS, oPB.OpEnum.DO_GETDEPOTS,
                                           oPB.OpEnum.DO_GETCLIENTSONDEPOTS, oPB.OpEnum.DO_GETPRODUCTSONDEPOTS,
-                                          oPB.OpEnum.DO_CREATEJOBS, oPB.OpEnum.DO_GETATJOBS, oPB.OpEnum.DO_GETREPOCONTENT, oPB.OpEnum.DO_DEPLOY]:
+                                          oPB.OpEnum.DO_CREATEJOBS, oPB.OpEnum.DO_GETATJOBS, oPB.OpEnum.DO_GETREPOCONTENT,
+                                          oPB.OpEnum.DO_DEPLOY, oPB.OpEnum.DO_GETGROUPS, oPB.OpEnum.DO_GETCLIENTGROUPS]:
                             out = Helper.strip_ansi_codes(result.output).splitlines()
                             for line in out:
                                 line = self._obscurepass(line)
@@ -977,6 +1004,11 @@ class OpsiProcessing(QObject, LogMixin):
 
             # reset hook state
             #sys.stdout = old_stderr
+
+            # remove running marker
+            self.logger.sshinfo("Removing process running marker file")
+            f.flush()
+            f.close()
 
             return result.output
         else:

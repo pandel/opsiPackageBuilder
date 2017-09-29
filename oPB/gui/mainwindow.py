@@ -43,7 +43,7 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import QObject, QEvent, pyqtSignal, pyqtSlot
 
 import oPB
-import oPB.gui.helpviewer
+from oPB.gui.helpviewer import Help
 from oPB.core.confighandler import ConfigHandler
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.splash import Splash
@@ -83,6 +83,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.datamapper = None             # QDataWidgetMapper object for field mapping
         self.datamapper_dependencies = None
         self.datamapper_properties = None
+
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, self)
 
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
         self.splash.close()  # only for linux
@@ -211,14 +213,15 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.actionSaveAs.triggered.connect(self.save_as)
         self.actionStartWinst.triggered.connect(self.start_winst)
         self.actionScriptEditor.triggered.connect(self.open_scripteditor)
-        self.actionHelp.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX))
+
+        self.actionHelp.triggered.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_INDEX, False))
 
         if self._parent.args.noupdate == True:
             self.actionSearchForUpdates.setEnabled(False)
         else:
             self.actionSearchForUpdates.triggered.connect(self._parent.update_check)
 
-        self.actionShowChangeLog.triggered.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_CHANGELOG))
+        self.actionShowChangeLog.triggered.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_CHANGELOG, False))
         self.actionAbout.triggered.connect(self.not_working)
         self.actionRefreshLogo.triggered.connect(self._parent.get_package_logos)
         self.actionMSIProductCode.triggered.connect(self.get_msiproductcode)
@@ -253,9 +256,10 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.btnSave.clicked.connect(self.submit_main_and_save)
         self.btnChangelogEdit.clicked.connect(self._parent.show_changelogeditor)
         self.btnShowScrStruct.clicked.connect(self._parent.show_scripttree)
-        self.btnHelpPacket.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPACKET))
-        self.btnHelpDependencies.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABDEPEND))
-        self.btnHelpProperties.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_TABPROP))
+        self.btnHelpPacket.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_TABPACKET, False))
+
+        self.btnHelpDependencies.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_TABDEPEND, False))
+        self.btnHelpProperties.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_TABPROP, False))
 
         self.btnScrSetup.clicked.connect(lambda: self.select_script_dialog("setup"))
         self.btnScrUninstall.clicked.connect(lambda: self.select_script_dialog("uninstall"))
@@ -310,10 +314,10 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
         self._parent.modelDataUpdated.connect(self.reset_datamapper_and_display)
         self._parent.msgSend.connect(self.set_statbar_text, type=QtCore.Qt.DirectConnection)
-        self._parent.processingStarted.connect(self.splash.show_)
+        self._parent.processingEnded.connect(self.set_button_state)
         self._parent.progressChanged.connect(self.splash.incProgress, type=QtCore.Qt.DirectConnection)
         self._parent.processingEnded.connect(self.splash.close)
-        self._parent.processingEnded.connect(self.set_button_state)
+        self._parent.processingStarted.connect(self.splash.show_)
         self._parent.projectImageLoaded.connect(self.set_project_logo)
         self._parent.projectLoaded.connect(self.set_current_project)
         self._parent.projectLoaded.connect(self.set_button_state)
@@ -655,28 +659,38 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         """
         Check if opsi package file is available
 
-        :param: wait x * 0.5 seconds for package file to be created, defaults to 4
         :return: True/False
         """
-        ctr = 0
-        pack = self.lblPacketFolder.text().replace("\\","/") + "/" + self.inpProductId.text() + \
-               "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
+        #ctr = 0
+        pack = self.inpProductId.text() + "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
 
-        p = pathlib.Path(pack)
+        #fullname = self.lblPacketFolder.text().replace("\\","/") + "/" + self.inpProductId.text() + \
+        #       "_" + self.inpProductVer.text() + "-" + self.inpPackageVer.text() + ".opsi"
+
+        #p = pathlib.Path(fullname)
 
         # sometimes file creation, especially on network shares, is very fast
         # so wait a short moment
         # only, if sender is main GUI, because THEN it comes via signal progressEnded from self._do()
-        if sender == self._parent:
-            while (not p.is_file()) and (ctr <= 4):
-                ctr += 1
-                sleep(0.1)
+        #if sender == self._parent:
+            #while (not p.is_file()) and (ctr <= 4):
+            #    ctr += 1
+            #    sleep(0.1)
 
-        return p.is_file()
+        if os.path.exists(self.lblPacketFolder.text()):
+            if pack in os.listdir(self.lblPacketFolder.text()):
+                return True
+            else:
+                return False
+        else:
+            return False
+
+        #return p.is_file()
 
     @pyqtSlot(int)
     def reset_datamapper_and_display(self, tabIdx = -1):
         """Reset tables and fields"""
+
         self.logger.debug("Reset datamapper and display")
 
         tab = self.tabWidget.currentIndex() if tabIdx == -1 else tabIdx
@@ -701,8 +715,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
     @pyqtSlot(QtCore.QItemSelection)
     def update_dependency_fields(self, idx:QtCore.QItemSelection):
-        # indexes() returns list of selected items
-        # as we only have 1 at a time, return first item and get corresponding row number
+        """ Update single fields on dependency tab in relation to selected row in table view"""
+
         self.logger.debug("Update dependency fields")
 
         self.cmbDepAction.setEnabled(False)
@@ -723,6 +737,9 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         if self.datamapper_dependencies.model().item(0, 0) is not None:
             self.btnDepDelete.setEnabled(True)
             self.btnDepEdit.setEnabled(True)
+
+            # indexes() returns list of selected items
+            # as we only have 1 at a time, return first item and get corresponding row number
             if not idx.indexes() == []:
                 row = idx.indexes()[0].row()
                 self.datamapper_dependencies.setCurrentIndex(row)
@@ -735,8 +752,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
     @pyqtSlot(QtCore.QItemSelection)
     def update_property_fields(self, idx:QtCore.QItemSelection):
-        # indexes() returns list of selected items
-        # as we only have 1 at a time, return first item and get corresponding row number
+        """ Update single fields on property tab in relation to selected row in table view"""
+
         self.logger.debug("Update property fields")
 
         self.inpPropName.setEnabled(False)
@@ -760,6 +777,8 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
             self.btnPropDelete.setEnabled(True)
             self.btnPropEdit.setEnabled(True)
 
+            # indexes() returns list of selected items
+            # as we only have 1 at a time, return first item and get corresponding row number
             if not idx.indexes() == []:
                 row = idx.indexes()[0].row()
                 self.datamapper_properties.setCurrentIndex(row)
@@ -950,6 +969,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
     def closeEvent(self, event):
         """Delegate closeEvent handling to parent controller"""
+        [self.helpviewer.close(), None][self.helpviewer.isVisible()]
         self._parent.quit_application(event)
 
     def moveEvent(self, *args, **kwargs):
@@ -1043,7 +1063,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         sender.style().polish(sender)
         sender.update()
 
-    @pyqtSlot(str, str)
+    @pyqtSlot(str)
     def set_statbar_text(self, msg):
         """
         Sets status bar text

@@ -33,7 +33,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 
 import oPB
-import oPB.gui.helpviewer
+from oPB.gui.helpviewer import Help
 from oPB.core.tools import LogMixin
 from oPB.gui.utilities import EventMixin
 from oPB.core.confighandler import ConfigHandler
@@ -69,6 +69,9 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         self.assign_model(self._parent.model_left, self._parent.model_right)
 
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
+        self.splash.close()  # only for linux
+
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, self)
 
         self.connect_signals()
 
@@ -102,7 +105,7 @@ class DepotManagerDialog(DepotManagerDialogBase, DepotManagerDialogUI, LogMixin,
         self.btnOnlineCheck.clicked.connect(self._parent.onlinecheck)
         self.btnReboot.clicked.connect(self._parent.reboot_depot)
         self.btnPoweroff.clicked.connect(self._parent.poweroff_depot)
-        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_DEPOTM))
+        self.btnHelp.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_DEPOTM, False))
 
         #self.cmbDepotLeft.currentTextChanged.connect(self._parent.side_content) #side_content
         #self.cmbDepotRight.currentTextChanged.connect(self._parent.side_content)

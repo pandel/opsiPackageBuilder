@@ -2,6 +2,23 @@
 Changelog
 =========
 
+* :release:`8.2.1 <2017-09-29>`
+* :bug:`-` Some pyqtSlot declarations corrected
+* :bug:`-` Change from pycrypto (depricated) to the more recent, drop-in compatible pycryptodome
+* :bug:`-` QtWebKit not working anymore in Qt 5.9 - transition to QtWebEngine
+* :bug:`6` Change use of md5deep to more generally available md5sum in depot manager
+* :support:`- backported` Porting to Python 3.6 and Qt 5.9
+* :release:`8.2.0 <2017-09-15>`
+* :support:`7` opsi client groups in job scheduler
+* :support:`-` Make use of virtualenv, see README for details
+* :release:`8.1.7 <2017-08-03>`
+* :bug:`-` Further comments in Debug mode
+* :bug:`-` Sometimes \*.opsi files could not be found right after creation - VERY OLD nasty problem with DirectoryCacheLifetime - hopefully resolved by creating a process running marker
+* :bug:`-` Configuration was saved erroneously when program was called via command line and no gui
+* :bug:`-` Command line parameter --no-netdrv had no effect
+* :support:`- backported` Additional command line option: --dev-dir - overwrite development folder from config
+* :release:`8.1.6 <2017-06-13>`
+* :bug:`-` Unsaved changes haven't been checked while loading a new project
 * :support:`- backported` Accept additional changelog entry status "experimental"
 * :release:`8.1.5 <2017-03-02>`
 * :support:`-` Change download/ update check to Amazon AWS S3

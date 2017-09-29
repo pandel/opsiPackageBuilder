@@ -28,14 +28,12 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import os.path
 from PyQt5.QtWidgets import *
-from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
-from oPB.core.tools import Helper, LogMixin
+from oPB.core.tools import LogMixin
 from oPB.gui.utilities import EventMixin
 from oPB.ui.ui import StartupDialogBase, StartupDialogUI
 

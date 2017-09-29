@@ -34,10 +34,11 @@ import platform
 import PyQt5
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import pyqtProperty, QUrl, QObject, QSortFilterProxyModel, QDir
-from PyQt5.QtWidgets import QWidget, QDialog, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, qApp
+from PyQt5.QtWidgets import QWidget, QDialog, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy, QPushButton, QTextEdit, qApp
 from PyQt5.QtPrintSupport import QPrintPreviewDialog, QPrinter
-from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 import oPB
+import oPB.gui.helpviewer
 from oPB.core.tools import LogMixin, Helper
 
 translate = QtCore.QCoreApplication.translate
@@ -165,7 +166,7 @@ class ScriptFileValidator(QtGui.QValidator):
             return ScriptFileValidator.Invalid, p_str, p_int
 
 
-class HtmlView(QWebView):
+class HtmlView(QWebEngineView):
     """Subclass QWebView and connect to a QPrintPreviewDialog object"""
 
     def __init__(self, parent=None, url = ""):
@@ -176,20 +177,38 @@ class HtmlView(QWebView):
         :param url: url to load, if set, a loadFInished signal is emitted
         """
         super().__init__(parent)
+
+        self.html = ""
         self.setUrl(QUrl(url))
+
+        """Open QPrintPreviewDialog dialog window"""
         self.preview = QPrintPreviewDialog()
 
         # just for the moment / buf in Qt leads to incorrect printing of tables fomr QWebKit
         self.preview.printer().setOutputFormat(QPrinter.PdfFormat)
         self.preview.printer().setPaperSize(QPrinter.A4)
 
-        self.preview.paintRequested.connect(self.print)
+        self.textedit = QTextEdit()
+
+        self.preview.paintRequested.connect(self.printPreview)
+
         if url != "":
             self.loadFinished.connect(self.execpreview)
 
     def execpreview(self, arg):
-        """Open QPrintPreviewDialog dialog window"""
-        self.preview.exec_()
+        self.preview.exec()
+
+    def printPreview(self, printer):
+        self.textedit.print(printer)
+
+    def setHtml_(self, html):
+        self.setHtml(html)
+        self.textedit.setHtml(html)
+
+        # small workaround to find the QPrintPreviewWidget inside the pre-defined dialog and force it to update its content
+        wdg = self.preview.findChild(PyQt5.QtPrintSupport.QPrintPreviewWidget)
+        if wdg is not None:
+            wdg.updatePreview()
 
 
 class HtmlDialog(QDialog):
@@ -237,7 +256,7 @@ class HtmlDialog(QDialog):
 
         :param html: raw html data
         """
-        self.wv.setHtml(html)
+        self.wv.setHtml_(html)
         self.show()
 
 class Translator(QObject, LogMixin):
@@ -447,11 +466,12 @@ class Translator(QObject, LogMixin):
         cls.cfg.combobox.model().sort(0)
 
     @classmethod
-    @QtCore.pyqtSlot()
-    def on_comboBoxLanguage_currentIndexChanged(cls):
+    def on_comboBoxLanguage_currentIndexChanged(cls, idx):
         """
         Convinience method for setting ui language after changing selection
         in combobox.
+        
+        HINT: The 'idx' parameter is only for compatibility reasons with the used signal QComboBox.currentIndexChanged
         """
 
         cls.cfg.install_translations(cls.cfg.combobox.currentText())
@@ -494,3 +514,166 @@ class EventMixin(object):
             except:
                 pass
                 #super(type(self), self).changeEvent(event)
+
+
+class HtmlTools(LogMixin):
+    """
+    HTMLTools class provides convenient functions to create working HTML pages from simple text
+
+    Every method is defined as ``@classmethod``
+
+    """
+    @classmethod
+    def HTMLHeader(cls, title = "", bodybgcolor = "#ffffff", highlightbgcolor = "#F0F9FF",
+                   headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff") -> str:
+        """
+        Return valid HTML page header
+
+        :param title: page title
+        :param bodybgcolor: body background color
+        :param highlightbgcolor: highlight background color
+        :param headerbgcolor: header background color
+        :param bodytxtcolor: body text color
+        :param headertxtcolor: header text color
+        :return: HTML string
+        """
+        head = ""
+        if title != "":
+            head = '<center><h2>' + title + '</h2></center>'
+
+        css = "table {margin: 1em; border-collapse: collapse; } \n" \
+              "td, th {padding: .3em; border: 1px #ccc solid; }\n" \
+              "thead {background: " + headerbgcolor + "; }\n" \
+              "thead {color:" + headertxtcolor + ";}\n" \
+              "tbody {background: " + bodybgcolor + "; }\n" \
+              "tbody {color: " + bodytxtcolor + "; }\n" \
+              "#highlight tr.hilight { background: " + highlightbgcolor + "; }\n" \
+              "h2 { font-size: 100%; }\n" \
+              "@media print { h2 { font-size: 94%; } }\n" \
+              "body { font-size: 94%; font-family: Helvetica, Arial, sans-serif; line-height: 100%; }\n"
+
+        javascript = "function tableHighlightRow() {\n" \
+              "  if (document.getElementById && document.createTextNode) {\n" \
+              '    var tables=document.getElementsByTagName("table");\n' \
+              "    for (var i=0;i<tables.length;i++)\n" \
+              "    {\n" \
+              '      if(tables[i].className=="hilite") {\n' \
+              '        var trs=tables[i].getElementsByTagName("tr");\n' \
+              "        for(var j=0;j<trs.length;j++)\n" \
+              "           {\n" \
+              '          if(trs[j].parentNode.nodeName=="TBODY") {\n' \
+              '            trs[j].onmouseover=function(){this.className="hilight";return false}\n' \
+              "            trs[j].onmouseout=function(){this.className="";return false}\n" \
+              "          }\n" \
+              "        }\n" \
+              "      }\n" \
+              "    }\n" \
+              "  }\n" \
+              "}\n" \
+              "window.onload=function(){tableHighlightRow();}\n"
+
+        html = "<!DOCTYPE html><html>\n" + \
+              "<head> " + \
+              "<title>" + title + "</title>\n" \
+              "<Style>\n" + \
+              css + \
+              "</Style>\n" + \
+              "<script>\n" + \
+              javascript + \
+              "</script>\n" + \
+              "</head>\n" + \
+              "<body>\n" + head
+
+        return html
+
+    @classmethod
+    def HTMLFooter(cls):
+        """
+        Very simple HTML page footer
+
+        :return: footer string "</body></html>"
+        """
+        return "</body></html>"
+
+    @classmethod
+    def Array2HTMLTable(cls, element_list = [], colspan = 1, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
+        headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = False) -> str:
+        """
+        Convert list of lists (2D table) two HTML table
+
+        :param element_list: list of lists
+        :param colspan: colspan of header row, only valid if ``headers_on`` is True
+        :param title: page title, only valid if ``only_table`` is False
+        :param bodybgcolor: body background color, only valid if ``only_table`` is False
+        :param highlightbgcolor: highlight background color, only valid if ``only_table`` is False
+        :param headerbgcolor: header background color, only valid if ``only_table`` is False
+        :param bodytxtcolor: body text color, only valid if ``only_table`` is False
+        :param headertxtcolor: header text color, only valid if ``only_table`` is False
+        :param headers_on: ``element_list`` contains table headers in first row (True) or not (False)
+        :param only_table: generate table only (True), or return complete HTML page (False)
+        :return: HTML string
+        """
+
+        if not element_list:
+            return
+
+        table_rows = ""
+        table_header  = ""
+        bodystart = 1
+
+        try:
+            total_rows = len(element_list)
+            if not headers_on:
+                total_columns = len(element_list[0]) # first real data row sets column count for whole table
+            else:
+                total_columns = len(element_list[1]) # first real data row sets column count for whole table
+        except:
+            return
+
+        if not headers_on:
+            bodystart = 0
+        else:
+            if total_rows < 2:
+                return # there need to be at least two rows if headers are on
+
+            for x in range(total_columns):
+                try: # fewer header columns than data columns?
+                    t = str(element_list[0][x]) if element_list[0][x] is not None else ""
+                    table_header = table_header + '   <th colspan=' + str(colspan) + '>' + t + '</th>\n'
+                except:
+                    pass
+
+        for r in range(bodystart, total_rows):
+            table_columns = ""
+            for c in range(0, total_columns):
+                t = str(element_list[r][c]) if element_list[r][c] is not None else ""
+                table_columns = table_columns + '   <td>' + t + '</td>\n'
+
+            table_rows += '<tr>' + table_columns + '</tr>\n'
+
+        if not only_table:
+            html = cls.HTMLHeader(title, bodybgcolor, hightlightbgcolor, headerbgcolor, bodytxtcolor, headertxtcolor) + \
+                    '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
+                    '<thead>\n' + \
+                    '<tr>' + \
+                    table_header + \
+                    '</tr>\n' + \
+                    '</thead>\n' + \
+                    '</p><tbody>\n' + \
+                    table_rows + \
+                    '</tbody>\n' + \
+                    '</table>\n' + \
+                    cls.HTMLFooter()
+        else:
+            html = '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
+                    '<thead>\n' + \
+                    '<tr>' + \
+                    table_header + \
+                    '</tr>\n' + \
+                    '</thead>\n' + \
+                    '</p><tbody>\n' + \
+                    table_rows + \
+                    '</tbody>\n' + \
+                    '</table>\n'
+
+        return html

@@ -28,10 +28,9 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import platform
 from PyQt5 import QtCore, QtGui
-from oPB.core import *
-from oPB.core.tools import Helper, LogMixin
+from PyQt5.QtCore import QObject
+from oPB.core.tools import LogMixin
 from oPB.gui.utilities import EventMixin
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QSplashScreen, QProgressBar, qApp
@@ -39,7 +38,7 @@ from PyQt5.QtWidgets import QSplashScreen, QProgressBar, qApp
 translate = QtCore.QCoreApplication.translate
 
 
-class Splash(LogMixin, EventMixin):
+class Splash(QObject, LogMixin, EventMixin):
     """Splash screen class"""
 
     def __init__(self, parent, msg = ""):
@@ -50,6 +49,7 @@ class Splash(LogMixin, EventMixin):
         :param msg: initial message text
 
         """
+        super().__init__()
         self._parent = parent
         self.isHidden = True
         self._progress = 0
@@ -134,7 +134,8 @@ class Splash(LogMixin, EventMixin):
         self._splash.setParent(parent)
 
     @pyqtSlot()
-    def close(self):
+    @pyqtSlot(bool)
+    def close(self, dummy = True):
         self.logger.debug("Hide splash")
         self.isHidden = True
         self._progressBar.hide()
@@ -142,6 +143,7 @@ class Splash(LogMixin, EventMixin):
         self._splash.close()
 
     @pyqtSlot()
+    @pyqtSlot(str)
     def show_(self, msg = ""):
 
         if msg != "":

@@ -35,6 +35,8 @@ from pathlib import PurePath, Path
 
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtWidgets import QApplication
+
 
 import oPB
 from oPB.core.confighandler import ConfigHandler
@@ -56,6 +58,8 @@ class BaseController(LogMixin):
 
     clientlist_dict = None
     clientsondepotslist_dict = None
+    clientgroups_dict = None
+    groups_dict = None
     depotlist_dict = None
     productlist_dict = None
     lockedproductlist_dict = None
@@ -219,11 +223,12 @@ class BaseController(LogMixin):
             self.processingEnded.emit(False)
 
         proc.progressChanged.disconnect(self.msgSend)
+
         return result[3]
 
     @pyqtSlot()
     def do_build(self, dest = ""):
-        if os.path.isfile(self.controlData.local_package_path):
+        if (self.controlData.packagename in os.listdir(self.controlData.projectfolder)):
             if self.args.build_mode is None:
                 self.logger.debug("Package exits. Ask for further step (cancel, rebuild, add version)")
                 reply = self.msgbox(translate("BaseController", "This package version already exists! You have three possibilities:@@Rebuild@TAB@TAB= rebuild (overwrite) the existing one@Add version@TAB= auto-correct package version and build new one@Cancel@TAB= cancel build process"),
@@ -338,6 +343,16 @@ class BaseController(LogMixin):
     def do_getclients(self, dest = ""):
         BaseController.clientlist_dict = \
             self._do(oPB.OpEnum.DO_GETCLIENTS, translate("baseController", "Getting opsi client list..."), alt_destination = dest)
+
+    @pyqtSlot()
+    def do_getclientgroups(self, dest = ""):
+        BaseController.clientgroups_dict = \
+            self._do(oPB.OpEnum.DO_GETCLIENTGROUPS, translate("baseController", "Getting client-to-group association..."), alt_destination = dest)
+
+    @pyqtSlot()
+    def do_getgroups(self, dest = ""):
+        BaseController.groups_dict = \
+            self._do(oPB.OpEnum.DO_GETGROUPS, translate("baseController", "Getting opsi host group list..."), alt_destination = dest)
 
     @pyqtSlot()
     def do_getproducts(self, dest = ""):

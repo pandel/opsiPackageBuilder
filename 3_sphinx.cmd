@@ -1,17 +1,19 @@
+call workon oPB
+
 md docs
-sphinx-apidoc -M -f -e -o "docs/source" "oPB"
+%USERPROFILE%\Envs\oPB\Scripts\sphinx-apidoc -M -f -e -o "docs/source" "oPB"
 cd docs
 call make.bat clean
 rem call make.bat epub
 rem call make.bat html
 call make.bat qthelp
 
-qcollectiongenerator build\qthelp\opsipackagebuilder.qhcp
+%USERPROFILE%\Envs\oPB\Lib\site-packages\pyqt5-tools\qcollectiongenerator build\qthelp\opsipackagebuilder.qhcp
 
 move build\qthelp\opsipackagebuilder.qch ..\oPB\help
 move build\qthelp\opsipackagebuilder.qhc ..\oPB\help
 
 cd ..
 
-assistant -collectionFile oPB\help\opsipackagebuilder.qhc
+%USERPROFILE%\Envs\oPB\Lib\site-packages\pyqt5-tools\assistant -collectionFile oPB\help\opsipackagebuilder.qhc
 

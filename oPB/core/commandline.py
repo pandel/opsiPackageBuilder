@@ -35,11 +35,8 @@ import platform
 from PyQt5 import QtCore
 
 import oPB
-from oPB.core import *
-from oPB.core.tools import Helper
 
 translate = QtCore.QCoreApplication.translate
-
 
 class CommandLine(object):
     """
@@ -63,8 +60,7 @@ class CommandLine(object):
                 "Suboptions for --build:\n"
                 "\tcancel:\tdon't overwrite an existing package\n"
                 "\trebuild:\trebuild (overwrite) an existing package\n"
-                "\tnew        :\tcreate new package, append timestamp to package version\n"
-                "\tinteractive:\tinteractive mode\n"
+                "\tadd        :\tcreate new package, append timestamp to package version\n"
                 "If you don""t specify any suboption, the default value is 'cancel'.\n\n"
                 "Default LOG file path: " + str(logpath) + "\n\n")
         if 'Windows' not in platform.system():
@@ -94,8 +90,14 @@ class CommandLine(object):
         self._parser.add_argument("--path", "-p", action="store", default = "",
                                   dest="path", help="Path to package root directory")
 
+        self._parser.add_argument("--dev-dir", action="store",
+                                  dest="dev_dir", help="Overwrite development directory from config file")
+
         self._parser.add_argument("--no-netdrv", "-w", action="store_true", default = False,
-                                  dest="nonetdrive", help="Don't mount development drive")
+                                  dest="nonetdrive", help="Don't mount development drive (only Windows)")
+
+        self._parser.add_argument("--no-except", "-e", action="store_true", default = False,
+                                  dest="noexcepthook", help="Disable excepthook - ONLY for debugging purpose!")
 
         self._parser.add_argument("--build", "-b", action="store",
                                   choices=["cancel", "rebuild", "add"],

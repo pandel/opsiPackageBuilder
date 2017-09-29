@@ -30,10 +30,10 @@ __status__ = "Production"
 
 from datetime import datetime
 from PyQt5 import QtCore
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QModelIndex
 from PyQt5.Qt import QKeyEvent
 import oPB
-import oPB.gui.helpviewer
+from oPB.gui.helpviewer import Help
 from oPB.core.tools import LogMixin
 from oPB.gui.utilities import EventMixin
 from oPB.core.confighandler import ConfigHandler
@@ -67,6 +67,8 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin, EventMixin):
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
         self.splash.close()  # only for linux
 
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, self)
+
         self.model = None
 
         self.assign_model(self._parent.model_jobs)
@@ -80,7 +82,7 @@ class JobListDialog(JobListDialogBase, JobListDialogUI, LogMixin, EventMixin):
         self.btnCreate.clicked.connect(self._parent.ui_jobcreator.show_)
         self.btnRemove.clicked.connect(self.delete_jobs)
         self.btnClearAll.clicked.connect(self._parent.delete_all_jobs)
-        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_JOBLIST))
+        self.btnHelp.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_JOBLIST, False))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
@@ -218,12 +220,6 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin, Event
         self.tblClients.setModel(self.model_clients)
         self.tblProducts.setModel(self.model_products)
 
-    def resizeTables(self):
-        self.tblClients.resizeRowsToContents()
-        self.tblClients.resizeColumnsToContents()
-        self.tblProducts.resizeRowsToContents()
-        self.tblProducts.resizeColumnsToContents()
-
     def show_(self):
         self.logger.debug("Show job creator dialog")
 
@@ -236,6 +232,35 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin, Event
 
         self.dialogOpened.emit()
 
+
+    def spanParents(self, model, parent=QModelIndex()):
+        """Iterate through the whole Qtreeview model to span to headlines
+
+        see: https://stackoverflow.com/questions/33124903/how-to-iterate-trough-a-qstandarditemmodel-completely
+
+        :param model: data model of the QTreeview
+        :param parent: current QModelIndex to inspect for children
+        """
+
+        # the first ``parent`` is invalid, so ``childcount`` returns 1 (for root)
+        # in any succeeding recursion it returns the actual row count of children
+        childcount = model.rowCount(parent)
+
+        for r in range(0, childcount):
+            # get the index of the first column item in the topmost row based on  parent
+            index = model.index(r, 0, parent)
+            name = model.data(index)
+            # these two are always there, so span them anyways
+            if name == "clientdirectory" or name == "software-on-demand":
+                self.tblClients.setFirstColumnSpanned(r, parent, True)
+
+            # if the model has children at the index position, it must be a headline, so span it
+            # this possibly leads to spanning clientdirectory and/or sod twice, but who cares...
+            if model.hasChildren(index):
+                self.tblClients.setFirstColumnSpanned(r, parent, True)
+                self.spanParents(model, index)
+
+
     def update_ui(self):
         """
         Update model data and reset tableview
@@ -244,11 +269,20 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin, Event
         See: :meth:`oPB.controller.components.scheduler.SchedulerComponent.update_model_data_products`
         """
         self.splash.show_()
-        self.splash.setProgress(33)
+        self.splash.setProgress(10)
         self._parent.update_model_data_clients()
-        self.splash.setProgress(66)
+
+        self.splash.setProgress(80)
         self._parent.update_model_data_products()
-        self.resizeTables()
+
+        self.tblClients.expand(self.model_clients.item(0).index())
+        self.tblProducts.resizeRowsToContents()
+        self.tblProducts.resizeColumnsToContents()
+
+        self.tblClients.setSortingEnabled(True)
+
+        self.spanParents(self.tblClients.model())
+
         self.splash.close()
 
     def create_jobs(self):
@@ -262,16 +296,16 @@ class JobCreatorDialog(JobCreatorDialogBase, JobCreatorDialogUI, LogMixin, Event
         self.splash.show_()
 
         # get selected clients
-        selection = self.tblClients.selectionModel().selectedRows()
+        selection = self.tblClients.selectedIndexes()
         clIdx = []
         for row in selection:
-            clIdx.append(self.model_clients.item(row.row(),0).text().split()[0])
+            clIdx.append(row.model().itemFromIndex(row).text().split()[0])
 
         # get selected products
         selection = self.tblProducts.selectionModel().selectedRows()
         prodIdx = []
         for row in selection:
-            prodIdx.append(self.model_products.item(row.row(),0).text())
+            prodIdx.append(self.model_products.item(row.row(), 0).text())
 
         # get date/time
         dateVal = self.dateSelector.selectedDate().toString("yyyyMMdd")

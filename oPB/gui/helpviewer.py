@@ -29,32 +29,235 @@ __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
 import sys
+import mimetypes
+import os
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtHelp import QHelpEngine
 from PyQt5.QtWidgets import QApplication, QSplitter, QDialog, QHBoxLayout, QVBoxLayout, QWidget, QPushButton
-from PyQt5.QtCore import QIODevice, QTimer, QObject, QUrl
-from PyQt5.QtWebKitWidgets import QWebView
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
+from PyQt5.QtCore import QObject, QUrl, pyqtSignal, pyqtSlot, QByteArray, QIODevice, QBuffer
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebEngineCore import QWebEngineUrlSchemeHandler, QWebEngineUrlRequestJob
+
 
 from oPB.core.tools import LogMixin
 
 translate = QtCore.QCoreApplication.translate
 
+QtHelp_DOCROOT = "qthelp://org.qt-project."
+
+ExtensionMap = {
+    ".bmp": "image/bmp",
+    ".css": "text/css",
+    ".gif": "image/gif",
+    ".html": "text/html",
+    ".htm": "text/html",
+    ".ico": "image/x-icon",
+    ".jpeg": "image/jpeg",
+    ".jpg": "image/jpeg",
+    ".js": "application/x-javascript",
+    ".mng": "video/x-mng",
+    ".pbm": "image/x-portable-bitmap",
+    ".pgm": "image/x-portable-graymap",
+    ".pdf": "application/pdf",
+    ".png": "image/png",
+    ".ppm": "image/x-portable-pixmap",
+    ".rss": "application/rss+xml",
+    ".svg": "image/svg+xml",
+    ".svgz": "image/svg+xml",
+    ".text": "text/plain",
+    ".tif": "image/tiff",
+    ".tiff": "image/tiff",
+    ".txt": "text/plain",
+    ".xbm": "image/x-xbitmap",
+    ".xml": "text/xml",
+    ".xpm": "image/x-xpm",
+    ".xsl": "text/xsl",
+    ".xhtml": "application/xhtml+xml",
+    ".wml": "text/vnd.wap.wml",
+    ".wmlc": "application/vnd.wap.wmlc",
+}
+
+
+# https://fossies.org/linux/eric6/eric/WebBrowser/Network/QtHelpSchemeHandler.py
+class HelpSchemeHandler(QWebEngineUrlSchemeHandler):
+    """
+    Class implementing a scheme handler for the qthelp: scheme.
+
+    see: https://fossies.org/linux/eric6/eric/WebBrowser/Network/QtHelpSchemeHandler.py
+    All credits for this class go to:
+    Detlev Offenbach, the developer of The Eric Python IDE (https://eric-ide.python-projects.org)
+
+    """
+
+    def __init__(self, engine, parent=None):
+        """
+        Constructor
+
+        @param engine reference to the help engine
+        @type QHelpEngine
+        @param parent reference to the parent object
+        @type QObject
+        """
+        super(HelpSchemeHandler, self).__init__(parent)
+
+        self._engine = engine
+
+        self._replies = []
+
+    def requestStarted(self, job):
+        """
+        Public method handling the URL request.
+
+        @param job URL request job
+        @type QWebEngineUrlRequestJob
+        """
+        if job.requestUrl().scheme() == "qthelp":
+            reply = HelpSchemeReply(job, self._engine)
+            reply.closed.connect(self.__replyClosed)
+            self._replies.append(reply)
+            job.reply(reply.mimeType(), reply)
+        else:
+            job.fail(QWebEngineUrlRequestJob.UrlInvalid)
+
+    @pyqtSlot()
+    def __replyClosed(self):
+        """
+        Private slot handling the closed signal of a reply.
+        """
+        reply = self.sender()
+        if reply and reply in self._replies:
+            self._replies.remove(reply)
+
+
+class HelpSchemeReply(QIODevice):
+    """
+    Class implementing a reply for a requested qthelp: page.
+
+    @signal closed emitted to signal that the web engine has read
+        the data
+
+    see: https://fossies.org/linux/eric6/eric/WebBrowser/Network/QtHelpSchemeHandler.py
+    All credits for this class go to:
+    Detlev Offenbach, the developer of The Eric Python IDE(https://eric-ide.python-projects.org)
+
+    """
+    closed = pyqtSignal()
+
+    def __init__(self, job, engine, parent=None):
+        """
+        Constructor
+
+        @param job reference to the URL request
+        @type QWebEngineUrlRequestJob
+        @param engine reference to the help engine
+        @type QHelpEngine
+        @param parent reference to the parent object
+        @type QObject
+        """
+        super(HelpSchemeReply, self).__init__(parent)
+
+        url = job.requestUrl()
+        strUrl = url.toString()
+
+        self.__buffer = QBuffer()
+
+        # For some reason the url to load maybe wrong (passed from web engine)
+        # though the css file and the references inside should work that way.
+        # One possible problem might be that the css is loaded at the same
+        # level as the html, thus a path inside the css like
+        # (../images/foo.png) might cd out of the virtual folder
+        if not engine.findFile(url).isValid():
+            if strUrl.startswith(QtHelp_DOCROOT):
+                newUrl = job.requestUrl()
+                if not newUrl.path().startswith("/qdoc/"):
+                    newUrl.setPath("/qdoc" + newUrl.path())
+                    url = newUrl
+                    strUrl = url.toString()
+
+        self.__mimeType = mimetypes.guess_type(strUrl)[0]
+        if self.__mimeType is None:
+            # do our own (limited) guessing
+            self.__mimeType = self.__mimeFromUrl(url)
+
+        if engine.findFile(url).isValid():
+            data = engine.fileData(url)
+        else:
+            data = QByteArray(self.tr(
+                """<html>"""
+                """<head><title>Error 404...</title></head>"""
+                """<body><div align="center"><br><br>"""
+                """<h1>The page could not be found</h1><br>"""
+                """<h3>'{0}'</h3></div></body>"""
+                """</html>""").format(strUrl)
+                              .encode("utf-8"))
+
+        self.__buffer.setData(data)
+        self.__buffer.open(QIODevice.ReadOnly)
+        self.open(QIODevice.ReadOnly)
+
+    def bytesAvailable(self):
+        """
+        Public method to get the number of available bytes.
+
+        @return number of available bytes
+        @rtype int
+        """
+        return self.__buffer.bytesAvailable()
+
+    def readData(self, maxlen):
+        """
+        Public method to retrieve data from the reply object.
+
+        @param maxlen maximum number of bytes to read (integer)
+        @return string containing the data (bytes)
+        """
+        return self.__buffer.read(maxlen)
+
+    def close(self):
+        """
+        Public method used to cloase the reply.
+        """
+        super(HelpSchemeReply, self).close()
+        self.closed.emit()
+
+    def __mimeFromUrl(self, url):
+        """
+        Private method to guess the mime type given an URL.
+
+        @param url URL to guess the mime type from (QUrl)
+        @return mime type for the given URL (string)
+        """
+        path = url.path()
+        ext = os.path.splitext(path)[1].lower()
+        if ext in ExtensionMap:
+            return ExtensionMap[ext]
+        else:
+            return "application/octet-stream"
+
+    def mimeType(self):
+        """
+        Public method to get the reply mime type.
+
+        @return mime type of the reply
+        @rtype bytes
+        """
+        return self.__mimeType.encode("utf-8")
 
 class HelpDialog(QObject, LogMixin):
-    """qthelp viewer dialog"""
+    """Class implementing qthelp viewer dialog"""
 
-    def __init__(self, qthelp_file):
+    def __init__(self, qthelp_file, parent = None):
         """
         Constructor of HelpDialog
 
         :param qthelp_file: full path to qthelp helpfile
 
         """
-        QObject.__init__(self)
+        super(HelpDialog,self).__init__(parent)
 
         # instantiate help engine
+
         helpEngine = QHelpEngine(qthelp_file)
         helpEngine.setupData()
         self._helpEngine = helpEngine
@@ -62,16 +265,14 @@ class HelpDialog(QObject, LogMixin):
         # base dialog widget
         self.ui = QDialog(None, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint )
 
-        # we must deregister the helpEngine before closing the dialog
-        # because somehow it segfaults otherwise
-        self.ui.rejected.connect(self.removeHelpEngine)
-
         self.ui.setWindowTitle("HelpViewer")
         self.ui.setWindowIcon(QIcon(":/images/prog_icons/help/help.ico"))
-        # webview for help information
-        self._wv = QWebView()
-        enam = HelpNetworkAccessManager(self, self._helpEngine)
-        self._wv.page().setNetworkAccessManager(enam)
+
+        # Create webview for help information
+        # and assign a custom URL scheme handler for scheme "qthelp)
+        self._wv = QWebEngineView(self.ui)
+        self._urlschemehandler = HelpSchemeHandler(self._helpEngine, self._wv.page().profile())
+        self._wv.page().profile().installUrlSchemeHandler(b'qthelp', self._urlschemehandler)
 
         # get help content overview widget
         self._helpContent = self._helpEngine.contentWidget()
@@ -150,12 +351,10 @@ class HelpDialog(QObject, LogMixin):
 
         self.retranslateMsg()
 
-    def removeHelpEngine(self):
-        self._helpEngine.deleteLater()
-
     def retranslateMsg(self):
         self.logger.debug("Retranslating further messages...")
         self._btnReset.setText(translate("HelpViewer", "Reset"))
+        self._btnReset.setText(translate("HelpViewer", "Search"))
 
     def search(self):
         """Initiate qthelp search"""
@@ -170,14 +369,6 @@ class HelpDialog(QObject, LogMixin):
             self._helpSearchResult.show()
             self._btnReset.show()
 
-    def setUrl(self, urlstring):
-        """
-        Set internal qthelp url
-
-        :param urlstring: url string
-        """
-        self._wv.setUrl(QUrl(urlstring))
-
     def resetResult(self):
         """Reset search result widget"""
 
@@ -188,103 +379,10 @@ class HelpDialog(QObject, LogMixin):
         self._splitterMain.setSizes([h*(1/9), h*(7/9), h*(1/9)])
 
 
-class HelpNetworkAccessManager(QNetworkAccessManager):
-    """Subclass standard QNetworkAccessManager to redirect url requests
-    from file system to qthelp:// scheme"""
-
-    def __init__(self, parent = None, helpEngine = None):
-        """
-        Constructor of HelpNetworkAccessManager
-
-        :param parent: parent
-        :param helpEngine: help engine to attach to
-        :return:
-        """
-        self._parent = parent
-        self._helpEngine = helpEngine
-        super().__init__(self._parent)
-
-    def createRequest(self, operation, request, device):
-        """
-        Create network reply, if url scheme is "qthelp" or pass request to super()
-
-        :param operation: QNetworkAccessManager.Operation types
-        :param request: QNetworkRequest
-        :param device: IO device
-        :return: QNetworkReply / HelpReply
-        """
-        # ONLY react on qthelp://... requests
-        if request.url().scheme() == 'qthelp':
-            #print(request.url().toString())
-            return HelpReply(self, operation, request, device, self._helpEngine)
-        return super().createRequest(operation, request, device)
-
-
-class HelpReply(QNetworkReply):
-    """Single network reply"""
-
-    def __init__(self, parent, operation, request, device, helpEngine):
-        """
-        Constructor of HelpReply
-
-        :param parent: parent
-        :param operation: QNetworkAccessManager.Operations
-        :param request: QNetworkRequest
-        :param device: IO device
-        :param helpEngine: attached help engine
-        """
-        self._parent = parent
-        self._helpEngine = helpEngine
-        super().__init__(self._parent)
-        self.setRequest(request)
-        self.setOperation(operation)
-        self.setUrl(request.url())
-        self.bytes_read = 0
-        self.content = b''
-
-        # give webkit time to connect to the finished and readyRead signals
-        QTimer.singleShot(200, self.load_content)
-
-    def load_content(self):
-        """Load fileData content from helpEngine"""
-
-        if self.operation() == QNetworkAccessManager.PostOperation:
-            # handle post operations ... but not here ;-)
-            pass
-        # get content from help engine
-        self.content = bytes(self._helpEngine.fileData(self.url()))
-
-        self.open(QIODevice.ReadOnly | QIODevice.Unbuffered)
-        self.setHeader(QNetworkRequest.ContentLengthHeader, len(self.content))
-        self.setHeader(QNetworkRequest.ContentTypeHeader, "text/html")
-        self.readyRead.emit()
-        self.finished.emit()
-
-    def abort(self):
-        pass
-
-    def isSequential(self):
-        return True
-
-    def bytesAvailable(self):
-        ba = len(self.content) - self.bytes_read + super().bytesAvailable()
-        return ba
-
-    def readData(self, size):
-        if self.bytes_read >= len(self.content):
-            return None
-        data = self.content[self.bytes_read:self.bytes_read + size]
-        self.bytes_read += len(data)
-        return data
-
-    def manager(self):
-        return self.parent()
-
-
 class Help(QObject):
-    """Main Help class"""
+    """Main HelpViewer class"""
 
-    def __init__(self, helpfile, prefix, short_url = None, max = True):
+    def __init__(self, helpfile, prefix, parent=None):
         """
         Constructor of Help
         :param helpfile: full path to qthelp file
@@ -292,27 +390,30 @@ class Help(QObject):
         :param short_url: shortcut url to help content, omits ``prefix``
         :param max: show helpviewer maximized (True), or not (False)
         """
-        super().__init__()
-        self._help = HelpDialog(helpfile)
+        super().__init__(parent)
+        self._help = HelpDialog(helpfile, self)
         self._helpprefix = prefix
 
-        self.showHelp(short_url, max)
+        #self.showHelp(short_url, max)
 
-    def showHelp(self, short_url, max = True):
+    def showHelp(self, short_url = None, max = True):
         """Find short ``short_url`` in help file and open (maximized) viewer"""
-        if type(short_url) is str:
-            self._help.setUrl(self._helpprefix + short_url)
-        else:
-            self._help.setUrl(self._helpprefix + "index.html")
 
-        #parentsize = self._help.ui.parent().geometry()
-        #self._help.ui.setGeometry(parentsize.height * (2/3),parentsize.height * (2/3))
-        #self._help.ui.show()
+        if type(short_url) is str:
+            self._help._wv.setUrl(QUrl(self._helpprefix + short_url))
+        else:
+            self._help._wv.setUrl(QUrl(self._helpprefix + "index.html"))
 
         if max:
             self._help.ui.showMaximized()
         else:
             self._help.ui.show()
+
+    def close(self):
+        self._help.ui.close()
+
+    def isVisible(self):
+        return self._help.ui.isVisible()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

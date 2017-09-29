@@ -36,10 +36,10 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtGui import QKeyEvent
 
 import oPB
-from oPB.core.tools import HTMLTools, LogMixin
+from oPB.core.tools import LogMixin
 from oPB.gui.depotmanager import translate
 from oPB.gui.splash import Splash
-from oPB.gui.utilities import HtmlDialog, EventMixin
+from oPB.gui.utilities import HtmlDialog, EventMixin, HtmlTools
 from oPB.ui.ui import ReportSelectorDialogBase, ReportSelectorDialogUI
 
 translate = QtCore.QCoreApplication.translate
@@ -189,12 +189,12 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
 
         if modus == "depot":
             self.logger.debug("Depot comparison modus")
-            html = HTMLTools.HTMLHeader(translate("depotManagerController", "Compare depots:") + " " + server_left + " / " + str(datetime.now()),
+            html = HtmlTools.HTMLHeader(translate("depotManagerController", "Compare depots:") + " " + server_left + " / " + str(datetime.now()),
                                         "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#ffffff")
             data_left = self.get_prodlist_to_server(server_left, self._parent.productsondepotslist)
         else:
             self.logger.debug("Repository comparison modus")
-            html = HTMLTools.HTMLHeader(translate("depotManagerController", "Compare repositories:") + " " + server_left + " / " + str(datetime.now()),
+            html = HtmlTools.HTMLHeader(translate("depotManagerController", "Compare repositories:") + " " + server_left + " / " + str(datetime.now()),
                                         "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#ffffff")
             data_left = self.get_repolist_to_server(self._parent.do_getrepocontent(dest = server_left))
 
@@ -218,10 +218,10 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
             tmp.insert(0, [translate("depotManagerController", "Reference:") + " " + server_left, "Depot: " + server_right])
 
             if tmp:
-                html += HTMLTools.Array2HTMLTable(element_list = tmp, colspan = colspan, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
+                html += HtmlTools.Array2HTMLTable(element_list = tmp, colspan = colspan, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
                                                   headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = True)
 
-        html += HTMLTools.HTMLFooter()
+        html += HtmlTools.HTMLFooter()
 
         self.splash.close()
 

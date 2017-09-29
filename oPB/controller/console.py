@@ -53,5 +53,5 @@ class ConsoleController(BaseController, QObject):
 
     def finished(self):
         self.logger.info("Processing finished")
-        ConfigHandler.cfg.save()
+        # ConfigHandler.cfg.save()
 

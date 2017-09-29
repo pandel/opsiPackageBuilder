@@ -247,9 +247,12 @@ class MainWindowController(BaseController, QObject, EventMixin):
         except:
             pass
 
+        # cleanup model
         items = model.rowCount()
         for i in range(items, -1, -1):
             model.removeRow(i)
+
+        # insert items
         for elem in data:
             row = []
             for val in elem:
@@ -368,7 +371,6 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.logger.debug("Emit signal modelDataUpdated")
         self.modelDataUpdated.emit(2)
 
-    @pyqtSlot(QtGui.QStandardItem)
     def model_data_changed(self, item):
         """
         Sets a dataChanged marker for model data.

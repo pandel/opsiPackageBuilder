@@ -169,7 +169,6 @@ class DepotManagerComponent(BaseController, QObject):
         if resetgui:
             self.modelDataUpdated.emit()
 
-    @pyqtSlot(str)
     def switch_content(self, param = ""):
         self.logger.debug("Switch content")
 

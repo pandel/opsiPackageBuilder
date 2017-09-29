@@ -36,7 +36,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
-import oPB.gui.helpviewer
+from oPB.gui.helpviewer import Help
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.utilities import EventMixin
 from oPB.ui.ui import ChangelogEditorDialogExtendedBase,ChangelogEditorDialogSimpleBase, \
@@ -70,6 +70,8 @@ class ChangelogEditorDialog(LogMixin, EventMixin):
 
         self.datamapper = None
         self.model = self._parent.model
+
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, self)
 
         self.create_datamapper()
         self.connect_signals()
@@ -127,7 +129,7 @@ class ChangelogEditorDialogExtended(ChangelogEditorDialog, ChangelogEditorDialog
         self.btnSubmit.clicked.connect(self.datamapper.submit)
         self.btnDelete.clicked.connect(lambda a: self._parent.remove_entry(self.tblEntries.selectionModel().currentIndex().row()))
         self.btnClose.clicked.connect(self._parent.close_dialog)
-        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_CHLOGEXT))
+        self.btnHelp.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_CHLOGEXT, False))
 
         selectionModel = self.tblEntries.selectionModel()
         selectionModel.selectionChanged.connect(self.datamapper.submit)

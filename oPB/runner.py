@@ -81,7 +81,6 @@ from oPB.gui.helpviewer import Help
 
 translate = QtCore.QCoreApplication.translate
 
-
 class Main(QObject):
 
     def __init__(self, parent = None):
@@ -106,8 +105,11 @@ class Main(QObject):
         confighandler.ConfigHandler(oPB.CONFIG_INI)
 
         # redirect system exception hook
-        sys.excepthook = self.excepthook
+        if not self.args.noexcepthook:
+            sys.excepthook = self.excepthook
 
+        # pre-instantiating the application, avoid some nasty OpenGL messages
+        QApplication.setAttribute(QtCore.Qt.AA_UseOpenGLES)
         # create new application and install stylesheet
         self.app = QApplication(sys.argv)
         self.install_stylesheet()
@@ -155,14 +157,17 @@ class Main(QObject):
                 if platform.system() in ["Darwin", "Linux"]:
                     self._log_file = str(pathlib.PurePath(oPB.UNIX_TMP_PATH, self._log_file))
 
-        # Initialize the logger
+        # overwrite development directory from config with command line arg
+        if self.args.dev_dir is not None:
+                confighandler.ConfigHandler.cfg.dev_dir = self.args.dev_dir
+
+        # Initialize the logger and reroute QtCore messages to it
         self.logWindow =  oPB.gui.logging.LogDialog(None, self, self._log_level)
         self.instantiate_logger(False)
-
-        # write config to log, if necessary
-        confighandler.ConfigHandler.cfg.log_config()
+        QtCore.qInstallMessageHandler(self.qt_message_handler)
 
         # log program version and user
+        self.logger.info(80 * "-")
         self.logger.info("opsi PackageBuilder (MIT licensed) " + oPB.PROGRAM_VERSION)
         self.logger.info("Current user: " + Helper.get_user())
 
@@ -176,6 +181,10 @@ class Main(QObject):
 
         for elem in self.app.libraryPaths():
             self.logger.debug("QT5 library path: " + elem)
+
+        # write config to log, if necessary
+        confighandler.ConfigHandler.cfg.log_config()
+
 
         self.check_online_status()
 
@@ -232,8 +241,8 @@ class Main(QObject):
 
         # -----------------------------------------------------------------------------------------
 
-        # unmount drive after end of program
-        if oPB.NETDRV is not None:
+        # unmount drive (if exist) after end of program
+        if (oPB.NETDRV is not None) and oPB.NETDRV != "offline":
             ret = MapDrive.unMapDrive(oPB.NETDRV)
             if ret[0] != 0:
                 self.logger.error("Error unmounting path: " + str(ret))
@@ -250,6 +259,26 @@ class Main(QObject):
                     showConsole()
 
         sys.exit(oPB.EXITCODE)
+
+    def qt_message_handler(self, mode, context, message):
+        if mode == QtCore.QtInfoMsg:
+            mode = 'INFO'
+            fun = self.logger.info
+        elif mode == QtCore.QtWarningMsg:
+            mode = 'WARNING'
+            fun = self.logger.warning
+        elif mode == QtCore.QtCriticalMsg:
+            mode = 'CRITICAL'
+            fun = self.logger.critical
+        elif mode == QtCore.QtFatalMsg:
+            mode = 'FATAL'
+            fun = self.logger.error
+        else:
+            mode = 'DEBUG'
+            fun = self.logger.debug
+        fun('Qt framework message handler: line: %d, func: %s(), file: %s' % (
+            context.line, context.function, context.file))
+        fun('Qt framework message handler:   %s: %s' % (mode, message))
 
     def install_stylesheet(self):
         if platform.system() == "Darwin":
@@ -275,22 +304,27 @@ class Main(QObject):
             # check network access and mount network drive if on linux
             if sys.platform == 'win32':
                 self.logger.info("System platform: "+ sys.platform)
-                if confighandler.ConfigHandler.cfg.usenetdrive == "False":
+                if self.args.nonetdrive is False:
+                    if confighandler.ConfigHandler.cfg.usenetdrive == "False":
 
-                    drives = Helper.get_available_drive_letters()
-                    if not drives:
-                        self.logger.error("No free drive letter found")
-                    else:
-                        self.logger.info("Free drive letter found: " + repr(drives))
-                        self.logger.info("Using drive letter: " + drives[::-1][0])
-                        path = "\\\\" + confighandler.ConfigHandler.cfg.opsi_server + "\\" + "opsi_workbench"
-                        self.logger.info("Trying to mount path: " + path)
-                        ret = MapDrive.mapDrive(drives[::-1][0] + ":", path, confighandler.ConfigHandler.cfg.opsi_user, confighandler.ConfigHandler.cfg.opsi_pass)
-                        if ret[0] != 0:
-                            self.logger.error("Error mounting path: " + str(ret))
+                        drives = Helper.get_available_drive_letters()
+                        if not drives:
+                            self.logger.error("No free drive letter found")
                         else:
-                            self.logger.info("Network drive successfully mounted")
-                            oPB.NETDRV = drives[::-1][0] + ":"
+                            self.logger.info("Free drive letter found: " + repr(drives))
+                            self.logger.info("Using drive letter: " + drives[::-1][0])
+                            path = "\\\\" + confighandler.ConfigHandler.cfg.opsi_server + "\\" + "opsi_workbench"
+                            self.logger.info("Trying to mount path: " + path)
+                            ret = MapDrive.mapDrive(drives[::-1][0] + ":", path, confighandler.ConfigHandler.cfg.opsi_user, confighandler.ConfigHandler.cfg.opsi_pass)
+                            if ret[0] != 0:
+                                self.logger.error("Error mounting path: " + str(ret))
+                            else:
+                                self.logger.info("Network drive successfully mounted")
+                                oPB.NETDRV = drives[::-1][0] + ":"
+                    else:
+                        self.logger.info("Using existing network drive")
+                else:
+                    self.logger.info("Mounting of network drive via command line disabled")
             else:
                 self.logger.info("System platform: "+ sys.platform)
                 self.logger.warning("This is not a windows based system. No network drive will be associated")
@@ -463,6 +497,7 @@ class HelpViewerMain(QObject):
 
         print("runner/HelperTool parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
 
+        QApplication.setAttribute(QtCore.Qt.AA_UseOpenGLES)
         self.app = QApplication(sys.argv)
 
         # instantiate configuration class
@@ -473,7 +508,8 @@ class HelpViewerMain(QObject):
         self.translator.install_translations(confighandler.ConfigHandler.cfg.language)
 
         # instantiate help viewer and translate it, if necessary
-        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_INDEX, False)
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX)
+        self.helpviewer.showHelp(oPB.HLP_DST_INDEX, False)
         event = QtCore.QEvent(QtCore.QEvent.LanguageChange)
         self.helpviewer._help.ui.changeEvent(event)
 

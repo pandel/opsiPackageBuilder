@@ -1,32 +1,58 @@
 General hint regarding opsi Package Builder
 ===========================================
 
-This repository is work in progress. There are many things that won't work at the moment and will change over time. so don't use this in production.
+opsi PackageBuilder (oPB) is meant as a helpful tool regarding package creation and maintenance for the `opsi <http://www.opsi.org>`_ open source client management system.
+The oPB is currently being developed under Python 3.6 and PyQt 5.9, but you can find older versions of it in this Github repository, which will work with Python 3.4 and PyQt 5.5. Minimum requirements for running oPB should be Python 3.4 and PyQt 5.6.
 
-I take no responsibility for your decision to use anything from here!!!
+Current requirements or recommendations
+=======================================
 
-opsi PackageBuilder is only tested with Python 3.4 and PyQt5.
+- Python (3.6.2)
+- PyQt5 (5.9.0)
+- spur (0.3.20)
+- pycryptodome (3.4.6)
+- virtualenv (optional)
+- virtualenvwrapper-win (only Windows, optional)
 
-Requirements
-============
+For generation of help files:
 
-- Python (3.4.3/3.4.4rc1 tested)
-- PyQt5 (5.5.0 tested
-- spur (0.3.19 tested)
-- PyCrypto (2.6.1 tested)
-- Sphinx (current)
-- Releases (current)
+- Releases (1.3.1)
+- Sphinx (1.4.9 - depends on Releases)
+
+To freeze the script and build the installer:
+
+- PyInstaller 3.3.dev0+gb201331.mod (at least for me, because of Python 3.6 support)
+- Inno Setup 5
+
+For my personal convenience, I'm using a virtualenv environment from now on. This is important, because the pyinstaller *.spec files refer to the new env location. I set up my virtualenv under ``os.getenv("USERPROFILE") + '/Envs/oPB/``. If your virtualenv is in another location, you have to edit rhe corresponding pyinstaller*.spec file. accordingly.
 
 Included scripts and files
 ==========================
 
-- 1_update_locale.cmd/.sh: 		Re-scan source files for new(updated language strings.
-- 2_compile_resource.cmd/.sh:		Make Python file from \*.qrc file
-- 3_sphinx.cmd/.sh:			Re-scan source file in-place documentation
-- 4_distrib.cmd/.sh/-mac.sh:		Build install package via PyInstaller
-- pyinstaller-(linux/windows/mac).spec:	Packaging control files for PyInstaller
-- linux/debreate-normal.dbp:		Control file for Debian Package creator Debreate (http://debreate.sourceforge.net) (Standard package)
-- linux/debreate-self-contained.dbp:	Control file for Debian Package creator Debreate (http://debreate.sourceforge.net) (Self-contained package)
++---------------------------------------+------------------------------------------------------------------------+
+| 0_version.cmd                         | Change current version number throughout                               |
+|                                       | all necessary files (only Windows)                                     |
++---------------------------------------+------------------------------------------------------------------------+
+| 1_update_locale.cmd/.sh:              | Re-scan source files for new or updated language strings.              |
++---------------------------------------+------------------------------------------------------------------------+
+| 2_compile_resource.cmd/.sh:           | Make Python file from \*.qrc file                                      |
++---------------------------------------+------------------------------------------------------------------------+
+| 3_sphinx.cmd/.sh:                     | Re-scan source file in-place documentation                             |
++---------------------------------------+------------------------------------------------------------------------+
+| 4_distrib.cmd/.sh/-mac.sh:            | Build install package via PyInstaller                                  |
++---------------------------------------+------------------------------------------------------------------------+
+| pyinstaller-(linux/windows/mac).spec: | Packaging control files for PyInstaller (sorry, but only the windows   |
+|                                       | one is the most actively maintained file here)                         |
++---------------------------------------+------------------------------------------------------------------------+
+| linux/debreate-normal.dbp:            | Control file for Debian Package creator                                |
+|                                       | `Debreate <http://debreate.sourceforge.net>`_ (Standard package)       |
++---------------------------------------+------------------------------------------------------------------------+
+| linux/debreate-self-contained.dbp:    | Control file for Debian Package creator                                |
+|                                       | `Debreate <http://debreate.sourceforge.net>`_ (Self-contained package) |
++---------------------------------------+------------------------------------------------------------------------+
+
+DISCLAIMER:
+All the above mentioned scripts are simple little helpers for me and my workflow. I leave them inside the repository for your convenience, but you have to take a look for yourself what they are supposed to do and how they work. It is highly possible that they fail on your system, so use them at your own risk!
 
 Pre-compiled files
 ==================
@@ -53,25 +79,23 @@ You need to install VC++ 2010 Express and, additionally, Microsoft Windows SDK v
     call "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\bin\\setenv.cmd" /x64
 
 
-Running oPB under Mac OSX
-=========================
+Running oPB under MacOS X or Linux
+==================================
 
-I have successfully run oPB under OSX Yosemite. Python3, PyQt5 and mostly anything else installed via howmebrew package manager.
+Running oPB UNDER MacOS X or Linux is considered to be EXPERIMENTAL! Try on your own risk!
+
+I have successfully run oPB under OSX Yosemite and Ubuntu Linux 15.04 before. Python3, PyQt5 and mostly anything else installed via homebrew package manager or apt.
+But I cannot assure that it will work at the moment (Python 3.6.2, Qt 5.9) as I don't have any time to test it.
 
 
 Using PyInstaller
 =================
 
-You need to download a Python 3.4 compatible version of PyInstaller from www.pyinstaller.org and install it a) via pip or b) from the source package as follows
+Generally, you need to download a Python 3.6 compatible version of PyInstaller from www.pyinstaller.org and install it a) via pip or b) from the source package as follows
 
-On Linux:
+    - clone debug branch: git clone -b debug https://github.com/pyinstaller/pyinstaller.git
+    - see README.rst for information on how to install PyInstaller
 
-    - clone python3 branch: git clone -b python3 https://github.com/pyinstaller/pyinstaller.git
-    - install from PyInstaller directory via setup.py
-
-On Windows:
-
-    - follow the instruction on http://pythonhosted.org/PyInstaller/#installing-in-windows and install from archive
 
 Infos regarding reST
 ====================

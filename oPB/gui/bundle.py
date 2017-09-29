@@ -32,7 +32,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.Qt import QKeyEvent
 import oPB
-import oPB.gui.helpviewer
+from oPB.gui.helpviewer import Help
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.utilities import EventMixin
 from oPB.ui.ui import BundleDialogBase, BundleDialogUI
@@ -66,6 +66,8 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin, EventMixin):
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
         self.splash.close()  # only for linux
 
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, self)
+
         self.model = None
 
         self.assign_model(self._parent.model_products)
@@ -75,7 +77,7 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin, EventMixin):
         self.dialogOpened.connect(self.update_ui)
         self.btnCreate.clicked.connect(self.create)
         self.btnCancel.clicked.connect(self.dialogClosed.emit)
-        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_BUNDLE))
+        self.btnHelp.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_BUNDLE, False))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """

@@ -32,7 +32,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.Qt import QKeyEvent
 import oPB
-import oPB.gui.helpviewer
+from oPB.gui.helpviewer import Help
 from oPB.core.tools import Helper, LogMixin
 from oPB.gui.utilities import EventMixin
 from oPB.ui.ui import LockedProductsDialogBase, LockedProductsDialogUI
@@ -65,6 +65,7 @@ class LockedProductsDialog(LockedProductsDialogBase, LockedProductsDialogUI, Log
 
         self.splash = Splash(self, translate("MainWindow", "Please wait..."))
         self.splash.close()  # only for linux
+        self.helpviewer = Help(oPB.HLP_FILE, oPB.HLP_PREFIX, self)
 
         self.model = None
 
@@ -76,7 +77,7 @@ class LockedProductsDialog(LockedProductsDialogBase, LockedProductsDialogUI, Log
         self.btnRefresh.clicked.connect(lambda: self.update_ui(True))
         self.btnUnlock.clicked.connect(self.unlock)
         self.btnClose.clicked.connect(self.dialogClosed.emit)
-        self.btnHelp.clicked.connect(lambda: oPB.gui.helpviewer.Help(oPB.HLP_FILE, oPB.HLP_PREFIX, oPB.HLP_DST_UNLOCK))
+        self.btnHelp.clicked.connect(lambda: self.helpviewer.showHelp(oPB.HLP_DST_UNLOCK, False))
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
