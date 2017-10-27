@@ -59,6 +59,7 @@ class BundleDialog(BundleDialogBase, BundleDialogUI, LogMixin, EventMixin):
 
         BundleDialogBase.__init__(self, self._parentUi, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
+        self.setWindowIcon(self._parentUi.windowIcon())
 
         print("\tgui/BundleDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/BundleDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None

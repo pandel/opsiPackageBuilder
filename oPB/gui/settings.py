@@ -62,6 +62,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
 
         SettingsDialogBase.__init__(self, self._parentUi)
         self.setupUi(self)
+        self.setWindowIcon(self._parentUi.windowIcon())
 
         print("\tgui/SettingsDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/SettingsDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None

@@ -2,6 +2,9 @@
 Changelog
 =========
 
+* :release:`8.2.2 <2017-10-25>`
+* :bug:`-` Application icon now correct in every window
+* :bug:`-` Create process running marker ONLY when building a package, otherwise not necessary
 * :release:`8.2.1 <2017-09-29>`
 * :bug:`-` Some pyqtSlot declarations corrected
 * :bug:`-` Change from pycrypto (depricated) to the more recent, drop-in compatible pycryptodome

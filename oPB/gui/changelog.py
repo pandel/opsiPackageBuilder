@@ -64,6 +64,7 @@ class ChangelogEditorDialog(LogMixin, EventMixin):
 
         base.__init__(self, self._parentUi, QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint)
         self.setupUi(self)
+        self.setWindowIcon(self._parentUi.windowIcon())
 
         print("\tgui/Changelog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/Changelog parentUi: ", self._parentUi) if oPB.PRINTHIER else None

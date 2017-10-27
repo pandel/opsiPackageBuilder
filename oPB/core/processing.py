@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 """
 This module is part of the opsi PackageBuilder
@@ -857,10 +856,12 @@ class OpsiProcessing(QObject, LogMixin):
                 self._hook_stdout = AnalyseProgressHook(self, old_stdout, self.progressChanged)
                 # sys.stdout = s
 
-            # create a running marker in project directory
-            self.logger.sshinfo("Create process running marker file in project directory")
-            f = tempfile.NamedTemporaryFile(prefix='process_', suffix=".run", dir=self._control.projectfolder)
-            self.logger.sshinfo("File created: " + f.name)
+            # create a running marker for package creation
+            if action in [oPB.OpEnum.DO_BUILD]:
+                # create a running marker in project directory
+                self.logger.sshinfo("Create process running marker file in project directory")
+                f = tempfile.NamedTemporaryFile(prefix='process_', suffix=".run", dir=self._control.projectfolder)
+                self.logger.sshinfo("File created: " + f.name)
 
             try:
                 with self.shell:
@@ -1006,9 +1007,10 @@ class OpsiProcessing(QObject, LogMixin):
             #sys.stdout = old_stderr
 
             # remove running marker
-            self.logger.sshinfo("Removing process running marker file")
-            f.flush()
-            f.close()
+            if action in [oPB.OpEnum.DO_BUILD]:
+                self.logger.sshinfo("Removing process running marker file")
+                f.flush()
+                f.close()
 
             return result.output
         else:

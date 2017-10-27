@@ -62,6 +62,7 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
 
         ReportSelectorDialogBase.__init__(self, self._parentUi, QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowMinMaxButtonsHint | QtCore.Qt.WindowCloseButtonHint)
         self.setupUi(self)
+        self.setWindowIcon(self._parentUi.windowIcon())
 
         print("\tgui/ReportSelectorDialog parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/ReportSelectorDialog parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None

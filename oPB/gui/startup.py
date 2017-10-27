@@ -55,6 +55,7 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
 
         StartupDialogBase.__init__(self, self._parentUi, QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
         self.setupUi(self)
+        self.setWindowIcon(self._parentUi.windowIcon())
 
         print("\tgui/StartupWin parent: ", self._parent, " -> self: ", self) if oPB.PRINTHIER else None
         print("\tgui/StartupWin parentUi: ", self._parentUi, " -> self: ", self) if oPB.PRINTHIER else None

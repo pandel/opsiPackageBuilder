@@ -96,6 +96,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
 
         # create windows and append additional components
         self.ui = MainWindow(self)
+        self.ui.setWindowIcon(qApp.property("prog_icon"))
+
         self.settingsCtr = SettingsController(self)
         self.startup = StartupDialog(self)
         self.treedlg = ScriptTreeDialog(self)

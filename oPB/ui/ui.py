@@ -50,6 +50,7 @@ else:
     # get the directory of this script
     path = os.path.dirname(os.path.abspath(__file__))
 
+
 MainWindowUI, MainWindowBase = uic.loadUiType(os.path.join(path, 'mainwindow.ui'))
 ChangelogEditorDialogExtendedUI, ChangelogEditorDialogExtendedBase = uic.loadUiType(os.path.join(path, 'changelogeditorextended.ui'))
 ChangelogEditorDialogSimpleUI, ChangelogEditorDialogSimpleBase = uic.loadUiType(os.path.join(path, 'changelogeditorsimple.ui'))
