@@ -172,6 +172,9 @@ class ScriptTree(LogMixin):
             currentline += 1
             line = linecache.getline(scriptname, currentline)
 
+        # empty line cache
+        linecache.clearcache()
+
     def _clear_script_name(self, raw: str):
         """
         Clear ``raw`` line string from any unwanted characters and annotate externals

@@ -845,7 +845,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
         for line in run.root.__str__().split("\n"):
             self.logger.debug(line)
 
-        self.treedlg.assign_model(ScriptTree.model)
+        #self.treedlg.assign_model(ScriptTree.model)
+        self.treedlg.assign_model(run.model)
         self.treedlg.show()
         # sometimes the window isn't activated, so...
         self.treedlg.activateWindow()

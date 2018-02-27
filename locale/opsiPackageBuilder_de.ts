@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de_DE" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="de_DE" sourcelanguage="en">
 <context>
     <name>BaseController</name>
     <message>
@@ -847,7 +846,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Aktuelles Projekt speichern unter...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="952"/>
+        <location filename="../oPB/controller/main.py" line="953"/>
         <source>Downloading: {0} Bytes: {1}</source>
         <translation>Lade herunter: {0} Bytes: {1}</translation>
     </message>
@@ -871,47 +870,47 @@ The following message(s) returned:</source>
 Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="974"/>
+        <location filename="../oPB/controller/main.py" line="975"/>
         <source>Downloading: {0} - Bytes: {1} of {2}</source>
         <translation>Downloading: {0} - Bytes: {1} von {2}</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="996"/>
+        <location filename="../oPB/controller/main.py" line="997"/>
         <source>Update check in progress...</source>
         <translation>Prüfung auf neuere Version läuft...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1012"/>
+        <location filename="../oPB/controller/main.py" line="1013"/>
         <source>New program version available! Update possible!</source>
         <translation>Neu Programmversion verfügbar! Update möglich!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1017"/>
+        <location filename="../oPB/controller/main.py" line="1018"/>
         <source>New program version available:</source>
         <translation>Neue Programmversion verfügbar:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1018"/>
+        <location filename="../oPB/controller/main.py" line="1019"/>
         <source>Do you want to download and install the new version?</source>
         <translation>Neue Version herunterladen und installieren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1024"/>
+        <location filename="../oPB/controller/main.py" line="1025"/>
         <source>Choose download directory</source>
         <translation>Downloadverzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1034"/>
+        <location filename="../oPB/controller/main.py" line="1035"/>
         <source>File successfully saved to:</source>
         <translation>Datei erfolgreich gespeichert nach:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1035"/>
+        <location filename="../oPB/controller/main.py" line="1036"/>
         <source>Quit application to start the update process.</source>
         <translation>Das Programm beenden, um den Updatevorgang zu starten.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1048"/>
+        <location filename="../oPB/controller/main.py" line="1049"/>
         <source>No new program version available!</source>
         <translation>Keine neuere Programmversion verfügbar!</translation>
     </message>
@@ -2120,52 +2119,52 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>mainController</name>
     <message>
-        <location filename="../oPB/controller/main.py" line="894"/>
+        <location filename="../oPB/controller/main.py" line="895"/>
         <source>name</source>
         <translation>Bezeichner</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="888"/>
+        <location filename="../oPB/controller/main.py" line="889"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="888"/>
+        <location filename="../oPB/controller/main.py" line="889"/>
         <source>required action</source>
         <translation>Angef. Aktion</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="888"/>
+        <location filename="../oPB/controller/main.py" line="889"/>
         <source>installation status</source>
         <translation>Installationsstatus</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="894"/>
+        <location filename="../oPB/controller/main.py" line="895"/>
         <source>type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="894"/>
+        <location filename="../oPB/controller/main.py" line="895"/>
         <source>multivalue</source>
         <translation>Mehrfachwert</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="894"/>
+        <location filename="../oPB/controller/main.py" line="895"/>
         <source>editable</source>
         <translation>Änderbar</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="894"/>
+        <location filename="../oPB/controller/main.py" line="895"/>
         <source>description</source>
         <translation>Beschreibung</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="894"/>
+        <location filename="../oPB/controller/main.py" line="895"/>
         <source>values</source>
         <translation>Werte</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="894"/>
+        <location filename="../oPB/controller/main.py" line="895"/>
         <source>default</source>
         <translation>Vorgabe</translation>
     </message>

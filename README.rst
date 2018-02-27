@@ -7,6 +7,7 @@ The oPB is currently being developed under Python 3.6 and PyQt 5.9, but you can 
 Current requirements or recommendations
 =======================================
 
+- Microsoft Visual C++ 2010 Redistributable (https://www.microsoft.com/de-de/download/details.aspx?id=5555)
 - Python (3.6.2)
 - PyQt5 (5.9.0)
 - spur (0.3.20)

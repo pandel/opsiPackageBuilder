@@ -79,3 +79,6 @@ linux/*.deb
 
 # version patch exe, see: http://www.codeproject.com/Articles/37133/Simple-Version-Resource-Tool-for-Windows
 verpatch/
+
+# Visual Runtime C++ 2010 x64 - download if needed
+vcredist_x64.exe

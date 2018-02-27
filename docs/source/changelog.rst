@@ -2,6 +2,10 @@
 Changelog
 =========
 
+* :release:`8.2.3 <2018-02-22>`
+* :support:`-` Visual C++ 2010 x64 Redistributable included
+* :bug:`-` ScriptTree not updated when opened again
+* :bug:`-` "ALL" depot option removed before opening locked product dialog
 * :release:`8.2.2 <2017-10-25>`
 * :bug:`-` Application icon now correct in every window
 * :bug:`-` Create process running marker ONLY when building a package, otherwise not necessary
