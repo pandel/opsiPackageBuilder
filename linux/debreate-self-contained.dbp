@@ -1,7 +1,7 @@
 [DEBREATE-0.7.10]
 <<CTRL>>
 Package: opsipackagebuilder-sc
-Version: 8.2.3
+Version: 8.2.4
 Section: admin
 Maintainer: Holger Pandel <holger.pandel@googlemail.com>
 Homepage: https://github.com/pandel/opsiPackageBuilder
@@ -66,7 +66,7 @@ exit 0
 <</SCRIPTS>>
 <<CHANGELOG>>
 <<DEST>>DEFAULT<</DEST>>
-opsipackagebuilder-sc (8.2.3) trusty; urgency=low
+opsipackagebuilder-sc (8.2.4) trusty; urgency=low
 
   * Initial release
 

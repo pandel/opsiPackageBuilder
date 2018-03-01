@@ -2,6 +2,9 @@
 Changelog
 =========
 
+* :release:`8.2.4 <2018-03-01>`
+* :bug:`8` Update notifier not working when used without proxy server
+* :bug:`-` Added missing imports re+os in tools.py
 * :release:`8.2.3 <2018-02-22>`
 * :support:`-` Visual C++ 2010 x64 Redistributable included
 * :bug:`-` ScriptTree not updated when opened again

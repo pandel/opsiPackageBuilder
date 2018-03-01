@@ -35,6 +35,8 @@ import logging
 import platform
 import socket
 import sys
+import os
+import re
 from itertools import cycle
 
 if sys.platform.lower().startswith('win'):

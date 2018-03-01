@@ -909,25 +909,31 @@ class MainWindowController(BaseController, QObject, EventMixin):
         """
         self.logger.debug("Trying to download file: " + url)
 
-        if ConfigHandler.cfg.useproxy:
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+
+        if ConfigHandler.cfg.useproxy == "True":
+            self.logger.info("Install HTTP/HTTPS proxy handler...")
             proxystr = ConfigHandler.cfg.proxy_user + ":" + ConfigHandler.cfg.proxy_pass + "@" + ConfigHandler.cfg.proxy_server + ":" + ConfigHandler.cfg.proxy_port
             pdict = {'http': 'http://' + proxystr, 'https': 'http://' + proxystr}
             proxy = request.ProxyHandler(pdict)
             auth = request.HTTPBasicAuthHandler()
             opener = request.build_opener(proxy, auth, request.HTTPHandler, request.HTTPSHandler)
-            self.logger.info("Proxy handler installed.")
         else:
-            opener = request.build_opener(request.HTTPHandler, request.HTTPHandler)
+            self.logger.info("Using direct HTTP/HTTPS connect...")
+            opener = request.build_opener(request.HTTPHandler, request.HTTPSHandler)
 
+        rReq = request.Request(url, headers = headers)
         request.install_opener(opener)
 
         try:
-            u = request.urlopen(url)
+            u = request.urlopen(rReq)
         except urlerror.URLError as err:
             self.logger.warning("Error while opening download URL: " + repr(err))
+            self.msgbox(translate("MainWindow", "Error while opening update URL..."), oPB.MsgEnum.MS_STAT)
             return None
         except urlerror.HTTPError as err:
             self.logger.warning("Error while opening HTTP connection: " + repr(err))
+            self.msgbox(translate("MainWindow", "Error while opening HTTPS connection..."), oPB.MsgEnum.MS_STAT)
             return None
 
         scheme, netloc, path, query, fragment = parse.urlsplit(url)
