@@ -1,5 +1,5 @@
-oPB.gui.splash module
-=====================
+oPB\.gui\.splash module
+=======================
 
 .. automodule:: oPB.gui.splash
     :members:

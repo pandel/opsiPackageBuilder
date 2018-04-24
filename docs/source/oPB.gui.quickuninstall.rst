@@ -1,5 +1,5 @@
-oPB.gui.quickuninstall module
-=============================
+oPB\.gui\.quickuninstall module
+===============================
 
 .. automodule:: oPB.gui.quickuninstall
     :members:

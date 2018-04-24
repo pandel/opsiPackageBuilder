@@ -217,6 +217,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QRadioButton" name="rdContentLeft">
+           <property name="text">
+            <string>Server content (left selected)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>

@@ -1,5 +1,5 @@
-oPB.gui.report module
-=====================
+oPB\.gui\.report module
+=======================
 
 .. automodule:: oPB.gui.report
     :members:

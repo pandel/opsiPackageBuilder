@@ -1037,7 +1037,7 @@
            <widget class="QPushButton" name="btnChangelogEdit">
             <property name="maximumSize">
              <size>
-              <width>120</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -1058,7 +1058,7 @@
            <widget class="QPushButton" name="btnShowScrStruct">
             <property name="maximumSize">
              <size>
-              <width>120</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>

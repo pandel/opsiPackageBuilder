@@ -420,7 +420,7 @@ class BaseController(LogMixin):
 
     @pyqtSlot()
     def do_runproductupdater(self, dest = ""):
-        self._do(oPB.OpEnum.DO_PRODUPDATER, translate("baseController", "Run opsi-product-updater..."), alt_destination = dest)
+        self._do(oPB.OpEnum.DO_PRODUPDATER, translate("baseController", "Run opsi package update process..."), alt_destination = dest)
 
     @pyqtSlot()
     def do_deletefilefromrepo(self, packs = [], dest = ""):

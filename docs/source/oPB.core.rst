@@ -1,5 +1,5 @@
-oPB.core package
-================
+oPB\.core package
+=================
 
 .. automodule:: oPB.core
     :members:

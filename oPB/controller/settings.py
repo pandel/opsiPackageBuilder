@@ -123,7 +123,8 @@ class SettingsController(QObject, LogMixin):
         self.model.setItem(0, 44, QtGui.QStandardItem(ConfigHandler.cfg.editor_options))
         self.model.setItem(0, 45, QtGui.QStandardItem(ConfigHandler.cfg.editor_attachdirect))
         self.model.setItem(0, 46, QtGui.QStandardItem(ConfigHandler.cfg.local_share_base))
-        self.model.setItem(0, 47, QtGui.QStandardItem(ConfigHandler.cfg.is_sles))
+        self.model.setItem(0, 47, QtGui.QStandardItem(ConfigHandler.cfg.wb_new))
+        self.model.setItem(0, 48, QtGui.QStandardItem(ConfigHandler.cfg.is_opsi41))
 
     def connect_signals(self):
         """Connect signals"""
@@ -188,7 +189,8 @@ class SettingsController(QObject, LogMixin):
         ConfigHandler.cfg.editor_options = self.model.item(0, 44).text()
         ConfigHandler.cfg.editor_attachdirect = self.model.item(0, 45).text().title()
         ConfigHandler.cfg.local_share_base = self.model.item(0, 46).text()
-        ConfigHandler.cfg.is_sles = self.model.item(0, 47).text().title()
+        ConfigHandler.cfg.wb_new = self.model.item(0, 47).text().title()
+        ConfigHandler.cfg.is_opsi41 = self.model.item(0, 48).text().title()
 
     def close_dialog(self):
         """Close settings dialog"""

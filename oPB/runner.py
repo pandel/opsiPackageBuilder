@@ -109,10 +109,10 @@ class Main(QObject):
             sys.excepthook = self.excepthook
 
         # pre-instantiating the application, avoid some nasty OpenGL messages
-        QApplication.setAttribute(QtCore.Qt.AA_UseOpenGLES)
+        QApplication.setAttribute(QtCore.Qt.AA_UseOpenGLES, on = True)
         # create new application and install stylesheet
         self.app = QApplication(sys.argv)
-        self.install_stylesheet()
+        #self.install_stylesheet()
 
         # Create and display the splash screen, if in ui mode
         if not self.args.nogui:
@@ -162,7 +162,7 @@ class Main(QObject):
                 confighandler.ConfigHandler.cfg.dev_dir = self.args.dev_dir
 
         # Initialize the logger and reroute QtCore messages to it
-        self.logWindow =  oPB.gui.logging.LogDialog(None, self, self._log_level)
+        self.logWindow = oPB.gui.logging.LogDialog(None, self, self._log_level)
         self.instantiate_logger(False)
         QtCore.qInstallMessageHandler(self.qt_message_handler)
 
@@ -185,7 +185,6 @@ class Main(QObject):
         # write config to log, if necessary
         confighandler.ConfigHandler.cfg.log_config()
 
-
         self.check_online_status()
 
         # -----------------------------------------------------------------------------------------
@@ -193,6 +192,8 @@ class Main(QObject):
 
         # startup gui variant
         if not self.args.nogui:
+            # install stylesheet
+            self.install_stylesheet()
 
             # hide console window, but only under Windows and only if app is frozen
             if sys.platform.lower().startswith('win'):
@@ -216,7 +217,7 @@ class Main(QObject):
             app_icon.addFile(':images/prog_icons/opb/package_92x92.png', QtCore.QSize(92, 92))
             app_icon.addFile(':images/prog_icons/opb/package_128x128.png', QtCore.QSize(128, 128))
             app_icon.addFile(':images/prog_icons/opb/package_256x256.png', QtCore.QSize(256, 256))
-            self.app.setProperty("prog_icon",app_icon)
+            self.app.setProperty("prog_icon", app_icon)
 
             # startup program window
             self.mainWindow = main.MainWindowController(self.args)
@@ -284,14 +285,15 @@ class Main(QObject):
         if platform.system() == "Darwin":
             css = os.environ['OPB_BASE'] + "/ui/stylesheet-mac.qss"
         else:
-            css = os.environ['OPB_BASE'] + "/ui/stylesheet.qss"
+            css = os.environ['OPB_BASE'] + "\\ui\\stylesheet.qss"
 
         try:
             with open(css, "r", encoding="utf-8", newline="\n") as file:
                 style = file.readlines()
                 file.close()
+                self.logger.debug("Stylesheet successfully loaded: " + css)
         except:
-            self.logger.debug("Stylesheet could not be opened.")
+            self.logger.debug("Stylesheet could not be opened: " + css)
         else:
             self.app.setStyleSheet(("\n").join(style))
 
@@ -463,7 +465,7 @@ class Main(QObject):
             """A log has been written to "%s".\n\nError information:\n""" % \
             (logFile.name)
 
-        versionInfo="0.0.1"
+        versionInfo = oPB.PROGRAM_VERSION
         timeString = datetime.datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
 

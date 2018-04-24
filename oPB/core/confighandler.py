@@ -62,8 +62,9 @@ class ConfigHandler(ConfigParser, LogMixin):
             "sshport": "22",
             "usekeyfile": "False",
             "keyfilename": "",
-            "is_sles": "False"
-        },
+            "is_opsi41": "True",
+            "wb_new": "True"
+    },
         "maintainer": {
             "name": "Package Maintainer",
             "email": "maintainer@server.local.net",
@@ -71,7 +72,7 @@ class ConfigHandler(ConfigParser, LogMixin):
         "package": {
             "dev_dir": "",
             "local_share_base": "/mnt/opsi_dev_share",
-            "build": "opsi-makeproductfile -vv",
+            "build": "opsi-makepackage -v --no-md5 --no-zsync",
             "install": "opsi-package-manager -i",
             "instsetup": "opsi-package-manager -i -S",
             "uninstall": "opsi-package-manager -r",
@@ -167,6 +168,9 @@ class ConfigHandler(ConfigParser, LogMixin):
             # check if INI pre-python
             if LooseVersion(self.prg_version) < "8.0.0":
                 self.convert_old_format()
+
+            if LooseVersion(self.prg_version) < "8.2.5":
+                self.convert_to_opsi41()
 
             # check current version to version in INI file
             if LooseVersion(self.get("version", "ini")) < oPB.PROGRAM_VERSION:
@@ -287,9 +291,17 @@ class ConfigHandler(ConfigParser, LogMixin):
 
         self.save()
 
+    def convert_to_opsi41(self):
+        """Add additional parameter for opsi 4.1 Support"""
+        self.logger.debug("Upgrade config-new.ini to 8.2.5...")
+        self.wb_new = "True" if self.get("server", "is_sles") == "True" else "False"
+        self.is_opsi41 = "False"
+        self.remove_option("server", "is_sles")
+        self.save()
+
     @property
     def prg_version(self):
-        return self.get("version","ini")
+        return self.get("version", "ini")
 
     @prg_version.setter
     def prg_version(self, value):
@@ -297,7 +309,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def firstrun(self):
-        return self.get("version","firstrun")
+        return self.get("version", "firstrun")
 
     @firstrun.setter
     def firstrun(self, value):
@@ -384,12 +396,30 @@ class ConfigHandler(ConfigParser, LogMixin):
         self.set("server", "keyfilename", value)
 
     @property
-    def is_sles(self):
-        return self.get("server", "is_sles")
+    def is_opsi41(self):
+        return self.get("server", "is_opsi41")
 
-    @is_sles.setter
-    def is_sles(self, value):
-        self.set("server", "is_sles", value)
+    @is_opsi41.setter
+    def is_opsi41(self, value):
+        if value == "True":
+            com: str = self.buildcommand
+            self.buildcommand = com.replace(oPB.OPB_BUILD40, oPB.OPB_BUILD41)
+        else:
+            com: str = self.buildcommand
+            com = com.replace(oPB.OPB_BUILD41, oPB.OPB_BUILD40)
+            com = com.replace("--no-md5", "")
+            com = com.replace("--no-zsync", "")
+            self.buildcommand = com.replace(oPB.OPB_BUILD41, oPB.OPB_BUILD40)
+
+        self.set("server", "is_opsi41", value)
+
+    @property
+    def wb_new(self):
+        return self.get("server", "wb_new")
+
+    @wb_new.setter
+    def wb_new(self, value):
+        self.set("server", "wb_new", value)
 
     @property
     def packagemaintainer(self):
@@ -485,7 +515,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def wol_lead_time(self):
-        return self.get("package","wolleadtime")
+        return self.get("package", "wolleadtime")
 
     @wol_lead_time.setter
     def wol_lead_time(self, value):
@@ -671,7 +701,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def log_always(self):
-        return self.get("log","logalways")
+        return self.get("log", "logalways")
 
     @log_always.setter
     def log_always(self, value):
@@ -679,7 +709,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def log_file(self):
-        return self.get("log","logfile")
+        return self.get("log", "logfile")
 
     @log_file.setter
     def log_file(self, value):
@@ -687,7 +717,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def log_level(self):
-        return self.get("log","loglevel")
+        return self.get("log", "loglevel")
 
     @log_level.setter
     def log_level(self, value):
@@ -695,7 +725,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def posX(self):
-        return int(self.get("window","posX"))
+        return int(self.get("window", "posX"))
 
     @posX.setter
     def posX(self, value):
@@ -703,7 +733,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def posY(self):
-        return int(self.get("window","posY"))
+        return int(self.get("window", "posY"))
 
     @posY.setter
     def posY(self, value):
@@ -711,7 +741,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def width(self):
-        return int(self.get("window","width"))
+        return int(self.get("window", "width"))
 
     @width.setter
     def width(self, value):
@@ -719,7 +749,7 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @property
     def height(self):
-        return int(self.get("window","height"))
+        return int(self.get("window", "height"))
 
     @height.setter
     def height(self, value):

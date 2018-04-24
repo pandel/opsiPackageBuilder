@@ -256,6 +256,7 @@ class HtmlDialog(QDialog):
 
         :param html: raw html data
         """
+        print(html)
         self.wv.setHtml_(html)
         self.show()
 
@@ -316,12 +317,13 @@ class Translator(QObject, LogMixin):
             Translator.cfg.translator_qthelp = None
             Translator.cfg.translator_qtmm = None
             Translator.cfg.translator_qt = None
+            Translator.cfg.translator_qtwebengine = None
             Translator.cfg.translator_app = None
 
             pyqt_path = os.path.dirname(PyQt5.__file__)
 
             if platform.system() == "Windows":
-                Translator.cfg._qt_locale_path = Helper.concat_path_native(pyqt_path, "translations")
+                Translator.cfg._qt_locale_path = Helper.concat_path_native(pyqt_path, "Qt\\translations")
             else:
                 if os.path.isdir("/usr/share/qt5/translations/"):
                     Translator.cfg._qt_locale_path = "/usr/share/qt5/translations/"
@@ -350,7 +352,6 @@ class Translator(QObject, LogMixin):
 
         :param config_lang: two-character language string, or "System"
         """
-
         # remove possible existing translators
         if cls.cfg.translator_qthelp is not None:
             cls.cfg._parent.removeTranslator(cls.cfg.translator_qthelp)
@@ -361,6 +362,9 @@ class Translator(QObject, LogMixin):
         if cls.cfg.translator_qt is not None:
             cls.cfg._parent.removeTranslator(cls.cfg.translator_qt)
             cls.cfg.translator_qt = None
+        if cls.cfg.translator_qtwebengine is not None:
+            cls.cfg._parent.removeTranslator(cls.cfg.translator_qtwebengine)
+            cls.cfg.translator_qtwebengine = None
         if cls.cfg.translator_app is not None:
             cls.cfg._parent.removeTranslator(cls.cfg.translator_app)
             cls.cfg.translator_app = None
@@ -391,6 +395,7 @@ class Translator(QObject, LogMixin):
             qm_qt = 'qt_%s.qm' % config_lang
             qm_app = cls.cfg.applangprefix + '_%s.qm' % config_lang
             cls.cfg.logger.debug("Installing language: " + config_lang)
+
         cls.cfg.logger.debug("Load Qt standard translation: " + qm_qt + " from: " + cls.cfg._qt_locale_path)
         cls.cfg.logger.debug("Load application translation: " + qm_app + " from: " + cls.cfg._app_locale_path)
 
@@ -404,6 +409,11 @@ class Translator(QObject, LogMixin):
         cls.cfg.translator_qt = QtCore.QTranslator(cls.cfg._parent)
         if cls.cfg.translator_qt.load(use_local, "qtbase", "_", cls.cfg._qt_locale_path, ".qm"):
             cls.cfg.logger.debug("Qtbase translations successfully loaded.")
+
+        # qt webengine
+        cls.cfg.translator_qtwebengine = QtCore.QTranslator(cls.cfg._parent)
+        if cls.cfg.translator_qt.load(use_local, "qtwebengine", "_", cls.cfg._qt_locale_path, ".qm"):
+            cls.cfg.logger.debug("Qtwebengine translations successfully loaded.")
 
         # qt help
         cls.cfg.translator_qthelp = QtCore.QTranslator(cls.cfg._parent)
@@ -427,6 +437,8 @@ class Translator(QObject, LogMixin):
             cls.cfg._parent.installTranslator(cls.cfg.translator_qtmm)
         if not cls.cfg.translator_qt.isEmpty():
             cls.cfg._parent.installTranslator(cls.cfg.translator_qt)
+        if not cls.cfg.translator_qtwebengine.isEmpty():
+            cls.cfg._parent.installTranslator(cls.cfg.translator_qtwebengine)
         if not cls.cfg.translator_app.isEmpty():
             cls.cfg._parent.installTranslator(cls.cfg.translator_app)
 
@@ -541,16 +553,30 @@ class HtmlTools(LogMixin):
         if title != "":
             head = '<center><h2>' + title + '</h2></center>'
 
-        css = "table {margin: 1em; border-collapse: collapse; } \n" \
-              "td, th {padding: .3em; border: 1px #ccc solid; }\n" \
-              "thead {background: " + headerbgcolor + "; }\n" \
-              "thead {color:" + headertxtcolor + ";}\n" \
-              "tbody {background: " + bodybgcolor + "; }\n" \
-              "tbody {color: " + bodytxtcolor + "; }\n" \
-              "#highlight tr.hilight { background: " + highlightbgcolor + "; }\n" \
-              "h2 { font-size: 100%; }\n" \
-              "@media print { h2 { font-size: 94%; } }\n" \
-              "body { font-size: 94%; font-family: Helvetica, Arial, sans-serif; line-height: 100%; }\n"
+        #css = "table {margin: 1em; border-collapse: collapse; } \n" \
+        #      "td, th {padding: .3em; border-color: #ccc; border-style: solid; }\n" \
+        #      "thead {background: " + headerbgcolor + "; }\n" \
+        #      "thead {color:" + headertxtcolor + ";}\n" \
+        #      "tbody {background: " + bodybgcolor + "; }\n" \
+        #      "tbody {color: " + bodytxtcolor + "; }\n" \
+        #      "#highlight tr.hilight { background: " + highlightbgcolor + "; }\n" \
+        #      "h2 { font-size: 100%; }\n" \
+        #      "@media print { h2 { font-size: 94%; } }\n" \
+        #      "body { font-size: 94%; font-family: Helvetica, Arial, sans-serif; line-height: 100%; }\n"
+
+        css = "table {margin: 1em; border-collapse: collapse; }\r\n" \
+              "td, th {padding: .3em; border: 1px #ccc solid; }\r\n" \
+              "thead {background: " + headerbgcolor + "; }\r\n" \
+              "thead {color:" + headertxtcolor + ";}\r\n" \
+              "tbody {background: " + bodybgcolor + "; }\r\n" \
+              "tbody {color: " + bodytxtcolor + "; }\r\n" \
+              "#highlight tr.hilight { background: " + highlightbgcolor + "; }\r\n" \
+              "h2 { font-size: 100%; }\r\n" \
+              "body { font-size: 94%; font-family: Helvetica, Arial, sans-serif; line-height: 100%; }\r\n" \
+              "@media print { h2 { font-size: 94%; }\r\n thead { background: #000000; color: #ffffff }\r\n" \
+              "@media print { thead { background: #000000; }\r\n" \
+              "@media print { thead { color: #ffffff; }\r\n" \
+              "@media print { body { border-color: #ccc; border-style: solid; }\r\n"
 
         javascript = "function tableHighlightRow() {\n" \
               "  if (document.getElementById && document.createTextNode) {\n" \
@@ -572,17 +598,17 @@ class HtmlTools(LogMixin):
               "}\n" \
               "window.onload=function(){tableHighlightRow();}\n"
 
-        html = "<!DOCTYPE html><html>\n" + \
+        html = "<!DOCTYPE html><html>\r\n" + \
               "<head> " + \
-              "<title>" + title + "</title>\n" \
-              "<Style>\n" + \
+              "<title>" + title + "</title>\r\n" \
+              "<style type=text/css>\r\n" + \
               css + \
-              "</Style>\n" + \
+              "</style>\r\n" + \
               "<script>\n" + \
               javascript + \
               "</script>\n" + \
-              "</head>\n" + \
-              "<body>\n" + head
+              "</head>\r\n" + \
+              "<body>\r\n" + head
 
         return html
 
@@ -593,7 +619,7 @@ class HtmlTools(LogMixin):
 
         :return: footer string "</body></html>"
         """
-        return "</body></html>"
+        return "\r\n</body></html>"
 
     @classmethod
     def Array2HTMLTable(cls, element_list = [], colspan = 1, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
@@ -639,7 +665,7 @@ class HtmlTools(LogMixin):
             for x in range(total_columns):
                 try: # fewer header columns than data columns?
                     t = str(element_list[0][x]) if element_list[0][x] is not None else ""
-                    table_header = table_header + '   <th colspan=' + str(colspan) + '>' + t + '</th>\n'
+                    table_header = table_header + '   <th align="left" colspan=' + str(colspan) + '>' + t + '</th>\n'
                 except:
                     pass
 
@@ -653,7 +679,7 @@ class HtmlTools(LogMixin):
 
         if not only_table:
             html = cls.HTMLHeader(title, bodybgcolor, hightlightbgcolor, headerbgcolor, bodytxtcolor, headertxtcolor) + \
-                    '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
+                    '<p align="left"><table class="hilite" id="highlight" style="width:80%">\n' + \
                     '<thead>\n' + \
                     '<tr>' + \
                     table_header + \
@@ -665,7 +691,7 @@ class HtmlTools(LogMixin):
                     '</table>\n' + \
                     cls.HTMLFooter()
         else:
-            html = '<p align="center"><table class="hilite" id="highlight" style="width:80%">\n' + \
+            html = '<p align="left"><table class="hilite" id="highlight" style="width:80%">\n' + \
                     '<thead>\n' + \
                     '<tr>' + \
                     table_header + \

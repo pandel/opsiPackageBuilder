@@ -185,9 +185,11 @@ class DeployAgentDialog(DeployAgentDialogBase, DeployAgentDialogUI, LogMixin, Ev
             post = "shutdown"
 
         # now build option dict
+        # Win10 - removed escaping of baslashes, because smbclient 4.3.11 (opsiVM) handles them correctly:
+        # "user": self.inpUser.text().strip().replace("\\", "\\\\"),
         options = {
             "pre_action": self.cmbPreExec.currentText().strip(),
-            "user": self.inpUser.text().strip().replace("\\", "\\\\"),
+            "user": self.inpUser.text().strip(),
             "pass": self.inpPass.text().strip(),
             "usefqdn": self.chkUseFQDN.isChecked(),
             "ignoreping": self.chkIgnorePing.isChecked(),

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>778</width>
-    <height>503</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -80,40 +80,6 @@
           <property name="spacing">
            <number>5</number>
           </property>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="inpConfigServer"/>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Config server:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="inpOpsiPass">
-            <property name="echoMode">
-             <enum>QLineEdit::PasswordEchoOnEdit</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>opsiadmin User:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>opsiadmin Password:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="inpOpsiUser"/>
-          </item>
           <item row="0" column="2" rowspan="3">
            <widget class="QGroupBox" name="groupBox_3">
             <property name="title">
@@ -183,7 +149,7 @@
             </layout>
            </widget>
           </item>
-          <item row="4" column="0" colspan="3">
+          <item row="7" column="0" colspan="3">
            <widget class="QGroupBox" name="groupBox_4">
             <property name="minimumSize">
              <size>
@@ -192,7 +158,7 @@
              </size>
             </property>
             <property name="title">
-             <string>opsi server version</string>
+             <string>Command Execution (SUDO)</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
@@ -222,14 +188,14 @@
                 <item row="0" column="1">
                  <widget class="QRadioButton" name="rdOpsiSrvOld">
                   <property name="text">
-                   <string>compatible to 4.0.3</string>
+                   <string>compatible to opsi 4.0.3</string>
                   </property>
                  </widget>
                 </item>
                 <item row="0" column="0">
                  <widget class="QRadioButton" name="rdOpsiSrvNew">
                   <property name="text">
-                   <string>4.0.4 or newer</string>
+                   <string>opsi 4.0.4 or newer</string>
                   </property>
                   <property name="checked">
                    <bool>true</bool>
@@ -314,7 +280,41 @@
             </layout>
            </widget>
           </item>
-          <item row="3" column="0" colspan="3">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="inpConfigServer"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Config server:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="inpOpsiPass">
+            <property name="echoMode">
+             <enum>QLineEdit::PasswordEchoOnEdit</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>opsiadmin User:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>opsiadmin Password:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="inpOpsiUser"/>
+          </item>
+          <item row="5" column="0" colspan="3">
            <widget class="QGroupBox" name="groupBox_12">
             <property name="minimumSize">
              <size>
@@ -323,16 +323,19 @@
              </size>
             </property>
             <property name="title">
-             <string>Base operating system of opsi server</string>
+             <string>opsi Workbench location</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="topMargin">
+              <number>6</number>
+             </property>
+             <property name="bottomMargin">
+              <number>6</number>
+             </property>
              <item>
-              <widget class="QRadioButton" name="rdBaseOSOther">
-               <property name="toolTip">
-                <string>Base OS is anything but SLES</string>
-               </property>
+              <widget class="QRadioButton" name="rdWBOld">
                <property name="text">
-                <string>Other</string>
+                <string>/home/opsiproducts</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
@@ -340,12 +343,47 @@
               </widget>
              </item>
              <item>
-              <widget class="QRadioButton" name="rdBaseOSSLES">
-               <property name="toolTip">
-                <string>Base OS is SLES</string>
-               </property>
+              <widget class="QRadioButton" name="rdWBNew">
                <property name="text">
-                <string>SLES (SuSE Linux Enterprise Server)</string>
+                <string>/var/lib/opsi/workbench</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <widget class="QGroupBox" name="groupBox_13">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>opsi Server Version</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QRadioButton" name="rdOpsi40">
+               <property name="text">
+                <string>opsi 4.0 or older</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rdOpsi41">
+               <property name="text">
+                <string>opsi 4.1 or newer</string>
                </property>
               </widget>
              </item>

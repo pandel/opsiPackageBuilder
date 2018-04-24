@@ -155,10 +155,18 @@ class OpsiProcessing(QObject, LogMixin):
         tmppath = oPB.UNIX_TMP_PATH
 
         # change dev_base if necessary
-        if ConfigHandler.cfg.is_sles == "True":
-            oPB.DEV_BASE = oPB.DEV_BASE_SLES
+        if ConfigHandler.cfg.wb_new == "True":
+            oPB.DEV_BASE = oPB.DEV_BASE_OPSI41
         else:
-            oPB.DEV_BASE = oPB.DEV_BASE_NORM
+            oPB.DEV_BASE = oPB.DEV_BASE_OPSI40
+
+        # change opsi commands based on version setting
+        if ConfigHandler.cfg.is_opsi41 == "True":
+            oPB.OPB_PROD_UPDATER = oPB.OPB_PROD_UPDATER_41
+            oPB.OPB_GETPRODUPD_PID = oPB.OPB_GETPRODUPD41_PID
+        else:
+            oPB.OPB_PROD_UPDATER = oPB.OPB_PROD_UPDATER_40
+            oPB.OPB_GETPRODUPD_PID = oPB.OPB_GETPRODUPD40_PID
 
         # define empty result as default
         result = []
@@ -764,6 +772,11 @@ class OpsiProcessing(QObject, LogMixin):
                         if self.ret == oPB.RET_OK:
                             self.logger.sshinfo("opsi-client-agent successfully deployed.")
 
+                    # chmod script executable
+                    self.logger.ssh("Removing temporary deploy script")
+                    cmd = ["sh", "-c", "rm -f " + destfile]
+                    result = self._processAction(cmd, action, ret, split = False, cwd = False)
+
                 # cd c:\TEMP\RZInstall\ETHLineSpeed & set NWDUPLEXMODE=AUTOSENS & start install.cmd
 
         # ------------------------------------------------------------------------------------------------------------------------
@@ -799,7 +812,7 @@ class OpsiProcessing(QObject, LogMixin):
             else:
                 self.ret = ret
                 self.rettype = oPB.MsgEnum.MS_ERR
-                self.retmsg = translate("OpsiProcessing", "opsi-product-updater is already running.")
+                self.retmsg = translate("OpsiProcessing", "opsi package update process already running.")
 
         # ------------------------------------------------------------------------------------------------------------------------
         if action == oPB.OpEnum.DO_REBOOT:
@@ -1077,6 +1090,11 @@ class OpsiProcessing(QObject, LogMixin):
                 self.logger.error(line)
                 found = True
                 msg.append(translate("OpsiProcessing", "Error during package extraction. Check log."))
+
+            if "opsi-makeproductfile: Permission denied".upper() in line.upper():
+                self.logger.error(line)
+                found = True
+                msg.append(translate("OpsiProcessing", "Permission denied during opsi-makeproductfile. Check log or raise log level for opsi-makeproductfile."))
 
             if "Permission denied:".upper() in line.upper():
                 self.logger.error(line)

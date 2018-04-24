@@ -2,6 +2,18 @@
 Changelog
 =========
 
+* :release:`8.3.0 <2018-04-24>`
+* :bug:`-` Delete opsi client agent temporary deploy script for security reason
+* :bug:`-` opsi client agent deploy: Smbclient 4.3.11 in opsiVM doesn't like escaped backslashes in DOMAIN\username anymore, removed
+* :bug:`-` Depot Manager: running opsi-package(product)-updater not always recognized when initiated twice on the same repository server
+* :support:`-` opsi 4.1 compatibility: set workbench folder / opsi Server Version pre 4.1 or newer
+* :feature:`- backported` Report Generator: Get current depot/repo content on single server
+* :release:`8.2.5 <2018-04-13>`
+* :support:`-` Pyinstaller 3.3.1 now working with Python 3.6 - spec file modified
+* :bug:`-` Nasty warnings about helpviewer being instantiated over and over again
+* :bug:`-` Incorrect program version information in global excepthook
+* :bug:`-` Translator files for Qt Base, WebEngine, etc. not loaded
+* :bug:`-` opsi-makeproductfile "Permission denied" error not detected
 * :release:`8.2.4 <2018-03-01>`
 * :bug:`8` Update notifier not working when used without proxy server
 * :bug:`-` Added missing imports re+os in tools.py

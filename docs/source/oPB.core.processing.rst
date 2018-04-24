@@ -1,5 +1,5 @@
-oPB.core.processing module
-==========================
+oPB\.core\.processing module
+============================
 
 .. automodule:: oPB.core.processing
     :members:

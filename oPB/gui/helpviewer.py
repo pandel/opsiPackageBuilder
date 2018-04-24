@@ -112,6 +112,7 @@ class HelpSchemeHandler(QWebEngineUrlSchemeHandler):
         @param job URL request job
         @type QWebEngineUrlRequestJob
         """
+
         if job.requestUrl().scheme() == "qthelp":
             reply = HelpSchemeReply(job, self._engine)
             reply.closed.connect(self.__replyClosed)
@@ -216,7 +217,7 @@ class HelpSchemeReply(QIODevice):
 
     def close(self):
         """
-        Public method used to cloase the reply.
+        Public method used to close the reply.
         """
         super(HelpSchemeReply, self).close()
         self.closed.emit()
@@ -270,6 +271,7 @@ class HelpDialog(QObject, LogMixin):
 
         # Create webview for help information
         # and assign a custom URL scheme handler for scheme "qthelp)
+
         self._wv = QWebEngineView(self.ui)
         self._urlschemehandler = HelpSchemeHandler(self._helpEngine, self._wv.page().profile())
         self._wv.page().profile().installUrlSchemeHandler(b'qthelp', self._urlschemehandler)
@@ -382,6 +384,8 @@ class HelpDialog(QObject, LogMixin):
 class Help(QObject):
     """Main HelpViewer class"""
 
+    hlp = None
+
     def __init__(self, helpfile, prefix, parent=None):
         """
         Constructor of Help
@@ -390,30 +394,33 @@ class Help(QObject):
         :param short_url: shortcut url to help content, omits ``prefix``
         :param max: show helpviewer maximized (True), or not (False)
         """
-        super().__init__(parent)
-        self._help = HelpDialog(helpfile, self)
-        self._helpprefix = prefix
+
+        if Help.hlp is None:
+            Help.hlp = self
+            super().__init__(parent)
+            Help.hlp._help = HelpDialog(helpfile, Help.hlp)
+            Help.hlp._helpprefix = prefix
 
         #self.showHelp(short_url, max)
 
-    def showHelp(self, short_url = None, max = True):
+    def showHelp(cls, short_url = None, max = True):
         """Find short ``short_url`` in help file and open (maximized) viewer"""
 
         if type(short_url) is str:
-            self._help._wv.setUrl(QUrl(self._helpprefix + short_url))
+            cls.hlp._help._wv.setUrl(QUrl(cls.hlp._helpprefix + short_url))
         else:
-            self._help._wv.setUrl(QUrl(self._helpprefix + "index.html"))
+            cls.hlp._help._wv.setUrl(QUrl(cls.hlp._helpprefix + "index.html"))
 
         if max:
-            self._help.ui.showMaximized()
+            cls.hlp._help.ui.showMaximized()
         else:
-            self._help.ui.show()
+            cls.hlp._help.ui.show()
 
-    def close(self):
-        self._help.ui.close()
+    def close(cls):
+        cls.hlp._help.ui.close()
 
-    def isVisible(self):
-        return self._help.ui.isVisible()
+    def isVisible(cls):
+        return cls.hlp._help.ui.isVisible()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

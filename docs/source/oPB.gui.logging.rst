@@ -1,5 +1,5 @@
-oPB.gui.logging module
-======================
+oPB\.gui\.logging module
+========================
 
 .. automodule:: oPB.gui.logging
     :members:

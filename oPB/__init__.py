@@ -78,7 +78,7 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.2.4"
+PROGRAM_VERSION = "8.3.0"
 """Overall program version"""
 
 UPDATER_URL="https://s3.eu-central-1.amazonaws.com/opsipackagebuilder/opsiPackageBuilder"
@@ -104,11 +104,11 @@ CONFIG_INI = str(PurePath(CONFIG_PATH,"config-new.ini"))
 """Standard INI file full path"""
 
 # base folders
-DEV_BASE_NORM = "/home/opsiproducts"
+DEV_BASE_OPSI40 = "/home/opsiproducts"
 """Development base folder under most os"""
-DEV_BASE_SLES = "/var/lib/opsi/workbench"
+DEV_BASE_OPSI41 = "/var/lib/opsi/workbench"
 """Development base folder under SLES"""
-DEV_BASE = DEV_BASE_NORM
+DEV_BASE = DEV_BASE_OPSI41
 REPO_PATH = "/var/lib/opsi/repository"
 """Standard repository folder"""
 DEPOTSHARE_BASE = "opsi_depot"
@@ -152,6 +152,10 @@ Host/IP regex examples:
 """
 
 # basic commands
+OPB_BUILD40 = "opsi-makeproductfile -v"
+"""opsi 4.0 package creation command"""
+OPB_BUILD41 = "opsi-makepackage -v --no-md5 --no-zsync"
+"""opsi 4.1 package creation command"""
 OPB_INSTALL = "opsi-package-manager -i"
 """opsi basic install command"""
 OPB_INSTSETUP = "opsi-package-manager -i -S"
@@ -162,8 +166,12 @@ OPB_UPLOAD = "opsi-package-manager -u"
 """opsi basic upload command"""
 OPB_EXTRACT = "opsi-package-manager -x"
 """opsi package extract command"""
-OPB_PROD_UPDATER = "nohup /usr/bin/opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &"  # must be started with nohup
-"""product updater command"""
+OPB_PROD_UPDATER_40 = "nohup /usr/bin/opsi-product-updater -vv 1>/dev/null 2>&1 </dev/null &"  # must be started with nohup
+"""opsi 4.0 product updater command"""
+OPB_PROD_UPDATER_41 = "nohup /usr/bin/opsi-package-updater update &"  # must be started with nohup
+"""opsi 4.1 package updater command"""
+OPB_PROD_UPDATER = OPB_PROD_UPDATER_40
+"""used product updater command"""
 OPB_DEPLOY_COMMAND = "/var/lib/opsi/depot/opsi-client-agent/opsi-deploy-client-agent"
 """opsi client agent deploy command"""
 OPB_DEPOT_SWITCH = "-d"
@@ -202,8 +210,12 @@ OPB_SETRIGHTS_NOSUDO = "opsi-setup --set-rights"
 """opsi set rights without sudo command"""
 OPB_SETRIGHTS_SUDO = "opsi-set-rights"
 """opsi set rights with sudo command"""
-OPB_GETPRODUPD_PID = "VAR=$(pidof -x opsi-product-updater); echo $VAR"
+OPB_GETPRODUPD40_PID = "VAR=$(ps -elf | grep opsi-product-updater | grep -v grep | awk '{print $4}'); echo $VAR"
 """get pid of running opsi-product-updater"""
+OPB_GETPRODUPD41_PID = "VAR=$(ps -elf | grep opsi-package-updater | grep -v grep | awk '{print $4}'); echo $VAR"
+"""get pid of running opsi-package-updater"""
+OPB_GETPRODUPD_PID = OPB_GETPRODUPD40_PID
+"""get pid of currently used opsi package updating command"""
 
 # additional commands
 OPB_AT_QUEUE = "atq -q D"

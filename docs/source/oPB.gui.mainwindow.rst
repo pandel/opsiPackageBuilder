@@ -1,5 +1,5 @@
-oPB.gui.mainwindow module
-=========================
+oPB\.gui\.mainwindow module
+===========================
 
 .. automodule:: oPB.gui.mainwindow
     :members:

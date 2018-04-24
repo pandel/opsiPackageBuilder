@@ -1,5 +1,5 @@
-oPB.controller.settings module
-==============================
+oPB\.controller\.settings module
+================================
 
 .. automodule:: oPB.controller.settings
     :members:

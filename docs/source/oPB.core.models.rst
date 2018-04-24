@@ -1,5 +1,5 @@
-oPB.core.models module
-======================
+oPB\.core\.models module
+========================
 
 .. automodule:: oPB.core.models
     :members:

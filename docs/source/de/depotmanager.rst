@@ -179,7 +179,7 @@ Mit Hilfe des Reportauswahl-Dialogs können gezielt Depotvergleiche durchgeführ
 .. |image50| image:: ../img/DepotManager.jpg
 .. |image51| image:: ../img/btnHoleRepo.png
 .. |image52| image:: ../img/btnHoleRepotBlau.png
-.. |image53| image:: ../img/btnSchließen.png
+.. |image53| image:: ../img/btnSchliessen.png
 .. |image54| image:: ../img/btnVergleichen.png
 .. |image55| image:: ../img/btnVergleichenGrün.png
 .. |image56| image:: ../img/btnAktualisieren2.png

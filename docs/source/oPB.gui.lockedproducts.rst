@@ -1,5 +1,5 @@
-oPB.gui.lockedproducts module
-=============================
+oPB\.gui\.lockedproducts module
+===============================
 
 .. automodule:: oPB.gui.lockedproducts
     :members:

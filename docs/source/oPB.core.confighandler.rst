@@ -1,5 +1,5 @@
-oPB.core.confighandler module
-=============================
+oPB\.core\.confighandler module
+===============================
 
 .. automodule:: oPB.core.confighandler
     :members:

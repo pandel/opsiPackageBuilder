@@ -5,31 +5,20 @@ block_cipher = None
 
 
 ui_tree = Tree('oPB/ui', prefix='oPB/ui', excludes=['*.qss', '*.py'])
-lang_tree = [('PyQt5/translations/qt_de.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qt_de.qm', 'DATA'),
-	   ('PyQt5/translations/qt_en.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qt_en.qm', 'DATA'),
-	   ('PyQt5/translations/qthelp_de.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qt_help_de.qm', 'DATA'),
-	   ('PyQt5/translations/qthelp_en.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qt_help_en.qm', 'DATA'),
-	   ('PyQt5/translations/qtbase_de.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qtbase_de.qm', 'DATA'),
-	   ('PyQt5/translations/qtbase_en.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qtbase_en.qm', 'DATA'),
-	   ('PyQt5/translations/qtwebengine_de.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qtwebengine_de.qm', 'DATA'),
-	   ('PyQt5/translations/qtwebengine_en.qm', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qtwebengine_en.qm', 'DATA'),
-	   ('qtwebengine_locales/de.pak', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qtwebengine_locales/de.pak', 'DATA'),
-	   ('qtwebengine_locales/en-US.pak', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qtwebengine_locales/en-US.pak', 'DATA'),
-	   ('qtwebengine_locales/en-GB.pak', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/translations/qtwebengine_locales/en-GB.pak', 'DATA')]
 
-files_tree = [('QtWebEngineProcess.exe', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/bin/QtWebEngineProcess.exe', 'DATA'),
-           ('icudtl.dat', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/resources/icudtl.dat', 'DATA'),
-           ('qtwebengine_devtools_resources.pak', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/resources/qtwebengine_devtools_resources.pak', 'DATA'),
-           ('qtwebengine_resources.pak', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/resources/qtwebengine_resources.pak', 'DATA'),
-           ('qtwebengine_resources_100p.pak', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/resources/qtwebengine_resources_100p.pak', 'DATA'),
-           ('qtwebengine_resources_200p.pak', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/resources/qtwebengine_resources_200p.pak', 'DATA'),
-           ('libEGL.dll', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/bin/libEGL.dll', 'DATA'),
+# further information regarding Qt(WebEngine) deploy,
+# see https://doc.qt.io/qt-5.10/qtwebengine-deploying.html
+# http://doc.qt.io/qt-5/windows-deployment.html
+
+
+files_tree = [('libEGL.dll', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/bin/libEGL.dll', 'DATA'),
            ('libGLESv2.dll', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/bin/libGLESv2.dll', 'DATA')]
 
 help_tree = Tree('oPB/help', prefix='help')
 dll64_tree = Tree('oPB/core/x64', prefix='x64')
 dll86_tree = Tree('oPB/core/x86', prefix='x86')
 
+qss_win_tree = [('ui/stylesheet.qss', 'oPB/ui/stylesheet.qss', 'DATA')]
 
 a = Analysis(['opsipackagebuilder.py'],
              pathex=['.'],
@@ -85,13 +74,12 @@ coll = COLLECT(exe,
                a.zipfiles,
                a.datas,
                ui_tree,
-               lang_tree,
                files_tree,
                help_tree,
                dll64_tree,
                dll86_tree,
                [('ui/opsipackagebuilder_rc.py', 'oPB/ui/opsipackagebuilder_rc.py', 'DATA')],
-               [('ui/stylesheet.qss', 'oPB/ui/stylesheet.qss', 'DATA')],
+               qss_win_tree,
                strip=False,
                upx=False,
                name='opsipackagebuilder')
@@ -101,13 +89,12 @@ collb = COLLECT(exeb,
                b.zipfiles,
                b.datas,
                ui_tree,
-               lang_tree,
                files_tree,
                help_tree,
                dll64_tree,
                dll86_tree,
                [('ui/opsipackagebuilder_rc.py', 'oPB/ui/opsipackagebuilder_rc.py', 'DATA')],
-               [('ui/stylesheet.qss', 'oPB/ui/stylesheet.qss', 'DATA')],
+               qss_win_tree,
                strip=False,
                upx=False,
                name='helpviewer')

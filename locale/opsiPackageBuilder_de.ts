@@ -467,7 +467,7 @@
 <context>
     <name>HelpSchemeReply</name>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="186"/>
+        <location filename="../oPB/gui/helpviewer.py" line="187"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;title&gt;Error 404...&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;h1&gt;The page could not be found&lt;/h1&gt;&lt;br&gt;&lt;h3&gt;&apos;{0}&apos;&lt;/h3&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head&gt;&lt;title&gt;Fehler 404...&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;h1&gt;Seite konnte nicht gefunden werden&lt;/h1&gt;&lt;br&gt;&lt;h3&gt;&apos;{0}&apos;&lt;/h3&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -475,12 +475,12 @@
 <context>
     <name>HelpViewer</name>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="356"/>
+        <location filename="../oPB/gui/helpviewer.py" line="358"/>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="357"/>
+        <location filename="../oPB/gui/helpviewer.py" line="359"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
@@ -846,7 +846,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Aktuelles Projekt speichern unter...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="953"/>
+        <location filename="../oPB/controller/main.py" line="959"/>
         <source>Downloading: {0} Bytes: {1}</source>
         <translation>Lade herunter: {0} Bytes: {1}</translation>
     </message>
@@ -870,49 +870,59 @@ The following message(s) returned:</source>
 Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="975"/>
+        <location filename="../oPB/controller/main.py" line="981"/>
         <source>Downloading: {0} - Bytes: {1} of {2}</source>
         <translation>Downloading: {0} - Bytes: {1} von {2}</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="997"/>
+        <location filename="../oPB/controller/main.py" line="1003"/>
         <source>Update check in progress...</source>
         <translation>Prüfung auf neuere Version läuft...</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1013"/>
+        <location filename="../oPB/controller/main.py" line="1019"/>
         <source>New program version available! Update possible!</source>
         <translation>Neu Programmversion verfügbar! Update möglich!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1018"/>
+        <location filename="../oPB/controller/main.py" line="1024"/>
         <source>New program version available:</source>
         <translation>Neue Programmversion verfügbar:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1019"/>
+        <location filename="../oPB/controller/main.py" line="1025"/>
         <source>Do you want to download and install the new version?</source>
         <translation>Neue Version herunterladen und installieren?</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1025"/>
+        <location filename="../oPB/controller/main.py" line="1031"/>
         <source>Choose download directory</source>
         <translation>Downloadverzeichnis wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1035"/>
+        <location filename="../oPB/controller/main.py" line="1041"/>
         <source>File successfully saved to:</source>
         <translation>Datei erfolgreich gespeichert nach:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1036"/>
+        <location filename="../oPB/controller/main.py" line="1042"/>
         <source>Quit application to start the update process.</source>
         <translation>Das Programm beenden, um den Updatevorgang zu starten.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/main.py" line="1049"/>
+        <location filename="../oPB/controller/main.py" line="1055"/>
         <source>No new program version available!</source>
         <translation>Keine neuere Programmversion verfügbar!</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/main.py" line="934"/>
+        <source>Error while opening update URL...</source>
+        <translation>Fehler beim Zugriff auf Update URL...</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/main.py" line="938"/>
+        <source>Error while opening HTTPS connection...</source>
+        <translation>Fehler beim Öffnen der HTTPS Verbindung...</translation>
     </message>
 </context>
 <context>
@@ -923,104 +933,114 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Befehl ausgeführt.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="175"/>
+        <location filename="../oPB/core/processing.py" line="183"/>
         <source>Package has been build before. It will not be overwritten!</source>
         <translation>Das Paket wurde bereits erstellt und wird nicht überschrieben!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="991"/>
+        <location filename="../oPB/core/processing.py" line="1004"/>
         <source>Command not found. See Log for details.</source>
         <translation>Befehl nicht gefunden. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1007"/>
+        <location filename="../oPB/core/processing.py" line="1020"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation>Fehler beim Verbindungsaufbau. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="214"/>
+        <location filename="../oPB/core/processing.py" line="222"/>
         <source>Package file could not be found!</source>
         <translation>Die Paketdatei konnte nicht gefunden werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1063"/>
+        <location filename="../oPB/core/processing.py" line="1076"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation>Nicht verarbeitbare Umlaute gefunden, Paketbau abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1068"/>
+        <location filename="../oPB/core/processing.py" line="1081"/>
         <source>Backend error: installation failed.</source>
         <translation>Fehler im Backend: Installation abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1073"/>
+        <location filename="../oPB/core/processing.py" line="1086"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation>Konnte das Kommando &apos;install&apos; nicht verarbeiten.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1078"/>
+        <location filename="../oPB/core/processing.py" line="1091"/>
         <source>Package file error. Check log.</source>
         <translation>Paketdatei fehlerhaft. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1123"/>
+        <location filename="../oPB/core/processing.py" line="1141"/>
         <source>Undefined error occurred. Check log.</source>
         <translation>Unspezifizierter Fehler aufgetreten. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="648"/>
+        <location filename="../oPB/core/processing.py" line="656"/>
         <source>Error during command execution. Check Log for details.</source>
         <translation>Fehler während der Befehlsausführung. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="806"/>
+        <location filename="../oPB/core/processing.py" line="814"/>
         <source>opsi-product-updater is already running.</source>
-        <translation>Der opsi-product-updater läuft bereits.</translation>
+        <translation type="obsolete">Der opsi-product-updater läuft bereits.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="338"/>
+        <location filename="../oPB/core/processing.py" line="346"/>
         <source>Copying file to:</source>
         <translation>Kopiere Datei nach:</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="342"/>
+        <location filename="../oPB/core/processing.py" line="350"/>
         <source>Extracting...</source>
         <translation>Extrahieren...</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1083"/>
+        <location filename="../oPB/core/processing.py" line="1096"/>
         <source>Error during package extraction. Check log.</source>
         <translation>Fehler beim Entpacken des Pakets. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1088"/>
+        <location filename="../oPB/core/processing.py" line="1106"/>
         <source>Permission denied. Check log.</source>
         <translation>Erlaubnis für Schreibzugriff verweigert. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1093"/>
+        <location filename="../oPB/core/processing.py" line="1111"/>
         <source>Network logon failed. Check log.</source>
         <translation>Netzwerk Logon nicht möglich. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1098"/>
+        <location filename="../oPB/core/processing.py" line="1116"/>
         <source>Possible error: command or file not found. Check log.</source>
         <translation>Möglicher Fehler: Befehl oder Datei nicht gefunden. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1103"/>
+        <location filename="../oPB/core/processing.py" line="1121"/>
         <source>Failed to get ip address for host. Check log.</source>
         <translation>Konnte IP Adresse des Hosts nicht ermitteln. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1113"/>
+        <location filename="../oPB/core/processing.py" line="1131"/>
         <source>The requested product action is not possible, because it is currently locked on the server. Check log.</source>
         <translation>Die angeforderte Produktaktion ist nicht möglich, da das Produkt derzeit auf dem Server gesperrt ist. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1108"/>
+        <location filename="../oPB/core/processing.py" line="1126"/>
         <source>Failed to execute opsi command. Check log.</source>
         <translation>opsi Befehl konnte nicht ausgegürt werden.  Für Details Logbuch prüfen.</translation>
+    </message>
+    <message>
+        <location filename="../oPB/core/processing.py" line="1101"/>
+        <source>Permission denied during opsi-makeproductfile. Check log or raise log level for opsi-makeproductfile.</source>
+        <translation>Zugriff verweigert während opsi-makeproductfile. Logbuch prüfen und ggf. den Loglevel für opsi-makeproductfile erhöhen.</translation>
+    </message>
+    <message>
+        <location filename="../oPB/core/processing.py" line="819"/>
+        <source>opsi package update process already running.</source>
+        <translation>opsi Paketaktualisierung läuft bereits.</translation>
     </message>
 </context>
 <context>
@@ -1067,7 +1087,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Paketbau Fortschritt:</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1300"/>
+        <location filename="../oPB/core/processing.py" line="1318"/>
         <source>In progress:</source>
         <translation>In Bearbeitung:</translation>
     </message>
@@ -1106,6 +1126,19 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <location filename="../oPB/gui/utilities.py" line="236"/>
         <source>Close</source>
         <translation>Schließen</translation>
+    </message>
+</context>
+<context>
+    <name>ReportGenerator</name>
+    <message>
+        <location filename="../oPB/gui/report.py" line="187"/>
+        <source>No reference server selected!</source>
+        <translation>Kein Referenzserver ausgewählt!</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="196"/>
+        <source>Please select one or more server names on the right side for comparison!</source>
+        <translation>Bitte einen oder mehrere Server für den Vergleich auswählen!</translation>
     </message>
 </context>
 <context>
@@ -1155,6 +1188,11 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <source>Content of repository folder</source>
         <translation>Inhalt Repository Ordner</translation>
     </message>
+    <message>
+        <location filename="../oPB/ui/reportselector.ui" line="222"/>
+        <source>Server content (left selected)</source>
+        <translation>Serverstand (nur linke Seite)</translation>
+    </message>
 </context>
 <context>
     <name>ScriptTree</name>
@@ -1190,347 +1228,347 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>opsi Zugangsdaten</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="89"/>
+        <location filename="../oPB/ui/settings.ui" line="289"/>
         <source>Config server:</source>
         <translation>Konfigserver:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="103"/>
+        <location filename="../oPB/ui/settings.ui" line="303"/>
         <source>opsiadmin User:</source>
         <translation>opsiadmin Benutzer:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="110"/>
+        <location filename="../oPB/ui/settings.ui" line="310"/>
         <source>opsiadmin Password:</source>
         <translation>opsiadmin Passwort:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="144"/>
+        <location filename="../oPB/ui/settings.ui" line="110"/>
         <source>SSH port:</source>
         <translation>SSH Port:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="169"/>
+        <location filename="../oPB/ui/settings.ui" line="135"/>
         <source>Use SSH private key file</source>
         <translation>Private SSH Schlüsseldatei verwenden</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="225"/>
         <source>compatible to 4.0.3</source>
-        <translation>kompatibel zu 4.0.3</translation>
+        <translation type="obsolete">kompatibel zu 4.0.3</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="232"/>
         <source>4.0.4 or newer</source>
-        <translation>4.0.4 oder neuer</translation>
+        <translation type="obsolete">4.0.4 oder neuer</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="248"/>
+        <location filename="../oPB/ui/settings.ui" line="214"/>
         <source>root Password:</source>
         <translation>root Passwort:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="265"/>
+        <location filename="../oPB/ui/settings.ui" line="231"/>
         <source>Set root password to use &quot;Set rights on package&quot; function from Tools menu.</source>
         <translation>Root Passwort hinterlegen, um &apos;&apos;Paketrechte setzen&apos;&apos; im Werkzeugmenü zu nutzen.</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="281"/>
+        <location filename="../oPB/ui/settings.ui" line="247"/>
         <source>SUDO without password</source>
         <translation>SUDO ohne Passwort</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="291"/>
+        <location filename="../oPB/ui/settings.ui" line="257"/>
         <source>SUDO with password</source>
         <translation>SUDO mit Passwort</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="373"/>
+        <location filename="../oPB/ui/settings.ui" line="411"/>
         <source>Maintainer information</source>
         <translation>Paketbetreuung</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="394"/>
+        <location filename="../oPB/ui/settings.ui" line="432"/>
         <source>Package maintainer:</source>
         <translation>Betreuer:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="407"/>
+        <location filename="../oPB/ui/settings.ui" line="445"/>
         <source>Mail address:</source>
         <translation>EMail:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="437"/>
+        <location filename="../oPB/ui/settings.ui" line="475"/>
         <source>Program</source>
         <translation>Programm</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="449"/>
+        <location filename="../oPB/ui/settings.ui" line="487"/>
         <source>Program settings</source>
         <translation>Programmeinstellungen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="470"/>
+        <location filename="../oPB/ui/settings.ui" line="508"/>
         <source>Extended changelog editor</source>
         <translation>Erweiterten Changelog Editor verwenden</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="480"/>
+        <location filename="../oPB/ui/settings.ui" line="518"/>
         <source>Force changelog entry when building</source>
         <translation>Erzwinge Changelog Eintrag beim Paketieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="518"/>
+        <location filename="../oPB/ui/settings.ui" line="556"/>
         <source>Changelog block recognition:</source>
         <translation>Blockerkennung:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="525"/>
+        <location filename="../oPB/ui/settings.ui" line="563"/>
         <source>Language:</source>
         <translation>Sprache:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="590"/>
+        <location filename="../oPB/ui/settings.ui" line="628"/>
         <source>The development folder has to be a drive mapped to the opsi_workbench share. You can either let opsi PackageBuilder connect the network drive at runtime or you use your own pre-existing drive mapping. But beware: Because of windows access restrictions you can not use both mapping types at the same time!</source>
         <translation>Der Entwicklungsordner muß eine Laufwerksverbindung zur opsi_workbench Freigabe sein. Es kann entweder eine bestehende Netzlaufwerkverbindung verwendet werden, oder opsi PackageBuilder stellt die Verbindung zur Laufzeit her. Bitte beachten: Es können aus zugriffsrechtlichen Gründen nicht beide Verbindungsarten zur gleichen Zeit verwendet werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="557"/>
+        <location filename="../oPB/ui/settings.ui" line="595"/>
         <source>Force changelog entry when saving changes</source>
         <translation>Erzwinge Changelog Eintrag beim Speichern von Änderungen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="564"/>
+        <location filename="../oPB/ui/settings.ui" line="602"/>
         <source>Development folder:</source>
         <translation>Entwicklungsordner:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="583"/>
+        <location filename="../oPB/ui/settings.ui" line="621"/>
         <source>Use existing network drive</source>
         <translation>Bestehendes Netzwerklaufwerk verwenden</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="638"/>
+        <location filename="../oPB/ui/settings.ui" line="676"/>
         <source>Script Editor</source>
         <translation>Skripteditor</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="659"/>
+        <location filename="../oPB/ui/settings.ui" line="697"/>
         <source>External</source>
         <translation>Extern</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="678"/>
+        <location filename="../oPB/ui/settings.ui" line="716"/>
         <source>Choose which editor to use:</source>
         <translation>Editortyp wählen:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="685"/>
+        <location filename="../oPB/ui/settings.ui" line="723"/>
         <source>Code folding</source>
         <translation>Quellcode falten</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="709"/>
+        <location filename="../oPB/ui/settings.ui" line="747"/>
         <source>Editor options:</source>
         <translation>Editor Optionen:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="716"/>
+        <location filename="../oPB/ui/settings.ui" line="754"/>
         <source>Internal</source>
         <translation>Intern</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="729"/>
+        <location filename="../oPB/ui/settings.ui" line="767"/>
         <source>Syntax highlighting</source>
         <translation>Syntaxhervorhebung</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="783"/>
+        <location filename="../oPB/ui/settings.ui" line="821"/>
         <source>opsi Commands</source>
         <translation>opsi Verwaltungsbefehle</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="814"/>
+        <location filename="../oPB/ui/settings.ui" line="852"/>
         <source>Show command output after execution</source>
         <translation>Ausgabe nach Aktionsausführung anzeigen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="821"/>
+        <location filename="../oPB/ui/settings.ui" line="859"/>
         <source>Always reload machines and products when opening scheduler</source>
         <translation>Beim Öffnen des Zeitplaners Maschinen und Produkte immer neu einlesen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="828"/>
+        <location filename="../oPB/ui/settings.ui" line="866"/>
         <source>Upload command:</source>
         <translation>Depot Upload:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="851"/>
+        <location filename="../oPB/ui/settings.ui" line="889"/>
         <source>Use depot functions</source>
         <translation>Depotfunktionen aktivieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="858"/>
+        <location filename="../oPB/ui/settings.ui" line="896"/>
         <source>Build command:</source>
         <translation>Paketieren:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="871"/>
+        <location filename="../oPB/ui/settings.ui" line="909"/>
         <source>Install+setup command:</source>
         <translation>Installation+Setup:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="881"/>
+        <location filename="../oPB/ui/settings.ui" line="919"/>
         <source>Uninstall command:</source>
         <translation>Deinstallation:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="894"/>
+        <location filename="../oPB/ui/settings.ui" line="932"/>
         <source>If you activate the depot functions, the above commands won&apos;t be used, they are computed internally. BEWARE: depot functions will be inactive when processing via command line parameters without GUI!</source>
         <translation>Bei aktivierten Depotfunktionen werden die obigen Befehle nicht verwendet, sondern intern autom. generiert. ACHTUNG: Depotfunktionen werden bei Kommandozeilenverarbeitung ohne GUI inaktiviert!</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="904"/>
+        <location filename="../oPB/ui/settings.ui" line="942"/>
         <source>Install command:</source>
         <translation>Installation:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="914"/>
+        <location filename="../oPB/ui/settings.ui" line="952"/>
         <source>WakeOnLan lead time:</source>
         <translation>WakeOnLan Vorlaufzeit:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="931"/>
+        <location filename="../oPB/ui/settings.ui" line="969"/>
         <source>(in minutes)</source>
         <translation>(in Minuten)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="955"/>
+        <location filename="../oPB/ui/settings.ui" line="993"/>
         <source>Messages and Logging</source>
         <translation>Meldungen und Logging</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="961"/>
+        <location filename="../oPB/ui/settings.ui" line="999"/>
         <source>Messages</source>
         <translation>Meldefenster</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="982"/>
+        <location filename="../oPB/ui/settings.ui" line="1020"/>
         <source>Disable ERROR message boxes</source>
         <translation>Fehlermeldungen deaktiveren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="989"/>
+        <location filename="../oPB/ui/settings.ui" line="1027"/>
         <source>Disable AT job warning</source>
         <translation>AT Job Warnung deaktivieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="996"/>
+        <location filename="../oPB/ui/settings.ui" line="1034"/>
         <source>Disable WARNING message boxes</source>
         <translation>Warnmeldungen deaktiveren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1003"/>
+        <location filename="../oPB/ui/settings.ui" line="1041"/>
         <source>Disable INFO message boxes</source>
         <translation>Infomeldungen deaktivieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1010"/>
+        <location filename="../oPB/ui/settings.ui" line="1048"/>
         <source>These settings will disable most of the common messages. However, some of the messages won&apos;t be filtered because of their importance.</source>
         <translation>Diese Einstellungen deaktivieren die meisten Nachrichten. Einige Nachrichten werden jedoch weiterhin aufgrund Ihrer Bedeutung als Nachrichtenfenster eingeblendet.</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1023"/>
+        <location filename="../oPB/ui/settings.ui" line="1061"/>
         <source>Log configuration</source>
         <translation>Log Konfiguration</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1075"/>
+        <location filename="../oPB/ui/settings.ui" line="1113"/>
         <source>Always write log file</source>
         <translation>Logdatei immer erstellen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1082"/>
+        <location filename="../oPB/ui/settings.ui" line="1120"/>
         <source>Log level:</source>
         <translation>Log Stufe:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1089"/>
+        <location filename="../oPB/ui/settings.ui" line="1127"/>
         <source>Log file:</source>
         <translation>Logdatei:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1121"/>
+        <location filename="../oPB/ui/settings.ui" line="1159"/>
         <source>DEBUG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1136"/>
+        <location filename="../oPB/ui/settings.ui" line="1174"/>
         <source>WARNING</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1126"/>
+        <location filename="../oPB/ui/settings.ui" line="1164"/>
         <source>INFO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1146"/>
+        <location filename="../oPB/ui/settings.ui" line="1184"/>
         <source>ERROR</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1184"/>
+        <location filename="../oPB/ui/settings.ui" line="1222"/>
         <source>Updates</source>
         <translation>Programmaktualisierung</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1190"/>
+        <location filename="../oPB/ui/settings.ui" line="1228"/>
         <source>Update parameters</source>
         <translation>Einstellungen für automatische Updates</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1208"/>
+        <location filename="../oPB/ui/settings.ui" line="1246"/>
         <source>Search for new program version at startup</source>
         <translation>Bei Programmstart nach neuer Version suchen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1218"/>
+        <location filename="../oPB/ui/settings.ui" line="1256"/>
         <source>Proxy settings</source>
         <translation>Proxy Einstellungen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1242"/>
+        <location filename="../oPB/ui/settings.ui" line="1280"/>
         <source>Port:</source>
         <translation>Port:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1249"/>
+        <location filename="../oPB/ui/settings.ui" line="1287"/>
         <source>Server:</source>
         <translation>Server:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1256"/>
+        <location filename="../oPB/ui/settings.ui" line="1294"/>
         <source>Username:</source>
         <translation>Benutzername:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1273"/>
+        <location filename="../oPB/ui/settings.ui" line="1311"/>
         <source>Password:</source>
         <translation>Passwort:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1283"/>
+        <location filename="../oPB/ui/settings.ui" line="1321"/>
         <source>Use proxy server for internet connection</source>
         <translation>Proxyserver für Internetverbindung nutzen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1329"/>
+        <location filename="../oPB/ui/settings.ui" line="1367"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1342"/>
+        <location filename="../oPB/ui/settings.ui" line="1380"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -1540,47 +1578,47 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="120"/>
+        <location filename="../oPB/ui/settings.ui" line="86"/>
         <source>Connection parameter</source>
         <translation>Verbindungsparameter</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="195"/>
         <source>opsi server version</source>
-        <translation>opsi Serverversion</translation>
+        <translation type="obsolete">opsi Serverversion</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="298"/>
+        <location filename="../oPB/ui/settings.ui" line="264"/>
         <source>If you use it WITH password, make sure your sudo command supports the &apos;-S&apos; parameter to read the password via STDIN.</source>
         <translation>Wird SUDO mit Passwort genutzt, so muss der SUDO Befehl den Parameter &apos;-S&apos; unterstützen, um das Passwort über STDIN einzulesen.</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="702"/>
+        <location filename="../oPB/ui/settings.ui" line="740"/>
         <source>External editor:</source>
         <translation>Externer Editor:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="544"/>
+        <location filename="../oPB/ui/settings.ui" line="582"/>
         <source>en</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="549"/>
+        <location filename="../oPB/ui/settings.ui" line="587"/>
         <source>de</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1131"/>
+        <location filename="../oPB/ui/settings.ui" line="1169"/>
         <source>SSHINFO</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="1141"/>
+        <location filename="../oPB/ui/settings.ui" line="1179"/>
         <source>SSH</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="804"/>
+        <location filename="../oPB/ui/settings.ui" line="842"/>
         <source>Refresh depot cache</source>
         <translation>Depot Cache aktualisieren</translation>
     </message>
@@ -1590,49 +1628,49 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Optionen:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="752"/>
+        <location filename="../oPB/ui/settings.ui" line="790"/>
         <source>Editor command line options:</source>
         <translation>Kommandozeilenoption:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="759"/>
+        <location filename="../oPB/ui/settings.ui" line="797"/>
         <source>Concat filename:</source>
         <translation>Dateiname verbinden:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="766"/>
+        <location filename="../oPB/ui/settings.ui" line="804"/>
         <source>Attach directly to options</source>
         <translation>Direkt an die Optionen anhängen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="539"/>
+        <location filename="../oPB/ui/settings.ui" line="577"/>
         <source>System</source>
         <translation>System</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/settings.ui" line="613"/>
+        <location filename="../oPB/ui/settings.ui" line="651"/>
         <source>Local share base:</source>
         <translation>Lokale Share Basis:</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="326"/>
         <source>Base operating system of opsi server</source>
-        <translation>Basisbetriebssystem des opsi Servers</translation>
+        <translation type="obsolete">Basisbetriebssystem des opsi Servers</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="332"/>
         <source>Base OS is anything but SLES</source>
-        <translation>Basisbetriebssystem ist NICHT SLES</translation>
+        <translation type="obsolete">Basisbetriebssystem ist NICHT SLES</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="335"/>
         <source>Other</source>
-        <translation>Sonstige</translation>
+        <translation type="obsolete">Sonstige</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="345"/>
         <source>Base OS is SLES</source>
-        <translation>Basisbetriebssystem ist SLES</translation>
+        <translation type="obsolete">Basisbetriebssystem ist SLES</translation>
     </message>
     <message>
         <location filename="../oPB/ui/settings.ui" line="360"/>
@@ -1642,28 +1680,73 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     <message>
         <location filename="../oPB/ui/settings.ui" line="348"/>
         <source>SLES (SuSE Linux Enterprise Server)</source>
-        <translation>SLES (SuSE Linux Enterprise Server)</translation>
+        <translation type="obsolete">SLES (SuSE Linux Enterprise Server)</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="161"/>
+        <source>Command Execution (SUDO)</source>
+        <translation>Kompatibilität der Befehlsausführung (SUDO)</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="191"/>
+        <source>compatible to opsi 4.0.3</source>
+        <translation>kompatibel zu 4.0.3</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="198"/>
+        <source>opsi 4.0.4 or newer</source>
+        <translation>opsi 4.0.4 oder neuer</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="326"/>
+        <source>opsi Workbench location</source>
+        <translation>opsi Workbench</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="338"/>
+        <source>/home/opsiproducts</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="348"/>
+        <source>/var/lib/opsi/workbench</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="370"/>
+        <source>opsi Server Version</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="376"/>
+        <source>opsi 4.0 or older</source>
+        <translation>opsi 4.0 oder älter</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/settings.ui" line="386"/>
+        <source>opsi 4.1 or newer</source>
+        <translation>opsi 4.1 oder neuer</translation>
     </message>
 </context>
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../oPB/gui/settings.py" line="307"/>
+        <location filename="../oPB/gui/settings.py" line="337"/>
         <source>Select development folder</source>
         <translation>Basis Entiwcklungsordner wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="328"/>
+        <location filename="../oPB/gui/settings.py" line="358"/>
         <source>Choose keyfile</source>
         <translation>Schlüsseldatei wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="348"/>
+        <location filename="../oPB/gui/settings.py" line="378"/>
         <source>Choose Scripteditor</source>
         <translation>Skripteditor auswählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="373"/>
+        <location filename="../oPB/gui/settings.py" line="403"/>
         <source>Select logfile folder</source>
         <translation>Logfile Ordner auswählen</translation>
     </message>
@@ -1793,7 +1876,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     <message>
         <location filename="../oPB/controller/base.py" line="425"/>
         <source>Run opsi-product-updater...</source>
-        <translation>opsi-product-updater starten...</translation>
+        <translation type="obsolete">opsi-product-updater starten...</translation>
     </message>
     <message>
         <location filename="../oPB/controller/base.py" line="429"/>
@@ -1874,6 +1957,11 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <location filename="../oPB/controller/base.py" line="357"/>
         <source>Getting opsi host group list...</source>
         <translation>Hole opsi Hostgruppen...</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/base.py" line="425"/>
+        <source>Run opsi package update process...</source>
+        <translation>Starte opsi Paketaktualisierung...</translation>
     </message>
 </context>
 <context>
@@ -1965,24 +2053,34 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>depotManagerController</name>
     <message>
-        <location filename="../oPB/gui/report.py" line="196"/>
+        <location filename="../oPB/gui/report.py" line="210"/>
         <source>Compare depots:</source>
-        <translation>Depotvergleich:</translation>
+        <translation type="obsolete">Depotvergleich:</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/report.py" line="201"/>
+        <location filename="../oPB/gui/report.py" line="220"/>
         <source>Compare repositories:</source>
-        <translation>Repository Vergleich:</translation>
+        <translation type="obsolete">Repository Vergleich:</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/report.py" line="222"/>
+        <location filename="../oPB/gui/report.py" line="243"/>
         <source>Reference:</source>
-        <translation>Referenz:</translation>
+        <translation type="obsolete">Referenz:</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/report.py" line="312"/>
+        <location filename="../oPB/gui/report.py" line="360"/>
         <source>(no differences found)</source>
-        <translation>(keine Unterschiede gefunden)</translation>
+        <translation type="obsolete">(keine Unterschiede gefunden)</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="215"/>
+        <source>Depot content:</source>
+        <translation type="obsolete">Depotbestand:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="262"/>
+        <source>Depot:</source>
+        <translation type="obsolete">Depot:</translation>
     </message>
 </context>
 <context>
@@ -1995,7 +2093,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     <message>
         <location filename="../oPB/controller/components/depotmanager.py" line="471"/>
         <source>Start opsi product updater now?</source>
-        <translation>opsi-product-updater jetzt starten?</translation>
+        <translation type="obsolete">opsi-product-updater jetzt starten?</translation>
     </message>
     <message>
         <location filename="../oPB/controller/components/depotmanager.py" line="526"/>
@@ -2106,6 +2204,41 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <location filename="../oPB/controller/components/depotmanager.py" line="654"/>
         <source>description</source>
         <translation>Beschreibung</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/depotmanager.py" line="471"/>
+        <source>Start opsi package updating process now?</source>
+        <translation>opsi Paketaktualisierung jetzt ausführen?</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="210"/>
+        <source>Compare depots:</source>
+        <translation>Depotvergleich:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="215"/>
+        <source>Depot content:</source>
+        <translation>Depotbestand:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="220"/>
+        <source>Compare repositories:</source>
+        <translation>Repository Vergleich:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="243"/>
+        <source>Reference:</source>
+        <translation>Referenz:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="262"/>
+        <source>Depot:</source>
+        <translation>Depot:</translation>
+    </message>
+    <message>
+        <location filename="../oPB/gui/report.py" line="360"/>
+        <source>(no differences found)</source>
+        <translation>(keine Unterschiede gefunden)</translation>
     </message>
 </context>
 <context>
@@ -2962,7 +3095,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Frage</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/settings.py" line="197"/>
+        <location filename="../oPB/controller/settings.py" line="199"/>
         <source>There are unsaved changes! Do you really want to continue?</source>
         <translation>Änderungen nicht gespeichert. Wirklich fortfahren?</translation>
     </message>

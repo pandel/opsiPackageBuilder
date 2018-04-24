@@ -79,6 +79,10 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
     def connect_signals(self):
         self.btnSelAll.clicked.connect(lambda: self.select(True))
         self.btnSelNone.clicked.connect(lambda: self.select(False))
+        self.rdContentLeft.clicked.connect(lambda: self.select(False))
+        self.rdContentLeft.clicked.connect(lambda: self.tblSrvRight.setEnabled(False))
+        self.rdDepot.clicked.connect(lambda: self.tblSrvRight.setEnabled(True))
+        self.rdRepo.clicked.connect(lambda: self.tblSrvRight.setEnabled(True))
         self.btnGenerate.clicked.connect(self.generate_report)
         self._parent.modelDataUpdated.connect(self.splash.close)
 
@@ -165,6 +169,8 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
 
         if self.rdDepot.isChecked():
             modus = "depot"
+        elif self.rdContentLeft.isChecked():
+            modus = "content_left"
         else:
             modus = "repo"
 
@@ -175,39 +181,73 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
                 0).text()
         except:
             self.logger.debug("No reference server selected.")
+            self._parent._parent.msgbox(
+                translate("ReportGenerator", "No reference server selected!"),
+                oPB.MsgEnum.MS_ERR, self)
             return
 
-        self.logger.debug("Getting list of server to compare to from right tableview")
-        slave = self.tblSrvRight.selectionModel().selectedRows()
-        if not slave:
-            self.logger.debug("Nothing to compare to selected.")
-            return
+        if modus != "content_left":
+            self.logger.debug("Getting list of server to compare to from right tableview")
+            slave = self.tblSrvRight.selectionModel().selectedRows()
+            if not slave:
+                self._parent._parent.msgbox(
+                    translate("ReportGenerator", "Please select one or more server names on the right side for comparison!"),
+                    oPB.MsgEnum.MS_ERR, self)
+                self.logger.debug("Nothing to compare to selected.")
+                return
+            steps = 1 + len(slave)
+        else:
+            steps = 2
 
-        steps = 1 + len(slave)
         step = 100 / steps
-
         self.splash.incProgress(step)
 
         if modus == "depot":
             self.logger.debug("Depot comparison modus")
-            html = HtmlTools.HTMLHeader(translate("depotManagerController", "Compare depots:") + " " + server_left + " / " + str(datetime.now()),
-                                        "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#ffffff")
+            html = HtmlTools.HTMLHeader(translate("depotmanagerController", "Compare depots:") + " " + server_left + " / " + str(datetime.now()),
+                                        "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#aaaaaa")
+            data_left = self.get_prodlist_to_server(server_left, self._parent.productsondepotslist)
+        elif modus == "content_left":
+            self.logger.debug("Depot content modus")
+            html = HtmlTools.HTMLHeader(translate("depotmanagerController", "Depot content:") + " " + server_left + " / " + str(datetime.now()),
+                                        "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#aaaaaa")
             data_left = self.get_prodlist_to_server(server_left, self._parent.productsondepotslist)
         else:
             self.logger.debug("Repository comparison modus")
-            html = HtmlTools.HTMLHeader(translate("depotManagerController", "Compare repositories:") + " " + server_left + " / " + str(datetime.now()),
-                                        "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#ffffff")
+            html = HtmlTools.HTMLHeader(translate("depotmanagerController", "Compare repositories:") + " " + server_left + " / " + str(datetime.now()),
+                                        "#ffffff", "#F0F9FF", "#007EE5", "#000000", "#aaaaaa")
             data_left = self.get_repolist_to_server(self._parent.do_getrepocontent(dest = server_left))
 
-        self.logger.debug("Processing server list...")
-        for row in slave:
-            self.splash.incProgress(step)
-            server_right = self.tblSrvRight.selectionModel().model().item(row.row(), 0).text()
-            self.logger.debug("Processing server: " + server_right)
-            if modus == "depot":
-                data_right = self.get_prodlist_to_server(server_right, self._parent.productsondepotslist)
-            else:
-                data_right = self.get_repolist_to_server(self._parent.do_getrepocontent(dest = server_right))
+
+        if modus != "content_left":
+            self.logger.debug("Processing server list...")
+            for row in slave:
+                self.splash.incProgress(step)
+                server_right = self.tblSrvRight.selectionModel().model().item(row.row(), 0).text()
+                self.logger.debug("Processing server: " + server_right)
+                if modus == "depot":
+                    data_right = self.get_prodlist_to_server(server_right, self._parent.productsondepotslist)
+                else:
+                    data_right = self.get_repolist_to_server(self._parent.do_getrepocontent(dest = server_right))
+
+                tmp = self.compare(data_left, data_right, tablefill="")
+                if tmp:
+                    colspan = len(tmp[0]) / 2
+                else:
+                    tmp = []
+                    colspan = 1
+
+                tmp.insert(0, [translate("depotmanagerController", "Reference:") + " " + server_left,
+                               "Depot: " + server_right])
+                if tmp:
+                    html += HtmlTools.Array2HTMLTable(element_list=tmp, colspan=colspan, title='', bodybgcolor="#ffffff",
+                                                      hightlightbgcolor="#F0F9FF",
+                                                      headerbgcolor="#007EE5", bodytxtcolor="#000000", headertxtcolor="#ffffff",
+                                                      headers_on=True, only_table=True)
+
+        else:
+            self.logger.debug("Getting repo content...")
+            data_right = self.get_repolist_to_server(self._parent.do_getrepocontent(dest=server_left))
 
             tmp = self.compare(data_left, data_right, tablefill="")
             if tmp:
@@ -216,11 +256,13 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
                 tmp = []
                 colspan = 1
 
-            tmp.insert(0, [translate("depotManagerController", "Reference:") + " " + server_left, "Depot: " + server_right])
+            tmp.insert(0, [translate("depotmanagerController", "Depot:") + " " + server_left, "Repository: " + server_left])
 
             if tmp:
-                html += HtmlTools.Array2HTMLTable(element_list = tmp, colspan = colspan, title = '', bodybgcolor = "#ffffff", hightlightbgcolor = "#F0F9FF",
-                                                  headerbgcolor = "#007EE5", bodytxtcolor = "#000000", headertxtcolor = "#ffffff", headers_on = True, only_table = True)
+                html += HtmlTools.Array2HTMLTable(element_list=tmp, colspan=colspan, title='', bodybgcolor="#ffffff",
+                                                  hightlightbgcolor="#F0F9FF",
+                                                  headerbgcolor="#007EE5", bodytxtcolor="#000000", headertxtcolor="#ffffff",
+                                                  headers_on=True, only_table=True)
 
         html += HtmlTools.HTMLFooter()
 
@@ -265,19 +307,25 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
         return tmplist
 
     @pyqtSlot()
-    def compare(self, data_left: list, data_right: list, tablefill: str = "--"):
+    def compare(self, data_left: list, data_right: list, tablefill: str = "--", nocomp: bool = False):
         """
         Compare two lists and combine them side by side.
 
         :param data_left: left list
         :param data_right: right list
         :param tablefill: fill empty values with ``tablefill``
+        :param nocomp: only add data: left side = depot content, right side = repo content, no comparison at all
         :return: combined list
         """
-        self.logger.debug("Comparing sides")
 
-        uniqueLeft = [item for item in data_left if item not in data_right]
-        uniqueRight = [item for item in data_right if item not in data_left]
+        if not nocomp:
+            self.logger.debug("Comparing sides")
+            uniqueLeft = [item for item in data_left if item not in data_right]
+            uniqueRight = [item for item in data_right if item not in data_left]
+        else:
+            self.logger.debug("Listing content")
+            uniqueLeft = [item for item in data_left]
+            uniqueRight = [item for item in data_right]
 
         try:
             maxLeft = max(len(s) for s in uniqueLeft)
@@ -306,7 +354,7 @@ class ReportSelectorDialog(ReportSelectorDialogBase, ReportSelectorDialogUI, Log
             ret.append(row_zip)
 
         if len(ret) == 0:
-            ret.append([translate("depotManagerController", "(no differences found)"), ""])
+            ret.append([translate("depotmanagerController", "(no differences found)"), ""])
 
         return ret
 

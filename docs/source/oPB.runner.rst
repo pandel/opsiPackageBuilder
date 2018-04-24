@@ -1,5 +1,5 @@
-oPB.runner module
-=================
+oPB\.runner module
+==================
 
 .. automodule:: oPB.runner
     :members:

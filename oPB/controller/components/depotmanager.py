@@ -454,14 +454,14 @@ class DepotManagerComponent(BaseController, QObject):
 
     @pyqtSlot()
     def run_product_updater(self):
-        self.logger.debug("Start produkt updater")
+        self.logger.debug("Start product update routine")
         if self._active_side == "left":
             depot = self._ui_box_left.currentText().split()[0]
         else:
             depot = self._ui_box_right.currentText().split()[0]
 
         msg = "\n\n" + translate("depotmanagerController", "Selected depot:") + "\n\n" + depot
-        reply = self._parent.msgbox(translate("depotmanagerController", "Start opsi product updater now?") + msg, oPB.MsgEnum.MS_QUEST_YESNO,
+        reply = self._parent.msgbox(translate("depotmanagerController", "Start opsi package updating process now?") + msg, oPB.MsgEnum.MS_QUEST_YESNO,
                                     parent = self.ui)
         if reply is True:
             self.logger.debug("Selected depot: " + depot)

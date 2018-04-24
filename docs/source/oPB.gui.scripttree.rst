@@ -1,5 +1,5 @@
-oPB.gui.scripttree module
-=========================
+oPB\.gui\.scripttree module
+===========================
 
 .. automodule:: oPB.gui.scripttree
     :members:

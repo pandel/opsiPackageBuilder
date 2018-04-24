@@ -1,5 +1,5 @@
-oPB.gui.changelog module
-========================
+oPB\.gui\.changelog module
+==========================
 
 .. automodule:: oPB.gui.changelog
     :members:

@@ -2,14 +2,14 @@ General hint regarding opsi Package Builder
 ===========================================
 
 opsi PackageBuilder (oPB) is meant as a helpful tool regarding package creation and maintenance for the `opsi <http://www.opsi.org>`_ open source client management system.
-The oPB is currently being developed under Python 3.6 and PyQt 5.9, but you can find older versions of it in this Github repository, which will work with Python 3.4 and PyQt 5.5. Minimum requirements for running oPB should be Python 3.4 and PyQt 5.6.
+The oPB is currently being developed under Python 3.6 and PyQt 5.10.1, but you can find older versions of it in this Github repository, which will work with Python 3.4 and PyQt 5.5. Minimum requirements for running the current version of oPB should be Python 3.4 and PyQt 5.6.
 
 Current requirements or recommendations
 =======================================
 
 - Microsoft Visual C++ 2010 Redistributable (https://www.microsoft.com/de-de/download/details.aspx?id=5555)
 - Python (3.6.2)
-- PyQt5 (5.9.0)
+- PyQt5 (5.9.0+)
 - spur (0.3.20)
 - pycryptodome (3.4.6)
 - virtualenv (optional)
@@ -17,12 +17,12 @@ Current requirements or recommendations
 
 For generation of help files:
 
-- Releases (1.3.1)
-- Sphinx (1.4.9 - depends on Releases)
+- Releases (1.4.0)
+- Sphinx (1.7.1 - depends on Releases)
 
 To freeze the script and build the installer:
 
-- PyInstaller 3.3.dev0+gb201331.mod (at least for me, because of Python 3.6 support)
+- PyInstaller 3.3.1 or later (at least for me, because of Python 3.6 support)
 - Inno Setup 5
 
 For my personal convenience, I'm using a virtualenv environment from now on. This is important, because the pyinstaller \*.spec files refer to the new env location. I set up my virtualenv under ``os.getenv("USERPROFILE") + '/Envs/oPB/``. If your virtualenv is in another location, you have to edit the corresponding pyinstaller \*.spec file. accordingly.

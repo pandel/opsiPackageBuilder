@@ -1,5 +1,5 @@
-oPB.controller.base module
-==========================
+oPB\.controller\.base module
+============================
 
 .. automodule:: oPB.controller.base
     :members:

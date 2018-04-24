@@ -1,5 +1,5 @@
-oPB.gui package
-===============
+oPB\.gui package
+================
 
 .. automodule:: oPB.gui
     :members:

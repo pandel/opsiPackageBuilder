@@ -112,8 +112,10 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.dataChanged.connect(self.datamapper.submit)
         self.settingsAboutToBeClosed.connect(self._parent.close_dialog)
 
-        self.rdBaseOSOther.clicked.connect(self.set_model_data)
-        self.rdBaseOSSLES.clicked.connect(self.set_model_data)
+        self.rdWBOld.clicked.connect(self.set_model_data)
+        self.rdWBNew.clicked.connect(self.set_model_data)
+        self.rdOpsi40.clicked.connect(self.set_model_data)
+        self.rdOpsi41.clicked.connect(self.set_model_data)
         self.rdOpsiSrvNew.clicked.connect(self.set_model_data)
         self.rdOpsiSrvOld.clicked.connect(self.set_model_data)
         self.rdSUDOWithPass.clicked.connect(self.set_model_data)
@@ -178,6 +180,7 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         self.datamapper.addMapping(self.chkAttachDirect, 45, b"checked")
         self.datamapper.addMapping(self.inpLocalShareBase, 46)
         self.datamapper.addMapping(self.optionGroupBaseOS, 47, b"checked")
+        self.datamapper.addMapping(self.optionGroupOpsi41, 48, b"checked")
         self.datamapper.toFirst()
 
     def create_optionbuttongroups(self):
@@ -187,7 +190,9 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
                                                               [self.rdSUDOWithPass, self.rdSUDOWithoutPass],
                                                               [self.inpRootPass])
 
-        self.optionGroupBaseOS = SpecialOptionButtonGroup(self.rdBaseOSSLES, self.rdBaseOSOther)
+        self.optionGroupOpsi41 = SpecialOptionButtonGroup(self.rdOpsi41, self.rdOpsi40)
+
+        self.optionGroupBaseOS = SpecialOptionButtonGroup(self.rdWBNew, self.rdWBOld)
 
         self.optionGroupSUDO = SpecialOptionButtonGroup(self.rdSUDOWithPass, self.rdSUDOWithoutPass)
 
@@ -272,13 +277,38 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
             else:
                 self.model.item(0, 41).setText("False")
 
-        if self.sender().objectName() == "rdBaseOSSLES":
-            if self.rdBaseOSSLES.isChecked():
+        if self.sender().objectName() == "rdWBNew":
+            if self.rdWBNew.isChecked():
                 self.model.item(0, 47).setText("True")
 
-        if self.sender().objectName() == "rdBaseOSOther":
-            if self.rdBaseOSOther.isChecked():
+        if self.sender().objectName() == "rdWBOld":
+            if self.rdWBOld.isChecked():
                 self.model.item(0, 47).setText("False")
+
+        if self.sender().objectName() == "rdOpsi41":
+            if self.rdOpsi41.isChecked():
+                self.model.item(0, 48).setText("True")
+                self.change_build_command()
+
+        if self.sender().objectName() == "rdOpsi40":
+            if self.rdOpsi40.isChecked():
+                self.model.item(0, 48).setText("False")
+                self.change_build_command()
+
+    def change_build_command(self):
+        if self.optionGroupOpsi41.getChecked() == True:
+            #com: str = self.inpBuildCommand.text()
+            #com = com.replace(oPB.OPB_BUILD40, oPB.OPB_BUILD41)
+            #self.inpBuildCommand.setText(com)
+            self.inpBuildCommand.setText(oPB.OPB_BUILD41)
+        else:
+            #com: str = self.inpBuildCommand.text()
+            #com = com.replace(oPB.OPB_BUILD41, oPB.OPB_BUILD40)
+            #com = com.replace("--no-md5", "")
+            #com = com.replace("--no-zsync", "")
+            #self.inpBuildCommand.setText(com)
+            self.inpBuildCommand.setText(oPB.OPB_BUILD40)
+        self.dataChanged.emit()
 
     def keyPressEvent(self, evt: QKeyEvent):
         """
