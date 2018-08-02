@@ -134,8 +134,9 @@ def find_unassigned(cl_list, cg_list, key1, key2):
                 break
     missing = []
     for el1 in cl_list:
-        if el1['found'] == False:
-            missing.append(el1[key1])
+        if "found" in el1:
+            if el1['found'] == False:
+                missing.append(el1[key1])
 
     return missing
 
