@@ -80,7 +80,7 @@ class LockedProductsComponent(BaseController, QObject):
             self.selected_depot = None
             BaseController.lockedproductlist_dict = None
             self._parent.update_table_model(self.model_products, sorted(tmplist))
-            self.selected_depot = self._parent.query_depot(with_all = False, parent=self.ui)
+            self.selected_depot = self._parent.query_depot(with_all = False, parent = self.ui, with_repo = False)
 
         self._parent.do_getlockedproducts(depot = self.selected_depot)
 

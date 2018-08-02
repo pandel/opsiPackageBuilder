@@ -204,7 +204,10 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.installcommand + " " + self._control.packagename
                 else:
-                    cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.packagename
+                    if depot == "NO_REPO":
+                        cmd = oPB.OPB_INSTALL + " " + self._control.packagename
+                    else:
+                        cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.packagename
 
                 result = self._processAction(cmd, action, ret)
 
@@ -224,7 +227,10 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.instsetupcommand + " " + self._control.packagename
                 else:
-                    cmd = oPB.OPB_INSTSETUP + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.packagename
+                    if depot == "NO_REPO":
+                        cmd = oPB.OPB_INSTSETUP + " " + self._control.packagename
+                    else:
+                        cmd = oPB.OPB_INSTSETUP + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.packagename
 
                 result = self._processAction(cmd, action, ret)
 
@@ -237,7 +243,10 @@ class OpsiProcessing(QObject, LogMixin):
             if ConfigHandler.cfg.use_depot_funcs == "False":
                 cmd = ConfigHandler.cfg.uninstallcommand + " " + self._control.id
             else:
-                cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.id
+                if depot == "NO_REPO":
+                    cmd = oPB.OPB_UNINSTALL + " " + self._control.id
+                else:
+                    cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + self._control.id
 
             result = self._processAction(cmd, action, ret)
 
@@ -278,7 +287,10 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.installcommand + " " + destfile
                 else:
-                    cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
+                    if depot == "NO_REPO":
+                        cmd = oPB.OPB_INSTALL + " " + destfile
+                    else:
+                        cmd = oPB.OPB_INSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
 
                 result = self._processAction(cmd, action, ret)
 
@@ -308,7 +320,10 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.uploadcommand + " " + destfile
                 else:
-                    cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
+                    if depot == "NO_REPO":
+                        cmd = oPB.OPB_UPLOAD + " " + destfile
+                    else:
+                        cmd = oPB.OPB_UPLOAD + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + destfile
 
                 result = self._processAction(cmd, action, ret)
 
@@ -421,7 +436,10 @@ class OpsiProcessing(QObject, LogMixin):
                 if ConfigHandler.cfg.use_depot_funcs == "False":
                     cmd = ConfigHandler.cfg.uninstallcommand + " " + p
                 else:
-                    cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + p
+                    if depot == "NO_REPO":
+                        cmd = oPB.OPB_UNINSTALL + " " + p
+                    else:
+                        cmd = oPB.OPB_UNINSTALL + " " + oPB.OPB_DEPOT_SWITCH + " " + depot + " " + p
 
                 result = self._processAction(cmd, action, ret)
 

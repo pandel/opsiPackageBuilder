@@ -442,7 +442,7 @@ class BaseController(LogMixin):
     def do_import(self, packagefile, dest = ""):
         self._do(oPB.OpEnum.DO_IMPORT, translate("baseController", "Package import in progress..."), alt_destination = dest, packagefile = packagefile)
 
-    def query_depot(self, with_all = True, parent = None):
+    def query_depot(self, with_all = True, parent = None, with_repo = True):
         if ConfigHandler.cfg.use_depot_funcs == "True":
             if ConfigHandler.cfg.depotcache == {}:
                 self.do_getdepots()
@@ -454,6 +454,9 @@ class BaseController(LogMixin):
             l.sort()
             if with_all is True:
                 l.insert(0, "ALL" + " (" + translate("baseController", "opsi-package-manager commands only: -d ALL") + ")")
+            if with_repo is True:
+                    l.insert(0, "NO_REPO" + " (" + translate("baseController", "only config server - no repository usage") +
+                     ")")
 
             (result, accept) = self.msgbox(msgtext = l, typ = oPB.MsgEnum.MS_QUEST_DEPOT, parent = parent)
             if accept:

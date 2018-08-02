@@ -938,47 +938,47 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Das Paket wurde bereits erstellt und wird nicht überschrieben!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1004"/>
+        <location filename="../oPB/core/processing.py" line="1022"/>
         <source>Command not found. See Log for details.</source>
         <translation>Befehl nicht gefunden. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1020"/>
+        <location filename="../oPB/core/processing.py" line="1038"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation>Fehler beim Verbindungsaufbau. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="222"/>
+        <location filename="../oPB/core/processing.py" line="225"/>
         <source>Package file could not be found!</source>
         <translation>Die Paketdatei konnte nicht gefunden werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1076"/>
+        <location filename="../oPB/core/processing.py" line="1094"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation>Nicht verarbeitbare Umlaute gefunden, Paketbau abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1081"/>
+        <location filename="../oPB/core/processing.py" line="1099"/>
         <source>Backend error: installation failed.</source>
         <translation>Fehler im Backend: Installation abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1086"/>
+        <location filename="../oPB/core/processing.py" line="1104"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation>Konnte das Kommando &apos;install&apos; nicht verarbeiten.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1091"/>
+        <location filename="../oPB/core/processing.py" line="1109"/>
         <source>Package file error. Check log.</source>
         <translation>Paketdatei fehlerhaft. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1141"/>
+        <location filename="../oPB/core/processing.py" line="1159"/>
         <source>Undefined error occurred. Check log.</source>
         <translation>Unspezifizierter Fehler aufgetreten. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="656"/>
+        <location filename="../oPB/core/processing.py" line="674"/>
         <source>Error during command execution. Check Log for details.</source>
         <translation>Fehler während der Befehlsausführung. Für Details Logbuch prüfen.</translation>
     </message>
@@ -988,57 +988,57 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Der opsi-product-updater läuft bereits.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="346"/>
+        <location filename="../oPB/core/processing.py" line="361"/>
         <source>Copying file to:</source>
         <translation>Kopiere Datei nach:</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="350"/>
+        <location filename="../oPB/core/processing.py" line="365"/>
         <source>Extracting...</source>
         <translation>Extrahieren...</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1096"/>
+        <location filename="../oPB/core/processing.py" line="1114"/>
         <source>Error during package extraction. Check log.</source>
         <translation>Fehler beim Entpacken des Pakets. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1106"/>
+        <location filename="../oPB/core/processing.py" line="1124"/>
         <source>Permission denied. Check log.</source>
         <translation>Erlaubnis für Schreibzugriff verweigert. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1111"/>
+        <location filename="../oPB/core/processing.py" line="1129"/>
         <source>Network logon failed. Check log.</source>
         <translation>Netzwerk Logon nicht möglich. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1116"/>
+        <location filename="../oPB/core/processing.py" line="1134"/>
         <source>Possible error: command or file not found. Check log.</source>
         <translation>Möglicher Fehler: Befehl oder Datei nicht gefunden. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1121"/>
+        <location filename="../oPB/core/processing.py" line="1139"/>
         <source>Failed to get ip address for host. Check log.</source>
         <translation>Konnte IP Adresse des Hosts nicht ermitteln. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1131"/>
+        <location filename="../oPB/core/processing.py" line="1149"/>
         <source>The requested product action is not possible, because it is currently locked on the server. Check log.</source>
         <translation>Die angeforderte Produktaktion ist nicht möglich, da das Produkt derzeit auf dem Server gesperrt ist. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1126"/>
+        <location filename="../oPB/core/processing.py" line="1144"/>
         <source>Failed to execute opsi command. Check log.</source>
         <translation>opsi Befehl konnte nicht ausgegürt werden.  Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1101"/>
+        <location filename="../oPB/core/processing.py" line="1119"/>
         <source>Permission denied during opsi-makeproductfile. Check log or raise log level for opsi-makeproductfile.</source>
         <translation>Zugriff verweigert während opsi-makeproductfile. Logbuch prüfen und ggf. den Loglevel für opsi-makeproductfile erhöhen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="819"/>
+        <location filename="../oPB/core/processing.py" line="837"/>
         <source>opsi package update process already running.</source>
         <translation>opsi Paketaktualisierung läuft bereits.</translation>
     </message>
@@ -1087,7 +1087,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Paketbau Fortschritt:</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1318"/>
+        <location filename="../oPB/core/processing.py" line="1336"/>
         <source>In progress:</source>
         <translation>In Bearbeitung:</translation>
     </message>
@@ -1904,7 +1904,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Nur opsi-package-manager Befehle: -d ALL</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/base.py" line="467"/>
+        <location filename="../oPB/controller/base.py" line="470"/>
         <source>Selection canceled! Using default opsi server from settings.</source>
         <translation>Auswahl abgerochen! Verwende Vorgabe opsi Server aus den Einstellungen.</translation>
     </message>
@@ -1962,6 +1962,11 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <location filename="../oPB/controller/base.py" line="425"/>
         <source>Run opsi package update process...</source>
         <translation>Starte opsi Paketaktualisierung...</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/base.py" line="460"/>
+        <source>only config server - no repository usage</source>
+        <translation>nur Konfigserver - nicht in Repository einkopieren</translation>
     </message>
 </context>
 <context>
@@ -2958,17 +2963,17 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>quickuninstallController</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="326"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="376"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="326"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="376"/>
         <source>version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="326"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="376"/>
         <source>description</source>
         <translation>Beschreibung</translation>
     </message>
@@ -3001,27 +3006,27 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>schedulerController</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="272"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="322"/>
         <source>Do you really want to remove the selected job id(s)? This can&apos;t be undone!</source>
         <translation>Ausgewähte Aufträge wirklich löschen? Vorgang kann nicht rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="285"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="335"/>
         <source>Do you really want to remove all job(s)? This can&apos;t be undone!</source>
         <translation>Wirklich alle Aufträge löschen? Vorgang kann nicht rückgängig gemacht werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="298"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="348"/>
         <source>No opsi client selected.</source>
         <translation>Kein opsi Client ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="303"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="353"/>
         <source>No opsi product selected.</source>
         <translation>Kein opsi Produkt ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="306"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="356"/>
         <source>Create AT jobs now?</source>
         <translation>AT Aufträge jetzt erzeugen?</translation>
     </message>
@@ -3039,12 +3044,12 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>schedulerController_jobcreator</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="323"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="373"/>
         <source>client</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="323"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="373"/>
         <source>desc</source>
         <translation>Beschreibung</translation>
     </message>
@@ -3052,37 +3057,37 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>schedulerController_joblist</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="315"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
         <source>client</source>
         <translation>Client</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="315"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
         <source>packet</source>
         <translation>Paket</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="315"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
         <source>action</source>
         <translation>Aktion</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="315"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
         <source>date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="315"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
         <source>time</source>
         <translation>Uhrzeit</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="315"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
         <source>AT jobid</source>
         <translation>AT JobID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="315"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
         <source>user</source>
         <translation>Benutzer</translation>
     </message>

@@ -73,5 +73,6 @@ class DeployAgentComponent(BaseController, QObject):
         :param destination: list of client fqdn/ip addresses
         :param options: see description
         """
-        self._parent.do_deploy(clientlist = destination, options = options, dest = self._parent.query_depot(parent = self.ui, with_all=False))
+        self._parent.do_deploy(clientlist = destination, options = options,
+                               dest = self._parent.query_depot(parent = self.ui, with_all = False, with_repo = False))
 

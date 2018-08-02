@@ -78,7 +78,7 @@ sys.path.append(os.environ['OPB_BASE'] + "/ui")
 PRINTHIER = False
 """Simple printing of object hierarchie / relationship besides normal logging"""
 
-PROGRAM_VERSION = "8.3.0"
+PROGRAM_VERSION = "8.3.2"
 """Overall program version"""
 
 UPDATER_URL="https://s3.eu-central-1.amazonaws.com/opsipackagebuilder/opsiPackageBuilder"
@@ -196,11 +196,14 @@ OPB_METHOD_UNREGISTERDEPOT = "opsi-admin -d method host_delete"
 """opsi 4.0 API method: unregister depot server host"""
 OPB_METHOD_GETLOCKEDPRODUCTS = "opsi-admin -d method  productOnDepot_getObjects '[]'" # filter for all with added: '{"depotId":"host.domain.de", "locked":true}' /  # filter for single with added: '{"depotId":"host.domain.de", "productId":"testdummy"}'
 """opsi 4.0 API method: get locked products on depot"""
-# full command like so: opsi-admin -d method  productOnDepot_getObjects '[]' '{"depotId":"host.domain.de", "locked":true}'
-OPB_METHOD_UNLOCKPRODUCTS = " | sed  -e 's/\"locked\"\s:\strue/\"locked\" : false/' > /tmp/update_objects.json"
-# full method: opsi-admin -d method productOnDepot_getObjects '[]' '{"productId":"testdummy", "depotId":"host.domain.de"}' | sed  -e 's/"locked"\s:\strue/"locked" : false/' > /tmp/update_objects.json
+# full command like so: opsi-admin -d method  productOnDepot_getObjects
+# '[]' '{"depotId":"host.domain.de", "locked":true}'
+OPB_METHOD_UNLOCKPRODUCTS = " | sed  -e 's/\"locked\": true/\"locked\": false/' > /tmp/update_objects.json"
+# full  method: opsi-admin -d method productOnDepot_getObjects '[]'
+# '{"productId":"opsi-smartmontools", "depotId":"yi7xa19z.sd8106.gad.de"}'
+#  | sed  -e 's/\"locked\": true/\"locked\": false/' > /tmp/update_objects.json
 """opsi 4.0 API method: unlock specified product"""
-OPB_METHOD_UPDATEOBJECTS = "cat /tmp/update_objects.json | opsi-admin -d method productOnDepot_updateObjects"
+OPB_METHOD_UPDATEOBJECTS = "opsi-admin -d method productOnDepot_updateObjects < /tmp/update_objects.json"
 """opsi 4.0 API method: update object(s) properties via json import"""
 OPB_METHOD_GETGROUPS = "opsi-admin -r -d method group_getHashes"
 """opsi 4.0 API method: get group tree"""

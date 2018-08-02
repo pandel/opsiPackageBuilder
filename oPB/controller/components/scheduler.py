@@ -111,6 +111,34 @@ def merge_clientlist(node, dict):
             merge_clientlist(child, dict)
 
 
+def find_unassigned(cl_list, cg_list, key1, key2):
+    """ Compare to list of dictionaries based on individual dict keys
+    and return list of elements based on key1
+
+    To create a database table analogy you can think of key1 and key2 as primary keys in the lists
+
+    :param cl_list: first list of dictionaries
+    :param cg_list: second list of dictionaries
+    :param key1: dictionary key in first list
+    :param key2: dictionary key in second list
+    :return missing: list of key1 elements not found in second dict
+    """
+    for el1 in cl_list:
+        found = False
+        for el2 in cg_list:
+            el1['found'] = False
+            if el1[key1] == el2[key2]:
+                found = True
+                el1['found'] = True
+            if found:
+                break
+    missing = []
+    for el1 in cl_list:
+        if el1['found'] == False:
+            missing.append(el1[key1])
+
+    return missing
+
 def display_node(node, indent = 0):
     if node['id'] == None:
         indent -= 3
@@ -177,7 +205,7 @@ class SchedulerComponent(BaseController, QObject):
         if node['id'] == None:
             node['id'] = "Root"
 
-        # get client desciption
+        # get client description
         desc = ''.join([x["description"] if x['id'] == node['id'] else "" for x in BaseController.clientlist_dict])
 
         # create items and append to model
@@ -221,6 +249,28 @@ class SchedulerComponent(BaseController, QObject):
             self.ui_jobcreator.splash.incProgress(10) # dirty, but works ;)
 
         if BaseController.clientlist_dict:
+            # find clients which don't belong to any group
+            not_assigned_list = find_unassigned(BaseController.clientlist_dict, BaseController.clientgroups_dict,
+                                                'id', 'objectId')
+
+            # if we found some, create artificial group
+            if not_assigned_list:
+                # add artificial client group for clients without group assignment
+                not_assigned = {"notes":"",
+                                "description":"Unassgined Clients",
+                                "type":"HostGroup","id":"_not_assigned",
+                                "parentGroupId":"clientdirectory"}
+                BaseController.groups_dict.append(not_assigned)
+
+                for el in not_assigned_list:
+                    BaseController.clientgroups_dict.append(
+                        {"groupType":"HostGroup",
+                              "type":"ObjectToGroup",
+                              "groupId":"_not_assigned",
+                              "objectId":str(el)})
+
+            for x in BaseController.clientgroups_dict:
+                print(x)
             # build client tree from flat JSON data
             client_tree = build_tree(BaseController.groups_dict, None, 'id', 'parentGroupId')
             merge_clientlist(client_tree, BaseController.clientgroups_dict)
@@ -259,7 +309,7 @@ class SchedulerComponent(BaseController, QObject):
         # not the first time after program start?
         if not BaseController.joblist or force == True:
             if querydepot is True:
-                self.at_server = self._parent.query_depot(with_all = False, parent = self.ui_joblist)
+                self.at_server = self._parent.query_depot(with_all = False, parent = self.ui_joblist, with_repo = False)
             self._parent.do_getjobs(dest = self.at_server)
 
         self._parent.update_table_model(self.model_jobs, sorted(BaseController.joblist))

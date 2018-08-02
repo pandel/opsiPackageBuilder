@@ -51,23 +51,23 @@ else:
     data=[('oPB/help', ['oPB/help/opsiPackageBuilder.qch']),
                 ('oPB/help', ['oPB/help/opsipackagebuilder.qhc'])]
 
-setup(name = "opsiPackageBuilder",
-    version = "8.3.0",
-    description = "opsi PackageBuilder - software distribution packaging tool",
-    author = "Holger Pandel",
-    author_email = "holger.pandel@googlemail.com",
-    url = "https://forum.opsi.org/viewforum.php?f=22",
-    packages=find_packages(exclude=['tests*', 'ez_setup.py']),
-    scripts = ["opsipackagebuilder.py"],
-    long_description = """opsiPackageBuilder""",
-    license = "MIT",
-    platforms = [ "Windows", "Linux" ],
-    package_data = {
-        # Include any *.ui files found in the 'oPB.ui' package, too:
-        'oPB.ui': ['*.ui', '*.qss'],
-    },
-    data_files=data,
-    install_requires = ["pyqt5>=5.6",
+setup(name="opsiPackageBuilder",
+      version="8.3.2",
+      description="opsi PackageBuilder - software distribution packaging tool",
+      author="Holger Pandel",
+      author_email="holger.pandel@googlemail.com",
+      url="https://forum.opsi.org/viewforum.php?f=22",
+      packages=find_packages(exclude=['tests*', 'ez_setup.py']),
+      scripts=["opsipackagebuilder.py"],
+      long_description="""opsiPackageBuilder""",
+      license="MIT",
+      platforms=["Windows", "Linux"],
+      package_data={
+          # Include any *.ui files found in the 'oPB.ui' package, too:
+          'oPB.ui': ['*.ui', '*.qss'],
+      },
+      data_files=data,
+      install_requires=["pyqt5>=5.6",
                         "spur",
                         "pycryptodome"
                         ],

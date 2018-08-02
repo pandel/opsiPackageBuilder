@@ -2,6 +2,11 @@
 Changelog
 =========
 
+* :release:`8.3.2 <2018-08-02>`
+* :bug:`-` Clients not assigned to any individual clientgroup where not shown in scheduler
+* :feature:`- backported` Added NO_REPO selection in depot query dialog to prevent package to be copied to repository folder (only depot mode)
+* :release:`8.3.1 <2018-06-08>`
+* :bug:`-` Unlocking of locked product did not work anymore
 * :release:`8.3.0 <2018-04-24>`
 * :bug:`-` Delete opsi client agent temporary deploy script for security reason
 * :bug:`-` opsi client agent deploy: Smbclient 4.3.11 in opsiVM doesn't like escaped backslashes in DOMAIN\username anymore, removed
