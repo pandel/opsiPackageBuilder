@@ -2,7 +2,7 @@
 Changelog
 =========
 
-* :release:`8.3.3 <xxxx-xx-xx>`
+* :release:`8.3.3 <2018-11-08>`
 * :bug:`-` Bug in path handling when development folder vlue is only a drive letter under windows
 * :bug:`-` Bug in pre-8.2.5 config-new.ini conversion
 * :bug:`-` Bug in client list evaluation of scheduler window
