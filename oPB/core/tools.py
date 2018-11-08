@@ -107,8 +107,11 @@ class Helper():
         :param path: base path
         :param file: file or folder
         """
-
-        return str(PurePath(path, file))
+        if platform.system() == "Windows": # if path is a ONLY windows drive, add a backslash to the drive letter
+            if path[-1:] == ":":
+                path = path + "\\"
+        value = str(PurePath(path, file))
+        return value
 
     @classmethod
     def concat_path_posix(cls, path: str, file: str) -> str:

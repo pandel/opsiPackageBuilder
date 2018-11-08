@@ -1,5 +1,5 @@
-oPB\.gui\.helpviewer module
-===========================
+oPB.gui.helpviewer module
+=========================
 
 .. automodule:: oPB.gui.helpviewer
     :members:

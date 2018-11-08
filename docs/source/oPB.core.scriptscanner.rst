@@ -1,5 +1,5 @@
-oPB\.core\.scriptscanner module
-===============================
+oPB.core.scriptscanner module
+=============================
 
 .. automodule:: oPB.core.scriptscanner
     :members:

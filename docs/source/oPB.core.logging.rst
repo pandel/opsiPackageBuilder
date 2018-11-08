@@ -1,5 +1,5 @@
-oPB\.core\.logging module
-=========================
+oPB.core.logging module
+=======================
 
 .. automodule:: oPB.core.logging
     :members:

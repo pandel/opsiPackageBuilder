@@ -1,5 +1,5 @@
-oPB\.core\.datadefinition module
-================================
+oPB.core.datadefinition module
+==============================
 
 .. automodule:: oPB.core.datadefinition
     :members:

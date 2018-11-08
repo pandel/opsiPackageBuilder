@@ -1,5 +1,5 @@
-oPB\.controller\.components\.lockedproducts module
-==================================================
+oPB.controller.components.lockedproducts module
+===============================================
 
 .. automodule:: oPB.controller.components.lockedproducts
     :members:

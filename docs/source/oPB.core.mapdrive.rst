@@ -1,5 +1,5 @@
-oPB\.core\.mapdrive module
-==========================
+oPB.core.mapdrive module
+========================
 
 .. automodule:: oPB.core.mapdrive
     :members:

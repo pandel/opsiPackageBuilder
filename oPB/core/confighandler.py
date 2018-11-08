@@ -32,7 +32,7 @@ import os
 import logging
 import json
 from distutils.version import LooseVersion
-from configparser import ConfigParser
+from configparser import ConfigParser, NoOptionError
 from PyQt5 import QtCore
 import oPB
 from oPB.core.tools import Helper, LogMixin
@@ -294,9 +294,15 @@ class ConfigHandler(ConfigParser, LogMixin):
     def convert_to_opsi41(self):
         """Add additional parameter for opsi 4.1 Support"""
         self.logger.debug("Upgrade config-new.ini to 8.2.5...")
-        self.wb_new = "True" if self.get("server", "is_sles") == "True" else "False"
+
+        # self.wb_new = "True" if self.get("server", "is_sles") == "True" else "False"
+        try:
+            self.wb_new = "True" if self.get("server", "is_sles") == "True" else "False"
+            self.remove_option("server", "is_sles")
+        except NoOptionError:
+            self.wb_new = "True"
+
         self.is_opsi41 = "False"
-        self.remove_option("server", "is_sles")
         self.save()
 
     @property

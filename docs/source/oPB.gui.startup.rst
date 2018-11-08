@@ -1,5 +1,5 @@
-oPB\.gui\.startup module
-========================
+oPB.gui.startup module
+======================
 
 .. automodule:: oPB.gui.startup
     :members:

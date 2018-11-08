@@ -1,7 +1,7 @@
 set SPATH="C:\Program Files\Git\usr\bin"
 
-set OLDVERSION=8.3.1
-set NEWVERSION=8.3.2
+set OLDVERSION=8.3.2
+set NEWVERSION=8.3.3
 set OLDSHORTVERSION=8.3
 set NEWSHORTVERSION=8.3
 

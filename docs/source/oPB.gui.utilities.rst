@@ -1,5 +1,5 @@
-oPB\.gui\.utilities module
-==========================
+oPB.gui.utilities module
+========================
 
 .. automodule:: oPB.gui.utilities
     :members:

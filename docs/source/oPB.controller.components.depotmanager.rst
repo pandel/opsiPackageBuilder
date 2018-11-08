@@ -1,5 +1,5 @@
-oPB\.controller\.components\.depotmanager module
-================================================
+oPB.controller.components.depotmanager module
+=============================================
 
 .. automodule:: oPB.controller.components.depotmanager
     :members:

@@ -1,5 +1,5 @@
-oPB\.gui\.bundle module
-=======================
+oPB.gui.bundle module
+=====================
 
 .. automodule:: oPB.gui.bundle
     :members:

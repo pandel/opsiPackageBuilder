@@ -1,5 +1,5 @@
-oPB\.gui\.scheduler module
-==========================
+oPB.gui.scheduler module
+========================
 
 .. automodule:: oPB.gui.scheduler
     :members:

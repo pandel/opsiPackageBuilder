@@ -1,5 +1,5 @@
-oPB\.controller\.components\.bundle module
-==========================================
+oPB.controller.components.bundle module
+=======================================
 
 .. automodule:: oPB.controller.components.bundle
     :members:

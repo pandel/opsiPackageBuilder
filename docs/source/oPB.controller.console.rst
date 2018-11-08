@@ -1,5 +1,5 @@
-oPB\.controller\.console module
-===============================
+oPB.controller.console module
+=============================
 
 .. automodule:: oPB.controller.console
     :members:

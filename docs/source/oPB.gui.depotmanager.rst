@@ -1,5 +1,5 @@
-oPB\.gui\.depotmanager module
-=============================
+oPB.gui.depotmanager module
+===========================
 
 .. automodule:: oPB.gui.depotmanager
     :members:

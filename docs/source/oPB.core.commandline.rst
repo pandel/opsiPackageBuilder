@@ -1,5 +1,5 @@
-oPB\.core\.commandline module
-=============================
+oPB.core.commandline module
+===========================
 
 .. automodule:: oPB.core.commandline
     :members:

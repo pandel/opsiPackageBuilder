@@ -1,5 +1,5 @@
-oPB\.gui\.deployagent module
-============================
+oPB.gui.deployagent module
+==========================
 
 .. automodule:: oPB.gui.deployagent
     :members:

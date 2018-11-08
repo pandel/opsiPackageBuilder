@@ -2763,17 +2763,17 @@ The following message(s) returned:</source>
 <context>
     <name>quickuninstallController</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="376"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="377"/>
         <source>product id</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="376"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="377"/>
         <source>version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="376"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="377"/>
         <source>description</source>
         <translation></translation>
     </message>
@@ -2791,27 +2791,27 @@ The following message(s) returned:</source>
 <context>
     <name>schedulerController</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="322"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="323"/>
         <source>Do you really want to remove the selected job id(s)? This can&apos;t be undone!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="335"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="336"/>
         <source>Do you really want to remove all job(s)? This can&apos;t be undone!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="348"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="349"/>
         <source>No opsi client selected.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="353"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="354"/>
         <source>No opsi product selected.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="356"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="357"/>
         <source>Create AT jobs now?</source>
         <translation></translation>
     </message>
@@ -2829,12 +2829,12 @@ The following message(s) returned:</source>
 <context>
     <name>schedulerController_jobcreator</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="373"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="374"/>
         <source>client</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="373"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="374"/>
         <source>desc</source>
         <translation></translation>
     </message>
@@ -2842,37 +2842,37 @@ The following message(s) returned:</source>
 <context>
     <name>schedulerController_joblist</name>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="366"/>
         <source>client</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="366"/>
         <source>packet</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="366"/>
         <source>action</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="366"/>
         <source>date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="366"/>
         <source>time</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="366"/>
         <source>AT jobid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/scheduler.py" line="365"/>
+        <location filename="../oPB/controller/components/scheduler.py" line="366"/>
         <source>user</source>
         <translation></translation>
     </message>

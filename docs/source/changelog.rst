@@ -2,6 +2,10 @@
 Changelog
 =========
 
+* :release:`8.3.3 <xxxx-xx-xx>`
+* :bug:`-` Bug in path handling when development folder vlue is only a drive letter under windows
+* :bug:`-` Bug in pre-8.2.5 config-new.ini conversion
+* :bug:`-` Bug in client list evaluation of scheduler window
 * :release:`8.3.2 <2018-08-02>`
 * :bug:`-` Clients not assigned to any individual clientgroup where not shown in scheduler
 * :feature:`- backported` Added NO_REPO selection in depot query dialog to prevent package to be copied to repository folder (only depot mode)

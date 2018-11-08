@@ -8,12 +8,12 @@ rem call make.bat epub
 rem call make.bat html
 call make.bat qthelp
 
-%USERPROFILE%\Envs\oPB\Lib\site-packages\pyqt5-tools\qcollectiongenerator build\qthelp\opsipackagebuilder.qhcp
+%USERPROFILE%\Envs\oPB\Lib\site-packages\pyqt5_tools\qcollectiongenerator build\qthelp\opsipackagebuilder.qhcp
 
 move build\qthelp\opsipackagebuilder.qch ..\oPB\help
 move build\qthelp\opsipackagebuilder.qhc ..\oPB\help
 
 cd ..
 
-%USERPROFILE%\Envs\oPB\Lib\site-packages\pyqt5-tools\assistant -collectionFile oPB\help\opsipackagebuilder.qhc
+%USERPROFILE%\Envs\oPB\Lib\site-packages\pyqt5_tools\assistant -collectionFile oPB\help\opsipackagebuilder.qhc
 

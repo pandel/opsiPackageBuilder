@@ -1,5 +1,5 @@
-oPB\.ui package
-===============
+oPB.ui package
+==============
 
 .. automodule:: oPB.ui
     :members:

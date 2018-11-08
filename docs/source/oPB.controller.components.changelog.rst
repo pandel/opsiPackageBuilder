@@ -1,5 +1,5 @@
-oPB\.controller\.components\.changelog module
-=============================================
+oPB.controller.components.changelog module
+==========================================
 
 .. automodule:: oPB.controller.components.changelog
     :members:
