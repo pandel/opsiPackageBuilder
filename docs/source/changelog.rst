@@ -2,6 +2,12 @@
 Changelog
 =========
 
+* :release:`8.4.1 <2018-12-06>`
+* :bug:`-` Qt translation not loading correctly
+* :bug:`-` Documenting modules creates errors, typos corrected
+* :release:`8.4.0 <2018-12-05>`
+* :feature:`- backported` Packaging, installation and uninstallation can be canceled finally
+* :support:`-` Product dependencies: requirementType not mandatory, action request can also be "uninstall"
 * :release:`8.3.3 <2018-11-08>`
 * :bug:`-` Bug in path handling when development folder vlue is only a drive letter under windows
 * :bug:`-` Bug in pre-8.2.5 config-new.ini conversion

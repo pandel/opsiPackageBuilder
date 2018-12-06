@@ -233,7 +233,7 @@ class ProductDependency(object):
     @dependencyForAction.setter
     def dependencyForAction(self, value):
         # create new exception handling vor depdencies
-        if str(value).strip() not in ["setup", "update"]:
+        if str(value).strip() not in ["setup", "update", "uninstall"]:
             raise ValueError(translate("ProductDependency", "Incorrect value for dependencyForAction: " + str(value).strip()))
         self._dependencyForAction = str(value).strip()
 
@@ -277,7 +277,7 @@ class ProductDependency(object):
     @requirementType.setter
     def requirementType(self, value):
         # create new exception handling vor depdencies
-        if not str(value).strip() in ["none", "before", "after"]:
+        if not str(value).strip() in ["", "before", "after"]:
             raise ValueError(translate("ProductDependency", "Incorrect value for requirementType: " + str(value).strip()))
         self._requirementType = str(value).strip()
 

@@ -94,10 +94,10 @@ class HelpSchemeHandler(QWebEngineUrlSchemeHandler):
         """
         Constructor
 
-        @param engine reference to the help engine
-        @type QHelpEngine
-        @param parent reference to the parent object
-        @type QObject
+        :param engine: reference to the help engine
+        :type engine: QHelpEngine
+        :param parent: reference to the parent object
+        :type parent: QObject
         """
         super(HelpSchemeHandler, self).__init__(parent)
 
@@ -109,8 +109,8 @@ class HelpSchemeHandler(QWebEngineUrlSchemeHandler):
         """
         Public method handling the URL request.
 
-        @param job URL request job
-        @type QWebEngineUrlRequestJob
+        :param job: URL request job
+        :type job: QWebEngineUrlRequestJob
         """
 
         if job.requestUrl().scheme() == "qthelp":
@@ -135,8 +135,7 @@ class HelpSchemeReply(QIODevice):
     """
     Class implementing a reply for a requested qthelp: page.
 
-    @signal closed emitted to signal that the web engine has read
-        the data
+    The Qt signal *closed* is emitted to signal that the web engine has read the data.
 
     see: https://fossies.org/linux/eric6/eric/WebBrowser/Network/QtHelpSchemeHandler.py
     All credits for this class go to:
@@ -149,12 +148,12 @@ class HelpSchemeReply(QIODevice):
         """
         Constructor
 
-        @param job reference to the URL request
-        @type QWebEngineUrlRequestJob
-        @param engine reference to the help engine
-        @type QHelpEngine
-        @param parent reference to the parent object
-        @type QObject
+        :param job: reference to the URL request
+        :type job: QWebEngineUrlRequestJob
+        :param engine: reference to the help engine
+        :type engine: QHelpEngine
+        :param parent: reference to the parent object
+        :type parent: QObject
         """
         super(HelpSchemeReply, self).__init__(parent)
 
@@ -201,8 +200,8 @@ class HelpSchemeReply(QIODevice):
         """
         Public method to get the number of available bytes.
 
-        @return number of available bytes
-        @rtype int
+        :returns: number of available bytes
+        :rtype: int
         """
         return self.__buffer.bytesAvailable()
 
@@ -210,8 +209,8 @@ class HelpSchemeReply(QIODevice):
         """
         Public method to retrieve data from the reply object.
 
-        @param maxlen maximum number of bytes to read (integer)
-        @return string containing the data (bytes)
+        :param maxlen: maximum number of bytes to read (integer)
+        :returns: string containing the data (bytes)
         """
         return self.__buffer.read(maxlen)
 
@@ -226,8 +225,8 @@ class HelpSchemeReply(QIODevice):
         """
         Private method to guess the mime type given an URL.
 
-        @param url URL to guess the mime type from (QUrl)
-        @return mime type for the given URL (string)
+        :param url: URL to guess the mime type from (QUrl)
+        :returns: mime type for the given URL (string)
         """
         path = url.path()
         ext = os.path.splitext(path)[1].lower()
@@ -240,8 +239,8 @@ class HelpSchemeReply(QIODevice):
         """
         Public method to get the reply mime type.
 
-        @return mime type of the reply
-        @rtype bytes
+        :returns: mime type of the reply
+        :rtype: bytes
         """
         return self.__mimeType.encode("utf-8")
 
@@ -360,10 +359,12 @@ class HelpDialog(QObject, LogMixin):
 
     def search(self):
         """Initiate qthelp search"""
+
         self._se.search(self._helpSearchQuery.query())
 
     def showResults(self):
         """Show search results, if any"""
+
         if self._se.hitCount() > 0:
             self._helpIndex.hide()
             h = self._splitterMain.geometry().height()

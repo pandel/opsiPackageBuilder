@@ -500,7 +500,9 @@ class MainWindowController(BaseController, QObject, EventMixin):
     def project_build(self):
         if self._modelDataChanged is True:
             self.project_save()
-        self.do_build()
+        reply = self.msgbox(translate("mainController", "Start packeting process?"), oPB.MsgEnum.MS_QUEST_YESNO)
+        if reply is True:
+            self.do_build()
 
     @pyqtSlot(str)
     def project_load(self, project_name):
@@ -787,7 +789,9 @@ class MainWindowController(BaseController, QObject, EventMixin):
                 preselect = preselectlist[0]
             else:
                 preselect = -1
-            item = QInputDialog.getItem(parent, translate("mainController", "Question"), translate("mainController", "Select which depot to use (Cancel = default opsi server):"), msgtext, preselect, False)
+            item = QInputDialog.getItem(parent, translate("mainController", "Question"),
+                                        translate("mainController", "Select which depot to use:"),
+                                        msgtext, preselect, False)
             return item
 
         elif typ == oPB.MsgEnum.MS_ABOUTQT:

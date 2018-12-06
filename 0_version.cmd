@@ -1,9 +1,9 @@
 set SPATH="C:\Program Files\Git\usr\bin"
 
-set OLDVERSION=8.3.2
-set NEWVERSION=8.3.3
-set OLDSHORTVERSION=8.3
-set NEWSHORTVERSION=8.3
+set OLDVERSION=8.4.0
+set NEWVERSION=8.4.1
+set OLDSHORTVERSION=8.4
+set NEWSHORTVERSION=8.4
 
 REM Ersetze "foo" mit "bar" NUR in Zeilen die "baz" enthalten
 

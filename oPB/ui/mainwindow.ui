@@ -47,7 +47,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1228,6 +1228,11 @@
               <string>update</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>uninstall</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="1" column="0">
@@ -1360,8 +1365,13 @@
              </size>
             </property>
             <property name="currentText">
-             <string notr="true">before</string>
+             <string notr="true"/>
             </property>
+            <item>
+             <property name="text">
+              <string/>
+             </property>
+            </item>
             <item>
              <property name="text">
               <string>before</string>

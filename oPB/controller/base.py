@@ -190,11 +190,18 @@ class BaseController(LogMixin):
             self.msgbox(translate("baseController", "Project could not be loaded!"), oPB.MsgEnum.MS_ERR)
         else:
             self.logger.info("Backend data loaded")
-            self.msgbox(translate("mainController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
+            self.msgbox(translate("baseController", "Project loaded successfully!"), oPB.MsgEnum.MS_STAT)
 
     def _do(self, jobtype, msg, **kwargs):
         self.logger.debug("Dispatch job")
         """Call OpsiProcessing engine"""
+
+        # check, if depot dialog canceled -> depot==None
+        if "depot" in kwargs:
+            if kwargs.get("depot") is None:
+                self.logger.info("Processing canceled via depot selection")
+                self.msgbox(translate("baseController", "Processing canceled!"), oPB.MsgEnum.MS_ALWAYS)
+                return []
 
         if self.args.quiet:
             proc = OpsiProcessing(self.controlData, MissingHostKey.accept)
@@ -465,10 +472,22 @@ class BaseController(LogMixin):
                 return depot
             else:
                 self.logger.debug("Action canceled.")
-                self.msgbox(translate("baseController", "Selection canceled! Using default opsi server from settings."), oPB.MsgEnum.MS_INFO)
-                return ConfigHandler.cfg.opsi_server
+                self.msgbox(translate("baseController", "Processing canceled!"), oPB.MsgEnum.MS_INFO)
+                return None
         else:
-            return ConfigHandler.cfg.opsi_server
+            self.logger.debug("Depot functions activated. Asking for depot to use...")
+            l = []
+            l.insert(0, ConfigHandler.cfg.opsi_server + " (" + translate("baseController", "only config server") +
+                     ")")
+            (result, accept) = self.msgbox(msgtext = l, typ = oPB.MsgEnum.MS_QUEST_DEPOT, parent = parent)
+
+            if accept:
+                self.logger.debug("Chosen depot: " + ConfigHandler.cfg.opsi_server)
+                return ConfigHandler.cfg.opsi_server
+            else:
+                self.logger.debug("Action canceled.")
+                self.msgbox(translate("baseController", "Processing canceled!"), oPB.MsgEnum.MS_INFO)
+                return None
 
     def add_setup_before_dependency(self, product):
         dep = ProductDependency()

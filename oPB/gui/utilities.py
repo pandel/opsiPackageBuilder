@@ -314,9 +314,10 @@ class Translator(QObject, LogMixin):
             Translator.cfg._dialog = None
 
             # different translators
+            Translator.cfg.translator_qt = None
+            Translator.cfg.translator_qtbase = None
             Translator.cfg.translator_qthelp = None
             Translator.cfg.translator_qtmm = None
-            Translator.cfg.translator_qt = None
             Translator.cfg.translator_qtwebengine = None
             Translator.cfg.translator_app = None
 
@@ -353,15 +354,18 @@ class Translator(QObject, LogMixin):
         :param config_lang: two-character language string, or "System"
         """
         # remove possible existing translators
+        if cls.cfg.translator_qt is not None:
+            cls.cfg._parent.removeTranslator(cls.cfg.translator_qt)
+            cls.cfg.translator_qt = None
+        if cls.cfg.translator_qtbase is not None:
+            cls.cfg._parent.removeTranslator(cls.cfg.translator_qtbase)
+            cls.cfg.translator_qtbase = None
         if cls.cfg.translator_qthelp is not None:
             cls.cfg._parent.removeTranslator(cls.cfg.translator_qthelp)
             cls.cfg.translator_qthelp = None
         if cls.cfg.translator_qtmm is not None:
             cls.cfg._parent.removeTranslator(cls.cfg.translator_qtmm)
             cls.cfg.translator_qtmm = None
-        if cls.cfg.translator_qt is not None:
-            cls.cfg._parent.removeTranslator(cls.cfg.translator_qt)
-            cls.cfg.translator_qt = None
         if cls.cfg.translator_qtwebengine is not None:
             cls.cfg._parent.removeTranslator(cls.cfg.translator_qtwebengine)
             cls.cfg.translator_qtwebengine = None
@@ -405,9 +409,14 @@ class Translator(QObject, LogMixin):
         # translator_qt.load(use_local, "qtmultimedia", "_", qt_locale_path, ".qm")
         # translator_qt.load(use_local, "qtxmlpatterns", "_", qt_locale_path, ".qm")
 
-        # qt base
+        # qt
         cls.cfg.translator_qt = QtCore.QTranslator(cls.cfg._parent)
-        if cls.cfg.translator_qt.load(use_local, "qtbase", "_", cls.cfg._qt_locale_path, ".qm"):
+        if cls.cfg.translator_qt.load(use_local, "qt", "_", cls.cfg._qt_locale_path, ".qm"):
+            cls.cfg.logger.debug("Qtbase translations successfully loaded.")
+
+        # qt base
+        cls.cfg.translator_qtbase = QtCore.QTranslator(cls.cfg._parent)
+        if cls.cfg.translator_qtbase.load(use_local, "qtbase", "_", cls.cfg._qt_locale_path, ".qm"):
             cls.cfg.logger.debug("Qtbase translations successfully loaded.")
 
         # qt webengine
@@ -431,12 +440,14 @@ class Translator(QObject, LogMixin):
             cls.cfg.logger.debug("Application translations successfully loaded.")
 
         # install translators to app
+        if not cls.cfg.translator_qt.isEmpty():
+            cls.cfg._parent.installTranslator(cls.cfg.translator_qt)
+        if not cls.cfg.translator_qtbase.isEmpty():
+            cls.cfg._parent.installTranslator(cls.cfg.translator_qtbase)
         if not cls.cfg.translator_qthelp.isEmpty():
             cls.cfg._parent.installTranslator(cls.cfg.translator_qthelp)
         if not cls.cfg.translator_qtmm.isEmpty():
             cls.cfg._parent.installTranslator(cls.cfg.translator_qtmm)
-        if not cls.cfg.translator_qt.isEmpty():
-            cls.cfg._parent.installTranslator(cls.cfg.translator_qt)
         if not cls.cfg.translator_qtwebengine.isEmpty():
             cls.cfg._parent.installTranslator(cls.cfg.translator_qtwebengine)
         if not cls.cfg.translator_app.isEmpty():
