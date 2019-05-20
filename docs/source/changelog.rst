@@ -2,6 +2,9 @@
 Changelog
 =========
 
+* :release:`8.4.2 <2019-04-09>`
+* :support:`-` "ImportLib" added to ScriptTree calculation
+* :bug:`-` Development path access problem resolved
 * :release:`8.4.1 <2018-12-06>`
 * :bug:`-` Qt translation not loading correctly
 * :bug:`-` Documenting modules creates errors, typos corrected

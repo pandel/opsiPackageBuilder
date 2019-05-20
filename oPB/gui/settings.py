@@ -340,8 +340,9 @@ class SettingsDialog(SettingsDialogBase, SettingsDialogUI, LogMixin, EventMixin)
         if not directory == "":
             self.logger.info("Chosen directory: " + directory)
             value = Helper.concat_path_native(directory, "")
-            if value[-1:] == "/" or value[-1:] == '\\':
-                value = value[:-1]
+            if value[-2] != ":":
+                if value[-1:] == "/" or value[-1:] == '\\':
+                    value = value[:-1]
             self.inpDevFolder.setText(value)
             self.inpLocalShareBase.setText(value)
             self.dataChanged.emit()

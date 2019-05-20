@@ -85,6 +85,7 @@ class ScriptTree(LogMixin):
         self.sub_regex = re.compile('^\s*([Ss][uU][bB]\s+)\"?([a-zA-Z0-9_%\$\.\\\-]*)\"?\s*$')  # two groups, 1 = "Sub ", 2 = scriptname or variable
         self.include_append_regex = re.compile('^\s*([iI][nN][cC][lL][uU][dD][eE]_[aA][pP][pP][eE][nN][dD]\s+)\"?([a-zA-Z0-9_%\$\.\\\-]*)\"?\s*$')
         self.include_insert_regex = re.compile('^\s*([iI][nN][cC][lL][uU][dD][eE]_[iI][nN][sS][eE][rR][tT]\s+)\"?([a-zA-Z0-9_%\$\.\\\-]*)\"?\s*$')
+        self.importlib_regex = re.compile('^\s*([iI][mM][pP][oO][rR][tT][lL][iI][bB]\s+)\"?([a-zA-Z0-9_%\$\.\\\-]*)\"?\s*$')
 
         ScriptTree.model = QStandardItemModel()
 
@@ -134,6 +135,7 @@ class ScriptTree(LogMixin):
             m1 = self.sub_regex.search(line)
             m2 = self.include_append_regex.search(line)
             m3 = self.include_insert_regex.search(line)
+            m4 = self.importlib_regex.search(line)
 
             if m1:
                 include = self._clear_script_name(m1.group(2).replace('\\', '/'))
@@ -166,7 +168,17 @@ class ScriptTree(LogMixin):
 
                 self.logger.debug("\t\t" * level + "Found include_insert: " + include)
 
-            if m1 or m2 or m3:
+            elif m4:
+                include = self._clear_script_name(m4.group(2).replace('\\', '/'))
+                root.children.append(ScriptNode("Importlib: " + include, []))
+                item = QStandardItem(QIcon(':/images/smallIcons_1453.ico'), include + " (importlib)")
+                item2 = QStandardItem(include)
+                item2.setEditable(False)
+                modelroot.appendRow([item, item2])
+
+                self.logger.debug("\t\t" * level + "Found importlib: " + include)
+
+            if m1 or m2 or m3 or m4:
                 if "(" not in include: self._scan_script(include, root.children[len(root.children) - 1], level + 1, item)
 
             currentline += 1

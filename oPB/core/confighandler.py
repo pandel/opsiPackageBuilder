@@ -449,8 +449,9 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @dev_dir.setter
     def dev_dir(self, value):
-        if value[-1:] == "/" or value[-1:] == '\\':
-            value = value[:-1]
+        if value[-2] != ":":
+            if value[-1:] == "/" or value[-1:] == '\\':
+                value = value[:-1]
         self.set("package", "dev_dir", value)
 
     @property
@@ -459,8 +460,9 @@ class ConfigHandler(ConfigParser, LogMixin):
 
     @local_share_base.setter
     def local_share_base(self, value):
-        if value[-1:] == "/" or value[-1:] == '\\':
-            value = value[:-1]
+        if value[-2] != ":":
+            if value[-1:] == "/" or value[-1:] == '\\':
+                value = value[:-1]
         self.set("package", "local_share_base", value)
 
     @property

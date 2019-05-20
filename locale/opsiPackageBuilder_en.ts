@@ -1136,7 +1136,7 @@ The following message(s) returned:</source>
 <context>
     <name>ScriptTree</name>
     <message>
-        <location filename="../oPB/core/scriptscanner.py" line="113"/>
+        <location filename="../oPB/core/scriptscanner.py" line="114"/>
         <source>Script structure</source>
         <translation></translation>
     </message>
@@ -1625,17 +1625,17 @@ The following message(s) returned:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="358"/>
+        <location filename="../oPB/gui/settings.py" line="359"/>
         <source>Choose keyfile</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="378"/>
+        <location filename="../oPB/gui/settings.py" line="379"/>
         <source>Choose Scripteditor</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/gui/settings.py" line="403"/>
+        <location filename="../oPB/gui/settings.py" line="404"/>
         <source>Select logfile folder</source>
         <translation></translation>
     </message>
