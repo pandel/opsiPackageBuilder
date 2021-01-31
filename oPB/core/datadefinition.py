@@ -1002,9 +1002,9 @@ class ControlFileData(QObject, LogMixin):
                         if param == "NAME":
                             self.name = value
                         if param == "DESCRIPTION":
-                            self.description = value + "\n"  # re-add first stripped newline char
+                            self.description = value
                         if param == "ADVICE":
-                            self.advice = value + "\n"  # re-add first stripped newline char
+                            self.advice = value
                         if param == "PRIORITY":
                             self.priority = int(value)
                         if param == "LICENSEREQUIRED":
@@ -1027,9 +1027,9 @@ class ControlFileData(QObject, LogMixin):
                             self.userLoginScript = value
                     else:
                         if lastparam == "DESCRIPTION":
-                            self.description += lines[currentline]
+                            self.description += "\n"+lines[currentline][:-1]
                         if lastparam == "ADVICE":
-                            self.advice += lines[currentline]
+                            self.advice += "\n"+lines[currentline][:-1]
 
                     currentline += 1
                     if currentline > lines_count: break
@@ -1165,7 +1165,7 @@ class ControlFileData(QObject, LogMixin):
                 file.write("type: " + self.type + "\n")
                 file.write("id: " + self.id + "\n")
                 file.write("name: " + self.name + "\n")
-                file.write("description: " + self.description.strip() + "\n")
+                file.write("description: " + self.description + "\n")
                 file.write("advice: " + self.advice + "\n")
                 file.write("version: " + self.productversion + "\n")
                 file.write("priority: " + str(self.priority) + "\n")
