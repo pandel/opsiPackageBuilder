@@ -37,6 +37,7 @@ import socket
 import sys
 import os
 import re
+import string
 from itertools import cycle
 
 if sys.platform.lower().startswith('win'):
