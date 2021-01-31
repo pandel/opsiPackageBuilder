@@ -991,44 +991,44 @@ class ControlFileData(QObject, LogMixin):
                                 self.packageversion = value
                             else:
                                 self.productversion = value
-                        if param == "DEPENDS":
+                        elif param == "DEPENDS":
                             self.depends = value
-                        if param == "INCREMENTAL":
+                        elif param == "INCREMENTAL":
                             self.incremental = value
-                        if param == "TYPE":
+                        elif param == "TYPE":
                             self.type = value
-                        if param == "ID":
+                        elif param == "ID":
                             self.id = value
-                        if param == "NAME":
+                        elif param == "NAME":
                             self.name = value
-                        if param == "DESCRIPTION":
+                        elif param == "DESCRIPTION":
                             self.description = value
-                        if param == "ADVICE":
+                        elif param == "ADVICE":
                             self.advice = value
-                        if param == "PRIORITY":
+                        elif param == "PRIORITY":
                             self.priority = int(value)
-                        if param == "LICENSEREQUIRED":
+                        elif param == "LICENSEREQUIRED":
                             self.licenseRequired = value
-                        if param == "PRODUCTCLASSES":
+                        elif param == "PRODUCTCLASSES":
                             pass
-                        if param == "SETUPSCRIPT":
+                        elif param == "SETUPSCRIPT":
                             self.setupScript = value
-                        if param == "UNINSTALLSCRIPT":
+                        elif param == "UNINSTALLSCRIPT":
                             self.uninstallScript = value
-                        if param == "UPDATESCRIPT":
+                        elif param == "UPDATESCRIPT":
                             self.updateScript = value
-                        if param == "ALWAYSSCRIPT":
+                        elif param == "ALWAYSSCRIPT":
                             self.alwaysScript = value
-                        if param == "ONCESCRIPT":
+                        elif param == "ONCESCRIPT":
                             self.onceScript = value
-                        if param == "CUSTOMSCRIPT":
+                        elif param == "CUSTOMSCRIPT":
                             self.customScript = value
-                        if param == "USERLOGINSCRIPT":
+                        elif param == "USERLOGINSCRIPT":
                             self.userLoginScript = value
                     else:
                         if lastparam == "DESCRIPTION":
                             self.description += "\n"+lines[currentline][:-1]
-                        if lastparam == "ADVICE":
+                        elif lastparam == "ADVICE":
                             self.advice += "\n"+lines[currentline][:-1]
 
                     currentline += 1
@@ -1051,13 +1051,13 @@ class ControlFileData(QObject, LogMixin):
 
                         if param == "ACTION":
                             dep.dependencyForAction = value
-                        if param == "REQUIREDPRODUCT":
+                        elif param == "REQUIREDPRODUCT":
                             dep.requiredProductId = value
-                        if param == "REQUIREDACTION":
+                        elif param == "REQUIREDACTION":
                             dep.requiredAction = value
-                        if param == "REQUIREDSTATUS":
+                        elif param == "REQUIREDSTATUS":
                             dep.requiredInstallationStatus = value
-                        if param == "REQUIREMENTTYPE":
+                        elif param == "REQUIREMENTTYPE":
                             dep.requirementType = value
 
                     currentline += 1
@@ -1082,16 +1082,16 @@ class ControlFileData(QObject, LogMixin):
 
                         if param == 'NAME':
                             prop.name = value
-                        if param == 'TYPE':
+                        elif param == 'TYPE':
                             prop.type = value
                             lasttype = value
-                        if param == 'MULTIVALUE':
+                        elif param == 'MULTIVALUE':
                             prop.multivalue = value
-                        if param == 'EDITABLE':
+                        elif param == 'EDITABLE':
                             prop.editable = value
-                        if param == 'DESCRIPTION':
+                        elif param == 'DESCRIPTION':
                             prop.description = value
-                        if param == 'VALUES':
+                        elif param == 'VALUES':
                             # tmp = value[2:len(value)-2]
                             # tmp = tmp.replace('\\"', '_$%&%DUMMY%&%$_')
                             # tmp = tmp.replace('"', '')
@@ -1099,7 +1099,7 @@ class ControlFileData(QObject, LogMixin):
                             # tmp = tmp.replace('\\\\', '\\')
                             # prop.values = tmp
                             if value != "": prop.values = json.loads(value)
-                        if param == 'DEFAULT':
+                        elif param == 'DEFAULT':
                             if lasttype == 'bool':
                                 prop.default = value
                             else:
