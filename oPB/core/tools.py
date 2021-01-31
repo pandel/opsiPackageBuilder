@@ -315,7 +315,7 @@ class Helper():
             return []
         drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
         return list(itertools.compress(string.ascii_uppercase,
-               map(lambda x:ord(x) - ord('1'), bin(drive_bitmask)[:1:-1])))
+               map(lambda x:x=='0', bin(drive_bitmask+2**26)[:1:-1])))
 
     @classmethod
     def get_existing_drive_letters(cls) -> list:
@@ -331,7 +331,7 @@ class Helper():
             return []
         drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
         return list(itertools.compress(string.ascii_uppercase,
-               map(lambda x:ord(x) - ord('0'), bin(drive_bitmask)[:1:-1])))
+               map(lambda x:x=='1', bin(drive_bitmask+2**26)[:1:-1])))
 
     @classmethod
     def test_port(cls, host: str, port: str, timeout: int = 2):
