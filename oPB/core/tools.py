@@ -314,6 +314,8 @@ class Helper():
         if 'Windows' not in platform.system():
             return []
         drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
+        share_bitmask = sum([2**(ord(x)-65) for x in cls.get_persistent_netshare_drive_letters()])
+        drive_bitmask |= share_bitmask
         return list(itertools.compress(string.ascii_uppercase,
                map(lambda x:x=='0', bin(drive_bitmask+2**26)[:1:-1])))
 
@@ -330,8 +332,81 @@ class Helper():
         if 'Windows' not in platform.system():
             return []
         drive_bitmask = ctypes.cdll.kernel32.GetLogicalDrives()
+        share_bitmask = sum([2**(ord(x)-65) for x in cls.get_netconnection_drive_letters()])
+        drive_bitmask |= share_bitmask
         return list(itertools.compress(string.ascii_uppercase,
                map(lambda x:x=='1', bin(drive_bitmask+2**26)[:1:-1])))
+
+    @classmethod
+    def get_persistent_netshare_drive_letters(cls) -> list:
+        """
+        Return every persistent netshare driver letter -> includes disconnected ones
+
+        :return: list
+        """
+        if 'Windows' not in platform.system():
+            return []
+        import winreg
+        try: # key Network must not exists
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Network") as key:
+                info = winreg.QueryInfoKey(key)
+                return [winreg.EnumKey(key, i).upper() for i in range(info[0])]
+        except:
+            return []
+
+    @classmethod
+    def get_netconnection_drive_letters(cls) -> list:
+        """
+        Return every remembered netshare driver letter -> includes disconnected ones
+
+        :return: list
+        """
+        WNetOpenEnum = ctypes.cdll.MPR.WNetOpenEnumA # https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/nf-winnetwk-wnetopenenuma
+        WNetCloseEnum = ctypes.cdll.MPR.WNetCloseEnum # https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/nf-winnetwk-wnetcloseenum
+        WNetEnumResource = ctypes.cdll.MPR.WNetEnumResourceA # https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/nf-winnetwk-wnetenumresourcea
+        RESOURCE_SCOPE_REMEMBERED = 3
+        RESOURCE_TYPE_DISK = 1
+        RESOURCE_USAGE_IGNORED = 0
+        lpNetResource = None
+        ptrHandle = ctypes.wintypes.HANDLE()
+
+        class NETRESOURCEA(ctypes.Structure):
+            #https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/ns-winnetwk-netresourcea
+            _fields_ = [
+                ("dwScope", ctypes.wintypes.DWORD),
+                ("dwType",  ctypes.wintypes.DWORD),
+                ("dwDisplayType",  ctypes.wintypes.DWORD),
+                ("dwUsage",  ctypes.wintypes.DWORD),
+                ("lpLocalName", ctypes.wintypes.LPSTR),
+                ("lpRemoteName", ctypes.wintypes.LPSTR),
+                ("lpComment", ctypes.wintypes.LPSTR),
+                ("lpProvider", ctypes.wintypes.LPSTR)
+            ]
+
+        remembered_net_drives = []
+        iRet = WNetOpenEnum(RESOURCE_SCOPE_REMEMBERED, RESOURCE_TYPE_DISK, RESOURCE_USAGE_IGNORED, lpNetResource, ctypes.byref(ptrHandle))
+        # iRet (all Methods): https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes
+        if (iRet == 0):
+            entries = ctypes.c_int(-1)
+            buffer = ctypes.c_int(16384) # 2048
+            ptrBuffer = ctypes.create_string_buffer(buffer.value)
+
+            iRet = WNetEnumResource(ptrHandle, ctypes.byref(entries), ptrBuffer, ctypes.byref(buffer))
+            while ((iRet == 0) or (entries.value > 0)):
+                ptr = ctypes.addressof(ptrBuffer)
+                for i in range(entries.value):
+                    x = NETRESOURCEA.from_address(ptr)
+                    remembered_net_drives += x.lpLocalName.decode("ascii")
+                    ptr += ctypes.sizeof(x)
+
+                entries.value = -1
+                buffer.value = 16384
+                iRet = WNetEnumResource(ptrHandle, ctypes.byref(entries), ptrBuffer, ctypes.byref(buffer))
+
+            iRet = WNetCloseEnum(ptrHandle)
+            if (iRet != 0):
+                pass
+        return [x.upper() for x in remembered_net_drives[::2]]
 
     @classmethod
     def test_port(cls, host: str, port: str, timeout: int = 2):
