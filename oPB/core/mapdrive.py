@@ -65,15 +65,16 @@ class MapDrive(object):
 
     @classmethod
     def formatMessage(cls, errorCode):
-        flags = cls.FLAG_FORMAT_MESSAGE_FROM_SYSTEM|cls.FLAG_FORMAT_MESSAGE_IGNORE_INSERTS # we use a fixed buffer instead - no cls.FLAG_FORMAT_MESSAGE_ALLOCATE_BUFFER
-        buffer = 16384
-        ptrBuffer = ctypes.create_unicode_buffer(buffer)
+        flags = cls.FLAG_FORMAT_MESSAGE_ALLOCATE_BUFFER|cls.FLAG_FORMAT_MESSAGE_FROM_SYSTEM|cls.FLAG_FORMAT_MESSAGE_IGNORE_INSERTS
+        buffer = 0
+        ptrBuffer = ctypes.wintypes.LPWSTR()
         languageId = 0 #MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)
 
-        ret = cls.FormatMessageW(flags, None, errorCode, languageId, ptrBuffer, buffer, None)
+        ret = cls.FormatMessageW(flags, None, errorCode, languageId, ctypes.byref(ptrBuffer), buffer, None)
         msg = ''
         if ret != 0:
             msg = ptrBuffer.value
+            ctypes.windll.kernel32.LocalFree(ptrBuffer) # https://stackoverflow.com/questions/18905702/python-ctypes-and-mutable-buffers
         return msg
 
 
