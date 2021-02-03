@@ -57,25 +57,6 @@ class MapDrive(object):
     RESOURCE_TYPE_DISK = 1
     RESOURCE_USAGE_IGNORED = 0
     FLAG_CONNECT_UPDATE_PROFILE = 1
-    FormatMessageW = ctypes.windll.kernel32.FormatMessageW # https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessagew
-    FormatMessageW.argtypes = [ctypes.wintypes.DWORD, ctypes.wintypes.LPCVOID, ctypes.wintypes.DWORD, ctypes.wintypes.DWORD, ctypes.wintypes.LPWSTR, ctypes.wintypes.DWORD, ctypes.POINTER(ctypes.wintypes.DWORD)]
-    FLAG_FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100
-    FLAG_FORMAT_MESSAGE_FROM_SYSTEM = 0x00001000
-    FLAG_FORMAT_MESSAGE_IGNORE_INSERTS = 0x00000200
-
-    @classmethod
-    def formatMessage(cls, errorCode):
-        flags = cls.FLAG_FORMAT_MESSAGE_ALLOCATE_BUFFER|cls.FLAG_FORMAT_MESSAGE_FROM_SYSTEM|cls.FLAG_FORMAT_MESSAGE_IGNORE_INSERTS
-        buffer = 0
-        ptrBuffer = ctypes.wintypes.LPWSTR()
-        languageId = 0 #MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT)
-
-        ret = cls.FormatMessageW(flags, None, errorCode, languageId, ctypes.byref(ptrBuffer), buffer, None)
-        msg = ''
-        if ret != 0:
-            msg = ptrBuffer.value
-            ctypes.windll.kernel32.LocalFree(ptrBuffer) # https://stackoverflow.com/questions/18905702/python-ctypes-and-mutable-buffers
-        return msg
 
 
     @classmethod
@@ -91,7 +72,7 @@ class MapDrive(object):
         retVal = cls.WNetAddConnection2(ctypes.byref(nr), password, username, flags)
         msg = ''
         if retVal != 0:
-            msg = cls.formatMessage(retVal)
+            msg = ctypes.FormatError(retVal)
         return retVal, msg
 
     @classmethod
@@ -99,7 +80,7 @@ class MapDrive(object):
         retVal = cls.WNetCancelConnection2(name, cls.FLAG_CONNECT_UPDATE_PROFILE, False)
         msg = ''
         if retVal != 0:
-            msg = cls.formatMessage(retVal)
+            msg = ctypes.FormatError(retVal)
         return retVal, msg
 
 if __name__=="__main__":
