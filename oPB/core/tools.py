@@ -391,6 +391,11 @@ class Helper():
         s = re.sub('\A\n|\n\Z', '', s)
         s = re.sub(r'\A\v|\v\Z', '', re.sub(r'(\v)+', '\n', s))
         s = s.replace('\07', '')
+        # if I missed something, then get rid of it hopefully now
+        ansi_escape1 = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
+        s = ansi_escape1.sub('', s)
+        ansi_escape2 = re.compile(r'\x1b(\[.*?[@-~]|\].*?(\x07|\x1b\\))')
+        s = ansi_escape2.sub('', s)
         s = removebackspaces(s)
 
         return s

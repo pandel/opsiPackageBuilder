@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de_DE" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="de_DE" sourcelanguage="en">
 <context>
     <name>BaseController</name>
     <message>
@@ -468,7 +467,7 @@
 <context>
     <name>HelpSchemeReply</name>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="186"/>
+        <location filename="../oPB/gui/helpviewer.py" line="191"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;title&gt;Error 404...&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;h1&gt;The page could not be found&lt;/h1&gt;&lt;br&gt;&lt;h3&gt;&apos;{0}&apos;&lt;/h3&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head&gt;&lt;title&gt;Fehler 404...&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;h1&gt;Seite konnte nicht gefunden werden&lt;/h1&gt;&lt;br&gt;&lt;h3&gt;&apos;{0}&apos;&lt;/h3&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -476,12 +475,12 @@
 <context>
     <name>HelpViewer</name>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="357"/>
+        <location filename="../oPB/gui/helpviewer.py" line="367"/>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/helpviewer.py" line="358"/>
+        <location filename="../oPB/gui/helpviewer.py" line="368"/>
         <source>Search</source>
         <translation>Suchen</translation>
     </message>
@@ -648,27 +647,32 @@
     <message>
         <location filename="../oPB/controller/components/lockedproducts.py" line="97"/>
         <source>Selected depot:</source>
-        <translation>Ausgewähltes Depot:</translation>
+        <translation type="obsolete">Ausgewähltes Depot:</translation>
     </message>
     <message>
         <location filename="../oPB/controller/components/lockedproducts.py" line="98"/>
         <source>Chosen products:</source>
-        <translation>Ausgewählte Produkte:</translation>
+        <translation type="obsolete">Ausgewählte Produkte:</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/lockedproducts.py" line="99"/>
+        <location filename="../oPB/controller/components/lockedproducts.py" line="103"/>
         <source>Do you really want to unlock selected product(s) now?</source>
         <translation>Gewählte(s) Produkt(e) jetzt entsperren? </translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/lockedproducts.py" line="111"/>
+        <location filename="../oPB/controller/components/lockedproducts.py" line="116"/>
         <source>product id</source>
         <translation>Produkt ID</translation>
     </message>
     <message>
-        <location filename="../oPB/controller/components/lockedproducts.py" line="111"/>
+        <location filename="../oPB/controller/components/lockedproducts.py" line="116"/>
         <source>version</source>
         <translation>Version</translation>
+    </message>
+    <message>
+        <location filename="../oPB/controller/components/lockedproducts.py" line="116"/>
+        <source>depot</source>
+        <translation>Depot</translation>
     </message>
 </context>
 <context>
@@ -778,22 +782,22 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="928"/>
+        <location filename="../oPB/gui/mainwindow.py" line="923"/>
         <source>Open project</source>
         <translation>Projekt öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="1016"/>
+        <location filename="../oPB/gui/mainwindow.py" line="1011"/>
         <source>Choose script</source>
         <translation>Script wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="1056"/>
+        <location filename="../oPB/gui/mainwindow.py" line="1051"/>
         <source>The script has to be inside the CLIENT_DATA folder of the package!</source>
         <translation>Das Skript muss sich innerhalb des CLIENT_DATA Ordners des Pakets befinden!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="958"/>
+        <location filename="../oPB/gui/mainwindow.py" line="953"/>
         <source>Create new project</source>
         <translation>Neues Projekt</translation>
     </message>
@@ -803,22 +807,22 @@
         <translation>Bitte warten...</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="617"/>
+        <location filename="../oPB/gui/mainwindow.py" line="612"/>
         <source>Choose package file</source>
         <translation>Paketdatei wählen</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="416"/>
+        <location filename="../oPB/gui/mainwindow.py" line="411"/>
         <source>Sorry, this function doesn&apos;t work at the moment!</source>
         <translation>Diese Funktion steht leider derzeit noch nicht zur Verfügung!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="422"/>
+        <location filename="../oPB/gui/mainwindow.py" line="417"/>
         <source>You are working in offline mode. Functionality not available!</source>
         <translation>Offline Modus aktiv. Die Funktion ist nicht verügbar!</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="453"/>
+        <location filename="../oPB/gui/mainwindow.py" line="448"/>
         <source>Local opsi-winst installation not found or client-agent not installed!</source>
         <translation>Lokale winst32.exe nicht gefunden. Client Agent nicht installiert?</translation>
     </message>
@@ -842,7 +846,7 @@ The following message(s) returned:</source>
 Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="634"/>
+        <location filename="../oPB/gui/mainwindow.py" line="629"/>
         <source>Save current project as...</source>
         <translation>Aktuelles Projekt speichern unter...</translation>
     </message>
@@ -857,12 +861,12 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Kein Bild (F5)</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="920"/>
+        <location filename="../oPB/gui/mainwindow.py" line="915"/>
         <source>NO IMAGE (F6)</source>
         <translation>KEIN BILD (F6)</translation>
     </message>
     <message>
-        <location filename="../oPB/gui/mainwindow.py" line="538"/>
+        <location filename="../oPB/gui/mainwindow.py" line="533"/>
         <source>Editor did not exit as expected.
 
 The following message(s) returned:</source>
@@ -939,12 +943,12 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Das Paket wurde bereits erstellt und wird nicht überschrieben!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1022"/>
+        <location filename="../oPB/core/processing.py" line="1027"/>
         <source>Command not found. See Log for details.</source>
         <translation>Befehl nicht gefunden. Siehe Logbuch für Details.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1038"/>
+        <location filename="../oPB/core/processing.py" line="1043"/>
         <source>Error establishing SSH connection. See Log for details.</source>
         <translation>Fehler beim Verbindungsaufbau. Siehe Logbuch für Details.</translation>
     </message>
@@ -954,32 +958,32 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Die Paketdatei konnte nicht gefunden werden!</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1094"/>
+        <location filename="../oPB/core/processing.py" line="1099"/>
         <source>There are umlauts in some fields which can&apos;t be processed: build failed.</source>
         <translation>Nicht verarbeitbare Umlaute gefunden, Paketbau abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1099"/>
+        <location filename="../oPB/core/processing.py" line="1104"/>
         <source>Backend error: installation failed.</source>
         <translation>Fehler im Backend: Installation abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1104"/>
+        <location filename="../oPB/core/processing.py" line="1109"/>
         <source>Could not process &apos;install&apos; command.</source>
         <translation>Konnte das Kommando &apos;install&apos; nicht verarbeiten.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1109"/>
+        <location filename="../oPB/core/processing.py" line="1114"/>
         <source>Package file error. Check log.</source>
         <translation>Paketdatei fehlerhaft. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1159"/>
+        <location filename="../oPB/core/processing.py" line="1164"/>
         <source>Undefined error occurred. Check log.</source>
         <translation>Unspezifizierter Fehler aufgetreten. Bitte das Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="674"/>
+        <location filename="../oPB/core/processing.py" line="677"/>
         <source>Error during command execution. Check Log for details.</source>
         <translation>Fehler während der Befehlsausführung. Für Details Logbuch prüfen.</translation>
     </message>
@@ -999,47 +1003,47 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Extrahieren...</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1114"/>
+        <location filename="../oPB/core/processing.py" line="1119"/>
         <source>Error during package extraction. Check log.</source>
         <translation>Fehler beim Entpacken des Pakets. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1124"/>
+        <location filename="../oPB/core/processing.py" line="1129"/>
         <source>Permission denied. Check log.</source>
         <translation>Erlaubnis für Schreibzugriff verweigert. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1129"/>
+        <location filename="../oPB/core/processing.py" line="1134"/>
         <source>Network logon failed. Check log.</source>
         <translation>Netzwerk Logon nicht möglich. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1134"/>
+        <location filename="../oPB/core/processing.py" line="1139"/>
         <source>Possible error: command or file not found. Check log.</source>
         <translation>Möglicher Fehler: Befehl oder Datei nicht gefunden. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1139"/>
+        <location filename="../oPB/core/processing.py" line="1144"/>
         <source>Failed to get ip address for host. Check log.</source>
         <translation>Konnte IP Adresse des Hosts nicht ermitteln. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1149"/>
+        <location filename="../oPB/core/processing.py" line="1154"/>
         <source>The requested product action is not possible, because it is currently locked on the server. Check log.</source>
         <translation>Die angeforderte Produktaktion ist nicht möglich, da das Produkt derzeit auf dem Server gesperrt ist. Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1144"/>
+        <location filename="../oPB/core/processing.py" line="1149"/>
         <source>Failed to execute opsi command. Check log.</source>
         <translation>opsi Befehl konnte nicht ausgegürt werden.  Für Details Logbuch prüfen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1119"/>
+        <location filename="../oPB/core/processing.py" line="1124"/>
         <source>Permission denied during opsi-makeproductfile. Check log or raise log level for opsi-makeproductfile.</source>
         <translation>Zugriff verweigert während opsi-makeproductfile. Logbuch prüfen und ggf. den Loglevel für opsi-makeproductfile erhöhen.</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="837"/>
+        <location filename="../oPB/core/processing.py" line="840"/>
         <source>opsi package update process already running.</source>
         <translation>opsi Paketaktualisierung läuft bereits.</translation>
     </message>
@@ -1088,7 +1092,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">Paketbau Fortschritt:</translation>
     </message>
     <message>
-        <location filename="../oPB/core/processing.py" line="1336"/>
+        <location filename="../oPB/core/processing.py" line="1341"/>
         <source>In progress:</source>
         <translation>In Bearbeitung:</translation>
     </message>
@@ -2461,11 +2465,6 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
 <context>
     <name>oPB_win</name>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="26"/>
-        <source>opsiPackageBuilder</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../oPB/ui/mainwindow.ui" line="54"/>
         <source>Package</source>
         <translation>Paket</translation>
@@ -2481,7 +2480,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Produktname:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1727"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1737"/>
         <source>Description:</source>
         <translation>Beschreibung:</translation>
     </message>
@@ -2591,127 +2590,127 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Abhängigkeiten</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1502"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1512"/>
         <source>Properties</source>
         <translation>Produktvariablen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1940"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1950"/>
         <source>Basefolder details:</source>
         <translation>Stammordner Informationen:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1958"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1968"/>
         <source>Package folder:</source>
         <translation>Paketordner:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1990"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2000"/>
         <source>Development root:</source>
         <translation>Basis Entwicklungsordner:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2030"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2040"/>
         <source>Build</source>
         <translation>Packen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2042"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2052"/>
         <source>Install</source>
         <translation>Installieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2054"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2064"/>
         <source>Inst.+Setup</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2066"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2076"/>
         <source>Uninstall</source>
         <translation>Entfernen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2091"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2101"/>
         <source>Open folder</source>
         <translation>Ordner öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2242"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2252"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2189"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2199"/>
         <source>?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2216"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2226"/>
         <source>New</source>
         <translation>Neu</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2219"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2229"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2229"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2239"/>
         <source>Open</source>
         <translation>Öffnen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2232"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2242"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2245"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2255"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2255"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2265"/>
         <source>Save as..</source>
         <translation>Speichern unter..</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2265"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2275"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2144"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2154"/>
         <source>Recent</source>
         <translation>Zuletzt</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2275"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2285"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2278"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2288"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2378"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2388"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2391"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2401"/>
         <source>Search for updates</source>
         <translation>Nach Updates suchen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2401"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2411"/>
         <source>Show Changelog</source>
         <translation>Zeige Changelog</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2414"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2424"/>
         <source>About opsiPackageBuilder</source>
         <translation>Über opsiPackageBuilder</translation>
     </message>
@@ -2731,7 +2730,7 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1300"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1305"/>
         <source>update</source>
         <translation></translation>
     </message>
@@ -2746,197 +2745,197 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation>Geford. Aktion:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1305"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1310"/>
         <source>custom</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1319"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1324"/>
         <source>Required installation status:</source>
         <translation>Notw. Installationsstatus:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1341"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1346"/>
         <source>installed</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1355"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1365"/>
         <source>Requirement type:</source>
         <translation>Reihenfolge:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1377"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1387"/>
         <source>before</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1382"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1392"/>
         <source>after</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1830"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1840"/>
         <source>Add</source>
         <translation>Neu</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1854"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1864"/>
         <source>Update</source>
         <translation>Übernehmen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1891"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1901"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1866"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1876"/>
         <source>Read from scripts</source>
         <translation>Skripte einlesen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1798"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1808"/>
         <source>Values:</source>
         <translation>Werte:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1602"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1612"/>
         <source>Name:</source>
         <translation>Bezeichner:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1616"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1626"/>
         <source>unicode</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1621"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1631"/>
         <source>bool</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1629"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1639"/>
         <source>Type:</source>
         <translation>Typ:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1636"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1646"/>
         <source>Multivalue:</source>
         <translation>Mehrfachwert:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1656"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1666"/>
         <source>Editable:</source>
         <translation>Änderbar:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1754"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1764"/>
         <source>False</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1759"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1769"/>
         <source>True</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1788"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1798"/>
         <source>(comma separated)</source>
         <translation>(Komma-separiert)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1743"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1753"/>
         <source>Default:</source>
         <translation>Vorgabe:</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2140"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2150"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2161"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2171"/>
         <source>&amp;Tools</source>
         <translation>&amp;Werkzeuge</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2180"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2190"/>
         <source>&amp;Extra</source>
         <translation>&amp;Extras</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2288"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2298"/>
         <source>&amp;Create package bundle</source>
         <translation>Paket&amp;bündel erzeugen (F5)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2298"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2308"/>
         <source>&amp;Scheduler</source>
         <translation>&amp;Zeitplaner</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2308"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2318"/>
         <source>&amp;Depot Manager</source>
         <translation>&amp;Depot Manager</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2318"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2328"/>
         <source>&amp;Re-read script tree</source>
         <translation>&amp;Skripte einlesen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2328"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2338"/>
         <source>&amp;Set rights</source>
         <translation>Paket&amp;rechte setzen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2338"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2348"/>
         <source>Start opsi-&amp;winst</source>
         <translation>Starte opsi-&amp;winst</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2348"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2358"/>
         <source>Script &amp;editor</source>
         <translation>Skript&amp;editor</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2358"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2368"/>
         <source>Show SSH &amp;Log</source>
         <translation>SSH &amp;Log anzeigen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2368"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2378"/>
         <source>&amp;Settings</source>
         <translation>Ei&amp;nstellungen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2430"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2440"/>
         <source>Upload package</source>
         <translation>Paket hochladen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2438"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2448"/>
         <source>Install package</source>
         <translation>Paket installieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2446"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2456"/>
         <source>Uninstall package</source>
         <translation>Paket(e) entfernen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2454"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2464"/>
         <source>Deploy client agent</source>
         <translation>Client Agent installieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2381"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2391"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2467"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2477"/>
         <source>Import</source>
         <translation>Importieren</translation>
     </message>
@@ -2951,48 +2950,58 @@ Folgende Ausgabe(n) wurde(n) zurückgegeben:</translation>
         <translation type="obsolete">F5</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2477"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2487"/>
         <source>Refresh Logo</source>
         <translation>Logo aktualisieren</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2480"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2490"/>
         <source>F6</source>
         <translation>F6</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1529"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1539"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press F2 to edit row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bearbeiten mit F2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1579"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1589"/>
         <source>(Highlight row and press F2 to edit)</source>
         <translation>(Zeile markieren und F2 zum Bearbeiten)</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1842"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1852"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2490"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2500"/>
         <source>Get MSI ProductCode</source>
         <translation>MSI ProductCode auslesen</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2500"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2510"/>
         <source>Locked products</source>
         <translation>Gesperrte Produkte</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="2510"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="2520"/>
         <source>About Qt</source>
         <translation>Über Qt</translation>
     </message>
     <message>
-        <location filename="../oPB/ui/mainwindow.ui" line="1233"/>
+        <location filename="../oPB/ui/mainwindow.ui" line="1300"/>
         <source>uninstall</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/mainwindow.ui" line="26"/>
+        <source>opsi PackageBuilder</source>
+        <translation>opsi PackageBuilder</translation>
+    </message>
+    <message>
+        <location filename="../oPB/ui/mainwindow.ui" line="1351"/>
+        <source>not_installed</source>
         <translation></translation>
     </message>
 </context>

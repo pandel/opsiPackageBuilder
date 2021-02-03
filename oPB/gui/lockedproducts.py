@@ -138,7 +138,7 @@ class LockedProductsDialog(LockedProductsDialogBase, LockedProductsDialogUI, Log
 
         prods = []
         for row in self.tblProducts.selectionModel().selectedRows():
-            prods.append(self.model.item(row.row(), 0).text())
+            prods.append([self.model.item(row.row(), 0).text(),self.model.item(row.row(), 2).text()])
 
         self.splash.show_()
         self._parent.unlock_selection(prods)

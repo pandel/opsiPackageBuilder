@@ -38,6 +38,11 @@ from PyQt5.QtWidgets import QApplication, QSplitter, QDialog, QHBoxLayout, QVBox
 from PyQt5.QtCore import QObject, QUrl, pyqtSignal, pyqtSlot, QByteArray, QIODevice, QBuffer
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebEngineCore import QWebEngineUrlSchemeHandler, QWebEngineUrlRequestJob
+try:
+    from PyQt5.QtWebEngineCore import QWebEngineUrlScheme  # type: ignore
+except ImportError:
+    # Added in Qt 5.12
+    QWebEngineUrlScheme = None
 
 
 from oPB.core.tools import LogMixin
@@ -272,6 +277,11 @@ class HelpDialog(QObject, LogMixin):
         # and assign a custom URL scheme handler for scheme "qthelp)
 
         self._wv = QWebEngineView(self.ui)
+        if QWebEngineUrlScheme is not None:
+            scheme = QWebEngineUrlScheme(b'qthelp')
+            scheme.setFlags(QWebEngineUrlScheme.LocalScheme |
+                            QWebEngineUrlScheme.LocalAccessAllowed)
+            QWebEngineUrlScheme.registerScheme(scheme)
         self._urlschemehandler = HelpSchemeHandler(self._helpEngine, self._wv.page().profile())
         self._wv.page().profile().installUrlSchemeHandler(b'qthelp', self._urlschemehandler)
 

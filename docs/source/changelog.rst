@@ -2,6 +2,15 @@
 Changelog
 =========
 
+* :release:`8.4.5 <2021-02-03>`
+* :support:`-` Product dependencies action "uninstall" and state "not_installed" added
+* :bug:`-` Internal changes and additions
+* :release:`8.4.4 <2019-10-23>`
+* :support:`-` Update to spur 0.3.21
+* :bug:`-` To be avoid unwanted behaviour with opsi-package-manager, add -v to all commands in depot mode and add additional ansi stripping
+* :bug:`-` Application display name not showing anymore - corrected
+* :release:`8.4.3 <2019-09-04>`
+* :support:`-` List locked products on every depot at once / unlock products from multiple depots
 * :release:`8.4.2 <2019-04-09>`
 * :support:`-` "ImportLib" added to ScriptTree calculation
 * :bug:`-` Development path access problem resolved

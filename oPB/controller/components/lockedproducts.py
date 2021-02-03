@@ -62,7 +62,7 @@ class LockedProductsComponent(BaseController, QObject):
         # create model from data and assign, if not done before
         if self.model_products == None:
             self.logger.debug("Generate product table model")
-            self.model_products = QtGui.QStandardItemModel(0, 2, self)
+            self.model_products = QtGui.QStandardItemModel(0, 3, self)
             self.model_products.setObjectName("model_products")
 
             self.retranslateMsg()
@@ -80,13 +80,14 @@ class LockedProductsComponent(BaseController, QObject):
             self.selected_depot = None
             BaseController.lockedproductlist_dict = None
             self._parent.update_table_model(self.model_products, sorted(tmplist))
-            self.selected_depot = self._parent.query_depot(with_all = False, parent = self.ui, with_repo = False)
+            self.selected_depot = self._parent.query_depot(with_all = True, parent = self.ui, with_repo = False)
 
         self._parent.do_getlockedproducts(depot = self.selected_depot)
 
         if BaseController.lockedproductlist_dict:
             for elem in BaseController.lockedproductlist_dict:
-                tmplist.append([elem["productId"], elem["productVersion"] + "-" + elem["packageVersion"]])
+                tmplist.append([elem["productId"], elem["productVersion"] + "-" + elem["packageVersion"],
+                                elem["depotId"]])
 
         self._parent.update_table_model(self.model_products, sorted(tmplist))
 
@@ -94,13 +95,17 @@ class LockedProductsComponent(BaseController, QObject):
         self.logger.debug("Unlock selection")
 
         if prods:
-            msg = "\n\n" + translate("LockedProductsController", "Selected depot:") + " " + self.selected_depot
-            msg = msg + "\n\n" + translate("LockedProductsController", "Chosen products:") + "\n\n" + ("\n").join([p for p in prods])
+            # msg = "\n\n" + translate("LockedProductsController", "Selected depot:") + " " + self.selected_depot
+            msg = "\n\n"
+            for group in prods:
+                msg = msg + "\n" + group[1] + ": " + group[0]
+
             reply = self._parent.msgbox(translate("LockedProductsController", "Do you really want to unlock selected product(s) now?") + msg, oPB.MsgEnum.MS_QUEST_YESNO)
             if reply is True:
-                self.logger.debug("Selected depot: " + self.selected_depot)
-                self.logger.debug("Selected product(s): " + str(prods))
-                self._parent.do_unlockproducts(packs = prods, depot = self.selected_depot)
+                for group in prods:
+                    self.logger.debug("Selected depot: " + group[1])
+                    self.logger.debug("Selected product(s): " + group[0])
+                    self._parent.do_unlockproducts(packs = [group[0]], depot = group[1])
                 self.update_model_data()
         else:
             self.logger.debug("Nothing selected.")
@@ -109,5 +114,6 @@ class LockedProductsComponent(BaseController, QObject):
         self.logger.debug("Retranslating further messages...")
         """Retranslate model headers, will be called via changeEvent of self.ui """
         self.model_products.setHorizontalHeaderLabels([translate("LockedProductsController", "product id"),
-                                        translate("LockedProductsController", "version")]
+                                        translate("LockedProductsController", "version"),
+                                        translate("LockedProductsController", "depot")]
                                         )

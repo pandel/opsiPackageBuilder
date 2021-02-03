@@ -124,8 +124,10 @@ class Main(QObject):
             self.app.processEvents()
 
         # Application name
-        self.app.setOrganizationName("opsi Package Builder")
-        self.app.setApplicationName("opsi Package Builder " + oPB.PROGRAM_VERSION)
+        self.app.setOrganizationName("opsi PackageBuilder")
+        self.app.setApplicationName("opsi PackageBuilder")
+        #self.app.setApplicationDisplayName("opsi PackageBuilder")
+        self.app.setApplicationVersion(oPB.PROGRAM_VERSION)
 
         # save ourselves in main instance property to be easily accessd via qApp
         # i.e.
@@ -465,30 +467,29 @@ class Main(QObject):
             """A log has been written to "%s".\n\nError information:\n""" % \
             (logFile.name)
 
-        versionInfo = oPB.PROGRAM_VERSION
         timeString = datetime.datetime.now().strftime("%Y-%m-%d, %H:%M:%S")
 
+        vText = "opsi PackageBuilder version: " + oPB.PROGRAM_VERSION
 
         tbinfofile = StringIO()
         traceback.print_tb(tracebackobj, None, tbinfofile)
         tbinfofile.seek(0)
         tbinfo = tbinfofile.read()
         errmsg = '%s: \n%s' % (str(excType), str(excValue))
-        sections = [separator, timeString, separator, errmsg, separator, tbinfo]
+        sections = [separator, timeString, vText, separator, errmsg, separator, tbinfo]
         msg = '\n'.join(sections)
         try:
             logFile.file.write(msg)
-            logFile.file.write(versionInfo)
             logFile.close()
         except IOError:
             pass
 
         if not self.args.nogui:
             errorbox = QtWidgets.QMessageBox()
-            errorbox.setText(str(notice) + str(msg) + str(versionInfo))
+            errorbox.setText(str(notice) + str(msg))
             errorbox.exec_()
         else:
-            print(str(notice) + str(msg) + str(versionInfo))
+            print(str(notice) + str(msg))
 
 class HelpViewerMain(QObject):
     def __init__(self, parent = None):

@@ -255,7 +255,7 @@ class ProductDependency(object):
     @requiredAction.setter
     def requiredAction(self, value):
         # create new exception handling vor depdencies
-        if not str(value).strip() in ["", "setup", "update", "custom"]:
+        if not str(value).strip() in ["", "setup", "uninstall", "update", "custom"]:
             raise ValueError(translate("ProductDependency", "Incorrect value for requiredAction: " + str(value).strip()))
         self._requiredAction = str(value).strip()
 
@@ -266,7 +266,7 @@ class ProductDependency(object):
     @requiredInstallationStatus.setter
     def requiredInstallationStatus(self, value):
         # create new exception handling vor depdencies
-        if not str(value).strip() in ["", "installed"]:
+        if not str(value).strip() in ["", "installed", "not_installed"]:
             raise ValueError(translate("ProductDependency", "Incorrect value for requiredInstallationStatus: " + str(value).strip()))
         self._requiredInstallationStatus = str(value).strip()
 

@@ -451,7 +451,10 @@ class OpsiProcessing(QObject, LogMixin):
             # OPB_METHOD_GETLOCKEDPRODUCTS + '{"depotId":"host.domain.de", "locked":true}'
 
             try:
-                cmd = oPB.OPB_METHOD_GETLOCKEDPRODUCTS + " '{" + '"locked": true, "depotId":"' + depot + '"}' + "'"
+                if depot == "ALL":
+                    cmd = oPB.OPB_METHOD_GETLOCKEDPRODUCTS + " '{" + '"locked": true}' + "'"
+                else:
+                    cmd = oPB.OPB_METHOD_GETLOCKEDPRODUCTS + " '{" + '"locked": true, "depotId":"' + depot + '"}' + "'"
                 result = self._processAction(cmd, action, ret, cwd=False)
 
                 result = json.loads(result)
@@ -976,8 +979,10 @@ class OpsiProcessing(QObject, LogMixin):
 
                         # Log standard error
 
-                        # ONLY FOR DEBUGGING stdout: self.logger.info(Helper.strip_ansi_codes(result.output.decode(encoding = 'UTF-8')).splitlines())
-                        # ONLY FOR DEBUGGING stderr: self.logger.info(Helper.strip_ansi_codes(result.stderr_output.decode(encoding = 'UTF-8')).splitlines())
+                        # NOT-WORKING - ONLY FOR DEBUGGING stdout:
+                        # self.logger.info(Helper.strip_ansi_codes(result.output.decode(encoding = 'UTF-8')).splitlines())
+                        # NOT-WORKING - ONLY FOR DEBUGGING stderr:
+                        # self.logger.info(Helper.strip_ansi_codes(result.stderr_output.decode(encoding = 'UTF-8')).splitlines())
 
                         self.logger.sshinfo("Return code from external command: " + str(result.return_code))
 

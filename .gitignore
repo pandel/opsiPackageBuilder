@@ -82,3 +82,7 @@ verpatch/
 
 # Visual Runtime C++ 2010 x64 - download if needed
 vcredist_x64.exe
+
+# vim tags file
+tags
+

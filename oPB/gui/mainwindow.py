@@ -75,11 +75,6 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
 
         self.recentFileActions = []
 
-        if oPB.NETMODE == "offline":
-            self.setWindowTitle("opsiPackageBuilder v" + oPB.PROGRAM_VERSION + " ( OFFLINE MODE )")
-        else:
-            self.setWindowTitle("opsiPackageBuilder v" + oPB.PROGRAM_VERSION)
-
         self.datamapper = None             # QDataWidgetMapper object for field mapping
         self.datamapper_dependencies = None
         self.datamapper_properties = None
@@ -1134,6 +1129,15 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
     def retranslateMsg(self):
         self.logger.debug("Retranslating further messages...")
         self.splash.msg = translate("MainWindow", "Please wait...")
+
+        if oPB.NETMODE == "offline":
+            self.logger.debug("Set window title to: opsi PackageBuilder v" + oPB.PROGRAM_VERSION + " ( OFFLINE MODE )")
+            self.setWindowTitle("opsi PackageBuilder v" + oPB.PROGRAM_VERSION + " ( OFFLINE MODE )")
+        else:
+            self.logger.debug("Set window title to: opsi PackageBuilder v" + oPB.PROGRAM_VERSION)
+            self.setWindowTitle("opsi PackageBuilder v" + oPB.PROGRAM_VERSION)
+            print(self.ui.windowTitle())
+
 
 class TableKeyEventFilter(QObject):
     """

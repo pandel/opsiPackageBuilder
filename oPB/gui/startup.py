@@ -28,6 +28,7 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
+import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSlot
@@ -37,9 +38,13 @@ from oPB.core.tools import LogMixin
 from oPB.gui.utilities import EventMixin
 from oPB.ui.ui import StartupDialogBase, StartupDialogUI
 
+# X11 seems to handle SplashScreen a little different
+if sys.platform.lower() == "linux":
+    winAttribs = QtCore.Qt.Dialog | QtCore.Qt.FramelessWindowHint
+else:
+    winAttribs = QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint
 
 translate = QtCore.QCoreApplication.translate
-
 
 class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
 
@@ -53,7 +58,8 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
         self._parent = parent
         self._parentUi = parent.ui
 
-        StartupDialogBase.__init__(self, self._parentUi, QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint)
+        #StartupDialogBase.__init__(self, self._parentUi, QtCore.Qt.SplashScreen | QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.X11BypassWindowManagerHint)
+        StartupDialogBase.__init__(self, self._parentUi, winAttribs)
         self.setupUi(self)
         self.setWindowIcon(self._parentUi.windowIcon())
 
@@ -97,6 +103,7 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
         # assign slots to actions and indiv. methods
         self.btnStartNew.clicked.connect(self._parentUi.actionNew.triggered)
         self.btnStartOpen.clicked.connect(self._parentUi.actionOpen.triggered)
+
         self.btnStartSettings.clicked.connect(self._parentUi.actionSettings.triggered)
         self.btnStartRecent.setMenu(self.menuRecent)
         self.btnStartShowLog.clicked.connect(self._parentUi.actionShowLog.triggered)
