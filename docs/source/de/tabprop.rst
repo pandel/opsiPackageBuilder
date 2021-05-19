@@ -121,6 +121,15 @@ Der obere Teil des Fensters beinhaltet eine tabellarische Aufstellung der derzei
 |                         | gekommen sind.          |                         |
 |                         |                         |                         |
 +-------------------------+-------------------------+-------------------------+
+| |image17|               | Diese Funktion          | Der Codeblock wird      |
+|                         | ermöglicht das          | in die Zwischenablage   |
+|                         | automatische Erstellen  | kopiert und kann per    |
+|                         | und Kopieren eines      | Einfügen oder STRG+V    |
+|                         | OPSI-Script Codeblocks  | überall eingefügt       |
+|                         | um die ausgewählte      | werden.                 |
+|                         | Produktvariable         |                         |
+|                         | abzufragen.             |                         |
++-------------------------+-------------------------+-------------------------+
 | |image16|               | Eine bestehende         | *Solange das Paket nicht|
 |                         | Produktvariable         | gespeichert wurde, kann |
 |                         | entfernen.              | eine ungewollte         |
@@ -152,3 +161,4 @@ Der obere Teil des Fensters beinhaltet eine tabellarische Aufstellung der derzei
 .. |image14| image:: ../img/btnUpd.png
 .. |image15| image:: ../img/btnSkripteLesen.png
 .. |image16| image:: ../img/btnDel.png
+.. |image17| image:: ../img/btnSkriptErzeugen.png

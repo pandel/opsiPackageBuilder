@@ -30,10 +30,12 @@ __status__ = "Production"
 
 import os.path
 import pathlib
+from types import ClassMethodDescriptorType
 import webbrowser
 import platform
 import subprocess
 import datetime
+import textwrap
 
 #from subprocess import Popen, PIPE, STDOUT
 from time import sleep
@@ -301,6 +303,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.btnPropModify.clicked.connect(self.submit_properties)
         self.btnPropDelete.clicked.connect(lambda a: self._parent.remove_property(self.tblProperties.selectionModel().currentIndex().row()))
         self.btnPropRead.clicked.connect(self._parent.get_properties_from_scripts)
+        self.btnPropCopy.clicked.connect(self.copy_property_as_opsiscript)
 
         self.tblProperties.setModel(self._parent.model_properties)
         self.tblDependencies.setModel(self._parent.model_dependencies)
@@ -805,6 +808,49 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self._parent.add_property()
         self.edit_property()
         self.datamapper_properties.toFirst()
+
+    @pyqtSlot()
+    def copy_property_as_opsiscript(self):
+        """Copy the selected properties as source code usable in opsiscript"""
+
+        self.logger.debug("copy property as opsi-script code")
+        if self.datamapper_properties.currentIndex() and self.datamapper_properties.model().item(self.datamapper_properties.currentIndex(), 0) is not None:
+            prop_type_bool = self.datamapper_properties.model().item(self.datamapper_properties.currentIndex(), 1).text() == 'bool'
+            prop_type_multi = self.datamapper_properties.model().item(self.datamapper_properties.currentIndex(), 2).text().lower() == 'true'
+            prop_name = self.datamapper_properties.model().item(self.datamapper_properties.currentIndex(), 0).text()
+            prop_desc = self.datamapper_properties.model().item(self.datamapper_properties.currentIndex(), 4).text()
+            prop_def = self.datamapper_properties.model().item(self.datamapper_properties.currentIndex(), 6).text()
+            prop_name_code = ''.join(x.title() for x in prop_name.replace('-','_').split('_'))
+
+            template_multitype = textwrap.dedent("""\
+                ; {desc}
+                DefVar ${0}$
+                DefStringList ${0}_propertyList$
+                Set ${0}$ = GetProductProperty("{1}", "{2}")
+                ;Set ${0}_propertyList$ = GetProductPropertyList("{1}", emptylist())
+                ;Set ${0}_propertyList$ = GetProductPropertyList("{1}", createStringList({3}))
+                Set ${0}_propertyList$ = GetProductPropertyList("{1}", "{2}")
+            """)
+
+            template_singletype = textwrap.dedent("""\
+                ; {desc}
+                DefVar ${0}$
+                Set ${0}$ = GetProductProperty("{1}", "{2}")
+            """)
+
+            if prop_type_multi:
+                prop_def_multi = "'{0}'".format(prop_def)
+                if "," in prop_def:
+                    prop_def_multi = [ x.strip() for x in prop_def.split(",")]
+                    prop_def = prop_def_multi[0]
+                    prop_def_multi = ", ".join( [ "'{0}'".format(x) for x in prop_def_multi] )
+                clipboard_text = template_multitype.format(prop_name_code, prop_name, prop_def, prop_def_multi, desc=prop_desc)
+            else:
+                clipboard_text = template_singletype.format(prop_name_code, prop_name, prop_def, desc=prop_desc)
+
+            clipboard = QApplication.clipboard()
+            clipboard.clear()
+            clipboard.setText(clipboard_text)
 
     def edit_dependency(self):
         """Change field and button state for dependency editing"""
