@@ -1310,6 +1310,11 @@
               <string>custom</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>once</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="3" column="0">
