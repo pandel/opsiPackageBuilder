@@ -322,6 +322,7 @@ class ControlFileData(QObject, LogMixin):
         self._changelog_converted = False  # mark if changelog entries have been converted from simple to extended
         self._changelog_style = "extended"  # style: extended, single=free text block
         self._projectfolder = ""        # current project folder
+        self._ignoredConfigs = {}       # all ignored lines seperated by blocks
 
         self.init_data(productId)
 
@@ -357,9 +358,18 @@ class ControlFileData(QObject, LogMixin):
         self.changelog_converted = False
         self.changelog_style = "extended"
         self.projectfolder = ""
+        self.ignoredConfigs = {}
         self.logger.debug("Emit dataLoaded(True)")
 
         self.dataLoaded.emit(True)
+
+    @property
+    def ignoredConfigs(self):
+        return self._ignoredConfigs
+
+    @ignoredConfigs.setter
+    def ignoredConfigs(self, value):
+        self._ignoredConfigs = value
 
     @property
     def projectfolder(self):
@@ -991,45 +1001,51 @@ class ControlFileData(QObject, LogMixin):
                                 self.packageversion = value
                             else:
                                 self.productversion = value
-                        if param == "DEPENDS":
+                        elif param == "DEPENDS":
                             self.depends = value
-                        if param == "INCREMENTAL":
+                        elif param == "INCREMENTAL":
                             self.incremental = value
-                        if param == "TYPE":
+                        elif param == "TYPE":
                             self.type = value
-                        if param == "ID":
+                        elif param == "ID":
                             self.id = value
-                        if param == "NAME":
+                        elif param == "NAME":
                             self.name = value
-                        if param == "DESCRIPTION":
-                            self.description = value + "\n"  # re-add first stripped newline char
-                        if param == "ADVICE":
-                            self.advice = value + "\n"  # re-add first stripped newline char
-                        if param == "PRIORITY":
+                        elif param == "DESCRIPTION":
+                            self.description = value
+                        elif param == "ADVICE":
+                            self.advice = value
+                        elif param == "PRIORITY":
                             self.priority = int(value)
-                        if param == "LICENSEREQUIRED":
+                        elif param == "LICENSEREQUIRED":
                             self.licenseRequired = value
-                        if param == "PRODUCTCLASSES":
+                        elif param == "PRODUCTCLASSES":
                             pass
-                        if param == "SETUPSCRIPT":
+                        elif param == "SETUPSCRIPT":
                             self.setupScript = value
-                        if param == "UNINSTALLSCRIPT":
+                        elif param == "UNINSTALLSCRIPT":
                             self.uninstallScript = value
-                        if param == "UPDATESCRIPT":
+                        elif param == "UPDATESCRIPT":
                             self.updateScript = value
-                        if param == "ALWAYSSCRIPT":
+                        elif param == "ALWAYSSCRIPT":
                             self.alwaysScript = value
-                        if param == "ONCESCRIPT":
+                        elif param == "ONCESCRIPT":
                             self.onceScript = value
-                        if param == "CUSTOMSCRIPT":
+                        elif param == "CUSTOMSCRIPT":
                             self.customScript = value
-                        if param == "USERLOGINSCRIPT":
+                        elif param == "USERLOGINSCRIPT":
                             self.userLoginScript = value
+                        else:
+                            if not block in self.ignoredConfigs:
+                                self.ignoredConfigs[block] = {}
+                            self.ignoredConfigs[block][param] = [paramline.group(1), value]
                     else:
                         if lastparam == "DESCRIPTION":
-                            self.description += lines[currentline]
-                        if lastparam == "ADVICE":
-                            self.advice += lines[currentline]
+                            self.description += "\n"+lines[currentline][:-1]
+                        elif lastparam == "ADVICE":
+                            self.advice += "\n"+lines[currentline][:-1]
+                        elif lines[currentline].strip(): # add only non empty lines
+                            self.ignoredConfigs[block][lastparam][1] += "\n"+lines[currentline][:-1]
 
                     currentline += 1
                     if currentline > lines_count: break
@@ -1051,13 +1067,13 @@ class ControlFileData(QObject, LogMixin):
 
                         if param == "ACTION":
                             dep.dependencyForAction = value
-                        if param == "REQUIREDPRODUCT":
+                        elif param == "REQUIREDPRODUCT":
                             dep.requiredProductId = value
-                        if param == "REQUIREDACTION":
+                        elif param == "REQUIREDACTION":
                             dep.requiredAction = value
-                        if param == "REQUIREDSTATUS":
+                        elif param == "REQUIREDSTATUS":
                             dep.requiredInstallationStatus = value
-                        if param == "REQUIREMENTTYPE":
+                        elif param == "REQUIREMENTTYPE":
                             dep.requirementType = value
 
                     currentline += 1
@@ -1068,6 +1084,7 @@ class ControlFileData(QObject, LogMixin):
             if block == '[PRODUCTPROPERTY]':
                 self.logger.debug("Block: " + block)
                 prop = ProductProperty()
+                lasttype = ''
                 while (currentline <= lines_count) and (lines[currentline].strip()[:1] != "["):
                     # ignore empty lines
                     if lines[currentline].strip()[:1] == '':
@@ -1082,16 +1099,16 @@ class ControlFileData(QObject, LogMixin):
 
                         if param == 'NAME':
                             prop.name = value
-                        if param == 'TYPE':
+                        elif param == 'TYPE':
                             prop.type = value
                             lasttype = value
-                        if param == 'MULTIVALUE':
+                        elif param == 'MULTIVALUE':
                             prop.multivalue = value
-                        if param == 'EDITABLE':
+                        elif param == 'EDITABLE':
                             prop.editable = value
-                        if param == 'DESCRIPTION':
+                        elif param == 'DESCRIPTION':
                             prop.description = value
-                        if param == 'VALUES':
+                        elif param == 'VALUES':
                             # tmp = value[2:len(value)-2]
                             # tmp = tmp.replace('\\"', '_$%&%DUMMY%&%$_')
                             # tmp = tmp.replace('"', '')
@@ -1099,7 +1116,7 @@ class ControlFileData(QObject, LogMixin):
                             # tmp = tmp.replace('\\\\', '\\')
                             # prop.values = tmp
                             if value != "": prop.values = json.loads(value)
-                        if param == 'DEFAULT':
+                        elif param == 'DEFAULT':
                             if lasttype == 'bool':
                                 prop.default = value
                             else:
@@ -1143,6 +1160,14 @@ class ControlFileData(QObject, LogMixin):
         """Save control file data of current project"""
         controlfile = self._projectfolder + "/OPSI/control"
 
+        def get_ignored_configs(block):
+            res = ""
+            if block in self.ignoredConfigs:
+                for key in self.ignoredConfigs[block]:
+                    name, value = self.ignoredConfigs[block][key]
+                    res += "{0}: {1}\n".format(name, value)
+            return res
+
         if Path(controlfile).exists():
             try:
                 shutil.move(controlfile, controlfile + "-" + Helper.timestamp() + ".bak")
@@ -1160,12 +1185,14 @@ class ControlFileData(QObject, LogMixin):
                 file.write("[Package]\n")
                 file.write("version: " + self.packageversion + "\n")
                 file.write("depends: " + self.depends + "\n")
-                file.write("incremental: " + self.incremental + "\n\n")
+                file.write("incremental: " + self.incremental + "\n")
+                file.write(get_ignored_configs("[PACKAGE]"))
+                file.write("\n")
                 file.write("[Product]\n")
                 file.write("type: " + self.type + "\n")
                 file.write("id: " + self.id + "\n")
                 file.write("name: " + self.name + "\n")
-                file.write("description: " + self.description.strip() + "\n")
+                file.write("description: " + self.description + "\n")
                 file.write("advice: " + self.advice + "\n")
                 file.write("version: " + self.productversion + "\n")
                 file.write("priority: " + str(self.priority) + "\n")
@@ -1178,6 +1205,7 @@ class ControlFileData(QObject, LogMixin):
                 file.write("onceScript: " + self.onceScript + "\n")
                 file.write("customScript: " + self.customScript + "\n")
                 file.write("userLoginScript: " + self.userLoginScript + "\n")
+                file.write(get_ignored_configs("[PRODUCT]"))
 
                 if self.dependencies:
                     for elem in self.dependencies:
