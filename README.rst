@@ -58,11 +58,7 @@ All the above mentioned scripts are simple little helpers for me and my workflow
 Pre-compiled files
 ==================
 
-oPB/core/(x64(x86)/MapDrive.dll: easy network drive mounting DLL
-
-See src/MapDrive/README for details.
-
-Installing Spur / PyCrypto and compiling MapDrive.dll from source
+Installing Spur / PyCrypto from source
 -----------------------------------------------------------------
 
 You need to install VC++ 2010 Express and, additionally, Microsoft Windows SDK v7.1, if you want to compile for a 64Bit Platform:

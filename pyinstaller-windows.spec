@@ -15,8 +15,6 @@ files_tree = [('libEGL.dll', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-pack
            ('libGLESv2.dll', os.getenv("USERPROFILE") + '/Envs/oPB/Lib/site-packages/PyQt5/Qt/bin/libGLESv2.dll', 'DATA')]
 
 help_tree = Tree('oPB/help', prefix='help')
-dll64_tree = Tree('oPB/core/x64', prefix='x64')
-dll86_tree = Tree('oPB/core/x86', prefix='x86')
 
 qss_win_tree = [('ui/stylesheet.qss', 'oPB/ui/stylesheet.qss', 'DATA')]
 
@@ -76,8 +74,6 @@ coll = COLLECT(exe,
                ui_tree,
                files_tree,
                help_tree,
-               dll64_tree,
-               dll86_tree,
                [('ui/opsipackagebuilder_rc.py', 'oPB/ui/opsipackagebuilder_rc.py', 'DATA')],
                qss_win_tree,
                strip=False,
@@ -91,8 +87,6 @@ collb = COLLECT(exeb,
                ui_tree,
                files_tree,
                help_tree,
-               dll64_tree,
-               dll86_tree,
                [('ui/opsipackagebuilder_rc.py', 'oPB/ui/opsipackagebuilder_rc.py', 'DATA')],
                qss_win_tree,
                strip=False,

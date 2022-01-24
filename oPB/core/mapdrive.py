@@ -28,58 +28,60 @@ __maintainer__ = "Holger Pandel"
 __email__ = "holger.pandel@googlemail.com"
 __status__ = "Production"
 
-import os
-import sys
-import inspect
 import ctypes
-from ctypes.wintypes import LPWSTR
-
-is_64bits = sys.maxsize > 2**32
-
-def get_script_dir(follow_symlinks=True):
-    """Get file path of script. Take freezing into account."""
-    if getattr(sys, 'frozen', False): # py2exe, PyInstaller, cx_Freeze
-        path = os.path.abspath(sys.executable)
-    else:
-        path = inspect.getabsfile(get_script_dir)
-    if follow_symlinks:
-        path = os.path.realpath(path)
-    return os.path.dirname(path)
+import ctypes.wintypes
 
 
 class MapDrive(object):
     """
     Maps windows network drives.
-
-    See following link for detail and files in src folder
-
-    .. seealso:: `MapDrive <http://www.gulon.co.uk/2014/08/10/mapping-a-network-drive-with-python/>`_
     """
-    if is_64bits:
-        _handle=ctypes.cdll.LoadLibrary(get_script_dir()+"\\x64\\MapDrive.dll")
-    else:
-        _handle=ctypes.cdll.LoadLibrary(get_script_dir()+"\\x86\\MapDrive.dll")
+
+    class NETRESOURCEW(ctypes.Structure):
+        # https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/ns-winnetwk-netresourcew
+        _fields_ = [
+            ("dwScope", ctypes.wintypes.DWORD),
+            ("dwType",  ctypes.wintypes.DWORD),
+            ("dwDisplayType",  ctypes.wintypes.DWORD),
+            ("dwUsage",  ctypes.wintypes.DWORD),
+            ("lpLocalName", ctypes.wintypes.LPWSTR),
+            ("lpRemoteName", ctypes.wintypes.LPWSTR),
+            ("lpComment", ctypes.wintypes.LPWSTR),
+            ("lpProvider", ctypes.wintypes.LPWSTR)
+        ]
+
+    WNetAddConnection2 = ctypes.windll.MPR.WNetAddConnection2W # https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/nf-winnetwk-wnetaddconnection2w
+    WNetAddConnection2.argtypes = [ctypes.POINTER(NETRESOURCEW), ctypes.wintypes.LPCWSTR, ctypes.wintypes.LPCWSTR, ctypes.wintypes.BOOL]
+    WNetCancelConnection2 = ctypes.windll.MPR.WNetCancelConnection2W # https://docs.microsoft.com/en-us/windows/win32/api/winnetwk/nf-winnetwk-wnetcancelconnection2w
+    WNetCancelConnection2.argtypes = [ctypes.wintypes.LPCWSTR, ctypes.wintypes.DWORD, ctypes.wintypes.BOOL]
+    RESOURCE_TYPE_DISK = 1
+    RESOURCE_USAGE_IGNORED = 0
+    FLAG_CONNECT_UPDATE_PROFILE = 1
+
 
     @classmethod
     def mapDrive(cls, name, path, username, password):
-        m=LPWSTR(" "*80)
-        ok=cls._handle.mapDrive(
-            LPWSTR(name),
-            LPWSTR(path),
-            LPWSTR(username),
-            LPWSTR(password),
-            m
-        )
-        return ok, m.value
+        nr = cls.NETRESOURCEW()
+        nr.dwType = cls.RESOURCE_TYPE_DISK
+        nr.lpLocalName = name
+        nr.lpRemoteName = path
+        nr.lpProvider = None
+
+        flags = cls.FLAG_CONNECT_UPDATE_PROFILE
+
+        retVal = cls.WNetAddConnection2(ctypes.byref(nr), password, username, flags)
+        msg = ''
+        if retVal != 0:
+            msg = ctypes.FormatError(retVal)
+        return retVal, msg
 
     @classmethod
     def unMapDrive(cls, name):
-        m=LPWSTR(" "*80)
-        ok=cls._handle.unMapDrive(
-            LPWSTR(name),
-            m
-        )
-        return ok, m.value
+        retVal = cls.WNetCancelConnection2(name, cls.FLAG_CONNECT_UPDATE_PROFILE, False)
+        msg = ''
+        if retVal != 0:
+            msg = ctypes.FormatError(retVal)
+        return retVal, msg
 
 if __name__=="__main__":
     print( "MapDrive 1:", MapDrive.mapDrive(

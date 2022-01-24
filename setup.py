@@ -43,9 +43,7 @@ def read(*paths):
         return f.read()
 
 if platform.system() == "Windows":
-    data=[('oPB/core/x86', ['oPB/core/x86/MapDrive.dll']),
-                ('oPB/core/x64', ['oPB/core/x64/MapDrive.dll']),
-                ('oPB/help', ['oPB/help/opsiPackageBuilder.qch']),
+    data=[('oPB/help', ['oPB/help/opsiPackageBuilder.qch']),
                 ('oPB/help', ['oPB/help/opsipackagebuilder.qhc'])]
 else:
     data=[('oPB/help', ['oPB/help/opsiPackageBuilder.qch']),
