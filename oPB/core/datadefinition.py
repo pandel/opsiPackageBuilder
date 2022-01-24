@@ -255,7 +255,7 @@ class ProductDependency(object):
     @requiredAction.setter
     def requiredAction(self, value):
         # create new exception handling vor depdencies
-        if not str(value).strip() in ["", "setup", "uninstall", "update", "custom"]:
+        if not str(value).strip() in ["", "setup", "uninstall", "update", "custom", "once"]:
             raise ValueError(translate("ProductDependency", "Incorrect value for requiredAction: " + str(value).strip()))
         self._requiredAction = str(value).strip()
 
