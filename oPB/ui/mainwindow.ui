@@ -47,7 +47,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1883,6 +1883,17 @@ selection-background-color: rgb(51, 153, 255);
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="btnPropCopy">
+            <property name="text">
+             <string>Copy as opsi-script</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../opsipackagebuilder.qrc">
+              <normaloff>:/images/shell32_241.ico</normaloff>:/images/shell32_241.ico</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer_5">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -2142,7 +2153,7 @@ selection-background-color: rgb(51, 153, 255);
      <x>0</x>
      <y>0</y>
      <width>745</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
