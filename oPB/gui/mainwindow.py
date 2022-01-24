@@ -721,6 +721,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.cmbDepRequirement.setEnabled(False)
         self.btnDepModify.setEnabled(False)
         self.btnDepAdd.setEnabled(True)
+        self.btnSave.setEnabled(True)
 
         # disconnect if there has been an editing event before
         try:
@@ -761,6 +762,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.cmbPropDef.setEnabled(False)
         self.btnPropModify.setEnabled(False)
         self.btnPropAdd.setEnabled(True)
+        self.btnSave.setEnabled(True)
 
         # disconnect if there has been an editing event before
         try:
@@ -819,6 +821,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.btnDepAdd.setEnabled(False)
         self.btnDepDelete.setEnabled(False)
         self.btnDepEdit.setEnabled(False)
+        self.btnSave.setEnabled(False)
 
         # special combobox checker, connect only on edit
         self.cmbDepReqAction.currentIndexChanged.connect(self.check_combobox_selection)
@@ -835,6 +838,7 @@ class MainWindow(MainWindowBase, MainWindowUI, LogMixin, EventMixin):
         self.btnPropAdd.setEnabled(False)
         self.btnPropDelete.setEnabled(False)
         self.btnPropEdit.setEnabled(False)
+        self.btnSave.setEnabled(False)
 
         if self._parent.model_properties.item(self.datamapper_properties.currentIndex(), 1).text() == 'bool':
             self.datamapper_properties.removeMapping(self.inpPropDef)
