@@ -116,8 +116,8 @@ class MainWindowController(BaseController, QObject, EventMixin):
         self.logger.debug("Show main window")
         if ConfigHandler.cfg.posX == 0 and ConfigHandler.cfg.posY == 0:
             screen = QDesktopWidget().screenGeometry(self.ui)
-            hpos = (screen.width() - ConfigHandler.cfg.width) / 2
-            vpos = (screen.height() - ConfigHandler.cfg.height) / 2
+            hpos = int((screen.width() - ConfigHandler.cfg.width) / 2)
+            vpos = int((screen.height() - ConfigHandler.cfg.height) / 2)
             self.ui.move(hpos, vpos)
         else:
             self.ui.setGeometry(ConfigHandler.cfg.posX, ConfigHandler.cfg.posY, ConfigHandler.cfg.width, ConfigHandler.cfg.height)

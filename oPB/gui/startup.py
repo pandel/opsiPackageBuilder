@@ -187,6 +187,6 @@ class StartupDialog(StartupDialogBase, StartupDialogUI, LogMixin, EventMixin):
     def set_position(self):
         parentUi = self._parentUi.geometry()
         mysize = self.geometry()
-        hpos = parentUi.x() + ((parentUi.width() - mysize.width()) / 2)
-        vpos = parentUi.y() + ((parentUi.height() - mysize.height()) / 2)
+        hpos = int(parentUi.x() + ((parentUi.width() - mysize.width()) / 2))
+        vpos = int(parentUi.y() + ((parentUi.height() - mysize.height()) / 2))
         self.move(hpos, vpos)

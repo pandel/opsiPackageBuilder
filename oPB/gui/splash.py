@@ -68,8 +68,8 @@ class Splash(QObject, LogMixin, EventMixin):
         """Add separate progress bar to splash screen"""
 
         self._progressBar = QProgressBar(self._splash)
-        self._progressBar.setGeometry(self._splash.width() / 10, 8 * self._splash.height() / 10,
-                               8 * self._splash.width() / 10, self._splash.height() / 10)
+        self._progressBar.setGeometry(int(self._splash.width() / 10), int(8 * self._splash.height() / 10),
+                               int(8 * self._splash.width() / 10), int(self._splash.height() / 10))
         self._progressBar.hide()
 
     def setProgress(self, val):
@@ -161,8 +161,8 @@ class Splash(QObject, LogMixin, EventMixin):
 
         mysize = self._splash.geometry()
 
-        hpos = parentUi.x() + ((parentUi.width() - mysize.width()) / 2)
-        vpos = parentUi.y() + ((parentUi.height() - mysize.height()) / 2)
+        hpos = int(parentUi.x() + ((parentUi.width() - mysize.width()) / 2))
+        vpos = int(parentUi.y() + ((parentUi.height() - mysize.height()) / 2))
 
         self._splash.move(hpos, vpos)
         self._splash.show()
