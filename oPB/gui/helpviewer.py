@@ -348,11 +348,11 @@ class HelpDialog(QObject, LogMixin):
 
         # set splitter width
         w = self._splitterUpper.geometry().width()
-        self._splitterUpper.setSizes([w*(1/4), w*(3/4)])
+        self._splitterUpper.setSizes([int(w*(1/4)), int(w*(3/4))])
         w = self._splitterLower.geometry().width()
-        self._splitterLower.setSizes([w*(1/5), w*(4/5)])
+        self._splitterLower.setSizes([int(w*(1/5)), int(w*(4/5))])
         h = self._splitterMain.geometry().height()
-        self._splitterMain.setSizes([h*(1/9), h*(7/9), h*(1/9)])
+        self._splitterMain.setSizes([int(h*(1/9)), int(h*(7/9)), int(h*(1/9))])
 
         self._helpContent.linkActivated.connect(self._wv.setUrl)
         self._helpIndex.linkActivated.connect(self._wv.setUrl)

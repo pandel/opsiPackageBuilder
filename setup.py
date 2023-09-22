@@ -67,7 +67,8 @@ setup(name="opsiPackageBuilder",
       data_files=data,
       install_requires=["pyqt5>=5.6",
                         "spur",
-                        "pycryptodome"
+                        "pycryptodome",
+                        "PyQtWebEngine"
                         ],
     entry_points={
           'gui_scripts': [
